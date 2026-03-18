@@ -5,12 +5,13 @@ This directory hosts a repo-local static dashboard adapted from the
 
 ## Public URL
 
-After the GitHub Pages workflow deploys from `main`, the public dashboard URL is:
+The public dashboard is hosted from the mirror repository:
 
-- `https://haonanhe.github.io/HOI3R/`
+- Site: `https://haonanhe.github.io/HOI3R-project-tracking/`
+- Mirror repo: `https://github.com/haonanhe/HOI3R-project-tracking`
 
-The deployed site serves the contents of this `project_tracking/` directory as the
-site root.
+The mirror repository serves the contents of this `project_tracking/` directory as
+the site root.
 
 ## Source of Truth
 
@@ -25,6 +26,7 @@ Run:
 
 ```bash
 python scripts/export_project_tracking.py
+bash scripts/publish_project_tracking_public.sh
 ```
 
 This command updates:
@@ -32,9 +34,8 @@ This command updates:
 - `project_tracking/projects/index.json`
 - `project_tracking/projects/hoi3r_submission.json`
 
-The GitHub Pages workflow publishes the committed contents of `project_tracking/`,
-so regenerate the JSON before pushing plan updates that should appear on the
-public dashboard.
+Then publish the refreshed static files to the public mirror repo so the GitHub
+Pages site stays in sync.
 
 ## Purpose
 
