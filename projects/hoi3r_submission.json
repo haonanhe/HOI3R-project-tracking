@@ -1,0 +1,54 @@
+{
+  "name": "HOI3R NeurIPS 2026 Submission",
+  "description": "Solo-execution tracker for the HOI3R NeurIPS 2026 submission, with method iteration through 2026-04-19 and internal freeze on 2026-05-04.",
+  "steps": [
+    {
+      "label": "W1 Scope / Story / Infra Kickoff",
+      "status": "current"
+    },
+    {
+      "label": "W2 Eval Protocol / Baseline Freeze",
+      "status": "pending"
+    },
+    {
+      "label": "W3 Main-Route Iteration I",
+      "status": "pending"
+    },
+    {
+      "label": "W4 Main-Route Iteration II",
+      "status": "pending"
+    },
+    {
+      "label": "W5 Final Iteration Window",
+      "status": "pending"
+    },
+    {
+      "label": "W6 Paper v1 / Figures / Tables",
+      "status": "pending"
+    },
+    {
+      "label": "W7 Final Draft / Supplementary",
+      "status": "pending"
+    },
+    {
+      "label": "W8 Internal Freeze / Upload Buffer",
+      "status": "pending"
+    }
+  ],
+  "venue": "NeurIPS 2026",
+  "venueUrl": "https://neurips.cc/Conferences/2026",
+  "timeline": [
+    {
+      "label": "Internal Freeze",
+      "date": "2026-05-04"
+    },
+    {
+      "label": "Abstract Due",
+      "date": "2026-05-04"
+    },
+    {
+      "label": "Full Paper Due",
+      "date": "2026-05-06"
+    }
+  ]
+}
