@@ -181,7 +181,6 @@
 
     /* Steps dropdown */
     .steps-panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-    .steps-panel.open { max-height: 320px; }
 
     .steps {
       list-style: none;
@@ -416,7 +415,17 @@
       return new Date(s+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
     }
 
-    function toggle(id) { document.getElementById(id).classList.toggle("open"); }
+    function reflowStepsPanel(panel) {
+      if (!panel || !panel.classList.contains("open")) return;
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+
+    function toggle(id) {
+      const panel = document.getElementById(id);
+      const nextOpen = !panel.classList.contains("open");
+      panel.classList.toggle("open");
+      panel.style.maxHeight = nextOpen ? panel.scrollHeight + "px" : "0px";
+    }
 
     function toggleWeek(id, event) {
       if (event) event.stopPropagation();
@@ -424,6 +433,7 @@
       const chevron = document.getElementById(`${id}-chevron`);
       daily.classList.toggle("open");
       chevron.classList.toggle("open");
+      reflowStepsPanel(daily.closest(".steps-panel"));
     }
 
     function render(projects) {
