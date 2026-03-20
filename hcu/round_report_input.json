@@ -218,42 +218,42 @@
     {
       "dataset": "h2o",
       "status": "pass",
-      "asset_path": "assets/h2o.png",
+      "asset_path": "about:blank",
       "caption": "H2O pass-case overlay",
       "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/h2o"
     },
     {
       "dataset": "dexycb",
       "status": "pass",
-      "asset_path": "assets/dexycb.png",
+      "asset_path": "about:blank",
       "caption": "DexYCB pass-case overlay",
       "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/dexycb"
     },
     {
       "dataset": "arctic",
       "status": "fail",
-      "asset_path": "assets/arctic.png",
+      "asset_path": "about:blank",
       "caption": "ARCTIC-left blocker overlay",
       "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/arctic"
     },
     {
       "dataset": "hot3d",
       "status": "warn",
-      "asset_path": "assets/hot3d.png",
+      "asset_path": "about:blank",
       "caption": "HOT3D-right near-pass overlay",
       "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/hot3d"
     },
     {
       "dataset": "ho3d",
       "status": "pass",
-      "asset_path": "assets/ho3d.png",
+      "asset_path": "about:blank",
       "caption": "HO3D pass-case overlay",
       "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/ho3d"
     },
     {
       "dataset": "h2o3d",
       "status": "pass",
-      "asset_path": "assets/h2o3d.png",
+      "asset_path": "about:blank",
       "caption": "H2O3D pass-case overlay",
       "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/h2o3d"
     }
