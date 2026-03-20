@@ -37,6 +37,22 @@ This command updates:
 Then publish the refreshed static files to the public mirror repo so the GitHub
 Pages site stays in sync.
 
+## HCU Round Report Regeneration (T-HCU-17A Freeze)
+
+The HCU report surface is generated from a machine-readable artifact and must not
+be hand-edited:
+
+```bash
+python3 scripts/hand_camera_unified_interface/round_report.py \
+  --input project_tracking/hcu/round_report_input.json \
+  --output-dir project_tracking/hcu
+```
+
+This writes:
+
+- `project_tracking/hcu/index.html`
+- `project_tracking/hcu/report_manifest.json`
+
 ## Purpose
 
 This dashboard is a high-level overview surface for the HOI3R NeurIPS 2026

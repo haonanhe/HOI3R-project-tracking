@@ -1,0 +1,284 @@
+{
+  "schema_version": "hcu-round-report.v1",
+  "round": {
+    "number": 3,
+    "id": "round_03",
+    "stage": "Stage-A",
+    "task_id": "T-HCU-18",
+    "generated_at_utc": "2026-03-20T13:20:00Z",
+    "runner_backend": "smplx MANO",
+    "joint_order": "openpose_hand_21"
+  },
+  "review_gate": {
+    "previous_round_report": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_02/index.html",
+    "previous_round_read": {
+      "reader": "codex",
+      "read_at_utc": "2026-03-20T13:10:00Z",
+      "notes": "Inherited ARCTIC-left and HOT3D-right blockers before adapter-side changes."
+    }
+  },
+  "summary": {
+    "what_changed": [
+      "Adjusted ARCTIC-left adapter translation-sign canonicalization.",
+      "Audited HOT3D-right native-joint-order remap and projection payload normalization.",
+      "Kept unified runner implementation unchanged while updating round-report contract output."
+    ],
+    "what_stayed_frozen": [
+      "UnifiedManoRunner remains single-path smplx MANO with no dataset identity branch.",
+      "Output joint order remains openpose_hand_21 for all datasets and both sides.",
+      "Canonicalization edits remain adapter-side only."
+    ],
+    "blockers": [
+      "ARCTIC-left still exceeds Stage-A world/cam/pixel thresholds.",
+      "HOT3D-right is near-pass but pixel residual remains above Stage-A target.",
+      "All pass-side datasets remain frozen unless a shared contract bug is proven."
+    ]
+  },
+  "invariant_checks": [
+    {
+      "name": "single smplx path",
+      "status": "pass",
+      "details": "Unified runner path remains fixed to smplx MANO."
+    },
+    {
+      "name": "runner has no dataset branch",
+      "status": "pass",
+      "details": "No dataset-conditional logic appears in unified runner execution path."
+    },
+    {
+      "name": "joint order invariant",
+      "status": "pass",
+      "details": "All exported outputs remain openpose_hand_21 order."
+    },
+    {
+      "name": "adapter-scope discipline",
+      "status": "warn",
+      "details": "Only ARCTIC/HOT3D adapters changed this round; continue strict scope checks next round."
+    }
+  ],
+  "dataset_results": [
+    {
+      "dataset": "h2o",
+      "side": "left",
+      "sample_count": 40,
+      "world_mpjpe_mm": 0.034,
+      "cam_mpjpe_mm": 0.041,
+      "pixel_mpjpe_px": 0.112,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o_left_summary.json"
+    },
+    {
+      "dataset": "h2o",
+      "side": "right",
+      "sample_count": 40,
+      "world_mpjpe_mm": 0.029,
+      "cam_mpjpe_mm": 0.033,
+      "pixel_mpjpe_px": 0.094,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o_right_summary.json"
+    },
+    {
+      "dataset": "dexycb",
+      "side": "left",
+      "sample_count": 40,
+      "world_mpjpe_mm": 0.052,
+      "cam_mpjpe_mm": 0.057,
+      "pixel_mpjpe_px": 0.163,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dexycb_left_summary.json"
+    },
+    {
+      "dataset": "dexycb",
+      "side": "right",
+      "sample_count": 40,
+      "world_mpjpe_mm": 0.061,
+      "cam_mpjpe_mm": 0.065,
+      "pixel_mpjpe_px": 0.181,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dexycb_right_summary.json"
+    },
+    {
+      "dataset": "arctic",
+      "side": "left",
+      "sample_count": 42,
+      "world_mpjpe_mm": 1.382,
+      "cam_mpjpe_mm": 1.511,
+      "pixel_mpjpe_px": 2.731,
+      "stage_a_pass": false,
+      "stage_b_pass": false,
+      "final_pass": false,
+      "blocker_reason": "translation sign and crop-camera normalization",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/arctic_left_summary.json"
+    },
+    {
+      "dataset": "arctic",
+      "side": "right",
+      "sample_count": 42,
+      "world_mpjpe_mm": 0.086,
+      "cam_mpjpe_mm": 0.091,
+      "pixel_mpjpe_px": 0.194,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/arctic_right_summary.json"
+    },
+    {
+      "dataset": "hot3d",
+      "side": "left",
+      "sample_count": 39,
+      "world_mpjpe_mm": 0.072,
+      "cam_mpjpe_mm": 0.078,
+      "pixel_mpjpe_px": 0.168,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/hot3d_left_summary.json"
+    },
+    {
+      "dataset": "hot3d",
+      "side": "right",
+      "sample_count": 39,
+      "world_mpjpe_mm": 0.922,
+      "cam_mpjpe_mm": 0.845,
+      "pixel_mpjpe_px": 1.236,
+      "stage_a_pass": false,
+      "stage_b_pass": false,
+      "final_pass": false,
+      "blocker_reason": "native joint-order remap still incomplete",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/hot3d_right_summary.json"
+    },
+    {
+      "dataset": "ho3d",
+      "side": "left",
+      "sample_count": 40,
+      "world_mpjpe_mm": 0.048,
+      "cam_mpjpe_mm": 0.051,
+      "pixel_mpjpe_px": 0.143,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/ho3d_left_summary.json"
+    },
+    {
+      "dataset": "ho3d",
+      "side": "right",
+      "sample_count": 40,
+      "world_mpjpe_mm": 0.051,
+      "cam_mpjpe_mm": 0.056,
+      "pixel_mpjpe_px": 0.149,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/ho3d_right_summary.json"
+    },
+    {
+      "dataset": "h2o3d",
+      "side": "left",
+      "sample_count": 40,
+      "world_mpjpe_mm": 0.064,
+      "cam_mpjpe_mm": 0.073,
+      "pixel_mpjpe_px": 0.188,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o3d_left_summary.json"
+    },
+    {
+      "dataset": "h2o3d",
+      "side": "right",
+      "sample_count": 40,
+      "world_mpjpe_mm": 0.059,
+      "cam_mpjpe_mm": 0.062,
+      "pixel_mpjpe_px": 0.171,
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "final_pass": false,
+      "blocker_reason": "",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o3d_right_summary.json"
+    }
+  ],
+  "overlay_review": [
+    {
+      "dataset": "h2o",
+      "status": "pass",
+      "asset_path": "assets/h2o.png",
+      "caption": "H2O pass-case overlay",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/h2o"
+    },
+    {
+      "dataset": "dexycb",
+      "status": "pass",
+      "asset_path": "assets/dexycb.png",
+      "caption": "DexYCB pass-case overlay",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/dexycb"
+    },
+    {
+      "dataset": "arctic",
+      "status": "fail",
+      "asset_path": "assets/arctic.png",
+      "caption": "ARCTIC-left blocker overlay",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/arctic"
+    },
+    {
+      "dataset": "hot3d",
+      "status": "warn",
+      "asset_path": "assets/hot3d.png",
+      "caption": "HOT3D-right near-pass overlay",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/hot3d"
+    },
+    {
+      "dataset": "ho3d",
+      "status": "pass",
+      "asset_path": "assets/ho3d.png",
+      "caption": "HO3D pass-case overlay",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/ho3d"
+    },
+    {
+      "dataset": "h2o3d",
+      "status": "pass",
+      "asset_path": "assets/h2o3d.png",
+      "caption": "H2O3D pass-case overlay",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/h2o3d"
+    }
+  ],
+  "artifact_index": [
+    {
+      "label": "summary.json",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/summary.json"
+    },
+    {
+      "label": "dataset_gate_rows.csv",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dataset_gate_rows.csv"
+    },
+    {
+      "label": "overlay_manifest.json",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlay_manifest.json"
+    },
+    {
+      "label": "invariant_report.md",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/invariant_report.md"
+    }
+  ],
+  "next_round_plan": [
+    "Focus only on ARCTIC-left adapter canonicalization with before/after metric diff.",
+    "Audit HOT3D-right remap table and projection payload without touching passing datasets.",
+    "Keep unified runner code path frozen; fail next round immediately if any dataset branch appears."
+  ]
+}

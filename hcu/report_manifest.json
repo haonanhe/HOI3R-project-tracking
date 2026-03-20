@@ -1,0 +1,52 @@
+{
+  "generated_at_utc": "2026-03-20T12:48:43Z",
+  "must_read_previous_round": true,
+  "outputs": {
+    "html": "/data/haonan/HOI/HOI3R/project_tracking/hcu/index.html",
+    "report_manifest": "/data/haonan/HOI/HOI3R/project_tracking/hcu/report_manifest.json"
+  },
+  "referenced_artifacts": [
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_02/index.html",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/arctic_left_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/arctic_right_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dataset_gate_rows.csv",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dexycb_left_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dexycb_right_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o3d_left_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o3d_right_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o_left_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o_right_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/ho3d_left_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/ho3d_right_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/hot3d_left_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/hot3d_right_summary.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/invariant_report.md",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlay_manifest.json",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/arctic",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/dexycb",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/h2o",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/h2o3d",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/ho3d",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/hot3d",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/summary.json"
+  ],
+  "required_sections": [
+    "Round Summary",
+    "Invariant Checks",
+    "Dataset Results",
+    "Overlay Review",
+    "Artifact Index",
+    "Next Round Plan"
+  ],
+  "round": {
+    "generated_at_utc": "2026-03-20T13:20:00Z",
+    "id": "round_03",
+    "joint_order": "openpose_hand_21",
+    "number": 3,
+    "runner_backend": "smplx MANO",
+    "stage": "Stage-A",
+    "task_id": "T-HCU-18"
+  },
+  "schema_version": "hcu-round-report.v1",
+  "source_input": "/data/haonan/HOI/HOI3R/project_tracking/hcu/round_report_input.json"
+}

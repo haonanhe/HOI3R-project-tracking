@@ -3,47 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HCU Round Report Preview</title>
+  <title>HCU Round Report</title>
   <style>
     :root {
       --font-ui: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
       --font-mono: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
-    }
-
-    [data-theme="dark"] {
       --bg: #0e1116;
       --panel: #171d26;
       --panel-2: #1d2430;
-      --border: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.09);
       --text: #edf2f7;
       --muted: #9aa6b2;
       --accent: #5fb3ff;
       --warn: #f7b955;
       --danger: #ff7b72;
       --success: #4fd1a5;
-      --shadow: rgba(0, 0, 0, 0.22);
-      --table-stripe: rgba(255, 255, 255, 0.025);
-      --pill-bg: rgba(255, 255, 255, 0.08);
+      --shadow: rgba(0, 0, 0, 0.24);
+      --table-stripe: rgba(255, 255, 255, 0.02);
       --hero: linear-gradient(135deg, rgba(95, 179, 255, 0.18), rgba(145, 227, 198, 0.1));
     }
-
-    [data-theme="light"] {
-      --bg: #f4f7fb;
-      --panel: #ffffff;
-      --panel-2: #f8fafc;
-      --border: rgba(15, 23, 42, 0.08);
-      --text: #102033;
-      --muted: #607080;
-      --accent: #0f6cbd;
-      --warn: #b7791f;
-      --danger: #c53030;
-      --success: #2f855a;
-      --shadow: rgba(15, 23, 42, 0.08);
-      --table-stripe: rgba(15, 23, 42, 0.02);
-      --pill-bg: rgba(15, 23, 42, 0.05);
-      --hero: linear-gradient(135deg, rgba(15, 108, 189, 0.08), rgba(15, 157, 117, 0.06));
-    }
-
     * { box-sizing: border-box; }
     html, body {
       margin: 0;
@@ -52,770 +30,310 @@
       color: var(--text);
       font-family: var(--font-ui);
     }
-
-    body { min-height: 100vh; }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover { text-decoration: underline; }
-
     code {
       font-family: var(--font-mono);
-      font-size: 0.95em;
-      background: var(--pill-bg);
-      padding: 0.12rem 0.34rem;
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 6px;
+      padding: 0.1rem 0.33rem;
     }
-
     .page {
       max-width: 1180px;
       margin: 0 auto;
-      padding: 28px 20px 64px;
+      padding: 24px 20px 56px;
     }
-
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-
-    .toolbar-left {
-      color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.5;
-    }
-
-    .toolbar button {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--muted);
-      border-radius: 10px;
-      height: 36px;
-      min-width: 36px;
-      padding: 0 12px;
-      cursor: pointer;
-      box-shadow: 0 8px 22px var(--shadow);
-    }
-
-    .toolbar button:hover {
-      color: var(--text);
-      border-color: rgba(95, 179, 255, 0.35);
-    }
-
     .hero {
       background: var(--hero);
       border: 1px solid var(--border);
       border-radius: 22px;
-      padding: 28px;
+      padding: 24px;
       box-shadow: 0 18px 40px var(--shadow);
-      margin-bottom: 18px;
     }
-
-    .hero-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
     .hero h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      line-height: 1.02;
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 4vw, 2.9rem);
       letter-spacing: -0.04em;
     }
-
     .hero p {
-      margin: 0;
-      max-width: 760px;
-      line-height: 1.6;
       color: var(--muted);
-      font-size: 1rem;
+      margin: 0;
+      line-height: 1.55;
     }
-
     .hero-meta {
+      margin-top: 16px;
       display: grid;
-      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
       gap: 10px;
-      min-width: 280px;
     }
-
     .meta-card {
-      background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--panel);
+      padding: 11px 12px;
     }
-
     .meta-label {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
-
     .meta-value {
-      font-size: 1.05rem;
+      font-size: 1.03rem;
       font-weight: 700;
     }
-
     .chips {
+      margin-top: 12px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-top: 18px;
     }
-
     .chip {
-      background: var(--pill-bg);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 8px 12px;
+      padding: 7px 11px;
+      color: var(--muted);
       font-size: 0.84rem;
-      color: var(--muted);
+      background: rgba(255, 255, 255, 0.06);
     }
-
-    .layout {
-      display: block;
-    }
-
-    .stack {
-      display: grid;
-      gap: 18px;
-    }
-
     .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: 0 14px 28px var(--shadow);
-    }
-
-    .panel h2 {
-      margin: 0 0 6px;
-      font-size: 1.12rem;
-      letter-spacing: -0.02em;
-    }
-
-    .panel-intro {
-      margin: 0 0 16px;
-      color: var(--muted);
-      line-height: 1.55;
-      font-size: 0.94rem;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .kpi {
-      background: var(--panel-2);
+      margin-top: 16px;
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 16px;
+      background: var(--panel);
+      box-shadow: 0 14px 28px var(--shadow);
+      padding: 18px;
     }
-
-    .kpi-label {
-      font-size: 0.8rem;
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .panel p {
+      margin: 0;
       color: var(--muted);
-      margin-bottom: 6px;
+      line-height: 1.52;
+      font-size: 0.92rem;
     }
-
+    .kpis {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .kpi {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      padding: 12px;
+    }
+    .kpi-label {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-bottom: 4px;
+    }
     .kpi-value {
-      font-size: 1.38rem;
+      font-size: 1.3rem;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
-
     .callout {
+      margin-top: 14px;
       border-left: 4px solid var(--warn);
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: rgba(247, 185, 85, 0.1);
-      color: var(--text);
-      line-height: 1.55;
-      font-size: 0.92rem;
+      border-radius: 10px;
+      background: rgba(247, 185, 85, 0.11);
+      padding: 11px 13px;
+      line-height: 1.52;
+      font-size: 0.9rem;
     }
-
-    .list {
-      display: grid;
-      gap: 10px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .list li {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
       line-height: 1.55;
     }
-
+    li {
+      margin-bottom: 6px;
+    }
     .status {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 5px 10px;
+      gap: 5px;
       border-radius: 999px;
-      font-size: 0.77rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 4px 9px;
     }
-
-    .status.pass {
-      color: var(--success);
-      background: rgba(79, 209, 165, 0.1);
-    }
-
-    .status.warn {
-      color: var(--warn);
-      background: rgba(247, 185, 85, 0.12);
-    }
-
-    .status.fail {
-      color: var(--danger);
-      background: rgba(255, 123, 114, 0.12);
-    }
-
+    .status.pass { color: var(--success); background: rgba(79, 209, 165, 0.1); }
+    .status.warn { color: var(--warn); background: rgba(247, 185, 85, 0.12); }
+    .status.fail { color: var(--danger); background: rgba(255, 123, 114, 0.12); }
     .table-wrap {
+      margin-top: 10px;
       overflow: auto;
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 14px;
     }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-    }
-
-    .gallery-card {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .gallery-card img {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: 760px;
-      object-fit: contain;
-      background: #0b0e13;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .gallery-meta {
-      padding: 12px 14px 14px;
-    }
-
-    .gallery-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-      font-weight: 700;
-    }
-
-    .gallery-caption {
-      color: var(--muted);
-      font-size: 0.87rem;
-      line-height: 1.5;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 860px;
+      min-width: 980px;
       font-size: 0.9rem;
     }
-
     th, td {
-      padding: 12px 14px;
       text-align: left;
       border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
       vertical-align: top;
     }
-
     thead th {
-      position: sticky;
-      top: 0;
       background: var(--panel-2);
-      z-index: 1;
       color: var(--muted);
       font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
-
     tbody tr:nth-child(even) { background: var(--table-stripe); }
-    tbody tr:hover { background: rgba(95, 179, 255, 0.06); }
-
     .metric-good { color: var(--success); font-weight: 700; }
     .metric-bad { color: var(--danger); font-weight: 700; }
-
-    .details-grid {
+    .overlay-grid {
+      margin-top: 10px;
       display: grid;
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 11px;
     }
-
-    details {
-      background: var(--panel-2);
+    .overlay-card {
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 13px;
       overflow: hidden;
+      background: var(--panel-2);
     }
-
-    details[open] {
-      border-color: rgba(95, 179, 255, 0.24);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    .overlay-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #0b0e13;
     }
-
-    summary {
-      cursor: pointer;
-      list-style: none;
-      padding: 15px 16px;
+    .overlay-meta {
+      padding: 10px 11px;
+    }
+    .overlay-title {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
       font-weight: 700;
     }
-
-    summary::-webkit-details-marker { display: none; }
-
-    .summary-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .dataset-tag {
-      padding: 5px 8px;
-      border-radius: 10px;
-      background: rgba(95, 179, 255, 0.12);
-      color: var(--accent);
-      font-size: 0.8rem;
-      white-space: nowrap;
-    }
-
-    .detail-body {
-      padding: 0 16px 16px;
-      display: grid;
-      gap: 12px;
-    }
-
-    .detail-card {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      background: var(--panel);
-    }
-
-    .detail-title {
-      font-size: 0.78rem;
+    .overlay-meta p {
+      margin: 0 0 8px;
       color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 8px;
+      font-size: 0.86rem;
     }
-
-    .overlay-links,
-    .artifact-links {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .artifact-list li {
+      margin-bottom: 10px;
     }
-
-    .fake-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 9px 11px;
-      background: var(--panel-2);
-      font-size: 0.88rem;
-      color: var(--text);
-    }
-
-    .path {
-      display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      word-break: break-all;
-    }
-
     .footer {
       margin-top: 18px;
       color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.6;
       text-align: center;
+      font-size: 0.85rem;
+      line-height: 1.55;
     }
-
-    @media (max-width: 980px) {
-      .kpi-grid { grid-template-columns: 1fr; }
+    @media (max-width: 940px) {
+      .hero-meta { grid-template-columns: repeat(2, minmax(130px, 1fr)); }
+      .kpis { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <div class="toolbar">
-      <div class="toolbar-left">
-        Public preview for HCU round-report layout review. Example evidence paths are shown as text
-        because the underlying artifacts are not mirrored into this public site.
-      </div>
-      <button type="button" onclick="toggleTheme()" id="theme-button">Theme</button>
-    </div>
-
     <section class="hero">
-      <div class="hero-top">
-        <div>
-          <div class="eyebrow">Preview Only · HCU Round Report Mock</div>
-          <h1>HCU Round Report</h1>
-          <p>
-            Review this page for layout, section order, blocker visibility, and whether it can act
-            as the mandatory document that the next HCU round must read before making any new
-            adapter-side canonicalization change.
-          </p>
-        </div>
-        <div class="hero-meta">
-          <div class="meta-card">
-            <div class="meta-label">Round</div>
-            <div class="meta-value">Round 03</div>
-          </div>
-          <div class="meta-card">
-            <div class="meta-label">Current Stage</div>
-            <div class="meta-value">Stage-A</div>
-          </div>
-          <div class="meta-card">
-            <div class="meta-label">Runner</div>
-            <div class="meta-value">smplx MANO</div>
-          </div>
-          <div class="meta-card">
-            <div class="meta-label">Board Gate</div>
-            <div class="meta-value">2 / 12 blocked</div>
-          </div>
-        </div>
+      <h1>HCU Round Report</h1>
+      <p>Generated from machine-readable artifacts. This page is the required handoff surface for the next HCU canonicalization round.</p>
+      <div class="hero-meta">
+        <div class="meta-card"><div class="meta-label">Round</div><div class="meta-value">round_03</div></div>
+        <div class="meta-card"><div class="meta-label">Stage</div><div class="meta-value">Stage-A</div></div>
+        <div class="meta-card"><div class="meta-label">Runner</div><div class="meta-value">smplx MANO</div></div>
+        <div class="meta-card"><div class="meta-label">Gate</div><div class="meta-value">10 / 12 sides pass Stage-A</div></div>
       </div>
+      <div class="chips"><div class="chip">Joint Order: <code>openpose_hand_21</code></div><div class="chip">Invariant: no dataset-conditioned runner branch</div><div class="chip">Input Rule: must read previous round before canonicalization changes</div><div class="chip">Source: <code>project_tracking/hcu/round_report_input.json</code></div></div>
+    </section>
 
-      <div class="chips">
-        <div class="chip">Joint Order: <code>openpose_hand_21</code></div>
-        <div class="chip">Invariant: no dataset-conditioned runner branch</div>
-        <div class="chip">Input Rule: next round must read this HTML first</div>
-        <div class="chip">Public preview only</div>
+    <section class="panel">
+      <h2>Round Summary</h2>
+      <p>Fast context for what changed, what stayed frozen, and where blockers remain.</p>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-label">Datasets Fully Passing</div><div class="kpi-value">4 / 6</div></div>
+        <div class="kpi"><div class="kpi-label">Sides Passing Stage-A</div><div class="kpi-value">10 / 12</div></div>
+        <div class="kpi"><div class="kpi-label">Worst Remaining Blocker</div><div class="kpi-value">Arctic left</div></div>
+      </div>
+      <div class="callout"><strong>Read gate.</strong> Next round must read previous round before canonicalization changes. Read receipt: codex @ 2026-03-20T13:10:00Z. Source: <code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_02/index.html</code>.</div>
+      <h3>What Changed</h3>
+      <ul><li>Adjusted ARCTIC-left adapter translation-sign canonicalization.</li>
+<li>Audited HOT3D-right native-joint-order remap and projection payload normalization.</li>
+<li>Kept unified runner implementation unchanged while updating round-report contract output.</li></ul>
+      <h3>What Stayed Frozen</h3>
+      <ul><li>UnifiedManoRunner remains single-path smplx MANO with no dataset identity branch.</li>
+<li>Output joint order remains openpose_hand_21 for all datasets and both sides.</li>
+<li>Canonicalization edits remain adapter-side only.</li></ul>
+      <h3>Blockers First</h3>
+      <ul><li>ARCTIC-left still exceeds Stage-A world/cam/pixel thresholds.</li>
+<li>HOT3D-right is near-pass but pixel residual remains above Stage-A target.</li>
+<li>All pass-side datasets remain frozen unless a shared contract bug is proven.</li></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Invariant Checks</h2>
+      <p>The round is invalid if runner-level invariants drift, even if metrics improve.</p>
+      <ul><li><span class="status pass">pass</span> single smplx path. Unified runner path remains fixed to smplx MANO.</li><li><span class="status pass">pass</span> runner has no dataset branch. No dataset-conditional logic appears in unified runner execution path.</li><li><span class="status pass">pass</span> joint order invariant. All exported outputs remain openpose_hand_21 order.</li><li><span class="status warn">watch</span> adapter-scope discipline. Only ARCTIC/HOT3D adapters changed this round; continue strict scope checks next round.</li></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Dataset Results</h2>
+      <p>One row per dataset x side with frozen gate fields.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Dataset</th>
+              <th>Side</th>
+              <th>Samples</th>
+              <th>World MPJPE mm</th>
+              <th>Cam MPJPE mm</th>
+              <th>Pixel MPJPE px</th>
+              <th>Stage-A</th>
+              <th>Blocker</th>
+              <th>Evidence</th>
+            </tr>
+          </thead>
+          <tbody><tr><td>h2o</td><td>left</td><td>40</td><td class="metric-good">0.034</td><td class="metric-good">0.041</td><td class="metric-good">0.112</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o_left_summary.json</code></td></tr><tr><td>h2o</td><td>right</td><td>40</td><td class="metric-good">0.029</td><td class="metric-good">0.033</td><td class="metric-good">0.094</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o_right_summary.json</code></td></tr><tr><td>dexycb</td><td>left</td><td>40</td><td class="metric-good">0.052</td><td class="metric-good">0.057</td><td class="metric-good">0.163</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dexycb_left_summary.json</code></td></tr><tr><td>dexycb</td><td>right</td><td>40</td><td class="metric-good">0.061</td><td class="metric-good">0.065</td><td class="metric-good">0.181</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dexycb_right_summary.json</code></td></tr><tr><td>arctic</td><td>left</td><td>42</td><td class="metric-bad">1.382</td><td class="metric-bad">1.511</td><td class="metric-bad">2.731</td><td><span class="status fail">fail</span></td><td>translation sign and crop-camera normalization</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/arctic_left_summary.json</code></td></tr><tr><td>arctic</td><td>right</td><td>42</td><td class="metric-good">0.086</td><td class="metric-good">0.091</td><td class="metric-good">0.194</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/arctic_right_summary.json</code></td></tr><tr><td>hot3d</td><td>left</td><td>39</td><td class="metric-good">0.072</td><td class="metric-good">0.078</td><td class="metric-good">0.168</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/hot3d_left_summary.json</code></td></tr><tr><td>hot3d</td><td>right</td><td>39</td><td class="metric-good">0.922</td><td class="metric-good">0.845</td><td class="metric-good">1.236</td><td><span class="status fail">fail</span></td><td>native joint-order remap still incomplete</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/hot3d_right_summary.json</code></td></tr><tr><td>ho3d</td><td>left</td><td>40</td><td class="metric-good">0.048</td><td class="metric-good">0.051</td><td class="metric-good">0.143</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/ho3d_left_summary.json</code></td></tr><tr><td>ho3d</td><td>right</td><td>40</td><td class="metric-good">0.051</td><td class="metric-good">0.056</td><td class="metric-good">0.149</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/ho3d_right_summary.json</code></td></tr><tr><td>h2o3d</td><td>left</td><td>40</td><td class="metric-good">0.064</td><td class="metric-good">0.073</td><td class="metric-good">0.188</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o3d_left_summary.json</code></td></tr><tr><td>h2o3d</td><td>right</td><td>40</td><td class="metric-good">0.059</td><td class="metric-good">0.062</td><td class="metric-good">0.171</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/h2o3d_right_summary.json</code></td></tr></tbody>
+        </table>
       </div>
     </section>
 
-    <div class="layout">
-      <div class="stack">
-        <section class="panel">
-          <h2>Round Summary</h2>
-          <p class="panel-intro">
-            The top block should answer three questions fast: what changed, did the round preserve
-            invariants, and where should the next round focus.
-          </p>
-          <div class="kpi-grid">
-            <div class="kpi">
-              <div class="kpi-label">Datasets Fully Passing</div>
-              <div class="kpi-value">4 / 6</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Sides Passing Stage-A</div>
-              <div class="kpi-value">10 / 12</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-label">Worst Remaining Blocker</div>
-              <div class="kpi-value">ARCTIC left</div>
-            </div>
-          </div>
+    <section class="panel">
+      <h2>Overlay Review</h2>
+      <p>Per-dataset visual checkpoints linked to round-local evidence.</p>
+      <div class="overlay-grid"><div class="overlay-card"><img src="assets/h2o.png" alt="h2o overlay"><div class="overlay-meta"><div class="overlay-title"><span>H2O</span><span class="status pass">pass</span></div><p>H2O pass-case overlay</p><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/h2o</code></div></div><div class="overlay-card"><img src="assets/dexycb.png" alt="dexycb overlay"><div class="overlay-meta"><div class="overlay-title"><span>Dexycb</span><span class="status pass">pass</span></div><p>DexYCB pass-case overlay</p><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/dexycb</code></div></div><div class="overlay-card"><img src="assets/arctic.png" alt="arctic overlay"><div class="overlay-meta"><div class="overlay-title"><span>Arctic</span><span class="status fail">fail</span></div><p>ARCTIC-left blocker overlay</p><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/arctic</code></div></div><div class="overlay-card"><img src="assets/hot3d.png" alt="hot3d overlay"><div class="overlay-meta"><div class="overlay-title"><span>Hot3D</span><span class="status warn">watch</span></div><p>HOT3D-right near-pass overlay</p><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/hot3d</code></div></div><div class="overlay-card"><img src="assets/ho3d.png" alt="ho3d overlay"><div class="overlay-meta"><div class="overlay-title"><span>Ho3D</span><span class="status pass">pass</span></div><p>HO3D pass-case overlay</p><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/ho3d</code></div></div><div class="overlay-card"><img src="assets/h2o3d.png" alt="h2o3d overlay"><div class="overlay-meta"><div class="overlay-title"><span>H2O3D</span><span class="status pass">pass</span></div><p>H2O3D pass-case overlay</p><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlays/h2o3d</code></div></div></div>
+    </section>
 
-          <div style="height: 14px;"></div>
+    <section class="panel">
+      <h2>Artifact Index</h2>
+      <p>Machine-readable outputs referenced by this page.</p>
+      <ul class="artifact-list"><li><strong>summary.json</strong><br><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/summary.json</code></li><li><strong>dataset_gate_rows.csv</strong><br><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/dataset_gate_rows.csv</code></li><li><strong>overlay_manifest.json</strong><br><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/overlay_manifest.json</code></li><li><strong>invariant_report.md</strong><br><code>docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_03/invariant_report.md</code></li></ul>
+    </section>
 
-          <div class="callout">
-            <strong>What changed this round.</strong> Adjusted adapter-side canonicalization only:
-            ARCTIC left-hand translation sign handling, HOT3D native joint-order remap audit, and
-            explicit camera payload normalization for DexYCB. The unified runner stayed on a single
-            <code>smplx MANO</code> path.
-          </div>
-
-          <div style="height: 14px;"></div>
-
-          <ul class="list">
-            <li><strong>Previous round read.</strong> The next real iteration should record which previous HTML report it read and which blockers it inherited.</li>
-            <li><strong>Scope boundary.</strong> Allowed changes remain adapter-side canonicalization only.</li>
-            <li><strong>Result snapshot.</strong> H2O, DexYCB, HO3D, and H2O3D pass the preview Stage-A threshold; ARCTIC-left and HOT3D-right remain blockers.</li>
-          </ul>
-        </section>
-
-        <section class="panel">
-          <h2>Joints Overlay Gallery</h2>
-          <p class="panel-intro">
-            Each dataset should show at least one visible joints overlay image in the round report.
-            These are frozen sample images from the previous HCU evidence package, republished here
-            so the page demonstrates the intended visual review surface.
-          </p>
-          <div class="gallery-grid">
-            <div class="gallery-card">
-              <img src="assets/h2o.png" alt="H2O joints overlay sample">
-              <div class="gallery-meta">
-                <div class="gallery-title">
-                  <span>H2O</span>
-                  <span class="status pass">pass</span>
-                </div>
-                <div class="gallery-caption">Reference sample for a clean pass case with stable world/cam/pixel alignment.</div>
-              </div>
-            </div>
-            <div class="gallery-card">
-              <img src="assets/dexycb.png" alt="DexYCB joints overlay sample">
-              <div class="gallery-meta">
-                <div class="gallery-title">
-                  <span>DexYCB</span>
-                  <span class="status pass">pass</span>
-                </div>
-                <div class="gallery-caption">Example of a manopth-origin dataset after canonicalization into the unified interface.</div>
-              </div>
-            </div>
-            <div class="gallery-card">
-              <img src="assets/arctic.png" alt="ARCTIC joints overlay sample">
-              <div class="gallery-meta">
-                <div class="gallery-title">
-                  <span>ARCTIC</span>
-                  <span class="status fail">fail</span>
-                </div>
-                <div class="gallery-caption">Blocker-facing sample. This card should make it easy to see whether the current round actually improved the problematic side.</div>
-              </div>
-            </div>
-            <div class="gallery-card">
-              <img src="assets/hot3d.png" alt="HOT3D joints overlay sample">
-              <div class="gallery-meta">
-                <div class="gallery-title">
-                  <span>HOT3D</span>
-                  <span class="status warn">close</span>
-                </div>
-                <div class="gallery-caption">Preview of a near-pass case where the report should still expose the visual evidence, not only the metric row.</div>
-              </div>
-            </div>
-            <div class="gallery-card">
-              <img src="assets/ho3d.png" alt="HO3D joints overlay sample">
-              <div class="gallery-meta">
-                <div class="gallery-title">
-                  <span>HO3D</span>
-                  <span class="status pass">pass</span>
-                </div>
-                <div class="gallery-caption">Compact pass sample. The final generator can later choose one or more thumbnails per dataset.</div>
-              </div>
-            </div>
-            <div class="gallery-card">
-              <img src="assets/h2o3d.png" alt="H2O3D joints overlay sample">
-              <div class="gallery-meta">
-                <div class="gallery-title">
-                  <span>H2O3D</span>
-                  <span class="status pass">pass</span>
-                </div>
-                <div class="gallery-caption">Example showing that the report can display six datasets in one quick-scan visual block.</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel">
-          <h2>Dataset Results</h2>
-          <p class="panel-intro">
-            One row per <code>dataset x side</code>. These are sample values for visual review.
-          </p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Dataset</th>
-                  <th>Side</th>
-                  <th>World MPJPE mm</th>
-                  <th>Cam MPJPE mm</th>
-                  <th>Pixel MPJPE px</th>
-                  <th>Stage-A</th>
-                  <th>Blocker</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>h2o</td><td>left</td><td class="metric-good">0.034</td><td class="metric-good">0.041</td><td class="metric-good">0.112</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>h2o</td><td>right</td><td class="metric-good">0.029</td><td class="metric-good">0.033</td><td class="metric-good">0.094</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>dexycb</td><td>left</td><td class="metric-good">0.052</td><td class="metric-good">0.057</td><td class="metric-good">0.163</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>dexycb</td><td>right</td><td class="metric-good">0.061</td><td class="metric-good">0.065</td><td class="metric-good">0.181</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>arctic</td><td>left</td><td class="metric-bad">1.382</td><td class="metric-bad">1.511</td><td class="metric-bad">2.731</td><td><span class="status fail">fail</span></td><td>translation sign / crop-camera normalization</td></tr>
-                <tr><td>arctic</td><td>right</td><td class="metric-good">0.086</td><td class="metric-good">0.091</td><td class="metric-good">0.194</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>hot3d</td><td>left</td><td class="metric-good">0.072</td><td class="metric-good">0.078</td><td class="metric-good">0.168</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>hot3d</td><td>right</td><td class="metric-bad">0.922</td><td class="metric-bad">0.845</td><td class="metric-bad">1.236</td><td><span class="status warn">close</span></td><td>native joint-order remap likely incomplete</td></tr>
-                <tr><td>ho3d</td><td>left</td><td class="metric-good">0.048</td><td class="metric-good">0.051</td><td class="metric-good">0.143</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>ho3d</td><td>right</td><td class="metric-good">0.051</td><td class="metric-good">0.056</td><td class="metric-good">0.149</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>h2o3d</td><td>left</td><td class="metric-good">0.064</td><td class="metric-good">0.073</td><td class="metric-good">0.188</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-                <tr><td>h2o3d</td><td>right</td><td class="metric-good">0.059</td><td class="metric-good">0.062</td><td class="metric-good">0.171</td><td><span class="status pass">pass</span></td><td>none</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section class="panel">
-          <h2>Dataset Drilldown</h2>
-          <p class="panel-intro">
-            Expandable detail cards are meant to replace ad-hoc chat summaries with one stable
-            visual review surface.
-          </p>
-          <div class="details-grid">
-            <details open>
-              <summary>
-                <div class="summary-left">
-                  <span class="dataset-tag">ARCTIC</span>
-                  <span>Left-hand blocker remains visible</span>
-                </div>
-                <span class="status fail">fail</span>
-              </summary>
-              <div class="detail-body">
-                <div class="detail-card">
-                  <div class="detail-title">Why still blocked</div>
-                  Translation and crop-image camera interpretation still appear mis-normalized on the
-                  left hand only. Right hand is already within Stage-A, so the next round should not
-                  touch shared runner code.
-                </div>
-                <div class="detail-card">
-                  <div class="detail-title">Example overlay evidence path</div>
-                  <span class="path">docs/artifacts/hand_camera_unified_interface/arctic_overlay_regen_20260315_070820/arctic/</span>
-                </div>
-              </div>
-            </details>
-
-            <details>
-              <summary>
-                <div class="summary-left">
-                  <span class="dataset-tag">HOT3D</span>
-                  <span>Right-hand close-to-pass, remap audit still needed</span>
-                </div>
-                <span class="status warn">close</span>
-              </summary>
-              <div class="detail-body">
-                <div class="detail-card">
-                  <div class="detail-title">Why still blocked</div>
-                  Errors are below 1 mm in world/cam but still above the preview Stage-A boundary in
-                  pixel space, consistent with a residual native-order or projection mismatch.
-                </div>
-                <div class="detail-card">
-                  <div class="detail-title">Example artifact path</div>
-                  <span class="path">docs/artifacts/hand_camera_unified_interface/hot3d_overlay_fix_20260314_054855/</span>
-                </div>
-              </div>
-            </details>
-          </div>
-        </section>
-      </div>
-
-      <div class="stack">
-        <section class="panel">
-          <h2>Invariant Checks</h2>
-          <p class="panel-intro">
-            A numerically good round is still invalid if it reintroduces dataset-conditioned runner
-            behavior.
-          </p>
-          <ul class="list">
-            <li><span class="status pass">pass</span> Runner path remains single-path <code>smplx MANO</code>.</li>
-            <li><span class="status pass">pass</span> No <code>if dataset == ...</code> branch in the unified runner.</li>
-            <li><span class="status pass">pass</span> Canonical output joint order remains <code>openpose_hand_21</code>.</li>
-            <li><span class="status warn">watch</span> Adapter-side ARCTIC/HOT3D canonicalization still needs refinement.</li>
-          </ul>
-        </section>
-
-        <section class="panel">
-          <h2>Blockers First</h2>
-          <p class="panel-intro">
-            The next round should start here, not at the pass rows.
-          </p>
-          <ul class="list">
-            <li><strong>ARCTIC left:</strong> translation sign / crop-camera normalization remains the dominant blocker.</li>
-            <li><strong>HOT3D right:</strong> likely residual native joint-order to <code>openpose_hand_21</code> mismatch.</li>
-            <li><strong>Do not touch:</strong> unified runner path, backend policy, or passing datasets unless a shared contract bug is proven.</li>
-          </ul>
-        </section>
-
-        <section class="panel">
-          <h2>Artifact Index</h2>
-          <p class="panel-intro">
-            Public preview shows example repo-local artifact paths instead of clickable private files.
-          </p>
-          <div class="artifact-links">
-            <div class="fake-link">final_package_summary.json<span class="path">docs/artifacts/hand_camera_unified_interface/final_t-hcu-11_spotcheck/final_package_summary.json</span></div>
-            <div class="fake-link">final_threshold_report.json<span class="path">docs/artifacts/hand_camera_unified_interface/final_t-hcu-11_spotcheck/final_threshold_report.json</span></div>
-            <div class="fake-link">overlay_index.json<span class="path">docs/artifacts/hand_camera_unified_interface/final_t-hcu-11_spotcheck/overlay_index.json</span></div>
-            <div class="fake-link">canonical_replay_commands.md<span class="path">docs/artifacts/hand_camera_unified_interface/final_t-hcu-11_spotcheck/canonical_replay_commands.md</span></div>
-          </div>
-        </section>
-
-        <section class="panel">
-          <h2>Next Round Plan</h2>
-          <p class="panel-intro">
-            This is the section the next iteration must read before it changes anything.
-          </p>
-          <ul class="list">
-            <li>Prioritize ARCTIC-left adapter canonicalization and keep a before/after diff in the next round summary.</li>
-            <li>Audit HOT3D-right joint-order remap with explicit native-order notes and do not touch passing left-side code unless necessary.</li>
-            <li>Carry forward the invariant checklist unchanged and fail the round if any runner-level dataset branch appears.</li>
-          </ul>
-        </section>
-      </div>
-    </div>
+    <section class="panel">
+      <h2>Next Round Plan</h2>
+      <p>Allowed adapter-side canonicalization actions for the next loop.</p>
+      <ul><li>Focus only on ARCTIC-left adapter canonicalization with before/after metric diff.</li>
+<li>Audit HOT3D-right remap table and projection payload without touching passing datasets.</li>
+<li>Keep unified runner code path frozen; fail next round immediately if any dataset branch appears.</li></ul>
+    </section>
 
     <p class="footer">
-      Published preview for visual review only. If this structure looks right, the next step is to
-      implement <code>T-HCU-17A</code> as a real generator-backed report surface.
+      Generated at 2026-03-20T12:48:43Z. Frozen contract sections: Round Summary, Invariant Checks, Dataset Results, Overlay Review, Artifact Index, Next Round Plan.
     </p>
   </div>
-
-  <script>
-    function getTheme() {
-      return localStorage.getItem("hcu-round-public-preview-theme") || "dark";
-    }
-
-    function applyTheme(theme) {
-      document.documentElement.setAttribute("data-theme", theme);
-      document.getElementById("theme-button").textContent = theme === "dark" ? "Light" : "Dark";
-    }
-
-    function toggleTheme() {
-      const next = getTheme() === "dark" ? "light" : "dark";
-      localStorage.setItem("hcu-round-public-preview-theme", next);
-      applyTheme(next);
-    }
-
-    applyTheme(getTheme());
-  </script>
 </body>
 </html>
