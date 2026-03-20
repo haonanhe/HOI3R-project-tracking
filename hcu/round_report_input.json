@@ -1,11 +1,11 @@
 {
   "schema_version": "hcu-round-report.v1",
   "round": {
-    "number": 2,
-    "id": "round_02",
-    "stage": "Stage-A",
-    "task_id": "T-HCU-19",
-    "generated_at_utc": "2026-03-20T14:50:23.565753+00:00",
+    "number": 3,
+    "id": "round_03",
+    "stage": "Stage-B/Final",
+    "task_id": "T-HCU-20",
+    "generated_at_utc": "2026-03-20T15:31:45.439418+00:00",
     "runner_backend": "smplx MANO (Dust3rManoRunner canonical path)",
     "joint_order": "openpose_hand_21"
   },
@@ -13,303 +13,306 @@
     "previous_round_report": "project_tracking/hcu/index.html",
     "previous_round_read": {
       "reader": "codex",
-      "read_at_utc": "2026-03-20T14:51:43.784550+00:00",
-      "notes": "Reviewed round_01 HTML/report input and Stage-A blocker report before applying adapter-only canonicalization updates for round_02."
+      "read_at_utc": "2026-03-20T15:31:45.439418+00:00",
+      "notes": "Reviewed round_02 HTML/report input before Stage-B/Final gate run. Attempted fresh analyze_original rerun; ARCTIC bridge collection stalled in current workspace, so Stage-B/Final checker confirmation used the latest complete canonical summary from round_02."
     }
   },
   "summary": {
     "what_changed": [
-      "Applied adapter-side canonicalization updates only (no unified runner branching changes).",
-      "Removed slow prefilter in adapter path selection and made sampling stop at valid-comparison quota.",
-      "Added HO3D/H2O3D fallback hand-mask handling when processed mano_mask is all-false but per-hand joint evidence exists.",
-      "Added positive-depth + finite-pixel canonicalization guards for H2O3D/HOT3D adapter projections to stabilize Stage-A metric counts.",
-      "Re-ran six-dataset canonical evaluation at round_01-equivalent sampling budget (max_samples=64, sample_stride=8)."
+      "Read previous round_02 HTML/input report before this round as required by the read gate.",
+      "Executed Stage-B and Final threshold checkers and emitted fresh round_03 gate artifacts.",
+      "Attempted a full six-dataset analyze_original rerun, but ARCTIC bridge collection stalled; used latest complete canonical summary (round_02) for deterministic checker confirmation in this round."
     ],
     "what_stayed_frozen": [
       "UnifiedManoRunner remained the single canonical smplx MANO path (no dataset-identity branch in runner).",
       "Canonical output joint order remained openpose_hand_21 for all dataset adapters.",
-      "Stage-A checker thresholds remained world/cam<=1.0mm and pixel<=2.0px with unchanged checker logic."
+      "Stage thresholds remained frozen (Stage-B: world/cam<=0.1mm, pixel<=0.2px; Final: world/cam/pixel<=1e-3)."
     ],
     "blockers": [
-      "None. Stage-A checker passed with blocker_count=0 across all dataset x side pairs."
+      "No Stage-B or Final metric blockers (both checkers passed with blocker_count=0).",
+      "Operational note: fresh analyze_original rerun is currently blocked by ARCTIC bridge collection stall in this workspace; investigate in follow-up if new canonicalization edits are required."
     ]
   },
   "invariant_checks": [
     {
       "name": "single runner path",
       "status": "pass",
-      "details": "Round_02 evaluation executed through the canonical dust3r/smplx unified runner path only."
+      "details": "Stage-B/Final gate evaluation remained anchored to the canonical dust3r/smplx unified runner path."
     },
     {
       "name": "no dataset branch in runner",
       "status": "pass",
-      "details": "No dataset-identity branch was introduced in UnifiedManoRunner during round_02."
+      "details": "No dataset-identity branch was introduced in UnifiedManoRunner in this round."
     },
     {
       "name": "joint-order invariant",
       "status": "pass",
-      "details": "All compared outputs were emitted and evaluated in openpose_hand_21 joint order."
+      "details": "All gate rows are evaluated in openpose_hand_21 joint order."
     }
   ],
   "dataset_results": [
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "arctic",
-      "side": "left",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "left",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "arctic",
-      "side": "right",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "right",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "dexycb",
-      "side": "left",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "left",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "dexycb",
-      "side": "right",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "right",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "h2o",
-      "side": "left",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "left",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "h2o",
-      "side": "right",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "right",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "h2o3d",
-      "side": "left",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "left",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "h2o3d",
-      "side": "right",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "right",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "ho3d",
-      "side": "left",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "left",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "ho3d",
-      "side": "right",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "right",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.0,
       "dataset": "hot3d",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
       "side": "left",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
-      "cam_mpjpe_mm": 0.0,
-      "pixel_mpjpe_px": 0.0,
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     },
     {
-      "dataset": "hot3d",
-      "side": "right",
-      "sample_count": 1344,
-      "world_mpjpe_mm": 0.0,
+      "blocker_reason": "",
       "cam_mpjpe_mm": 0.0,
+      "dataset": "hot3d",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json",
+      "final_pass": true,
       "pixel_mpjpe_px": 0.0,
+      "sample_count": 1344,
+      "side": "right",
       "stage_a_pass": true,
       "stage_b_pass": true,
-      "final_pass": true,
-      "blocker_reason": "",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "world_mpjpe_mm": 0.0
     }
   ],
   "overlay_review": [
     {
       "dataset": "h2o",
       "status": "pass",
-      "asset_path": "assets/round_02/h2o.png",
+      "asset_path": "assets/round_03/h2o.png",
       "caption": "h2o round_02 overlay sample (/mnt/hdd_volume/datasets/H2O/subject1/h1/0#cam4#000000)",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/h2o.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/h2o.png"
     },
     {
       "dataset": "dexycb",
       "status": "pass",
-      "asset_path": "assets/round_02/dexycb.png",
+      "asset_path": "assets/round_03/dexycb.png",
       "caption": "dexycb round_02 overlay sample (/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/labels_000024.npz)",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/dexycb.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/dexycb.png"
     },
     {
       "dataset": "arctic",
       "status": "pass",
-      "asset_path": "assets/round_02/arctic.png",
+      "asset_path": "assets/round_03/arctic.png",
       "caption": "arctic round_02 overlay sample (s01/box_grab_01/view06/frame000002)",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/arctic.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/arctic.png"
     },
     {
       "dataset": "hot3d",
       "status": "pass",
-      "asset_path": "assets/round_02/hot3d.png",
+      "asset_path": "assets/round_03/hot3d.png",
       "caption": "hot3d round_02 overlay sample (P0001_10a27bf7#ts57734008221729)",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/hot3d.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/hot3d.png"
     },
     {
       "dataset": "ho3d",
       "status": "pass",
-      "asset_path": "assets/round_02/ho3d.png",
+      "asset_path": "assets/round_03/ho3d.png",
       "caption": "ho3d round_02 overlay sample (ABF10/0000)",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/ho3d.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/ho3d.png"
     },
     {
       "dataset": "h2o3d",
       "status": "pass",
-      "asset_path": "assets/round_02/h2o3d.png",
+      "asset_path": "assets/round_03/h2o3d.png",
       "caption": "h2o3d round_02 overlay sample (MBC1/0000)",
-      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/h2o3d.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/h2o3d.png"
     }
   ],
   "artifact_index": [
     {
       "label": "canonical baseline summary (json)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.json"
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.json"
     },
     {
       "label": "canonical baseline summary (markdown)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_canonical/summary.md"
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_canonical/summary.md"
     },
     {
-      "label": "stage-a threshold report (json)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/stage_a_threshold_report.json"
+      "label": "stage-b threshold report (json)",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/stage_b_threshold_report.json"
+    },
+    {
+      "label": "final threshold report (json)",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/final_threshold_report.json"
     },
     {
       "label": "baseline report (markdown)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/baseline_report.md"
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/baseline_report.md"
     },
     {
       "label": "blocker report (markdown)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/blocker_report.md"
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/blocker_report.md"
     },
     {
       "label": "dataset gate rows (csv)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/dataset_gate_rows.csv"
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/dataset_gate_rows.csv"
     },
     {
       "label": "overlay manifest (json)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlay_manifest.json"
-    },
-    {
-      "label": "overlay image (arctic)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/arctic.png"
-    },
-    {
-      "label": "overlay image (dexycb)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/dexycb.png"
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlay_manifest.json"
     },
     {
       "label": "overlay image (h2o)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/h2o.png"
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/h2o.png"
     },
     {
-      "label": "overlay image (h2o3d)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/h2o3d.png"
+      "label": "overlay image (dexycb)",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/dexycb.png"
     },
     {
-      "label": "overlay image (ho3d)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/ho3d.png"
+      "label": "overlay image (arctic)",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/arctic.png"
     },
     {
       "label": "overlay image (hot3d)",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-19/round_02/overlays/hot3d.png"
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/hot3d.png"
+    },
+    {
+      "label": "overlay image (ho3d)",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/ho3d.png"
+    },
+    {
+      "label": "overlay image (h2o3d)",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-20/round_03/overlays/h2o3d.png"
     }
   ],
   "next_round_plan": [
-    "Promote board flow to T-HCU-20 Stage-B/Final loop now that Stage-A passes across all dataset x side pairs.",
-    "Before each next round, read the current round_02 HTML report and keep runner-side invariants frozen.",
-    "Preserve adapter-only canonicalization scope unless a Stage-B/Final blocker requires explicit escalation."
+    "Proceed to T-HCU-21 only if there is explicit evidence that smplx MANO is insufficient.",
+    "If additional canonicalization updates are required later, first resolve the ARCTIC bridge rerun stall and then rerun full six-dataset analyze_original before updating gate claims.",
+    "Keep runner invariants frozen (single-path smplx + openpose_hand_21) for all subsequent HCU3/HCU4 steps."
   ]
 }
