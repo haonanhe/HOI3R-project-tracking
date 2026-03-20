@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HCU Round Report Preview</title>
+  <style>
+    :root {
+      --font-ui: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+      --font-mono: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e1116;
+      --panel: #171d26;
+      --panel-2: #1d2430;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #edf2f7;
+      --muted: #9aa6b2;
+      --accent: #5fb3ff;
+      --warn: #f7b955;
+      --danger: #ff7b72;
+      --success: #4fd1a5;
+      --shadow: rgba(0, 0, 0, 0.22);
+      --table-stripe: rgba(255, 255, 255, 0.025);
+      --pill-bg: rgba(255, 255, 255, 0.08);
+      --hero: linear-gradient(135deg, rgba(95, 179, 255, 0.18), rgba(145, 227, 198, 0.1));
+    }
+
+    [data-theme="light"] {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --panel-2: #f8fafc;
+      --border: rgba(15, 23, 42, 0.08);
+      --text: #102033;
+      --muted: #607080;
+      --accent: #0f6cbd;
+      --warn: #b7791f;
+      --danger: #c53030;
+      --success: #2f855a;
+      --shadow: rgba(15, 23, 42, 0.08);
+      --table-stripe: rgba(15, 23, 42, 0.02);
+      --pill-bg: rgba(15, 23, 42, 0.05);
+      --hero: linear-gradient(135deg, rgba(15, 108, 189, 0.08), rgba(15, 157, 117, 0.06));
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+    }
+
+    body { min-height: 100vh; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.95em;
+      background: var(--pill-bg);
+      padding: 0.12rem 0.34rem;
+      border-radius: 6px;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .toolbar button {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 10px;
+      height: 36px;
+      min-width: 36px;
+      padding: 0 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 22px var(--shadow);
+    }
+
+    .toolbar button:hover {
+      color: var(--text);
+      border-color: rgba(95, 179, 255, 0.35);
+    }
+
+    .hero {
+      background: var(--hero);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 18px 40px var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      line-height: 1.6;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      gap: 10px;
+      min-width: 280px;
+    }
+
+    .meta-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    .meta-label {
+      font-size: 0.76rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .chip {
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 14px 28px var(--shadow);
+    }
+
+    .panel h2 {
+      margin: 0 0 6px;
+      font-size: 1.12rem;
+      letter-spacing: -0.02em;
+    }
+
+    .panel-intro {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.94rem;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .kpi {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .kpi-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-size: 1.38rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .callout {
+      border-left: 4px solid var(--warn);
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(247, 185, 85, 0.1);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 0.92rem;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      line-height: 1.55;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.77rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .status.pass {
+      color: var(--success);
+      background: rgba(79, 209, 165, 0.1);
+    }
+
+    .status.warn {
+      color: var(--warn);
+      background: rgba(247, 185, 85, 0.12);
+    }
+
+    .status.fail {
+      color: var(--danger);
+      background: rgba(255, 123, 114, 0.12);
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: var(--panel-2);
+      z-index: 1;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    tbody tr:nth-child(even) { background: var(--table-stripe); }
+    tbody tr:hover { background: rgba(95, 179, 255, 0.06); }
+
+    .metric-good { color: var(--success); font-weight: 700; }
+    .metric-bad { color: var(--danger); font-weight: 700; }
+
+    .details-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    details {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    details[open] {
+      border-color: rgba(95, 179, 255, 0.24);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 15px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 700;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .summary-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .dataset-tag {
+      padding: 5px 8px;
+      border-radius: 10px;
+      background: rgba(95, 179, 255, 0.12);
+      color: var(--accent);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .detail-body {
+      padding: 0 16px 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .detail-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: var(--panel);
+    }
+
+    .detail-title {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .overlay-links,
+    .artifact-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .fake-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 11px;
+      background: var(--panel-2);
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .path {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      word-break: break-all;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="toolbar">
+      <div class="toolbar-left">
+        Public preview for HCU round-report layout review. Example evidence paths are shown as text
+        because the underlying artifacts are not mirrored into this public site.
+      </div>
+      <button type="button" onclick="toggleTheme()" id="theme-button">Theme</button>
+    </div>
+
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">Preview Only · HCU Round Report Mock</div>
+          <h1>HCU Round Report</h1>
+          <p>
+            Review this page for layout, section order, blocker visibility, and whether it can act
+            as the mandatory document that the next HCU round must read before making any new
+            adapter-side canonicalization change.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-card">
+            <div class="meta-label">Round</div>
+            <div class="meta-value">Round 03</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">Current Stage</div>
+            <div class="meta-value">Stage-A</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">Runner</div>
+            <div class="meta-value">smplx MANO</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">Board Gate</div>
+            <div class="meta-value">2 / 12 blocked</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips">
+        <div class="chip">Joint Order: <code>openpose_hand_21</code></div>
+        <div class="chip">Invariant: no dataset-conditioned runner branch</div>
+        <div class="chip">Input Rule: next round must read this HTML first</div>
+        <div class="chip">Public preview only</div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <div class="stack">
+        <section class="panel">
+          <h2>Round Summary</h2>
+          <p class="panel-intro">
+            The top block should answer three questions fast: what changed, did the round preserve
+            invariants, and where should the next round focus.
+          </p>
+          <div class="kpi-grid">
+            <div class="kpi">
+              <div class="kpi-label">Datasets Fully Passing</div>
+              <div class="kpi-value">4 / 6</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Sides Passing Stage-A</div>
+              <div class="kpi-value">10 / 12</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Worst Remaining Blocker</div>
+              <div class="kpi-value">ARCTIC left</div>
+            </div>
+          </div>
+
+          <div style="height: 14px;"></div>
+
+          <div class="callout">
+            <strong>What changed this round.</strong> Adjusted adapter-side canonicalization only:
+            ARCTIC left-hand translation sign handling, HOT3D native joint-order remap audit, and
+            explicit camera payload normalization for DexYCB. The unified runner stayed on a single
+            <code>smplx MANO</code> path.
+          </div>
+
+          <div style="height: 14px;"></div>
+
+          <ul class="list">
+            <li><strong>Previous round read.</strong> The next real iteration should record which previous HTML report it read and which blockers it inherited.</li>
+            <li><strong>Scope boundary.</strong> Allowed changes remain adapter-side canonicalization only.</li>
+            <li><strong>Result snapshot.</strong> H2O, DexYCB, HO3D, and H2O3D pass the preview Stage-A threshold; ARCTIC-left and HOT3D-right remain blockers.</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2>Dataset Results</h2>
+          <p class="panel-intro">
+            One row per <code>dataset x side</code>. These are sample values for visual review.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Dataset</th>
+                  <th>Side</th>
+                  <th>World MPJPE mm</th>
+                  <th>Cam MPJPE mm</th>
+                  <th>Pixel MPJPE px</th>
+                  <th>Stage-A</th>
+                  <th>Blocker</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>h2o</td><td>left</td><td class="metric-good">0.034</td><td class="metric-good">0.041</td><td class="metric-good">0.112</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>h2o</td><td>right</td><td class="metric-good">0.029</td><td class="metric-good">0.033</td><td class="metric-good">0.094</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>dexycb</td><td>left</td><td class="metric-good">0.052</td><td class="metric-good">0.057</td><td class="metric-good">0.163</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>dexycb</td><td>right</td><td class="metric-good">0.061</td><td class="metric-good">0.065</td><td class="metric-good">0.181</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>arctic</td><td>left</td><td class="metric-bad">1.382</td><td class="metric-bad">1.511</td><td class="metric-bad">2.731</td><td><span class="status fail">fail</span></td><td>translation sign / crop-camera normalization</td></tr>
+                <tr><td>arctic</td><td>right</td><td class="metric-good">0.086</td><td class="metric-good">0.091</td><td class="metric-good">0.194</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>hot3d</td><td>left</td><td class="metric-good">0.072</td><td class="metric-good">0.078</td><td class="metric-good">0.168</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>hot3d</td><td>right</td><td class="metric-bad">0.922</td><td class="metric-bad">0.845</td><td class="metric-bad">1.236</td><td><span class="status warn">close</span></td><td>native joint-order remap likely incomplete</td></tr>
+                <tr><td>ho3d</td><td>left</td><td class="metric-good">0.048</td><td class="metric-good">0.051</td><td class="metric-good">0.143</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>ho3d</td><td>right</td><td class="metric-good">0.051</td><td class="metric-good">0.056</td><td class="metric-good">0.149</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>h2o3d</td><td>left</td><td class="metric-good">0.064</td><td class="metric-good">0.073</td><td class="metric-good">0.188</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+                <tr><td>h2o3d</td><td>right</td><td class="metric-good">0.059</td><td class="metric-good">0.062</td><td class="metric-good">0.171</td><td><span class="status pass">pass</span></td><td>none</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Dataset Drilldown</h2>
+          <p class="panel-intro">
+            Expandable detail cards are meant to replace ad-hoc chat summaries with one stable
+            visual review surface.
+          </p>
+          <div class="details-grid">
+            <details open>
+              <summary>
+                <div class="summary-left">
+                  <span class="dataset-tag">ARCTIC</span>
+                  <span>Left-hand blocker remains visible</span>
+                </div>
+                <span class="status fail">fail</span>
+              </summary>
+              <div class="detail-body">
+                <div class="detail-card">
+                  <div class="detail-title">Why still blocked</div>
+                  Translation and crop-image camera interpretation still appear mis-normalized on the
+                  left hand only. Right hand is already within Stage-A, so the next round should not
+                  touch shared runner code.
+                </div>
+                <div class="detail-card">
+                  <div class="detail-title">Example overlay evidence path</div>
+                  <span class="path">docs/artifacts/hand_camera_unified_interface/arctic_overlay_regen_20260315_070820/arctic/</span>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <div class="summary-left">
+                  <span class="dataset-tag">HOT3D</span>
+                  <span>Right-hand close-to-pass, remap audit still needed</span>
+                </div>
+                <span class="status warn">close</span>
+              </summary>
+              <div class="detail-body">
+                <div class="detail-card">
+                  <div class="detail-title">Why still blocked</div>
+                  Errors are below 1 mm in world/cam but still above the preview Stage-A boundary in
+                  pixel space, consistent with a residual native-order or projection mismatch.
+                </div>
+                <div class="detail-card">
+                  <div class="detail-title">Example artifact path</div>
+                  <span class="path">docs/artifacts/hand_camera_unified_interface/hot3d_overlay_fix_20260314_054855/</span>
+                </div>
+              </div>
+            </details>
+          </div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="panel">
+          <h2>Invariant Checks</h2>
+          <p class="panel-intro">
+            A numerically good round is still invalid if it reintroduces dataset-conditioned runner
+            behavior.
+          </p>
+          <ul class="list">
+            <li><span class="status pass">pass</span> Runner path remains single-path <code>smplx MANO</code>.</li>
+            <li><span class="status pass">pass</span> No <code>if dataset == ...</code> branch in the unified runner.</li>
+            <li><span class="status pass">pass</span> Canonical output joint order remains <code>openpose_hand_21</code>.</li>
+            <li><span class="status warn">watch</span> Adapter-side ARCTIC/HOT3D canonicalization still needs refinement.</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2>Blockers First</h2>
+          <p class="panel-intro">
+            The next round should start here, not at the pass rows.
+          </p>
+          <ul class="list">
+            <li><strong>ARCTIC left:</strong> translation sign / crop-camera normalization remains the dominant blocker.</li>
+            <li><strong>HOT3D right:</strong> likely residual native joint-order to <code>openpose_hand_21</code> mismatch.</li>
+            <li><strong>Do not touch:</strong> unified runner path, backend policy, or passing datasets unless a shared contract bug is proven.</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2>Artifact Index</h2>
+          <p class="panel-intro">
+            Public preview shows example repo-local artifact paths instead of clickable private files.
+          </p>
+          <div class="artifact-links">
+            <div class="fake-link">final_package_summary.json<span class="path">docs/artifacts/hand_camera_unified_interface/final_t-hcu-11_spotcheck/final_package_summary.json</span></div>
+            <div class="fake-link">final_threshold_report.json<span class="path">docs/artifacts/hand_camera_unified_interface/final_t-hcu-11_spotcheck/final_threshold_report.json</span></div>
+            <div class="fake-link">overlay_index.json<span class="path">docs/artifacts/hand_camera_unified_interface/final_t-hcu-11_spotcheck/overlay_index.json</span></div>
+            <div class="fake-link">canonical_replay_commands.md<span class="path">docs/artifacts/hand_camera_unified_interface/final_t-hcu-11_spotcheck/canonical_replay_commands.md</span></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Next Round Plan</h2>
+          <p class="panel-intro">
+            This is the section the next iteration must read before it changes anything.
+          </p>
+          <ul class="list">
+            <li>Prioritize ARCTIC-left adapter canonicalization and keep a before/after diff in the next round summary.</li>
+            <li>Audit HOT3D-right joint-order remap with explicit native-order notes and do not touch passing left-side code unless necessary.</li>
+            <li>Carry forward the invariant checklist unchanged and fail the round if any runner-level dataset branch appears.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <p class="footer">
+      Published preview for visual review only. If this structure looks right, the next step is to
+      implement <code>T-HCU-17A</code> as a real generator-backed report surface.
+    </p>
+  </div>
+
+  <script>
+    function getTheme() {
+      return localStorage.getItem("hcu-round-public-preview-theme") || "dark";
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      document.getElementById("theme-button").textContent = theme === "dark" ? "Light" : "Dark";
+    }
+
+    function toggleTheme() {
+      const next = getTheme() === "dark" ? "light" : "dark";
+      localStorage.setItem("hcu-round-public-preview-theme", next);
+      applyTheme(next);
+    }
+
+    applyTheme(getTheme());
+  </script>
+</body>
+</html>
