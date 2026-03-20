@@ -290,6 +290,10 @@
     {
       "label": "original reference skipped",
       "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/original_mano_reference_all_20260320_133026_skipped.json"
+    },
+    {
+      "label": "round_01 baseline report",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/baseline_report.md"
     }
   ],
   "next_round_plan": [

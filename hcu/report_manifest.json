@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-20T13:32:36Z",
+  "generated_at_utc": "2026-03-20T13:33:34Z",
   "must_read_previous_round": true,
   "outputs": {
     "html": "/data/haonan/HOI/HOI3R/project_tracking/hcu/index.html",
@@ -14,6 +14,7 @@
     "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/overlays/s01__box_grab_01__view06__frame000002.png",
     "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/baseline_canonical/summary.json",
     "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/baseline_canonical/summary.md",
+    "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/baseline_report.md",
     "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/blocker_report.md",
     "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/dataset_gate_rows.csv",
     "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/original_mano_reference_all_20260320_133026.json",
