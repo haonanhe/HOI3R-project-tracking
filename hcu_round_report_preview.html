@@ -311,6 +311,47 @@
       border-radius: 16px;
     }
 
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .gallery-card {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .gallery-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: #0b0e13;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-meta {
+      padding: 12px 14px 14px;
+    }
+
+    .gallery-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .gallery-caption {
+      color: var(--muted);
+      font-size: 0.87rem;
+      line-height: 1.5;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -448,6 +489,7 @@
     @media (max-width: 980px) {
       .layout { grid-template-columns: 1fr; }
       .kpi-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -539,6 +581,77 @@
             <li><strong>Scope boundary.</strong> Allowed changes remain adapter-side canonicalization only.</li>
             <li><strong>Result snapshot.</strong> H2O, DexYCB, HO3D, and H2O3D pass the preview Stage-A threshold; ARCTIC-left and HOT3D-right remain blockers.</li>
           </ul>
+        </section>
+
+        <section class="panel">
+          <h2>Joints Overlay Gallery</h2>
+          <p class="panel-intro">
+            Each dataset should show at least one visible joints overlay image in the round report.
+            These are frozen sample images from the previous HCU evidence package, republished here
+            so the page demonstrates the intended visual review surface.
+          </p>
+          <div class="gallery-grid">
+            <div class="gallery-card">
+              <img src="hcu_round_report_preview_assets/h2o.png" alt="H2O joints overlay sample">
+              <div class="gallery-meta">
+                <div class="gallery-title">
+                  <span>H2O</span>
+                  <span class="status pass">pass</span>
+                </div>
+                <div class="gallery-caption">Reference sample for a clean pass case with stable world/cam/pixel alignment.</div>
+              </div>
+            </div>
+            <div class="gallery-card">
+              <img src="hcu_round_report_preview_assets/dexycb.png" alt="DexYCB joints overlay sample">
+              <div class="gallery-meta">
+                <div class="gallery-title">
+                  <span>DexYCB</span>
+                  <span class="status pass">pass</span>
+                </div>
+                <div class="gallery-caption">Example of a manopth-origin dataset after canonicalization into the unified interface.</div>
+              </div>
+            </div>
+            <div class="gallery-card">
+              <img src="hcu_round_report_preview_assets/arctic.png" alt="ARCTIC joints overlay sample">
+              <div class="gallery-meta">
+                <div class="gallery-title">
+                  <span>ARCTIC</span>
+                  <span class="status fail">fail</span>
+                </div>
+                <div class="gallery-caption">Blocker-facing sample. This card should make it easy to see whether the current round actually improved the problematic side.</div>
+              </div>
+            </div>
+            <div class="gallery-card">
+              <img src="hcu_round_report_preview_assets/hot3d.png" alt="HOT3D joints overlay sample">
+              <div class="gallery-meta">
+                <div class="gallery-title">
+                  <span>HOT3D</span>
+                  <span class="status warn">close</span>
+                </div>
+                <div class="gallery-caption">Preview of a near-pass case where the report should still expose the visual evidence, not only the metric row.</div>
+              </div>
+            </div>
+            <div class="gallery-card">
+              <img src="hcu_round_report_preview_assets/ho3d.png" alt="HO3D joints overlay sample">
+              <div class="gallery-meta">
+                <div class="gallery-title">
+                  <span>HO3D</span>
+                  <span class="status pass">pass</span>
+                </div>
+                <div class="gallery-caption">Compact pass sample. The final generator can later choose one or more thumbnails per dataset.</div>
+              </div>
+            </div>
+            <div class="gallery-card">
+              <img src="hcu_round_report_preview_assets/h2o3d.png" alt="H2O3D joints overlay sample">
+              <div class="gallery-meta">
+                <div class="gallery-title">
+                  <span>H2O3D</span>
+                  <span class="status pass">pass</span>
+                </div>
+                <div class="gallery-caption">Example showing that the report can display six datasets in one quick-scan visual block.</div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section class="panel">
