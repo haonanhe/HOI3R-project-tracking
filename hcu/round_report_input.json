@@ -216,42 +216,42 @@
       "status": "fail",
       "asset_path": "assets/round_01/h2o.png",
       "caption": "h2o baseline overlay sample (/mnt/hdd_volume/datasets/H2O/subject1/h1/0#cam4#000000)",
-      "evidence_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/overlays/__mnt__hdd_volume__datasets__H2O__subject1__h1__0__cam4__000000.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/h2o.png"
     },
     {
       "dataset": "dexycb",
       "status": "fail",
       "asset_path": "assets/round_01/dexycb.png",
       "caption": "dexycb baseline overlay sample (/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/labels_000024.npz)",
-      "evidence_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/overlays/__mnt__hdd_volume__datasets__dexycb__20200709-subject-01__20200709_141754__836212060125__labels_000024.npz.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/dexycb.png"
     },
     {
       "dataset": "arctic",
       "status": "fail",
       "asset_path": "assets/round_01/arctic.png",
       "caption": "arctic baseline overlay sample (s01/box_grab_01/view06/frame000002)",
-      "evidence_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/overlays/s01__box_grab_01__view06__frame000002.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/arctic.png"
     },
     {
       "dataset": "hot3d",
       "status": "fail",
       "asset_path": "assets/round_01/hot3d.png",
       "caption": "hot3d baseline overlay sample (P0001_10a27bf7#ts57734008221729)",
-      "evidence_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/overlays/P0001_10a27bf7__ts57734008221729.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/hot3d.png"
     },
     {
       "dataset": "ho3d",
       "status": "fail",
       "asset_path": "assets/round_01/ho3d.png",
       "caption": "ho3d baseline overlay sample (ABF10/0000)",
-      "evidence_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/overlays/ABF10__0000.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/ho3d.png"
     },
     {
       "dataset": "h2o3d",
       "status": "fail",
       "asset_path": "assets/round_01/h2o3d.png",
       "caption": "h2o3d baseline overlay sample (MBC1/0000)",
-      "evidence_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/overlays/MBC1__0000.png"
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/h2o3d.png"
     }
   ],
   "artifact_index": [
@@ -280,20 +280,32 @@
       "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlay_manifest.json"
     },
     {
-      "label": "original reference summary",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/original_mano_reference_all_20260320_133026.json"
-    },
-    {
-      "label": "original reference per-sequence",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/original_mano_reference_all_20260320_133026_per_sequence.json"
-    },
-    {
-      "label": "original reference skipped",
-      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/original_reference/original_mano_reference_all_20260320_133026_skipped.json"
-    },
-    {
       "label": "round_01 baseline report",
       "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/baseline_report.md"
+    },
+    {
+      "label": "overlay sample h2o",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/h2o.png"
+    },
+    {
+      "label": "overlay sample dexycb",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/dexycb.png"
+    },
+    {
+      "label": "overlay sample arctic",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/arctic.png"
+    },
+    {
+      "label": "overlay sample hot3d",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/hot3d.png"
+    },
+    {
+      "label": "overlay sample ho3d",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/ho3d.png"
+    },
+    {
+      "label": "overlay sample h2o3d",
+      "path": "docs/artifacts/hand_camera_unified_interface/t-hcu-18/round_01/overlays/h2o3d.png"
     }
   ],
   "next_round_plan": [
