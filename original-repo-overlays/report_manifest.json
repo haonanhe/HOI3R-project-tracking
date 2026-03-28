@@ -1,0 +1,235 @@
+{
+  "schema_version": "original-repo-overlay-gallery-site.v1",
+  "generated_at_utc": "2026-03-28T16:51:48.145878Z",
+  "source_artifact_dir": "docs/artifacts/original_repo_overlay_gallery_20260328",
+  "outputs": {
+    "html": "project_tracking/original-repo-overlays/index.html",
+    "report_manifest": "project_tracking/original-repo-overlays/report_manifest.json",
+    "images_dir": "project_tracking/original-repo-overlays/images"
+  },
+  "summary": {
+    "dataset_count": 3,
+    "row_count": 27
+  },
+  "datasets": [
+    {
+      "dataset": "h2o",
+      "source_repo": "/data/haonan/HOI/h2oplayer",
+      "env_name": "current-shell",
+      "source_command": "python docs/artifacts/original_repo_overlay_gallery_20260328/run_h2o_export.py",
+      "notes": "Official h2oplayer export path saves only cam4. This artifact reuses original repo loading/render logic via h2oplayer.load_rgbs(...) to export all five cameras across multiple frames.",
+      "rows": [
+        {
+          "sample_id": "subject1/h1/0#cam0#000010",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam0",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam0_000010.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam0#000020",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam0",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam0_000020.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam1#000010",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam1",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam1_000010.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam1#000020",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam1",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam1_000020.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam2#000010",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam2",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam2_000010.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam2#000020",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam2",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam2_000020.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam3#000010",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam3",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam3_000010.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam3#000020",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam3",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam3_000020.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam4#000010",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam4",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam4_000010.png"
+        },
+        {
+          "sample_id": "subject1/h1/0#cam4#000020",
+          "sequence_id": "subject1/h1/0",
+          "view_label": "cam4",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject1_h1_0/cam4_000020.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam0#000010",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam0",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam0_000010.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam0#000020",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam0",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam0_000020.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam1#000010",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam1",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam1_000010.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam1#000020",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam1",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam1_000020.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam2#000010",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam2",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam2_000010.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam2#000020",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam2",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam2_000020.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam3#000010",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam3",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam3_000010.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam3#000020",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam3",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam3_000020.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam4#000010",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam4",
+          "frame_label": "000010",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam4_000010.png"
+        },
+        {
+          "sample_id": "subject2/o1/0#cam4#000020",
+          "sequence_id": "subject2/o1/0",
+          "view_label": "cam4",
+          "frame_label": "000020",
+          "image_rel_path": "images/h2o/subject2_o1_0/cam4_000020.png"
+        }
+      ]
+    },
+    {
+      "dataset": "hot3d",
+      "source_repo": "/home/haonan/data/HOI/HOI3R/third_party/Hand3R/third_party/hot3d",
+      "env_name": "hot3d",
+      "source_command": "conda run -n hot3d python3 /home/haonan/data/HOI/HOI3R/third_party/Hand3R/third_party/hot3d/demo_project_meshes.py --dataset_root /mnt/hdd_volume/datasets/HOT3D --sequence <SEQ> --stream_id 214-1 --output_dir <OUT> --seed 0",
+      "notes": "Upstream PNG export was reliable only for RGB stream 214-1 on this machine; other tested streams such as 1201-1 failed with image-shape mismatches.",
+      "rows": [
+        {
+          "sample_id": "P0001_10a27bf7#214-1#auto",
+          "sequence_id": "P0001_10a27bf7",
+          "view_label": "214-1",
+          "frame_label": "auto",
+          "image_rel_path": "images/hot3d/P0001_10a27bf7/demo_overlay_P0001_10a27bf7_214-1.png",
+          "notes": "Official upstream exporter-selected frame for stream 214-1."
+        },
+        {
+          "sample_id": "P0001_23fa0ee8#214-1#auto",
+          "sequence_id": "P0001_23fa0ee8",
+          "view_label": "214-1",
+          "frame_label": "auto",
+          "image_rel_path": "images/hot3d/P0001_23fa0ee8/demo_overlay_P0001_23fa0ee8_214-1.png",
+          "notes": "Official upstream exporter-selected frame for stream 214-1."
+        },
+        {
+          "sample_id": "P0003_c701bd11#214-1#auto",
+          "sequence_id": "P0003_c701bd11",
+          "view_label": "214-1",
+          "frame_label": "auto",
+          "image_rel_path": "images/hot3d/P0003_c701bd11/demo_overlay_P0003_c701bd11_214-1.png",
+          "notes": "Official upstream exporter-selected frame for stream 214-1."
+        }
+      ]
+    },
+    {
+      "dataset": "arctic",
+      "source_repo": "/home/haonan/data/HOI/HOI3R/third_party/Hand3R/third_party/arctic",
+      "env_name": "current-shell",
+      "source_command": "python docs/artifacts/original_repo_overlay_gallery_20260328/run_arctic_export.py",
+      "notes": "Official upstream visualizer path (process_seqs.py + visualizer.py --headless) was blocked locally by missing SMPLX_NEUTRAL.npz. These overlays use upstream processed outputs plus src.datasets.dataset_utils.transform_2d_for_speedup(...) on cropped images.",
+      "rows": [
+        {
+          "sample_id": "s01/box_grab_01#view01#00001",
+          "sequence_id": "s01/box_grab_01",
+          "view_label": "view01",
+          "frame_label": "00001",
+          "image_rel_path": "images/arctic/s01_box_grab_01/view01_00001.png"
+        },
+        {
+          "sample_id": "s01/box_grab_01#view02#00001",
+          "sequence_id": "s01/box_grab_01",
+          "view_label": "view02",
+          "frame_label": "00001",
+          "image_rel_path": "images/arctic/s01_box_grab_01/view02_00001.png"
+        },
+        {
+          "sample_id": "s01/capsulemachine_use_01#view01#00031",
+          "sequence_id": "s01/capsulemachine_use_01",
+          "view_label": "view01",
+          "frame_label": "00031",
+          "image_rel_path": "images/arctic/s01_capsulemachine_use_01/view01_00031.png"
+        },
+        {
+          "sample_id": "s01/capsulemachine_use_01#view02#00001",
+          "sequence_id": "s01/capsulemachine_use_01",
+          "view_label": "view02",
+          "frame_label": "00001",
+          "image_rel_path": "images/arctic/s01_capsulemachine_use_01/view02_00001.png"
+        }
+      ]
+    }
+  ]
+}

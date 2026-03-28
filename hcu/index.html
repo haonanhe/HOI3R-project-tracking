@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HCU Round Report</title>
+  <style>
+    :root {
+      --font-ui: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+      --font-mono: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+      --bg: #0e1116;
+      --panel: #171d26;
+      --panel-2: #1d2430;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #edf2f7;
+      --muted: #9aa6b2;
+      --accent: #5fb3ff;
+      --warn: #f7b955;
+      --danger: #ff7b72;
+      --success: #4fd1a5;
+      --shadow: rgba(0, 0, 0, 0.24);
+      --table-stripe: rgba(255, 255, 255, 0.02);
+      --hero: linear-gradient(135deg, rgba(95, 179, 255, 0.18), rgba(145, 227, 198, 0.1));
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+    }
+    code {
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 0.1rem 0.33rem;
+    }
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 20px 56px;
+    }
+    .hero {
+      background: var(--hero);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 18px 40px var(--shadow);
+    }
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 4vw, 2.9rem);
+      letter-spacing: -0.04em;
+    }
+    .hero p {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.55;
+    }
+    .hero-meta {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .meta-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+      padding: 11px 12px;
+    }
+    .meta-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .meta-value {
+      font-size: 1.03rem;
+      font-weight: 700;
+    }
+    .chips {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 11px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .panel {
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: 0 14px 28px var(--shadow);
+      padding: 18px;
+    }
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.52;
+      font-size: 0.92rem;
+    }
+    .kpis {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .kpi {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      padding: 12px;
+    }
+    .kpi-label {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-bottom: 4px;
+    }
+    .kpi-value {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .callout {
+      margin-top: 14px;
+      border-left: 4px solid var(--warn);
+      border-radius: 10px;
+      background: rgba(247, 185, 85, 0.11);
+      padding: 11px 13px;
+      line-height: 1.52;
+      font-size: 0.9rem;
+    }
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      line-height: 1.55;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 4px 9px;
+    }
+    .status.pass { color: var(--success); background: rgba(79, 209, 165, 0.1); }
+    .status.warn { color: var(--warn); background: rgba(247, 185, 85, 0.12); }
+    .status.fail { color: var(--danger); background: rgba(255, 123, 114, 0.12); }
+    .table-wrap {
+      margin-top: 10px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      vertical-align: top;
+    }
+    thead th {
+      background: var(--panel-2);
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    tbody tr:nth-child(even) { background: var(--table-stripe); }
+    .metric-good { color: var(--success); font-weight: 700; }
+    .metric-bad { color: var(--danger); font-weight: 700; }
+    .overlay-grid {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 11px;
+    }
+    .overlay-card {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      overflow: hidden;
+      background: var(--panel-2);
+    }
+    .overlay-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #0b0e13;
+    }
+    .overlay-meta {
+      padding: 10px 11px;
+    }
+    .overlay-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .overlay-meta p {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+    .artifact-list li {
+      margin-bottom: 10px;
+    }
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+    @media (max-width: 940px) {
+      .hero-meta { grid-template-columns: repeat(2, minmax(130px, 1fr)); }
+      .kpis { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>HCU Round Report</h1>
+      <p>Generated from machine-readable artifacts. This page is the required handoff surface for the next HCU canonicalization round.</p>
+      <div class="hero-meta">
+        <div class="meta-card"><div class="meta-label">Round</div><div class="meta-value">round_25</div></div>
+        <div class="meta-card"><div class="meta-label">Stage</div><div class="meta-value">Final Acceptance (round_25 closure-valid via T-HCU-37)</div></div>
+        <div class="meta-card"><div class="meta-label">Runner</div><div class="meta-value">smplx MANO (ManoLayerUnifiedRunner)</div></div>
+        <div class="meta-card"><div class="meta-label">Gate</div><div class="meta-value">12 / 12 sides pass Stage-A</div></div>
+      </div>
+      <div class="chips"><div class="chip">Joint Order: <code>openpose_hand_21</code></div><div class="chip">Invariant: no dataset-conditioned runner branch</div><div class="chip">Input Rule: must read previous round before canonicalization changes</div><div class="chip">Source: <code>project_tracking/hcu/round_report_input.json</code></div></div>
+    </section>
+
+    <section class="panel">
+      <h2>Round Summary</h2>
+      <p>Fast context for what changed, what stayed frozen, and where blockers remain.</p>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-label">Datasets Fully Passing</div><div class="kpi-value">6 / 6</div></div>
+        <div class="kpi"><div class="kpi-label">Sides Passing Stage-A</div><div class="kpi-value">12 / 12</div></div>
+        <div class="kpi"><div class="kpi-label">Worst Remaining Blocker</div><div class="kpi-value">none</div></div>
+      </div>
+      <div class="callout"><strong>Read gate.</strong> Next round must read previous round before canonicalization changes. Read receipt: codex @ 2026-03-27T20:27:41.522261Z. Source: <code>project_tracking/hcu/index.html</code>.</div>
+      <h3>What Changed</h3>
+      <ul><li>T-HCU-37 binds public HCU quant/geometry/final-acceptance reports to round_25 and removes historical invalidation guard.</li>
+<li>Final closure package is frozen from the same round_25 manifest-bound evidence chain used by the passing three-gate reports.</li></ul>
+      <h3>What Stayed Frozen</h3>
+      <ul><li>Single-path smplx MANO runner contract and openpose_hand_21 joint-order invariants remain unchanged.</li>
+<li>Closure authority still depends on one manifest-bound fresh round plus replay spot-check evidence.</li></ul>
+      <h3>Blockers First</h3>
+      <ul><li>none</li></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Quant Gate</h2>
+      <p>Numeric gate summary from the manifest-bound threshold report.</p>
+      <div class="callout"><strong>Status.</strong> <span class="status pass">pass</span> Stage: final.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Overlay Geometry Gate</h2>
+      <p>Geometry-only mask agreement is required in addition to numeric thresholds.</p>
+      <div class="callout"><strong>Status.</strong> <span class="status pass">pass</span> geometry_diff_nonzero_pixels=0.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Binding Gate</h2>
+      <p>The round is invalid if runner-level invariants drift, even if metrics improve.</p>
+      <div class="callout"><strong>Status.</strong> <span class="status pass">pass</span> quant report binding_pass=true.</div>
+      <ul><li><span class="status pass">pass</span> summary-overlay run_id binding. summary.run_id matches overlay_manifest.run_id and round_manifest.run_id</li><li><span class="status pass">pass</span> summary-overlay runner/config binding. summary runner/config identity matches overlay runner/config identity</li><li><span class="status pass">pass</span> fresh-round provenance. summary provenance marks this as a fresh round and round manifest source note is non-replay</li></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Final Acceptance</h2>
+      <p>Closure authority is granted only by the aggregated final acceptance report.</p>
+      <div class="callout"><strong>Status.</strong> <span class="status pass">pass</span> blockers=none.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Dataset Results</h2>
+      <p>One row per dataset x side with frozen gate fields.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Dataset</th>
+              <th>Side</th>
+              <th>Samples</th>
+              <th>World MPJPE mm</th>
+              <th>Cam MPJPE mm</th>
+              <th>Pixel MPJPE px</th>
+              <th>Stage-A</th>
+              <th>Blocker</th>
+              <th>Evidence</th>
+            </tr>
+          </thead>
+          <tbody><tr><td>arctic</td><td>left</td><td>84</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>arctic</td><td>right</td><td>21</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>dexycb</td><td>left</td><td>42</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>dexycb</td><td>right</td><td>0</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>absent_side_count_zero</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>h2o</td><td>left</td><td>105</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>h2o</td><td>right</td><td>105</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>h2o3d</td><td>left</td><td>105</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>h2o3d</td><td>right</td><td>105</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>ho3d</td><td>left</td><td>0</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>absent_side_count_zero</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>ho3d</td><td>right</td><td>105</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>hot3d</td><td>left</td><td>105</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr><tr><td>hot3d</td><td>right</td><td>105</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td class="metric-good">0.000</td><td><span class="status pass">pass</span></td><td>none</td><td><code>docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json</code></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Overlay Review</h2>
+      <p>Per-dataset visual checkpoints linked to round-local evidence.</p>
+      <div class="overlay-grid"><div class="overlay-card"><img src="assets/round_25/arctic.jpg" alt="arctic overlay"><div class="overlay-meta"><div class="overlay-title"><span>Arctic</span><span class="status pass">pass</span></div><p>arctic: manifest-bound overlay geometry diff=0</p><p>geometry_diff_nonzero_pixels=0</p><ul class="artifact-list"><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/arctic/original_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/arctic/hcu_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/arctic/original_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/arctic/hcu_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/arctic/geometry_diff.png</code></li></ul><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/images/arctic/s01/box_grab_01/view06/00_000000.jpg</code></div></div><div class="overlay-card"><img src="assets/round_25/dexycb.jpg" alt="dexycb overlay"><div class="overlay-meta"><div class="overlay-title"><span>Dexycb</span><span class="status pass">pass</span></div><p>dexycb: manifest-bound overlay geometry diff=0</p><p>geometry_diff_nonzero_pixels=0</p><ul class="artifact-list"><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/dexycb/original_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/dexycb/hcu_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/dexycb/original_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/dexycb/hcu_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/dexycb/geometry_diff.png</code></li></ul><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/images/dexycb/20200709-subject-01/20200709_141754/836212060125/00_000009.jpg</code></div></div><div class="overlay-card"><img src="assets/round_25/h2o.jpg" alt="h2o overlay"><div class="overlay-meta"><div class="overlay-title"><span>H2O</span><span class="status pass">pass</span></div><p>h2o: manifest-bound overlay geometry diff=0</p><p>geometry_diff_nonzero_pixels=0</p><ul class="artifact-list"><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o/original_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o/hcu_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o/original_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o/hcu_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o/geometry_diff.png</code></li></ul><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/images/h2o/subject1/h1/0/00_000000.jpg</code></div></div><div class="overlay-card"><img src="assets/round_25/h2o3d.jpg" alt="h2o3d overlay"><div class="overlay-meta"><div class="overlay-title"><span>H2O3D</span><span class="status pass">pass</span></div><p>h2o3d: manifest-bound overlay geometry diff=0</p><p>geometry_diff_nonzero_pixels=0</p><ul class="artifact-list"><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o3d/original_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o3d/hcu_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o3d/original_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o3d/hcu_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/h2o3d/geometry_diff.png</code></li></ul><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/images/h2o3d/train/MBC1/00_0000.jpg</code></div></div><div class="overlay-card"><img src="assets/round_25/ho3d.jpg" alt="ho3d overlay"><div class="overlay-meta"><div class="overlay-title"><span>Ho3D</span><span class="status pass">pass</span></div><p>ho3d: manifest-bound overlay geometry diff=0</p><p>geometry_diff_nonzero_pixels=0</p><ul class="artifact-list"><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/ho3d/original_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/ho3d/hcu_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/ho3d/original_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/ho3d/hcu_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/ho3d/geometry_diff.png</code></li></ul><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/images/ho3d/train/ABF10/00_0000.jpg</code></div></div><div class="overlay-card"><img src="assets/round_25/hot3d.jpg" alt="hot3d overlay"><div class="overlay-meta"><div class="overlay-title"><span>Hot3D</span><span class="status pass">pass</span></div><p>hot3d: manifest-bound overlay geometry diff=0</p><p>geometry_diff_nonzero_pixels=0</p><ul class="artifact-list"><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/hot3d/original_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/hot3d/hcu_overlay.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/hot3d/original_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/hot3d/hcu_joints_mask.png</code></li><li><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/geometry_by_dataset/hot3d/geometry_diff.png</code></li></ul><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/compare_overlays_fresh/images/hot3d/P0001_10a27bf7/00_57734008221729.jpg</code></div></div></div>
+    </section>
+
+    <section class="panel">
+      <h2>Artifact Index</h2>
+      <p>Machine-readable outputs referenced by this page.</p>
+      <ul class="artifact-list"><li><strong>Round_25 quant report</strong><br><code>/data/haonan/HOI/HOI3R/project_tracking/hcu/gates/round_25/quant_report.json</code></li><li><strong>Round_25 geometry report</strong><br><code>/data/haonan/HOI/HOI3R/project_tracking/hcu/gates/round_25/overlay_geometry_report.json</code></li><li><strong>Round_25 final acceptance report</strong><br><code>/data/haonan/HOI/HOI3R/project_tracking/hcu/gates/round_25/final_acceptance_report.json</code></li><li><strong>Round_25 round manifest</strong><br><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/round_manifest.json</code></li><li><strong>Round_25 overlay manifest</strong><br><code>/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/overlay_manifest.json</code></li></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Next Round Plan</h2>
+      <p>Allowed adapter-side canonicalization actions for the next loop.</p>
+      <ul><li>HCU lane is closure-valid after T-HCU-37 freeze from round_25; keep package and public linkage pinned to this manifest-bound chain.</li>
+<li>If any replay command fails, rerun bash scripts/hcu_task_loop.sh --phase HCU3 --phase HCU4 --max-tasks 2 and keep lane reopened until final acceptance passes again.</li></ul>
+    </section>
+
+    <p class="footer">
+      Generated at 2026-03-27T20:44:23Z. Frozen contract sections: Round Summary, Quant Gate, Overlay Geometry Gate, Binding Gate, Final Acceptance, Dataset Results, Overlay Review, Artifact Index, Next Round Plan.
+    </p>
+  </div>
+</body>
+</html>

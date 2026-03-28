@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Original Repo Overlay Gallery</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #171a21;
+      --border: #2b313d;
+      --text: #eef2f7;
+      --muted: #a8b1c2;
+      --accent: #8ec5ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    .subtitle { color: var(--muted); margin-bottom: 24px; }
+    .dataset-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .dataset-contract {
+      color: var(--muted);
+      display: grid;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    code {
+      color: var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .sequence-block { margin-top: 20px; }
+    .rows-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .row-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #10131a;
+    }
+    .row-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #000;
+    }
+    .row-meta { padding: 12px; }
+    .row-title { font-weight: 700; margin-bottom: 6px; }
+    .row-subtitle, .row-notes { color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Original Repo Overlay Gallery</h1>
+    <div class="subtitle">Grouped upstream overlay exports from original dataset repositories.</div>
+    <section class='dataset-block'><h2>h2o</h2><div class='dataset-contract'><div><strong>Repo</strong>: /data/haonan/HOI/h2oplayer</div><div><strong>Env</strong>: current-shell</div><div><strong>Command</strong>: <code>python docs/artifacts/original_repo_overlay_gallery_20260328/run_h2o_export.py</code></div><div><strong>Notes</strong>: Official h2oplayer export path saves only cam4. This artifact reuses original repo loading/render logic via h2oplayer.load_rgbs(...) to export all five cameras across multiple frames.</div></div><section class='sequence-block'><h3>subject1/h1/0</h3><div class='rows-grid'><article class='row-card'><img src='images/h2o/subject1_h1_0/cam0_000010.png' alt='subject1/h1/0#cam0#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam0#000010</div><div class='row-subtitle'>view: cam0 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam0_000020.png' alt='subject1/h1/0#cam0#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam0#000020</div><div class='row-subtitle'>view: cam0 | frame: 000020</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam1_000010.png' alt='subject1/h1/0#cam1#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam1#000010</div><div class='row-subtitle'>view: cam1 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam1_000020.png' alt='subject1/h1/0#cam1#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam1#000020</div><div class='row-subtitle'>view: cam1 | frame: 000020</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam2_000010.png' alt='subject1/h1/0#cam2#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam2#000010</div><div class='row-subtitle'>view: cam2 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam2_000020.png' alt='subject1/h1/0#cam2#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam2#000020</div><div class='row-subtitle'>view: cam2 | frame: 000020</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam3_000010.png' alt='subject1/h1/0#cam3#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam3#000010</div><div class='row-subtitle'>view: cam3 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam3_000020.png' alt='subject1/h1/0#cam3#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam3#000020</div><div class='row-subtitle'>view: cam3 | frame: 000020</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam4_000010.png' alt='subject1/h1/0#cam4#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam4#000010</div><div class='row-subtitle'>view: cam4 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject1_h1_0/cam4_000020.png' alt='subject1/h1/0#cam4#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject1/h1/0#cam4#000020</div><div class='row-subtitle'>view: cam4 | frame: 000020</div></div></article></div></section><section class='sequence-block'><h3>subject2/o1/0</h3><div class='rows-grid'><article class='row-card'><img src='images/h2o/subject2_o1_0/cam0_000010.png' alt='subject2/o1/0#cam0#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam0#000010</div><div class='row-subtitle'>view: cam0 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam0_000020.png' alt='subject2/o1/0#cam0#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam0#000020</div><div class='row-subtitle'>view: cam0 | frame: 000020</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam1_000010.png' alt='subject2/o1/0#cam1#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam1#000010</div><div class='row-subtitle'>view: cam1 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam1_000020.png' alt='subject2/o1/0#cam1#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam1#000020</div><div class='row-subtitle'>view: cam1 | frame: 000020</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam2_000010.png' alt='subject2/o1/0#cam2#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam2#000010</div><div class='row-subtitle'>view: cam2 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam2_000020.png' alt='subject2/o1/0#cam2#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam2#000020</div><div class='row-subtitle'>view: cam2 | frame: 000020</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam3_000010.png' alt='subject2/o1/0#cam3#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam3#000010</div><div class='row-subtitle'>view: cam3 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam3_000020.png' alt='subject2/o1/0#cam3#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam3#000020</div><div class='row-subtitle'>view: cam3 | frame: 000020</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam4_000010.png' alt='subject2/o1/0#cam4#000010' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam4#000010</div><div class='row-subtitle'>view: cam4 | frame: 000010</div></div></article>
+<article class='row-card'><img src='images/h2o/subject2_o1_0/cam4_000020.png' alt='subject2/o1/0#cam4#000020' loading='lazy' /><div class='row-meta'><div class='row-title'>subject2/o1/0#cam4#000020</div><div class='row-subtitle'>view: cam4 | frame: 000020</div></div></article></div></section></section><section class='dataset-block'><h2>hot3d</h2><div class='dataset-contract'><div><strong>Repo</strong>: /home/haonan/data/HOI/HOI3R/third_party/Hand3R/third_party/hot3d</div><div><strong>Env</strong>: hot3d</div><div><strong>Command</strong>: <code>conda run -n hot3d python3 /home/haonan/data/HOI/HOI3R/third_party/Hand3R/third_party/hot3d/demo_project_meshes.py --dataset_root /mnt/hdd_volume/datasets/HOT3D --sequence &lt;SEQ&gt; --stream_id 214-1 --output_dir &lt;OUT&gt; --seed 0</code></div><div><strong>Notes</strong>: Upstream PNG export was reliable only for RGB stream 214-1 on this machine; other tested streams such as 1201-1 failed with image-shape mismatches.</div></div><section class='sequence-block'><h3>P0001_10a27bf7</h3><div class='rows-grid'><article class='row-card'><img src='images/hot3d/P0001_10a27bf7/demo_overlay_P0001_10a27bf7_214-1.png' alt='P0001_10a27bf7#214-1#auto' loading='lazy' /><div class='row-meta'><div class='row-title'>P0001_10a27bf7#214-1#auto</div><div class='row-subtitle'>view: 214-1 | frame: auto</div><div class='row-notes'>Official upstream exporter-selected frame for stream 214-1.</div></div></article></div></section><section class='sequence-block'><h3>P0001_23fa0ee8</h3><div class='rows-grid'><article class='row-card'><img src='images/hot3d/P0001_23fa0ee8/demo_overlay_P0001_23fa0ee8_214-1.png' alt='P0001_23fa0ee8#214-1#auto' loading='lazy' /><div class='row-meta'><div class='row-title'>P0001_23fa0ee8#214-1#auto</div><div class='row-subtitle'>view: 214-1 | frame: auto</div><div class='row-notes'>Official upstream exporter-selected frame for stream 214-1.</div></div></article></div></section><section class='sequence-block'><h3>P0003_c701bd11</h3><div class='rows-grid'><article class='row-card'><img src='images/hot3d/P0003_c701bd11/demo_overlay_P0003_c701bd11_214-1.png' alt='P0003_c701bd11#214-1#auto' loading='lazy' /><div class='row-meta'><div class='row-title'>P0003_c701bd11#214-1#auto</div><div class='row-subtitle'>view: 214-1 | frame: auto</div><div class='row-notes'>Official upstream exporter-selected frame for stream 214-1.</div></div></article></div></section></section><section class='dataset-block'><h2>arctic</h2><div class='dataset-contract'><div><strong>Repo</strong>: /home/haonan/data/HOI/HOI3R/third_party/Hand3R/third_party/arctic</div><div><strong>Env</strong>: current-shell</div><div><strong>Command</strong>: <code>python docs/artifacts/original_repo_overlay_gallery_20260328/run_arctic_export.py</code></div><div><strong>Notes</strong>: Official upstream visualizer path (process_seqs.py + visualizer.py --headless) was blocked locally by missing SMPLX_NEUTRAL.npz. These overlays use upstream processed outputs plus src.datasets.dataset_utils.transform_2d_for_speedup(...) on cropped images.</div></div><section class='sequence-block'><h3>s01/box_grab_01</h3><div class='rows-grid'><article class='row-card'><img src='images/arctic/s01_box_grab_01/view01_00001.png' alt='s01/box_grab_01#view01#00001' loading='lazy' /><div class='row-meta'><div class='row-title'>s01/box_grab_01#view01#00001</div><div class='row-subtitle'>view: view01 | frame: 00001</div></div></article>
+<article class='row-card'><img src='images/arctic/s01_box_grab_01/view02_00001.png' alt='s01/box_grab_01#view02#00001' loading='lazy' /><div class='row-meta'><div class='row-title'>s01/box_grab_01#view02#00001</div><div class='row-subtitle'>view: view02 | frame: 00001</div></div></article></div></section><section class='sequence-block'><h3>s01/capsulemachine_use_01</h3><div class='rows-grid'><article class='row-card'><img src='images/arctic/s01_capsulemachine_use_01/view01_00031.png' alt='s01/capsulemachine_use_01#view01#00031' loading='lazy' /><div class='row-meta'><div class='row-title'>s01/capsulemachine_use_01#view01#00031</div><div class='row-subtitle'>view: view01 | frame: 00031</div></div></article>
+<article class='row-card'><img src='images/arctic/s01_capsulemachine_use_01/view02_00001.png' alt='s01/capsulemachine_use_01#view02#00001' loading='lazy' /><div class='row-meta'><div class='row-title'>s01/capsulemachine_use_01#view02#00001</div><div class='row-subtitle'>view: view02 | frame: 00001</div></div></article></div></section></section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,201 @@
+{
+  "binding_checks": [
+    {
+      "details": "summary.run_id matches overlay_manifest.run_id and round_manifest.run_id",
+      "name": "summary-overlay run_id binding",
+      "status": "pass"
+    },
+    {
+      "details": "summary runner/config identity matches overlay runner/config identity",
+      "name": "summary-overlay runner/config binding",
+      "status": "pass"
+    },
+    {
+      "details": "summary provenance marks this as a fresh round and round manifest source note is non-replay",
+      "name": "fresh-round provenance",
+      "status": "pass"
+    }
+  ],
+  "binding_pass": true,
+  "blocker_count": 0,
+  "blockers": [],
+  "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+  "generated_at_utc": "2026-03-27T19:54:23.343262+00:00",
+  "pass": true,
+  "rows": [
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 0.00010828045629923941,
+      "dataset": "arctic",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 2.955446442293968e-05,
+      "sample_count": 84,
+      "side": "left",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 8.49413836909835e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 9.41100356396332e-05,
+      "dataset": "arctic",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 2.0993857365933115e-05,
+      "sample_count": 21,
+      "side": "right",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 6.826986160983022e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 4.188489174339338e-05,
+      "dataset": "dexycb",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 3.996349516369048e-06,
+      "sample_count": 42,
+      "side": "left",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 4.621950886628058e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": null,
+      "dataset": "dexycb",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": null,
+      "sample_count": 0,
+      "side": "right",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": null
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 5.6399073513429834e-05,
+      "dataset": "h2o",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 2.6783070158368597e-05,
+      "sample_count": 105,
+      "side": "left",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 3.522640913399214e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 5.012299870508113e-05,
+      "dataset": "h2o",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 2.3356317459339542e-05,
+      "sample_count": 105,
+      "side": "right",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 3.0067664545727202e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 2.729798203030701e-05,
+      "dataset": "h2o3d",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 1.148042224702381e-05,
+      "sample_count": 105,
+      "side": "left",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 2.729798203030701e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 3.201020097419262e-05,
+      "dataset": "h2o3d",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 5.812872023809524e-07,
+      "sample_count": 105,
+      "side": "right",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 3.201020097419262e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": null,
+      "dataset": "ho3d",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": null,
+      "sample_count": 0,
+      "side": "left",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": null
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 2.2705574867489173e-05,
+      "dataset": "ho3d",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 5.351973335824109e-06,
+      "sample_count": 105,
+      "side": "right",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 2.2705574867489173e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 2.6846851064224862e-05,
+      "dataset": "hot3d",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 6.75936890599717e-05,
+      "sample_count": 105,
+      "side": "left",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 2.2349080747863764e-05
+    },
+    {
+      "blocker_reason": "",
+      "cam_mpjpe_mm": 1.5106102017896427e-05,
+      "dataset": "hot3d",
+      "evidence_path": "docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_25/baseline_canonical/summary.json",
+      "final_pass": true,
+      "pixel_mpjpe_px": 2.0345052083333332e-05,
+      "sample_count": 105,
+      "side": "right",
+      "stage_a_pass": true,
+      "stage_b_pass": true,
+      "world_mpjpe_mm": 1.1679071472566907e-05
+    }
+  ],
+  "stage": "final",
+  "thresholds": {
+    "final": {
+      "cam_mpjpe_mm": 0.001,
+      "pixel_mpjpe_px": 0.001,
+      "world_mpjpe_mm": 0.001
+    },
+    "stage-a": {
+      "cam_mpjpe_mm": 1.0,
+      "pixel_mpjpe_px": 2.0,
+      "world_mpjpe_mm": 1.0
+    },
+    "stage-b": {
+      "cam_mpjpe_mm": 0.1,
+      "pixel_mpjpe_px": 0.2,
+      "world_mpjpe_mm": 0.1
+    }
+  }
+}
