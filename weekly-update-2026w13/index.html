@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOI3R 两周进展汇报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1417;
+      --bg-2: #172025;
+      --panel: rgba(21, 28, 33, 0.88);
+      --panel-2: rgba(27, 37, 44, 0.94);
+      --line: rgba(255, 255, 255, 0.1);
+      --text: #f3efe2;
+      --muted: #b6b09d;
+      --sand: #e3c37a;
+      --orange: #e9793e;
+      --teal: #57c8b7;
+      --lime: #b3d67d;
+      --red: #ef8a69;
+      --shadow: rgba(0, 0, 0, 0.26);
+      --hero: radial-gradient(circle at 15% 20%, rgba(227, 195, 122, 0.22), transparent 30%), radial-gradient(circle at 85% 10%, rgba(87, 200, 183, 0.18), transparent 28%), linear-gradient(160deg, #12181c 0%, #0b1013 100%);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-snap-type: y proximity;
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+        var(--bg);
+      background-size: 28px 28px, 28px 28px, auto;
+      font-family: "Noto Sans SC", sans-serif;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .frame {
+      position: fixed;
+      inset: 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .rail {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .rail a {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.08);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .rail a:hover {
+      background: var(--sand);
+      transform: scale(1.16);
+    }
+    .deck {
+      position: relative;
+      z-index: 2;
+    }
+    .slide {
+      min-height: 100vh;
+      padding: 54px 72px 40px;
+      display: grid;
+      align-items: center;
+      scroll-snap-align: start;
+    }
+    .slide-inner {
+      width: min(1280px, 100%);
+      margin: 0 auto;
+    }
+    .eyebrow {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.86rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 14px;
+    }
+    h1, h2, h3 {
+      margin: 0;
+      font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+      letter-spacing: -0.04em;
+    }
+    h1 {
+      font-size: clamp(3rem, 6vw, 5.6rem);
+      line-height: 0.92;
+      max-width: 10ch;
+    }
+    h2 {
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      margin-bottom: 14px;
+    }
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 1.02rem;
+    }
+    .hero {
+      background: var(--hero);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px var(--shadow);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(350px, 0.8fr);
+      gap: 26px;
+      padding: 38px;
+    }
+    .hero-note {
+      max-width: 58ch;
+      margin-top: 18px;
+    }
+    .hero-note strong {
+      color: var(--text);
+    }
+    .hero-stats,
+    .card-grid,
+    .media-grid,
+    .plan-grid,
+    .stack-grid,
+    .pair-grid,
+    .metric-grid,
+    .summary-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .hero-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+    }
+    .stat,
+    .card,
+    .metric-card,
+    .plan-card,
+    .stack-card,
+    .timeline-card,
+    .media-card,
+    .compare-card,
+    .summary-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 30px var(--shadow);
+    }
+    .stat,
+    .metric-card,
+    .summary-card {
+      padding: 18px 18px 16px;
+    }
+    .stat .label,
+    .metric-card .label,
+    .summary-card .label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .stat .value,
+    .metric-card .value,
+    .summary-card .value {
+      font-size: 1.9rem;
+      line-height: 1;
+      font-weight: 700;
+      color: var(--text);
+      font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+    }
+    .stat small,
+    .metric-card small,
+    .summary-card small {
+      display: block;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+    .summary-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+    .section-top {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.8fr);
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .section-note {
+      padding: 22px;
+    }
+    .section-note strong {
+      color: var(--text);
+    }
+    .card-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .card,
+    .metric-card,
+    .plan-card,
+    .stack-card,
+    .timeline-card,
+    .media-card,
+    .compare-card {
+      padding: 20px;
+    }
+    .card h3,
+    .stack-card h3,
+    .plan-card h3,
+    .compare-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .tag.good { color: var(--lime); }
+    .tag.warn { color: var(--sand); }
+    .tag.bad { color: var(--red); }
+    .kpi-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .kpi-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .kpi-row strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .media-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+    .media-card {
+      padding: 0;
+      overflow: hidden;
+      background: var(--panel-2);
+    }
+    .media-card img,
+    .media-card video {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: #090d10;
+    }
+    .media-meta {
+      padding: 16px 16px 18px;
+    }
+    .media-meta h3 {
+      font-size: 1rem;
+      margin-bottom: 7px;
+      letter-spacing: -0.02em;
+    }
+    .media-meta p {
+      font-size: 0.9rem;
+    }
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .timeline-card {
+      padding: 16px;
+      min-height: 170px;
+    }
+    .timeline-card .date {
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--sand);
+      font-size: 0.88rem;
+      margin-bottom: 10px;
+    }
+    .timeline-card h3 {
+      font-size: 1.02rem;
+      margin-bottom: 8px;
+    }
+    .timeline-card p {
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+    .stack-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+    .stack-card {
+      min-height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stack-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent 70%);
+      pointer-events: none;
+    }
+    .stack-index {
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--sand);
+      font-size: 0.84rem;
+      margin-bottom: 18px;
+    }
+    .stack-card ul,
+    .plan-card ul,
+    .compare-card ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.94rem;
+    }
+    .stack-card li,
+    .plan-card li,
+    .compare-card li {
+      margin-bottom: 8px;
+    }
+    .arch-ribbon {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .ribbon {
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      text-align: center;
+    }
+    .pair-grid {
+      grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .metric-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .chart-card {
+      padding: 20px;
+    }
+    .chart-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+    .bar-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr) 70px;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+    .bar-label {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .track {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      position: relative;
+    }
+    .fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--orange), var(--sand), var(--teal));
+    }
+    .bar-value {
+      text-align: right;
+      color: var(--sand);
+      font-family: "IBM Plex Mono", monospace;
+    }
+    .compare-card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 14px;
+      object-fit: cover;
+      display: block;
+      margin-top: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #0a0d0f;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .mini {
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .mini .label {
+      font-size: 0.76rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 7px;
+    }
+    .mini .value {
+      font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+      font-size: 1.46rem;
+      color: var(--text);
+    }
+    .plan-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+    .plan-card {
+      min-height: 240px;
+    }
+    .footer-note {
+      margin-top: 22px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .section-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .section-links a {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      padding: 9px 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      font-size: 0.88rem;
+    }
+    .section-links a:hover {
+      color: var(--text);
+      border-color: rgba(227,195,122,0.4);
+    }
+    @media (max-width: 1100px) {
+      .slide {
+        padding: 64px 24px 28px;
+      }
+      .hero-grid,
+      .section-top,
+      .pair-grid {
+        grid-template-columns: 1fr;
+      }
+      .card-grid,
+      .media-grid,
+      .stack-grid,
+      .timeline,
+      .compare-grid,
+      .plan-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+      .metric-grid,
+      .hero-stats,
+      .metric-strip,
+      .arch-ribbon {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 700px) {
+      .rail,
+      .frame {
+        display: none;
+      }
+      .metric-grid,
+      .hero-stats,
+      .metric-strip,
+      .arch-ribbon {
+        grid-template-columns: 1fr;
+      }
+      .bar-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      .bar-value {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame"></div>
+  <nav class="rail" aria-label="slide navigation">
+    <a href="#hero" title="封面"></a>
+    <a href="#baseline" title="Baseline"></a>
+    <a href="#architecture" title="架构"></a>
+    <a href="#evolution" title="演化"></a>
+    <a href="#evidence" title="证据"></a>
+    <a href="#plan" title="规划"></a>
+  </nav>
+
+  <main class="deck">
+    <section class="slide" id="hero">
+      <div class="slide-inner hero">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">HOI3R / Group Meeting / 2026-03-31</div>
+            <h1>过去两周进展汇报</h1>
+            <p class="hero-note">
+              这两周的主线不是“把模型做重”，而是先把 <strong>baseline 证据面</strong>、
+              <strong>坐标/输入契约</strong>、以及 <strong>trellis-inspired token memory</strong> 的最小闭环稳定下来。
+            </p>
+            <div class="summary-grid">
+              <div class="summary-card">
+                <div class="label">Baseline Lane</div>
+                <div class="value">3 条公开面</div>
+                <small>FoundationPose DexYCB / HO3D，MagicHOI HO3D live 页面都已接入 `project_tracking`。</small>
+              </div>
+              <div class="summary-card">
+                <div class="label">Model Route</div>
+                <div class="value">S2-D 胜出</div>
+                <small>Stage-2 当前 winner 是 hand-ROI + confidence scene tokens。</small>
+              </div>
+              <div class="summary-card">
+                <div class="label">Interface Freeze</div>
+                <div class="value">6 / 6 过线</div>
+                <small>HCU `round_25` final acceptance pass，geometry diff nonzero pixels = 0。</small>
+              </div>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="label">FoundationPose DexYCB</div>
+              <div class="value">704 clips</div>
+              <small>translation 1.85 cm, ADD 3.33 cm, missing clips 0。</small>
+            </div>
+            <div class="stat">
+              <div class="label">FoundationPose HO3D</div>
+              <div class="value">17 sequences</div>
+              <small>OBJ rotation 23.70 deg, OBJ translation 5.38 cm, detection 1.0。</small>
+            </div>
+            <div class="stat">
+              <div class="label">MagicHOI HO3D</div>
+              <div class="value">1 / 5 done</div>
+              <small>3 running, 1 failed；public page 现在可以边跑边看图和视频。</small>
+            </div>
+            <div class="stat">
+              <div class="label">GP1 → GP2</div>
+              <div class="value">5.54 → 3.78</div>
+              <small>`eval/loss` 从 S1-A 到 S2-D 持续下降，用于路线筛选而非 claim-grade 结论。</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="baseline">
+      <div class="slide-inner">
+        <div class="section-top">
+          <div>
+            <div class="eyebrow">1 / Baseline Progress</div>
+            <h2>Baseline 结果面已经能公开展示</h2>
+            <p>重点不是只看最终数字，而是把 metrics table / image / video 全都做成可复用的 public surface，组会、周报、后续论文整理都能直接复用。</p>
+          </div>
+          <div class="card section-note">
+            <h3>结论</h3>
+            <p><strong>FoundationPose</strong> 作为 object-only 参考面已经稳定；<strong>MagicHOI HO3D</strong> 变成了 live site，可边跑边看中间结果，不再等离线汇总。</p>
+            <p>会前版本把代表性 metrics / image / video 直接内嵌到本页，避免公开站点再依赖大体积 baseline 子站点。</p>
+          </div>
+        </div>
+
+        <div class="card-grid">
+          <article class="card">
+            <div class="status-row">
+              <h3>FoundationPose / DexYCB</h3>
+              <span class="tag good">complete</span>
+            </div>
+            <p>完整 S0 test export 已落到静态页面，适合做 object pose 基线对照。</p>
+            <div class="kpi-list">
+              <div class="kpi-row"><span>Translation</span><strong>1.85 cm</strong></div>
+              <div class="kpi-row"><span>Rotation</span><strong>41.15 deg</strong></div>
+              <div class="kpi-row"><span>ADD</span><strong>3.33 cm</strong></div>
+              <div class="kpi-row"><span>Coverage</span><strong>704 / 704 clips</strong></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="status-row">
+              <h3>FoundationPose / HO3D</h3>
+              <span class="tag good">complete</span>
+            </div>
+            <p>HO3D sub_test object 指标已形成完整公开页，适合和后续 HOI 分支做对象侧 sanity check。</p>
+            <div class="kpi-list">
+              <div class="kpi-row"><span>OBJ rot err</span><strong>23.70 deg</strong></div>
+              <div class="kpi-row"><span>OBJ trans err</span><strong>5.38 cm</strong></div>
+              <div class="kpi-row"><span>ADD</span><strong>5.80 cm</strong></div>
+              <div class="kpi-row"><span>Detection</span><strong>1.00</strong></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="status-row">
+              <h3>MagicHOI / HO3D</h3>
+              <span class="tag warn">live</span>
+            </div>
+            <p>重点是把 long-running baseline 变成“边跑边能看”的网页面，而不是等一个最终 csv。</p>
+            <div class="kpi-list">
+              <div class="kpi-row"><span>Status</span><strong>1 done / 3 running / 1 fail</strong></div>
+              <div class="kpi-row"><span>MPJPE-PA</span><strong>42.70 mm</strong></div>
+              <div class="kpi-row"><span>OBJ rot err</span><strong>176.66 deg</strong></div>
+              <div class="kpi-row"><span>Detection</span><strong>0.1125</strong></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="media-grid">
+          <article class="media-card">
+            <img src="assets/foundationpose_dexycb_sample.png" alt="FoundationPose DexYCB example" />
+            <div class="media-meta">
+              <h3>DexYCB baseline sample</h3>
+              <p>静态 object pose 参考图，便于后续和 HOI object branch 做视觉对比。</p>
+            </div>
+          </article>
+          <article class="media-card">
+            <img src="assets/foundationpose_ho3d_sample.png" alt="FoundationPose HO3D example" />
+            <div class="media-meta">
+              <h3>HO3D baseline sample</h3>
+              <p>HO3D sub_test 公开页已包含 per-sequence 与 aggregate object 指标。</p>
+            </div>
+          </article>
+          <article class="media-card">
+            <video src="assets/magichoi_live_test_video.mp4" autoplay muted loop playsinline></video>
+            <div class="media-meta">
+              <h3>MagicHOI live media</h3>
+              <p>不等最终跑完，网页先展示 overview / val / test video，便于中途判断路线。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="architecture">
+      <div class="slide-inner">
+        <div class="section-top">
+          <div>
+            <div class="eyebrow">2 / Trellis-Inspired Route</div>
+            <h2>新主线：轻量 token memory，而不是直接做重头回归</h2>
+            <p>按现有设计文档，这条线的关键不是换 backbone，而是把 hand / scene / object 组织成显式 memory，再只做 residual 更新。</p>
+          </div>
+          <div class="card section-note">
+            <h3>一句话</h3>
+            <p><strong>Frozen STream3R</strong> 提供 camera/depth/world scaffold，<strong>HaMeR</strong> 提供 hand observation base，object 侧拆成 <strong>static shape prior + render-conditioned token</strong>，最后由 <strong>align_hand_net</strong> 做 residual-only refinement。</p>
+          </div>
+        </div>
+
+        <div class="stack-grid">
+          <article class="stack-card">
+            <div class="stack-index">01 / Base observation</div>
+            <h3>HaMeR hand base</h3>
+            <ul>
+              <li>先把 crop-camera 输出理顺到 full-image `C_t`。</li>
+              <li>世界坐标 lift 统一走 `T_{W←C_t}`。</li>
+              <li>第一阶段只验证“相机接口是否对齐”。</li>
+            </ul>
+          </article>
+          <article class="stack-card">
+            <div class="stack-index">02 / Scene memory</div>
+            <h3>STream3R scene tokens</h3>
+            <ul>
+              <li>主干不动，只读取 camera / depth / world scaffold。</li>
+              <li>先试 full-frame，再收缩到 hand ROI + confidence。</li>
+              <li>Stage-2 当前 winner 是 ROI + confidence 方案。</li>
+            </ul>
+          </article>
+          <article class="stack-card">
+            <div class="stack-index">03 / Object memory</div>
+            <h3>Static + Render 双路 token</h3>
+            <ul>
+              <li>借鉴 trellis / Hunyuan 的 object prior 思路。</li>
+              <li>`O_static` 负责 canonical shape prior。</li>
+              <li>`O_render_t` 负责 pose-conditioned visible geometry。</li>
+            </ul>
+          </article>
+          <article class="stack-card">
+            <div class="stack-index">04 / Residual update</div>
+            <h3>align_hand_net</h3>
+            <ul>
+              <li>只输出 `Δθ / Δβ / ΔT_{C_t←H}`。</li>
+              <li>不做 direct regression，避免覆盖基础分支。</li>
+              <li>后续再接 temporal / infiller，而不是现在就一起上。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="arch-ribbon">
+          <div class="ribbon">HaMeR token</div>
+          <div class="ribbon">scene tokens</div>
+          <div class="ribbon">object static + render tokens</div>
+          <div class="ribbon">residual-only hand update</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="evolution">
+      <div class="slide-inner">
+        <div class="section-top">
+          <div>
+            <div class="eyebrow">3 / Experiment Evolution</div>
+            <h2>实验演化：先理顺坐标，再筛 scene token</h2>
+            <p>现阶段的数字主要用来筛路线，不拿来做最终 claim。核心信息是：从 S1-A 到 S2-D，loss 下降连续；S2-D 在可用证据上是当前 winner。</p>
+          </div>
+          <div class="card section-note">
+            <h3>当前结论</h3>
+            <p><strong>S2-D</strong>（hand-ROI + confidence scene tokens）相对 full-frame scene token 更稳；但 visible/occluded/world 的 slice-grade 证据还不够，Stage-3 不能直接 claim-grade 往前跳。</p>
+          </div>
+        </div>
+
+        <div class="pair-grid">
+          <div class="card chart-card">
+            <h3>Stage 1 → Stage 2 loss 轨迹</h3>
+            <div class="bar-stack">
+              <div class="bar-row"><div class="bar-label">S1-A raw HaMeR</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="bar-value">5.54</div></div>
+              <div class="bar-row"><div class="bar-label">S1-B world lift</div><div class="track"><div class="fill" style="width:82.4%"></div></div><div class="bar-value">4.56</div></div>
+              <div class="bar-row"><div class="bar-label">S2-A dT_c</div><div class="track"><div class="fill" style="width:74.5%"></div></div><div class="bar-value">4.12</div></div>
+              <div class="bar-row"><div class="bar-label">S2-B dT_c+dtheta</div><div class="track"><div class="fill" style="width:70.6%"></div></div><div class="bar-value">3.91</div></div>
+              <div class="bar-row"><div class="bar-label">S2-C full-frame scene</div><div class="track"><div class="fill" style="width:69.9%"></div></div><div class="bar-value">3.87</div></div>
+              <div class="bar-row"><div class="bar-label">S2-D ROI+conf scene</div><div class="track"><div class="fill" style="width:68.2%"></div></div><div class="bar-value">3.78</div></div>
+            </div>
+            <div class="metric-strip">
+              <div class="mini">
+                <div class="label">GP2 Winner</div>
+                <div class="value">S2-D</div>
+              </div>
+              <div class="mini">
+                <div class="label">Frozen Split</div>
+                <div class="value">subject4/h1/0</div>
+              </div>
+              <div class="mini">
+                <div class="label">Readout</div>
+                <div class="value">route selection</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <div class="label">S2-A</div>
+              <div class="value">3.446</div>
+              <small>只修 `ΔT_c`，能降 loss，但 improvement 有限。</small>
+            </article>
+            <article class="metric-card">
+              <div class="label">S2-B</div>
+              <div class="value">3.013</div>
+              <small>加上 `Δθ` 后进一步下降，说明残差姿态修正是有效的。</small>
+            </article>
+            <article class="metric-card">
+              <div class="label">S2-C</div>
+              <div class="value">3.311</div>
+              <small>full-frame scene token 能帮，但噪声更大。</small>
+            </article>
+            <article class="metric-card">
+              <div class="label">S2-D</div>
+              <div class="value">2.883</div>
+              <small>ROI + confidence 更聚焦，当前是 Stage-2 frozen winner。</small>
+            </article>
+          </div>
+        </div>
+
+        <div class="compare-grid">
+          <article class="compare-card">
+            <h3>S1-B: 先解决坐标/相机接口</h3>
+            <p>关键任务是把 crop-camera 的手结果稳定 lift 到 full-image/world，而不是一开始就做复杂融合。</p>
+            <img src="assets/s1b_mano_overlay.png" alt="S1-B mano overlay" />
+          </article>
+          <article class="compare-card">
+            <h3>S2-D: ROI + confidence scene token</h3>
+            <p>scene 信息开始帮助 hand，但当前还是 route-selection 证据，不是 claim-grade 指标。</p>
+            <img src="assets/s2d_mano_overlay.png" alt="S2-D mano overlay" />
+          </article>
+          <article class="compare-card">
+            <h3>S2-D: hand-object render view</h3>
+            <p>为后续 Stage-3 object token / render token 路线准备视觉接口。</p>
+            <img src="assets/s2d_hand_obj_render.png" alt="S2-D hand object render" />
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="evidence">
+      <div class="slide-inner">
+        <div class="section-top">
+          <div>
+            <div class="eyebrow">4 / Interface Evidence</div>
+            <h2>为什么现在适合往 object / tri-modal 融合推进</h2>
+            <p>因为底层输入契约已经足够稳。近两周 HCU 这条线的价值，不是又多了一个网页，而是把“多数据集输入是否一致”这件事收成了可公开核验的证据。</p>
+          </div>
+          <div class="card section-note">
+            <h3>HCU 核心结果</h3>
+            <p><strong>round_25 final acceptance pass</strong>，6 个数据集的 published overlay derivation 全部通过，geometry diff nonzero pixels = <strong>0</strong>。</p>
+            <p>这里保留最关键的 original / unified / diff 三张图，保证这一页单独发布时也能独立讲清楚输入契约稳定性。</p>
+          </div>
+        </div>
+
+        <div class="metric-strip">
+          <div class="mini">
+            <div class="label">Datasets</div>
+            <div class="value">6 / 6 pass</div>
+          </div>
+          <div class="mini">
+            <div class="label">Geometry diff</div>
+            <div class="value">0 px</div>
+          </div>
+          <div class="mini">
+            <div class="label">Final acceptance</div>
+            <div class="value">pass</div>
+          </div>
+        </div>
+
+        <div class="media-grid">
+          <article class="media-card">
+            <img src="assets/hcu_original_overlay.png" alt="original overlay" />
+            <div class="media-meta">
+              <h3>Original reference</h3>
+              <p>冻结原始参考输出，作为后续统一 MANO 输入接口的对照面。</p>
+            </div>
+          </article>
+          <article class="media-card">
+            <img src="assets/hcu_unified_overlay.png" alt="hcu overlay" />
+            <div class="media-meta">
+              <h3>Unified interface output</h3>
+              <p>现在可以确信后续 object / tri-modal 实验不是卡在输入契约漂移。</p>
+            </div>
+          </article>
+          <article class="media-card">
+            <img src="assets/hcu_geometry_diff.png" alt="geometry diff" />
+            <div class="media-meta">
+              <h3>Geometry diff</h3>
+              <p>最终轮次 `geometry_diff_nonzero_pixels = 0`，是近两周最硬的一条工程证据。</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-card">
+            <div class="date">2026-03-18</div>
+            <h3>Public dashboard 起步</h3>
+            <p>`project_tracking` 首页、public mirror、baseline 页面的基本骨架全部搭起来。</p>
+          </article>
+          <article class="timeline-card">
+            <div class="date">2026-03-20</div>
+            <h3>HCU round report 上线</h3>
+            <p>开始把多数据集 canonical MANO 接口变成可公开核验的 round report。</p>
+          </article>
+          <article class="timeline-card">
+            <div class="date">2026-03-27</div>
+            <h3>HCU final acceptance pass</h3>
+            <p>`round_25` 成为 closure-valid 证据链，geometry / binding / quant 全部通过。</p>
+          </article>
+          <article class="timeline-card">
+            <div class="date">2026-03-29</div>
+            <h3>Original overlay quant compare</h3>
+            <p>补上原始仓库 overlay gallery 和量化 summary，方便解释接口一致性。</p>
+          </article>
+          <article class="timeline-card">
+            <div class="date">2026-03-30 → 03-31</div>
+            <h3>Baseline live publishing</h3>
+            <p>MagicHOI HO3D 进入 live site 阶段；今天这页汇报 deck 也接进了同一套发布面。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="plan">
+      <div class="slide-inner">
+        <div class="section-top">
+          <div>
+            <div class="eyebrow">5 / Next Two Weeks</div>
+            <h2>接下来不是再开新坑，而是把主线收窄</h2>
+            <p>当前最重要的是把 Stage-2 winner 往 object / tri-modal 延伸，并且补齐 slice-grade 指标，而不是同时开多个高风险分支。</p>
+          </div>
+          <div class="card section-note">
+            <h3>优先级</h3>
+            <p><strong>先 oracle object，再 predicted object；先 residual fusion，再 temporal。</strong> 周末继续跑 baseline / long jobs，工作日集中做高认知设计和实验判读。</p>
+          </div>
+        </div>
+
+        <div class="plan-grid">
+          <article class="plan-card">
+            <h3>Stage 3A</h3>
+            <p>先做 oracle object ceiling，验证 object 信息是否真的能帮 hand。</p>
+            <ul>
+              <li>跑 `static-only / render-only / static+render`。</li>
+              <li>聚焦 contact subset。</li>
+              <li>形成可视化和小表格。</li>
+            </ul>
+          </article>
+          <article class="plan-card">
+            <h3>Stage 3B</h3>
+            <p>再切到 predicted object pose，检查 oracle gain 能保留多少。</p>
+            <ul>
+              <li>上线 `object_render_encoder`。</li>
+              <li>比较 predicted vs oracle gap。</li>
+              <li>继续保留 render 视频证据。</li>
+            </ul>
+          </article>
+          <article class="plan-card">
+            <h3>Stage 4</h3>
+            <p>推进 tri-modal residual fusion，但 direct regression 只做负对照。</p>
+            <ul>
+              <li>memory/query contract 冻结。</li>
+              <li>对比 full fusion 与 partial models。</li>
+              <li>避免“模型变重但不清楚谁在起作用”。</li>
+            </ul>
+          </article>
+          <article class="plan-card">
+            <h3>Publication / Tables</h3>
+            <p>继续把 baseline 和实验页面化，减少每次周报的重复整理成本。</p>
+            <ul>
+              <li>补 slice-grade 指标。</li>
+              <li>把关键图表都沉淀到 `project_tracking`。</li>
+              <li>为论文图表提前做素材池。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="footer-note">
+          source highlights: `docs/GPTPRO_PLAN.md`, `docs/GP2_COMPARISON_NOTE.md`, `docs/superpowers/specs/2026-03-18-align-hand-net-single-frame-design-zh.md`, `project_tracking/baselines/*`, `project_tracking/hcu/*`
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
