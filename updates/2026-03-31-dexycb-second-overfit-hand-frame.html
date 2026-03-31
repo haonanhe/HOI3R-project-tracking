@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · DexYCB Second Overfit On Visible-Hand Frame</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08101c;
+      --card: rgba(14, 23, 39, 0.9);
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --good: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 22rem),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 18rem),
+        linear-gradient(180deg, #040816 0%, #08101c 100%);
+    }
+    .page { max-width: 1120px; margin: 0 auto; padding: 2.5rem 1.1rem 4rem; }
+    .back { color: var(--accent); text-decoration: none; font-size: 0.92rem; }
+    .hero, .section {
+      margin-top: 1rem;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      padding: 1.4rem;
+    }
+    h1 { margin: 0; font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1.08; letter-spacing: -0.04em; }
+    h2 { margin: 0 0 0.9rem; font-size: 1.05rem; }
+    p { margin: 0; color: var(--muted); line-height: 1.72; }
+    code { color: #bae6fd; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .status {
+      display: inline-flex;
+      margin: 1rem 0 0.9rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .metric {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.9rem 0.95rem;
+    }
+    .metric-label {
+      color: var(--muted);
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .metric-value {
+      margin-top: 0.35rem;
+      font-size: 1.08rem;
+      font-weight: 800;
+    }
+    .viz-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .viz-card {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .viz-card img { display: block; width: 100%; height: auto; background: #020617; }
+    .viz-copy { padding: 0.95rem 1rem 1rem; }
+    .viz-copy h3 { margin: 0 0 0.5rem; font-size: 0.96rem; }
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+    .note {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem;
+    }
+    .note strong { display: block; margin-bottom: 0.35rem; }
+    @media (max-width: 860px) {
+      .metrics, .viz-grid, .notes { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="../index.html">← Back to dashboard</a>
+    <section class="hero">
+      <h1>DexYCB Second Overfit On First Visible-Hand Frame</h1>
+      <div class="status">Completed node</div>
+      <p>
+        This rerun fixes the first-frame selection bug by skipping empty-hand placeholders and selecting
+        frame <code>000009</code> under sequence <code>20200709-subject-01/20200709_141754/836212060125</code>.
+        The overfit now runs on a frame where both GT hand and GT object project into the image, and the
+        review pack explicitly separates <code>GT</code>, <code>Pred</code>, and side-by-side comparison overlays.
+      </p>
+      <div class="metrics">
+        <div class="metric"><div class="metric-label">Frame</div><div class="metric-value">000009</div></div>
+        <div class="metric"><div class="metric-label">Train Loss</div><div class="metric-value">1.6624 → 0.6222</div></div>
+        <div class="metric"><div class="metric-label">Eval Hand L1</div><div class="metric-value">0.4453</div></div>
+        <div class="metric"><div class="metric-label">Eval Object L1</div><div class="metric-value">0.3209</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Overlay Review</h2>
+      <div class="viz-grid">
+        <article class="viz-card">
+          <img src="../assets/dexycb-overfit-round2/loss_curve.png" alt="Second overfit loss curve">
+          <div class="viz-copy">
+            <h3>Loss Curve</h3>
+            <p>The second real overfit still converges quickly, but now the signal comes from a frame with visible hand geometry rather than an empty-hand placeholder.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/dexycb-overfit-round2/overlay_gt.png" alt="GT overlay">
+          <div class="viz-copy">
+            <h3>GT Overlay</h3>
+            <p>Ground-truth hand and object points are both present in image space. This is the visual check that the selected frame is valid for HOI supervision.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/dexycb-overfit-round2/overlay_pred.png" alt="Pred overlay">
+          <div class="viz-copy">
+            <h3>Pred Overlay</h3>
+            <p>Hand and object predictions are rendered alone. The object is closer, while the hand prediction still lifts into the upper scene volume.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/dexycb-overfit-round2/overlay_compare.png" alt="GT versus Pred comparison overlay">
+          <div class="viz-copy">
+            <h3>GT vs Pred Compare</h3>
+            <p>Left panel is GT, right panel is Pred. This directly answers the review request to compare hand/object image overlays instead of only showing the prediction.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Checks Closed In This Node</h2>
+      <div class="notes">
+        <div class="note">
+          <strong>Visible-hand frame selection</strong>
+          <p>The frame resolver now prefers the first frame whose raw DexYCB label has non-empty hand pose and non-sentinel joint root, so sequence-level overfit no longer defaults to empty opening frames.</p>
+        </div>
+        <div class="note">
+          <strong>Shared decoder path</strong>
+          <p>Hand and object still share the same <code>TrellisSharedDecoder._decode()</code> path. The only branch-specific difference remains the final output head for vertex count.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

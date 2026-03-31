@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-03-31 \u00b7 Second DexYCB Overfit On Visible-Hand Frame",
+    "date": "2026-03-31",
+    "status": "done",
+    "summary": "The real one-sequence overfit now skips empty-hand opening frames and reruns on frame 000009, with separate GT overlay, prediction overlay, and side-by-side comparison images. Hand and object decoding remain on the same shared decoder path.",
+    "path": "updates/2026-03-31-dexycb-second-overfit-hand-frame.html"
+  },
+  {
     "title": "2026-03-31 \u00b7 DexYCB One-Sequence Overfit Visualization Pack",
     "date": "2026-03-31",
     "status": "done",
