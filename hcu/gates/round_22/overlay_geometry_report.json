@@ -1,0 +1,94 @@
+{
+  "schema_version": "hcu-overlay-geometry-report.v2",
+  "generated_at_utc": "2026-03-27T18:48:51.638189Z",
+  "run_id": "t-hcu-36-round_22-20260327T184307Z",
+  "pass": false,
+  "blockers": [
+    "arctic:geometry_diff_nonzero_pixels=447",
+    "dexycb:geometry_diff_nonzero_pixels=955",
+    "hot3d:geometry_diff_nonzero_pixels=2716"
+  ],
+  "blocker_count": 3,
+  "dataset_count": 6,
+  "geometry_diff_nonzero_pixels": 4118,
+  "rows": [
+    {
+      "generated_at_utc": "2026-03-27T18:48:51.408869Z",
+      "dataset": "arctic",
+      "sample_id": "s01/box_grab_01/view06/frame000000",
+      "run_id": "t-hcu-36-round_22-20260327T184307Z",
+      "pass": false,
+      "blockers": [
+        "geometry_diff_nonzero_pixels=447"
+      ],
+      "original_joints_mask_nonzero_pixels": 568,
+      "hcu_joints_mask_nonzero_pixels": 271,
+      "geometry_diff_nonzero_pixels": 447,
+      "published_overlay_derivation_ok": true
+    },
+    {
+      "generated_at_utc": "2026-03-27T18:48:51.430087Z",
+      "dataset": "dexycb",
+      "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_141754/839512060362/labels_000014.npz",
+      "run_id": "t-hcu-36-round_22-20260327T184307Z",
+      "pass": false,
+      "blockers": [
+        "geometry_diff_nonzero_pixels=955"
+      ],
+      "original_joints_mask_nonzero_pixels": 750,
+      "hcu_joints_mask_nonzero_pixels": 1009,
+      "geometry_diff_nonzero_pixels": 955,
+      "published_overlay_derivation_ok": true
+    },
+    {
+      "generated_at_utc": "2026-03-27T18:48:51.480132Z",
+      "dataset": "h2o",
+      "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h1/0#000003",
+      "run_id": "t-hcu-36-round_22-20260327T184307Z",
+      "pass": true,
+      "blockers": [],
+      "original_joints_mask_nonzero_pixels": 3646,
+      "hcu_joints_mask_nonzero_pixels": 3646,
+      "geometry_diff_nonzero_pixels": 0,
+      "published_overlay_derivation_ok": true
+    },
+    {
+      "generated_at_utc": "2026-03-27T18:48:51.501160Z",
+      "dataset": "h2o3d",
+      "sample_id": "h2o3d:train/MBC2/0006",
+      "run_id": "t-hcu-36-round_22-20260327T184307Z",
+      "pass": true,
+      "blockers": [],
+      "original_joints_mask_nonzero_pixels": 4338,
+      "hcu_joints_mask_nonzero_pixels": 4338,
+      "geometry_diff_nonzero_pixels": 0,
+      "published_overlay_derivation_ok": true
+    },
+    {
+      "generated_at_utc": "2026-03-27T18:48:51.518076Z",
+      "dataset": "ho3d",
+      "sample_id": "ho3d:train/ABF10/0003",
+      "run_id": "t-hcu-36-round_22-20260327T184307Z",
+      "pass": true,
+      "blockers": [],
+      "original_joints_mask_nonzero_pixels": 2371,
+      "hcu_joints_mask_nonzero_pixels": 2371,
+      "geometry_diff_nonzero_pixels": 0,
+      "published_overlay_derivation_ok": true
+    },
+    {
+      "generated_at_utc": "2026-03-27T18:48:51.638144Z",
+      "dataset": "hot3d",
+      "sample_id": "P0001_23fa0ee8#ts54970008199073",
+      "run_id": "t-hcu-36-round_22-20260327T184307Z",
+      "pass": false,
+      "blockers": [
+        "geometry_diff_nonzero_pixels=2716"
+      ],
+      "original_joints_mask_nonzero_pixels": 2228,
+      "hcu_joints_mask_nonzero_pixels": 1774,
+      "geometry_diff_nonzero_pixels": 2716,
+      "published_overlay_derivation_ok": true
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "hcu-final-acceptance-report.v1",
+  "generated_at_utc": "2026-03-27T15:58:10.383069Z",
+  "quant_pass": true,
+  "binding_pass": true,
+  "overlay_geometry_pass": false,
+  "pass": false,
+  "blockers": [
+    "overlay_geometry_pass=false"
+  ],
+  "threshold_stage": "final",
+  "geometry_diff_nonzero_pixels": 8493
+}

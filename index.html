@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Project Tracking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- Theme variables ---- */
+    [data-theme="dark"] {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: rgba(255,255,255,0.06);
+      --text: #e4e4e7;
+      --text-muted: #71717a;
+      --accent: #6366f1;
+      --accent-glow: rgba(99,102,241,0.15);
+      --green: #22c55e;
+      --yellow: #eab308;
+      --blue: #3b82f6;
+      --red: #ef4444;
+      --bar-bg: rgba(255,255,255,0.06);
+      --step-hover: rgba(255,255,255,0.03);
+      --step-pending-bg: rgba(255,255,255,0.08);
+      --tl-border: rgba(255,255,255,0.12);
+      --tl-date-color: rgba(255,255,255,0.2);
+      --toggle-bg: rgba(255,255,255,0.08);
+      --toggle-hover: rgba(255,255,255,0.12);
+    }
+
+    [data-theme="light"] {
+      --bg: #f4f5f7;
+      --card: #ffffff;
+      --border: rgba(0,0,0,0.08);
+      --text: #1a1a2e;
+      --text-muted: #6b7280;
+      --accent: #6366f1;
+      --accent-glow: rgba(99,102,241,0.1);
+      --green: #16a34a;
+      --yellow: #ca8a04;
+      --blue: #2563eb;
+      --red: #dc2626;
+      --bar-bg: rgba(0,0,0,0.06);
+      --step-hover: rgba(0,0,0,0.03);
+      --step-pending-bg: rgba(0,0,0,0.06);
+      --tl-border: rgba(0,0,0,0.12);
+      --tl-date-color: rgba(0,0,0,0.3);
+      --toggle-bg: rgba(0,0,0,0.06);
+      --toggle-hover: rgba(0,0,0,0.1);
+    }
+
+    html { font-size: 120%; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #6366f1, #a78bfa, #6366f1);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s ease infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+    }
+
+    /* Header controls */
+    .header-controls {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .header-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 10px;
+      background: var(--toggle-bg);
+      color: var(--text-muted);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .header-btn:hover {
+      background: var(--toggle-hover);
+      transform: scale(1.08);
+    }
+
+    /* Card */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.6rem;
+      margin-bottom: 1.25rem;
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+
+    .card:hover {
+      border-color: rgba(99,102,241,0.2);
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+
+    .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .card-desc { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.3rem; line-height: 1.5; }
+
+    .quick-links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .quick-link {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.95rem 1rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(59,130,246,0.04));
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .quick-link:hover {
+      border-color: rgba(99,102,241,0.28);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px var(--accent-glow);
+    }
+
+    .quick-link-title {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .quick-link-desc {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Progress bar */
+    .progress-wrap { cursor: pointer; margin-bottom: 0.3rem; }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+    }
+
+    .progress-pct { font-size: 0.8rem; font-weight: 600; color: var(--accent); }
+    .progress-hint { font-size: 0.7rem; color: var(--text-muted); }
+
+    .bar-track {
+      height: 8px;
+      background: var(--bar-bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+      background: linear-gradient(90deg, #c2410c, #ea580c, #f59e0b, #eab308, #22c55e, #4ade80);
+      background-size: calc(100% / var(--progress)) 100%;
+    }
+
+    /* Steps dropdown */
+    .steps-panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+
+    .steps {
+      list-style: none;
+      padding: 0.5rem 0 0.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .week-step {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .step-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .step-row:hover { background: var(--step-hover); }
+
+    .dot {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-done .dot { background: var(--green); color: #fff; }
+    .step-current .dot { background: var(--yellow); color: #333; }
+    .step-pending .dot { background: var(--step-pending-bg); color: var(--text-muted); }
+    .step-pending .step-label { color: var(--text-muted); }
+    .step-link { margin-left: auto; text-decoration: none; font-size: 0.8rem; opacity: 0.5; transition: opacity 0.2s; }
+    .step-link:hover { opacity: 1; }
+    .week-chevron {
+      margin-left: auto;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      transition: transform 0.2s ease;
+    }
+    .week-chevron.open { transform: rotate(90deg); }
+
+    .daily-steps {
+      list-style: none;
+      margin: 0 0 0.35rem 2.3rem;
+      padding: 0 0 0 0.5rem;
+      border-left: 1px solid var(--border);
+      display: none;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .daily-steps.open { display: flex; }
+
+    .daily-step {
+      display: flex;
+      align-items: baseline;
+      gap: 0.55rem;
+      padding: 0.35rem 0.55rem 0.35rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .daily-step:hover { background: var(--step-hover); }
+    .day-date {
+      min-width: 5.8rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--tl-date-color);
+    }
+    .day-focus { color: var(--text); }
+    .daily-step.day-pending .day-focus { color: var(--text-muted); }
+    .daily-step.day-current {
+      background: var(--step-hover);
+      box-shadow: inset 2px 0 0 0 var(--yellow);
+    }
+    .daily-step.day-done .day-date { color: var(--blue); }
+
+    /* Timeline */
+    .timeline-section { margin-top: 1.4rem; }
+    .venue-name { font-size: 0.8rem; font-weight: 600; color: var(--blue); margin-bottom: 0.6rem; }
+    .venue-name a { color: var(--blue); text-decoration: none; }
+    .venue-name a:hover { text-decoration: underline; }
+
+    .timeline { display: flex; position: relative; padding: 0 0.25rem; }
+
+    .tl-track {
+      position: absolute; top: 9px; left: 0; right: 0;
+      height: 3px; background: var(--bar-bg); border-radius: 2px;
+    }
+
+    .tl-fill {
+      position: absolute; top: 9px; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1e3a5f, #1d4ed8, #3b82f6, #60a5fa, #93c5fd);
+      background-size: calc(100% / var(--tl-progress)) 100%;
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+
+    .tl-event {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; position: relative; z-index: 2;
+    }
+
+    .tl-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 2.5px solid var(--tl-border);
+      background: var(--card);
+      margin-bottom: 0.45rem;
+      transition: all 0.3s;
+    }
+
+    .tl-dot.past    { background: #3b82f6; border-color: #3b82f6; }
+    .tl-dot.current { background: var(--card); border-color: #60a5fa; box-shadow: 0 0 0 4px rgba(96,165,250,0.25); }
+    .tl-dot.future  { background: var(--card); border-color: var(--tl-border); }
+
+    .tl-label { font-size: 0.65rem; text-align: center; color: var(--text-muted); line-height: 1.25; max-width: 72px; }
+    .tl-label.past-label    { color: var(--text); }
+    .tl-label.current-label { color: #60a5fa; font-weight: 600; }
+    .tl-date { font-size: 0.6rem; color: var(--tl-date-color); margin-top: 0.15rem; }
+
+    @media (max-width: 600px) {
+      .page { padding: 2rem 1rem; }
+      .tl-label { font-size: 0.58rem; max-width: 56px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>HOI3R Project Tracking</h1>
+      <p>Dashboard view generated from repo planning docs. Updated <span id="update-date"></span></p>
+      <div class="header-controls">
+        <button class="header-btn" onclick="changeFontSize(-10)" title="Smaller text">A-</button>
+        <button class="header-btn" onclick="changeFontSize(10)" title="Larger text">A+</button>
+        <button class="header-btn" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn"></button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Public Reports</div>
+      <div class="card-desc">Static review surfaces published alongside the dashboard mirror.</div>
+      <div class="quick-links-grid">
+        <a class="quick-link" href="hcu/" target="_blank" rel="noopener">
+          <span class="quick-link-title">HCU Round Report</span>
+          <span class="quick-link-desc">Canonical MANO interface freeze status, blockers, overlays, and next-round handoff.</span>
+        </a>
+        <a class="quick-link" href="hcu-original-visual-compare/" target="_blank" rel="noopener">
+          <span class="quick-link-title">HCU Visual Compare</span>
+          <span class="quick-link-desc">5 sequence tracks x 10 sampled frames per dataset, comparing final HCU against <code>original_mano_reference</code>.</span>
+        </a>
+        <a class="quick-link" href="h2o3d-official-visual-compare/" target="_blank" rel="noopener">
+          <span class="quick-link-title">H2O3D Official Compare</span>
+          <span class="quick-link-desc">Frame-by-frame official `vis_H2O3D.py` save-wrapper output against `original_mano_reference`.</span>
+        </a>
+        <a class="quick-link" href="baselines/" target="_blank" rel="noopener">
+          <span class="quick-link-title">Baseline Reports</span>
+          <span class="quick-link-desc">Live benchmark publishing surfaces, starting with the MagicHOI HO3D multi-shard evaluation.</span>
+        </a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Baseline Reports</div>
+      <div class="card-desc">External baseline runs published as reproducible static result surfaces with media and metrics.</div>
+      <div class="quick-links-grid">
+        <a class="quick-link" href="baselines/foundationpose-dexycb/" target="_blank" rel="noopener">
+          <span class="quick-link-title">FoundationPose on DexYCB</span>
+          <span class="quick-link-desc">Full DexYCB S0 test-set object metrics exported as a static public baseline report.</span>
+        </a>
+        <a class="quick-link" href="baselines/foundationpose-ho3d/" target="_blank" rel="noopener">
+          <span class="quick-link-title">FoundationPose on HO3D</span>
+          <span class="quick-link-desc">Baseline-aligned HO3D sub_test object metrics exported as a static public baseline report.</span>
+        </a>
+        <a class="quick-link" href="baselines/magichoi-ho3d/" target="_blank" rel="noopener">
+          <span class="quick-link-title">MagicHOI on HO3D</span>
+          <span class="quick-link-desc">Live HO3D baseline status for MagicHOI, including copied images, videos, per-stage snapshots, and benchmark metrics when available.</span>
+        </a>
+      </div>
+    </div>
+    <div id="projects-container"></div>
+  </div>
+
+  <script>
+    // ---- Font size ----
+    function getFontSize() {
+      return parseInt(localStorage.getItem("fontSize") || "120");
+    }
+
+    function applyFontSize(size) {
+      document.documentElement.style.fontSize = size + "%";
+    }
+
+    function changeFontSize(delta) {
+      let size = Math.min(180, Math.max(80, getFontSize() + delta));
+      localStorage.setItem("fontSize", size);
+      applyFontSize(size);
+    }
+
+    applyFontSize(getFontSize());
+
+    // ---- Theme toggle ----
+    function getTheme() {
+      return localStorage.getItem("theme") || "dark";
+    }
+
+    function applyTheme(t) {
+      document.documentElement.setAttribute("data-theme", t);
+      document.getElementById("theme-btn").textContent = t === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19";
+    }
+
+    function toggleTheme() {
+      const next = getTheme() === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", next);
+      applyTheme(next);
+    }
+
+    applyTheme(getTheme());
+
+    // ---- Load projects from projects/ directory ----
+    async function loadProjects() {
+      const indexRes = await fetch("projects/index.json");
+      const files = await indexRes.json();
+      const projects = await Promise.all(
+        files.map(f => fetch(`projects/${f}`).then(r => r.json()))
+      );
+      return projects;
+    }
+
+    const ICONS = { done: "\u2713", current: "\u25B8", pending: "\u2022" };
+
+    function progress(steps) {
+      const w = { done: 1, current: 0.5, pending: 0 };
+      return Math.round(steps.reduce((s, st) => s + (w[st.status]||0), 0) / steps.length * 100);
+    }
+
+    function tlStatus(events) {
+      const today = new Date(); today.setHours(0,0,0,0);
+      return events.map((ev, i) => {
+        const d = new Date(ev.date+"T00:00:00");
+        const nx = i < events.length-1 ? new Date(events[i+1].date+"T00:00:00") : null;
+        let s = today >= d ? (nx === null || today < nx ? "current" : "past") : "future";
+        return { ...ev, status: s };
+      });
+    }
+
+    function tlFill(events) {
+      const today = new Date(); today.setHours(0,0,0,0);
+      const dates = events.map(e => new Date(e.date+"T00:00:00"));
+      if (today <= dates[0]) return 0;
+      if (today >= dates[dates.length-1]) return 100;
+      for (let i = 0; i < dates.length-1; i++) {
+        if (today >= dates[i] && today < dates[i+1]) {
+          const a = i/(dates.length-1)*100, b = (i+1)/(dates.length-1)*100;
+          return a + (today-dates[i])/(dates[i+1]-dates[i])*(b-a);
+        }
+      }
+      return 0;
+    }
+
+    function fmtDate(s) {
+      return new Date(s+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
+    }
+
+    function reflowStepsPanel(panel) {
+      if (!panel || !panel.classList.contains("open")) return;
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+
+    function toggle(id) {
+      const panel = document.getElementById(id);
+      const nextOpen = !panel.classList.contains("open");
+      panel.classList.toggle("open");
+      panel.style.maxHeight = nextOpen ? panel.scrollHeight + "px" : "0px";
+    }
+
+    function toggleWeek(id, event) {
+      if (event) event.stopPropagation();
+      const daily = document.getElementById(id);
+      const chevron = document.getElementById(`${id}-chevron`);
+      daily.classList.toggle("open");
+      chevron.classList.toggle("open");
+      reflowStepsPanel(daily.closest(".steps-panel"));
+    }
+
+    function render(projects) {
+      document.getElementById("projects-container").innerHTML = projects.map((p, i) => {
+        const pct = progress(p.steps);
+        const tl = tlStatus(p.timeline);
+        const fill = tlFill(p.timeline);
+        const sid = `s${i}`;
+        return `
+        <div class="card">
+          <div class="card-title">${p.name}</div>
+          <div class="card-desc">${p.description}</div>
+
+          <div class="section-label">Project Progress</div>
+          <div class="progress-wrap" onclick="toggle('${sid}')">
+            <div class="progress-top">
+              <span class="progress-hint">Click to expand</span>
+              <span class="progress-pct">${pct}%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%; --progress:${pct/100}"></div></div>
+          </div>
+          <div class="steps-panel" id="${sid}">
+            <ul class="steps">
+              ${p.steps.map((s, j)=>`
+                <li class="week-step step-${s.status}">
+                  <div class="step-row" onclick="toggleWeek('${sid}-w${j}', event)">
+                    <span class="dot">${ICONS[s.status]}</span>
+                    <span class="step-label">${s.label}</span>
+                    ${s.link ? `<a href="${s.link}" target="_blank" rel="noopener" class="step-link" title="${s.label}" onclick="event.stopPropagation()">&#x1F517;</a>` : ""}
+                    <span class="week-chevron" id="${sid}-w${j}-chevron">&#9654;</span>
+                  </div>
+                  <ul class="daily-steps" id="${sid}-w${j}">
+                    ${(s.days || []).map(day => `
+                      <li class="daily-step day-${day.status}">
+                        <span class="day-date">${day.date}</span>
+                        <span class="day-focus">${day.focus}</span>
+                      </li>
+                    `).join("")}
+                  </ul>
+                </li>`).join("")}
+            </ul>
+          </div>
+
+          <div class="timeline-section">
+            <div class="section-label">Venue Submission</div>
+            <div class="venue-name">${p.venueUrl ? `<a href="${p.venueUrl}" target="_blank" rel="noopener">${p.venue}</a>` : p.venue}</div>
+            <div class="timeline">
+              <div class="tl-track"></div>
+              <div class="tl-fill" style="width:${fill}%; --tl-progress:${fill/100}"></div>
+              ${tl.map(ev=>`
+                <div class="tl-event">
+                  <div class="tl-dot ${ev.status}"></div>
+                  <div class="tl-label ${ev.status}-label">${ev.label}</div>
+                  <div class="tl-date">${fmtDate(ev.date)}</div>
+                </div>`).join("")}
+            </div>
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    document.getElementById("update-date").textContent = new Date().toLocaleDateString();
+    loadProjects().then(render);
+  </script>
+</body>
+</html>

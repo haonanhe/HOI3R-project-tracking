@@ -1,0 +1,10 @@
+{
+  "schema_version": "hcu-overlay-geometry-report.v1",
+  "pass": false,
+  "blockers": [
+    "published_overlay_derivation_ok=false",
+    "geometry_diff_nonzero_pixels=4"
+  ],
+  "geometry_diff_nonzero_pixels": 4,
+  "published_overlay_derivation_ok": false
+}

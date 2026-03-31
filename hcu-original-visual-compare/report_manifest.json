@@ -1,0 +1,3119 @@
+{
+  "schema_version": "hcu-original-visual-compare-site.v1",
+  "generated_at_utc": "2026-03-28T11:57:18.863318Z",
+  "source_artifact_dir": "_fresh_round25_random_overlays_20260328_site",
+  "outputs": {
+    "html": "project_tracking/hcu-original-visual-compare/index.html",
+    "report_manifest": "project_tracking/hcu-original-visual-compare/report_manifest.json",
+    "images_dir": "project_tracking/hcu-original-visual-compare/images"
+  },
+  "summary": {
+    "dataset_count": 6,
+    "row_count": 180
+  },
+  "sampling": {
+    "datasets": [
+      "h2o",
+      "dexycb",
+      "arctic",
+      "hot3d",
+      "ho3d",
+      "h2o3d"
+    ],
+    "sequences_per_dataset": 30,
+    "frames_per_sequence": 1,
+    "frame_selection": "fresh_random_sequence_order_then_first_valid_random_frame_per_sequence"
+  },
+  "datasets": [
+    {
+      "dataset": "h2o",
+      "rows": [
+        {
+          "sequence_id": "subject2/h2/1",
+          "display_sequence_id": "subject2/h2/1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject2/h2/1#000329",
+              "frame_label": "000329",
+              "image_rel_path": "images/h2o/01__subject2__h2__1__000329.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject1/h2/4",
+          "display_sequence_id": "subject1/h2/4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h2/4#000472",
+              "frame_label": "000472",
+              "image_rel_path": "images/h2o/02__subject1__h2__4__000472.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject2/h2/6",
+          "display_sequence_id": "subject2/h2/6",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject2/h2/6#000250",
+              "frame_label": "000250",
+              "image_rel_path": "images/h2o/03__subject2__h2__6__000250.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject2/h1/4",
+          "display_sequence_id": "subject2/h1/4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject2/h1/4#000242",
+              "frame_label": "000242",
+              "image_rel_path": "images/h2o/04__subject2__h1__4__000242.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject1/h1/7",
+          "display_sequence_id": "subject1/h1/7",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h1/7#000294",
+              "frame_label": "000294",
+              "image_rel_path": "images/h2o/05__subject1__h1__7__000294.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject4/h2/0",
+          "display_sequence_id": "subject4/h2/0",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject4/h2/0#000033",
+              "frame_label": "000033",
+              "image_rel_path": "images/h2o/06__subject4__h2__0__000033.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject2/h2/3",
+          "display_sequence_id": "subject2/h2/3",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject2/h2/3#000736",
+              "frame_label": "000736",
+              "image_rel_path": "images/h2o/07__subject2__h2__3__000736.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject3/h2/2",
+          "display_sequence_id": "subject3/h2/2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject3/h2/2#000058",
+              "frame_label": "000058",
+              "image_rel_path": "images/h2o/08__subject3__h2__2__000058.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject1/h2/3",
+          "display_sequence_id": "subject1/h2/3",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h2/3#000185",
+              "frame_label": "000185",
+              "image_rel_path": "images/h2o/09__subject1__h2__3__000185.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject1/h2/7",
+          "display_sequence_id": "subject1/h2/7",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h2/7#000453",
+              "frame_label": "000453",
+              "image_rel_path": "images/h2o/10__subject1__h2__7__000453.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject2/h2/0",
+          "display_sequence_id": "subject2/h2/0",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject2/h2/0#000386",
+              "frame_label": "000386",
+              "image_rel_path": "images/h2o/11__subject2__h2__0__000386.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject2/h2/2",
+          "display_sequence_id": "subject2/h2/2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject2/h2/2#000150",
+              "frame_label": "000150",
+              "image_rel_path": "images/h2o/12__subject2__h2__2__000150.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject4/h1/3",
+          "display_sequence_id": "subject4/h1/3",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject4/h1/3#000666",
+              "frame_label": "000666",
+              "image_rel_path": "images/h2o/13__subject4__h1__3__000666.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject4/h1/2",
+          "display_sequence_id": "subject4/h1/2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject4/h1/2#000037",
+              "frame_label": "000037",
+              "image_rel_path": "images/h2o/14__subject4__h1__2__000037.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject2/h1/7",
+          "display_sequence_id": "subject2/h1/7",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject2/h1/7#000443",
+              "frame_label": "000443",
+              "image_rel_path": "images/h2o/15__subject2__h1__7__000443.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject3/h1/4",
+          "display_sequence_id": "subject3/h1/4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject3/h1/4#000354",
+              "frame_label": "000354",
+              "image_rel_path": "images/h2o/16__subject3__h1__4__000354.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject2/h1/6",
+          "display_sequence_id": "subject2/h1/6",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject2/h1/6#000470",
+              "frame_label": "000470",
+              "image_rel_path": "images/h2o/17__subject2__h1__6__000470.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject4/h2/3",
+          "display_sequence_id": "subject4/h2/3",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject4/h2/3#000182",
+              "frame_label": "000182",
+              "image_rel_path": "images/h2o/18__subject4__h2__3__000182.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject3/h1/7",
+          "display_sequence_id": "subject3/h1/7",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject3/h1/7#000416",
+              "frame_label": "000416",
+              "image_rel_path": "images/h2o/19__subject3__h1__7__000416.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject3/h1/2",
+          "display_sequence_id": "subject3/h1/2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject3/h1/2#000399",
+              "frame_label": "000399",
+              "image_rel_path": "images/h2o/20__subject3__h1__2__000399.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject4/h1/6",
+          "display_sequence_id": "subject4/h1/6",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject4/h1/6#000307",
+              "frame_label": "000307",
+              "image_rel_path": "images/h2o/21__subject4__h1__6__000307.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject4/h1/0",
+          "display_sequence_id": "subject4/h1/0",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject4/h1/0#000087",
+              "frame_label": "000087",
+              "image_rel_path": "images/h2o/22__subject4__h1__0__000087.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject1/h1/6",
+          "display_sequence_id": "subject1/h1/6",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h1/6#000252",
+              "frame_label": "000252",
+              "image_rel_path": "images/h2o/23__subject1__h1__6__000252.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject4/h2/7",
+          "display_sequence_id": "subject4/h2/7",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject4/h2/7#000378",
+              "frame_label": "000378",
+              "image_rel_path": "images/h2o/24__subject4__h2__7__000378.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject3/h2/6",
+          "display_sequence_id": "subject3/h2/6",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject3/h2/6#000553",
+              "frame_label": "000553",
+              "image_rel_path": "images/h2o/25__subject3__h2__6__000553.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject3/h2/7",
+          "display_sequence_id": "subject3/h2/7",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject3/h2/7#000274",
+              "frame_label": "000274",
+              "image_rel_path": "images/h2o/26__subject3__h2__7__000274.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject3/h2/1",
+          "display_sequence_id": "subject3/h2/1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject3/h2/1#000404",
+              "frame_label": "000404",
+              "image_rel_path": "images/h2o/27__subject3__h2__1__000404.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject1/h1/5",
+          "display_sequence_id": "subject1/h1/5",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h1/5#000443",
+              "frame_label": "000443",
+              "image_rel_path": "images/h2o/28__subject1__h1__5__000443.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject1/h2/2",
+          "display_sequence_id": "subject1/h2/2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h2/2#000394",
+              "frame_label": "000394",
+              "image_rel_path": "images/h2o/29__subject1__h2__2__000394.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "subject1/h1/4",
+          "display_sequence_id": "subject1/h1/4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/H2O/subject1/h1/4#000347",
+              "frame_label": "000347",
+              "image_rel_path": "images/h2o/30__subject1__h1__4__000347.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataset": "dexycb",
+      "rows": [
+        {
+          "sequence_id": "20200820-subject-03/20200820_142129/836212060125",
+          "display_sequence_id": "20200820-subject-03/20200820_142129/836212060125",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200820-subject-03/20200820_142129/836212060125/labels_000064.npz",
+              "frame_label": "000064",
+              "image_rel_path": "images/dexycb/01__20200820-subject-03__20200820_142129__836212060125__000064.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200709-subject-01/20200709_142211/840412060917",
+          "display_sequence_id": "20200709-subject-01/20200709_142211/840412060917",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_142211/840412060917/labels_000019.npz",
+              "frame_label": "000019",
+              "image_rel_path": "images/dexycb/02__20200709-subject-01__20200709_142211__840412060917__000019.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200908-subject-05/20200908_152606/839512060362",
+          "display_sequence_id": "20200908-subject-05/20200908_152606/839512060362",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200908-subject-05/20200908_152606/839512060362/labels_000025.npz",
+              "frame_label": "000025",
+              "image_rel_path": "images/dexycb/03__20200908-subject-05__20200908_152606__839512060362__000025.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200709-subject-01/20200709_151502/932122060861",
+          "display_sequence_id": "20200709-subject-01/20200709_151502/932122060861",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_151502/932122060861/labels_000065.npz",
+              "frame_label": "000065",
+              "image_rel_path": "images/dexycb/04__20200709-subject-01__20200709_151502__932122060861__000065.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200813-subject-02/20200813_155953/841412060263",
+          "display_sequence_id": "20200813-subject-02/20200813_155953/841412060263",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200813-subject-02/20200813_155953/841412060263/labels_000066.npz",
+              "frame_label": "000066",
+              "image_rel_path": "images/dexycb/05__20200813-subject-02__20200813_155953__841412060263__000066.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200709-subject-01/20200709_142926/932122060861",
+          "display_sequence_id": "20200709-subject-01/20200709_142926/932122060861",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_142926/932122060861/labels_000057.npz",
+              "frame_label": "000057",
+              "image_rel_path": "images/dexycb/06__20200709-subject-01__20200709_142926__932122060861__000057.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200903-subject-04/20200903_110245/932122060857",
+          "display_sequence_id": "20200903-subject-04/20200903_110245/932122060857",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200903-subject-04/20200903_110245/932122060857/labels_000011.npz",
+              "frame_label": "000011",
+              "image_rel_path": "images/dexycb/07__20200903-subject-04__20200903_110245__932122060857__000011.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200813-subject-02/20200813_155356/932122060861",
+          "display_sequence_id": "20200813-subject-02/20200813_155356/932122060861",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200813-subject-02/20200813_155356/932122060861/labels_000049.npz",
+              "frame_label": "000049",
+              "image_rel_path": "images/dexycb/08__20200813-subject-02__20200813_155356__932122060861__000049.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200820-subject-03/20200820_144936/840412060917",
+          "display_sequence_id": "20200820-subject-03/20200820_144936/840412060917",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200820-subject-03/20200820_144936/840412060917/labels_000037.npz",
+              "frame_label": "000037",
+              "image_rel_path": "images/dexycb/09__20200820-subject-03__20200820_144936__840412060917__000037.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200903-subject-04/20200903_113400/836212060125",
+          "display_sequence_id": "20200903-subject-04/20200903_113400/836212060125",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200903-subject-04/20200903_113400/836212060125/labels_000044.npz",
+              "frame_label": "000044",
+              "image_rel_path": "images/dexycb/10__20200903-subject-04__20200903_113400__836212060125__000044.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200709-subject-01/20200709_145544/839512060362",
+          "display_sequence_id": "20200709-subject-01/20200709_145544/839512060362",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_145544/839512060362/labels_000006.npz",
+              "frame_label": "000006",
+              "image_rel_path": "images/dexycb/11__20200709-subject-01__20200709_145544__839512060362__000006.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200918-subject-06/20200918_113441/839512060362",
+          "display_sequence_id": "20200918-subject-06/20200918_113441/839512060362",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200918-subject-06/20200918_113441/839512060362/labels_000058.npz",
+              "frame_label": "000058",
+              "image_rel_path": "images/dexycb/12__20200918-subject-06__20200918_113441__839512060362__000058.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200709-subject-01/20200709_144313/932122062010",
+          "display_sequence_id": "20200709-subject-01/20200709_144313/932122062010",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_144313/932122062010/labels_000039.npz",
+              "frame_label": "000039",
+              "image_rel_path": "images/dexycb/13__20200709-subject-01__20200709_144313__932122062010__000039.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200820-subject-03/20200820_140223/840412060917",
+          "display_sequence_id": "20200820-subject-03/20200820_140223/840412060917",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200820-subject-03/20200820_140223/840412060917/labels_000039.npz",
+              "frame_label": "000039",
+              "image_rel_path": "images/dexycb/14__20200820-subject-03__20200820_140223__840412060917__000039.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200709-subject-01/20200709_150243/932122060861",
+          "display_sequence_id": "20200709-subject-01/20200709_150243/932122060861",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_150243/932122060861/labels_000070.npz",
+              "frame_label": "000070",
+              "image_rel_path": "images/dexycb/15__20200709-subject-01__20200709_150243__932122060861__000070.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200709-subject-01/20200709_143428/932122060857",
+          "display_sequence_id": "20200709-subject-01/20200709_143428/932122060857",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200709-subject-01/20200709_143428/932122060857/labels_000040.npz",
+              "frame_label": "000040",
+              "image_rel_path": "images/dexycb/16__20200709-subject-01__20200709_143428__932122060857__000040.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200813-subject-02/20200813_153911/932122061900",
+          "display_sequence_id": "20200813-subject-02/20200813_153911/932122061900",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200813-subject-02/20200813_153911/932122061900/labels_000040.npz",
+              "frame_label": "000040",
+              "image_rel_path": "images/dexycb/17__20200813-subject-02__20200813_153911__932122061900__000040.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200918-subject-06/20200918_113441/841412060263",
+          "display_sequence_id": "20200918-subject-06/20200918_113441/841412060263",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200918-subject-06/20200918_113441/841412060263/labels_000063.npz",
+              "frame_label": "000063",
+              "image_rel_path": "images/dexycb/18__20200918-subject-06__20200918_113441__841412060263__000063.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200903-subject-04/20200903_112724/932122060861",
+          "display_sequence_id": "20200903-subject-04/20200903_112724/932122060861",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200903-subject-04/20200903_112724/932122060861/labels_000067.npz",
+              "frame_label": "000067",
+              "image_rel_path": "images/dexycb/19__20200903-subject-04__20200903_112724__932122060861__000067.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200918-subject-06/20200918_114234/932122062010",
+          "display_sequence_id": "20200918-subject-06/20200918_114234/932122062010",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200918-subject-06/20200918_114234/932122062010/labels_000037.npz",
+              "frame_label": "000037",
+              "image_rel_path": "images/dexycb/20__20200918-subject-06__20200918_114234__932122062010__000037.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200813-subject-02/20200813_154729/841412060263",
+          "display_sequence_id": "20200813-subject-02/20200813_154729/841412060263",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200813-subject-02/20200813_154729/841412060263/labels_000018.npz",
+              "frame_label": "000018",
+              "image_rel_path": "images/dexycb/21__20200813-subject-02__20200813_154729__841412060263__000018.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200928-subject-07/20200928_154423/932122060861",
+          "display_sequence_id": "20200928-subject-07/20200928_154423/932122060861",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200928-subject-07/20200928_154423/932122060861/labels_000051.npz",
+              "frame_label": "000051",
+              "image_rel_path": "images/dexycb/22__20200928-subject-07__20200928_154423__932122060861__000051.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200908-subject-05/20200908_152221/932122060857",
+          "display_sequence_id": "20200908-subject-05/20200908_152221/932122060857",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200908-subject-05/20200908_152221/932122060857/labels_000061.npz",
+              "frame_label": "000061",
+              "image_rel_path": "images/dexycb/23__20200908-subject-05__20200908_152221__932122060857__000061.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200813-subject-02/20200813_150024/932122060857",
+          "display_sequence_id": "20200813-subject-02/20200813_150024/932122060857",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200813-subject-02/20200813_150024/932122060857/labels_000062.npz",
+              "frame_label": "000062",
+              "image_rel_path": "images/dexycb/24__20200813-subject-02__20200813_150024__932122060857__000062.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200820-subject-03/20200820_142608/932122060861",
+          "display_sequence_id": "20200820-subject-03/20200820_142608/932122060861",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200820-subject-03/20200820_142608/932122060861/labels_000045.npz",
+              "frame_label": "000045",
+              "image_rel_path": "images/dexycb/25__20200820-subject-03__20200820_142608__932122060861__000045.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200903-subject-04/20200903_105930/839512060362",
+          "display_sequence_id": "20200903-subject-04/20200903_105930/839512060362",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200903-subject-04/20200903_105930/839512060362/labels_000043.npz",
+              "frame_label": "000043",
+              "image_rel_path": "images/dexycb/26__20200903-subject-04__20200903_105930__839512060362__000043.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200908-subject-05/20200908_151645/932122062010",
+          "display_sequence_id": "20200908-subject-05/20200908_151645/932122062010",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200908-subject-05/20200908_151645/932122062010/labels_000023.npz",
+              "frame_label": "000023",
+              "image_rel_path": "images/dexycb/27__20200908-subject-05__20200908_151645__932122062010__000023.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200918-subject-06/20200918_120106/836212060125",
+          "display_sequence_id": "20200918-subject-06/20200918_120106/836212060125",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200918-subject-06/20200918_120106/836212060125/labels_000032.npz",
+              "frame_label": "000032",
+              "image_rel_path": "images/dexycb/28__20200918-subject-06__20200918_120106__836212060125__000032.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200820-subject-03/20200820_142346/932122060861",
+          "display_sequence_id": "20200820-subject-03/20200820_142346/932122060861",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200820-subject-03/20200820_142346/932122060861/labels_000029.npz",
+              "frame_label": "000029",
+              "image_rel_path": "images/dexycb/29__20200820-subject-03__20200820_142346__932122060861__000029.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                false
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "20200820-subject-03/20200820_143614/841412060263",
+          "display_sequence_id": "20200820-subject-03/20200820_143614/841412060263",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "/mnt/hdd_volume/datasets/dexycb/20200820-subject-03/20200820_143614/841412060263/labels_000018.npz",
+              "frame_label": "000018",
+              "image_rel_path": "images/dexycb/30__20200820-subject-03__20200820_143614__841412060263__000018.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataset": "arctic",
+      "rows": [
+        {
+          "sequence_id": "s10/mixer_use_01/view00",
+          "display_sequence_id": "s10/mixer_use_01/view00",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s10/mixer_use_01/view00/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/01__s10__mixer_use_01__view00__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s04/capsulemachine_use_02/view06",
+          "display_sequence_id": "s04/capsulemachine_use_02/view06",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s04/capsulemachine_use_02/view06/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/02__s04__capsulemachine_use_02__view06__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s07/phone_use_01/view03",
+          "display_sequence_id": "s07/phone_use_01/view03",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s07/phone_use_01/view03/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/03__s07__phone_use_01__view03__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s08/phone_use_01/view02",
+          "display_sequence_id": "s08/phone_use_01/view02",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s08/phone_use_01/view02/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/04__s08__phone_use_01__view02__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s06/box_use_04/view04",
+          "display_sequence_id": "s06/box_use_04/view04",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s06/box_use_04/view04/frame000005",
+              "frame_label": "000005",
+              "image_rel_path": "images/arctic/05__s06__box_use_04__view04__000005.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s10/laptop_use_02/view07",
+          "display_sequence_id": "s10/laptop_use_02/view07",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s10/laptop_use_02/view07/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/06__s10__laptop_use_02__view07__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s05/espressomachine_use_01/view00",
+          "display_sequence_id": "s05/espressomachine_use_01/view00",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s05/espressomachine_use_01/view00/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/07__s05__espressomachine_use_01__view00__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s09/ketchup_use_04/view00",
+          "display_sequence_id": "s09/ketchup_use_04/view00",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s09/ketchup_use_04/view00/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/08__s09__ketchup_use_04__view00__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s09/espressomachine_use_04/view07",
+          "display_sequence_id": "s09/espressomachine_use_04/view07",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s09/espressomachine_use_04/view07/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/09__s09__espressomachine_use_04__view07__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s01/ketchup_use_01/view00",
+          "display_sequence_id": "s01/ketchup_use_01/view00",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s01/ketchup_use_01/view00/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/10__s01__ketchup_use_01__view00__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s08/notebook_use_02/view01",
+          "display_sequence_id": "s08/notebook_use_02/view01",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s08/notebook_use_02/view01/frame000007",
+              "frame_label": "000007",
+              "image_rel_path": "images/arctic/11__s08__notebook_use_02__view01__000007.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s08/notebook_use_04/view03",
+          "display_sequence_id": "s08/notebook_use_04/view03",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s08/notebook_use_04/view03/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/12__s08__notebook_use_04__view03__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s05/scissors_use_01_retake/view05",
+          "display_sequence_id": "s05/scissors_use_01_retake/view05",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s05/scissors_use_01_retake/view05/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/13__s05__scissors_use_01_retake__view05__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s08/microwave_use_03/view00",
+          "display_sequence_id": "s08/microwave_use_03/view00",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s08/microwave_use_03/view00/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/14__s08__microwave_use_03__view00__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s01/waffleiron_use_01/view06",
+          "display_sequence_id": "s01/waffleiron_use_01/view06",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s01/waffleiron_use_01/view06/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/15__s01__waffleiron_use_01__view06__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s01/phone_grab_01/view03",
+          "display_sequence_id": "s01/phone_grab_01/view03",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s01/phone_grab_01/view03/frame000002",
+              "frame_label": "000002",
+              "image_rel_path": "images/arctic/16__s01__phone_grab_01__view03__000002.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s06/laptop_use_01_retake/view02",
+          "display_sequence_id": "s06/laptop_use_01_retake/view02",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s06/laptop_use_01_retake/view02/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/17__s06__laptop_use_01_retake__view02__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s10/scissors_use_02/view05",
+          "display_sequence_id": "s10/scissors_use_02/view05",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s10/scissors_use_02/view05/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/18__s10__scissors_use_02__view05__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s01/phone_use_01/view02",
+          "display_sequence_id": "s01/phone_use_01/view02",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s01/phone_use_01/view02/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/19__s01__phone_use_01__view02__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s02/ketchup_use_01/view02",
+          "display_sequence_id": "s02/ketchup_use_01/view02",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s02/ketchup_use_01/view02/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/20__s02__ketchup_use_01__view02__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s07/microwave_grab_01/view05",
+          "display_sequence_id": "s07/microwave_grab_01/view05",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s07/microwave_grab_01/view05/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/21__s07__microwave_grab_01__view05__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s07/waffleiron_grab_01/view07",
+          "display_sequence_id": "s07/waffleiron_grab_01/view07",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s07/waffleiron_grab_01/view07/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/22__s07__waffleiron_grab_01__view07__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s04/laptop_grab_01/view08",
+          "display_sequence_id": "s04/laptop_grab_01/view08",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s04/laptop_grab_01/view08/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/23__s04__laptop_grab_01__view08__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s04/espressomachine_use_01_retake/view00",
+          "display_sequence_id": "s04/espressomachine_use_01_retake/view00",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s04/espressomachine_use_01_retake/view00/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/24__s04__espressomachine_use_01_retake__view00__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s04/capsulemachine_use_02/view07",
+          "display_sequence_id": "s04/capsulemachine_use_02/view07",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s04/capsulemachine_use_02/view07/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/25__s04__capsulemachine_use_02__view07__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s06/ketchup_use_01/view06",
+          "display_sequence_id": "s06/ketchup_use_01/view06",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s06/ketchup_use_01/view06/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/26__s06__ketchup_use_01__view06__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s10/box_use_02/view02",
+          "display_sequence_id": "s10/box_use_02/view02",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s10/box_use_02/view02/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/27__s10__box_use_02__view02__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s02/microwave_use_01_retake/view02",
+          "display_sequence_id": "s02/microwave_use_01_retake/view02",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s02/microwave_use_01_retake/view02/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/28__s02__microwave_use_01_retake__view02__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s06/box_use_02/view07",
+          "display_sequence_id": "s06/box_use_02/view07",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s06/box_use_02/view07/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/29__s06__box_use_02__view07__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "s02/box_use_02/view08",
+          "display_sequence_id": "s02/box_use_02/view08",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "s02/box_use_02/view08/frame000000",
+              "frame_label": "000000",
+              "image_rel_path": "images/arctic/30__s02__box_use_02__view08__000000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataset": "hot3d",
+      "rows": [
+        {
+          "sequence_id": "P0011/cd22f5e0/214-1",
+          "display_sequence_id": "P0011/cd22f5e0/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_cd22f5e0#ts55194008243745",
+              "frame_label": "55194008243745",
+              "image_rel_path": "images/hot3d/01__P0011__cd22f5e0__214-1__55194008243745.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0010/0ecbf39f/214-1",
+          "display_sequence_id": "P0010/0ecbf39f/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0010_0ecbf39f#ts56132141545167",
+              "frame_label": "56132141545167",
+              "image_rel_path": "images/hot3d/02__P0010__0ecbf39f__214-1__56132141545167.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0002/65085bfc/214-1",
+          "display_sequence_id": "P0002/65085bfc/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0002_65085bfc#ts47005074857983",
+              "frame_label": "47005074857983",
+              "image_rel_path": "images/hot3d/03__P0002__65085bfc__214-1__47005074857983.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0015/c3e1f590/214-1",
+          "display_sequence_id": "P0015/c3e1f590/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0015_c3e1f590#ts58315274873049",
+              "frame_label": "58315274873049",
+              "image_rel_path": "images/hot3d/04__P0015__c3e1f590__214-1__58315274873049.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0011/47878e48/214-1",
+          "display_sequence_id": "P0011/47878e48/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_47878e48#ts57582041531957",
+              "frame_label": "57582041531957",
+              "image_rel_path": "images/hot3d/05__P0011__47878e48__214-1__57582041531957.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0001/23fa0ee8/214-1",
+          "display_sequence_id": "P0001/23fa0ee8/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0001_23fa0ee8#ts54970108209795",
+              "frame_label": "54970108209795",
+              "image_rel_path": "images/hot3d/06__P0001__23fa0ee8__214-1__54970108209795.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0012/119de519/214-1",
+          "display_sequence_id": "P0012/119de519/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0012_119de519#ts45197208206757",
+              "frame_label": "45197208206757",
+              "image_rel_path": "images/hot3d/07__P0012__119de519__214-1__45197208206757.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0012/44c5f677/214-1",
+          "display_sequence_id": "P0012/44c5f677/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0012_44c5f677#ts59321241549035",
+              "frame_label": "59321241549035",
+              "image_rel_path": "images/hot3d/08__P0012__44c5f677__214-1__59321241549035.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0012/b8fc4c1b/214-1",
+          "display_sequence_id": "P0012/b8fc4c1b/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0012_b8fc4c1b#ts60004108187092",
+              "frame_label": "60004108187092",
+              "image_rel_path": "images/hot3d/09__P0012__b8fc4c1b__214-1__60004108187092.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0012/915e71c6/214-1",
+          "display_sequence_id": "P0012/915e71c6/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0012_915e71c6#ts46476141562270",
+              "frame_label": "46476141562270",
+              "image_rel_path": "images/hot3d/10__P0012__915e71c6__214-1__46476141562270.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0012/c06d939b/214-1",
+          "display_sequence_id": "P0012/c06d939b/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0012_c06d939b#ts45724074867292",
+              "frame_label": "45724074867292",
+              "image_rel_path": "images/hot3d/11__P0012__c06d939b__214-1__45724074867292.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0009/ea91844d/214-1",
+          "display_sequence_id": "P0009/ea91844d/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0009_ea91844d#ts41383008197855",
+              "frame_label": "41383008197855",
+              "image_rel_path": "images/hot3d/12__P0009__ea91844d__214-1__41383008197855.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0011/d0f907a0/214-1",
+          "display_sequence_id": "P0011/d0f907a0/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_d0f907a0#ts56618241524747",
+              "frame_label": "56618241524747",
+              "image_rel_path": "images/hot3d/13__P0011__d0f907a0__214-1__56618241524747.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0011/cee8fe4f/214-1",
+          "display_sequence_id": "P0011/cee8fe4f/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_cee8fe4f#ts58169108188485",
+              "frame_label": "58169108188485",
+              "image_rel_path": "images/hot3d/14__P0011__cee8fe4f__214-1__58169108188485.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0010/b152143e/214-1",
+          "display_sequence_id": "P0010/b152143e/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0010_b152143e#ts58127341547247",
+              "frame_label": "58127341547247",
+              "image_rel_path": "images/hot3d/15__P0010__b152143e__214-1__58127341547247.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0011/2255f410/214-1",
+          "display_sequence_id": "P0011/2255f410/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_2255f410#ts56271074874342",
+              "frame_label": "56271074874342",
+              "image_rel_path": "images/hot3d/16__P0011__2255f410__214-1__56271074874342.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0009/911a4ba5/214-1",
+          "display_sequence_id": "P0009/911a4ba5/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0009_911a4ba5#ts42079241525811",
+              "frame_label": "42079241525811",
+              "image_rel_path": "images/hot3d/17__P0009__911a4ba5__214-1__42079241525811.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0009/88a58b3b/214-1",
+          "display_sequence_id": "P0009/88a58b3b/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0009_88a58b3b#ts42224274873489",
+              "frame_label": "42224274873489",
+              "image_rel_path": "images/hot3d/18__P0009__88a58b3b__214-1__42224274873489.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0011/dbf1ebb7/214-1",
+          "display_sequence_id": "P0011/dbf1ebb7/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_dbf1ebb7#ts59735074855002",
+              "frame_label": "59735074855002",
+              "image_rel_path": "images/hot3d/19__P0011__dbf1ebb7__214-1__59735074855002.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0011/7c7e8d86/214-1",
+          "display_sequence_id": "P0011/7c7e8d86/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_7c7e8d86#ts57887174872806",
+              "frame_label": "57887174872806",
+              "image_rel_path": "images/hot3d/20__P0011__7c7e8d86__214-1__57887174872806.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0012/0a21e4c2/214-1",
+          "display_sequence_id": "P0012/0a21e4c2/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0012_0a21e4c2#ts47065041521881",
+              "frame_label": "47065041521881",
+              "image_rel_path": "images/hot3d/21__P0012__0a21e4c2__214-1__47065041521881.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0009/24af5475/214-1",
+          "display_sequence_id": "P0009/24af5475/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0009_24af5475#ts42323008260448",
+              "frame_label": "42323008260448",
+              "image_rel_path": "images/hot3d/22__P0009__24af5475__214-1__42323008260448.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0011/7a8886e7/214-1",
+          "display_sequence_id": "P0011/7a8886e7/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_7a8886e7#ts58902074861024",
+              "frame_label": "58902074861024",
+              "image_rel_path": "images/hot3d/23__P0011__7a8886e7__214-1__58902074861024.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0001/9c030609/214-1",
+          "display_sequence_id": "P0001/9c030609/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0001_9c030609#ts68466008195989",
+              "frame_label": "68466008195989",
+              "image_rel_path": "images/hot3d/24__P0001__9c030609__214-1__68466008195989.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0011/b0c895c1/214-1",
+          "display_sequence_id": "P0011/b0c895c1/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0011_b0c895c1#ts56522041535640",
+              "frame_label": "56522041535640",
+              "image_rel_path": "images/hot3d/25__P0011__b0c895c1__214-1__56522041535640.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0009/8c95667c/214-1",
+          "display_sequence_id": "P0009/8c95667c/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0009_8c95667c#ts41506206591653",
+              "frame_label": "41506206591653",
+              "image_rel_path": "images/hot3d/26__P0009__8c95667c__214-1__41506206591653.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0012/c4353c31/214-1",
+          "display_sequence_id": "P0012/c4353c31/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0012_c4353c31#ts45457208200666",
+              "frame_label": "45457208200666",
+              "image_rel_path": "images/hot3d/27__P0012__c4353c31__214-1__45457208200666.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0009/b7d8c222/214-1",
+          "display_sequence_id": "P0009/b7d8c222/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0009_b7d8c222#ts43148208208867",
+              "frame_label": "43148208208867",
+              "image_rel_path": "images/hot3d/28__P0009__b7d8c222__214-1__43148208208867.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0010/160e551c/214-1",
+          "display_sequence_id": "P0010/160e551c/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0010_160e551c#ts57163008233880",
+              "frame_label": "57163008233880",
+              "image_rel_path": "images/hot3d/29__P0010__160e551c__214-1__57163008233880.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "P0012/6e4f7815/214-1",
+          "display_sequence_id": "P0012/6e4f7815/214-1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "P0012_6e4f7815#ts57669041524925",
+              "frame_label": "57669041524925",
+              "image_rel_path": "images/hot3d/30__P0012__6e4f7815__214-1__57669041524925.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataset": "ho3d",
+      "rows": [
+        {
+          "sequence_id": "train/SS1",
+          "display_sequence_id": "train/SS1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SS1/0152",
+              "frame_label": "0152",
+              "image_rel_path": "images/ho3d/01__train__SS1__0152.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SiBF10",
+          "display_sequence_id": "train/SiBF10",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SiBF10/1897",
+              "frame_label": "1897",
+              "image_rel_path": "images/ho3d/02__train__SiBF10__1897.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SS3",
+          "display_sequence_id": "train/SS3",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SS3/0081",
+              "frame_label": "0081",
+              "image_rel_path": "images/ho3d/03__train__SS3__0081.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SiBF11",
+          "display_sequence_id": "train/SiBF11",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SiBF11/2458",
+              "frame_label": "2458",
+              "image_rel_path": "images/ho3d/04__train__SiBF11__2458.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SiBF14",
+          "display_sequence_id": "train/SiBF14",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SiBF14/0774",
+              "frame_label": "0774",
+              "image_rel_path": "images/ho3d/05__train__SiBF14__0774.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/GPMF10",
+          "display_sequence_id": "train/GPMF10",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/GPMF10/0553",
+              "frame_label": "0553",
+              "image_rel_path": "images/ho3d/06__train__GPMF10__0553.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SB10",
+          "display_sequence_id": "train/SB10",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SB10/1361",
+              "frame_label": "1361",
+              "image_rel_path": "images/ho3d/07__train__SB10__1361.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SM3",
+          "display_sequence_id": "train/SM3",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SM3/0050",
+              "frame_label": "0050",
+              "image_rel_path": "images/ho3d/08__train__SM3__0050.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MC5",
+          "display_sequence_id": "train/MC5",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/MC5/0691",
+              "frame_label": "0691",
+              "image_rel_path": "images/ho3d/09__train__MC5__0691.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SS2",
+          "display_sequence_id": "train/SS2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SS2/0640",
+              "frame_label": "0640",
+              "image_rel_path": "images/ho3d/10__train__SS2__0640.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/GSF14",
+          "display_sequence_id": "train/GSF14",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/GSF14/0445",
+              "frame_label": "0445",
+              "image_rel_path": "images/ho3d/11__train__GSF14__0445.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SiS1",
+          "display_sequence_id": "train/SiS1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SiS1/0752",
+              "frame_label": "0752",
+              "image_rel_path": "images/ho3d/12__train__SiS1__0752.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MDF10",
+          "display_sequence_id": "train/MDF10",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/MDF10/0441",
+              "frame_label": "0441",
+              "image_rel_path": "images/ho3d/13__train__MDF10__0441.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/GSF11",
+          "display_sequence_id": "train/GSF11",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/GSF11/0210",
+              "frame_label": "0210",
+              "image_rel_path": "images/ho3d/14__train__GSF11__0210.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MC6",
+          "display_sequence_id": "train/MC6",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/MC6/0024",
+              "frame_label": "0024",
+              "image_rel_path": "images/ho3d/15__train__MC6__0024.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MDF12",
+          "display_sequence_id": "train/MDF12",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/MDF12/0668",
+              "frame_label": "0668",
+              "image_rel_path": "images/ho3d/16__train__MDF12__0668.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SM5",
+          "display_sequence_id": "train/SM5",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SM5/0774",
+              "frame_label": "0774",
+              "image_rel_path": "images/ho3d/17__train__SM5__0774.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SiBF13",
+          "display_sequence_id": "train/SiBF13",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SiBF13/1224",
+              "frame_label": "1224",
+              "image_rel_path": "images/ho3d/18__train__SiBF13__1224.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/GSF13",
+          "display_sequence_id": "train/GSF13",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/GSF13/0151",
+              "frame_label": "0151",
+              "image_rel_path": "images/ho3d/19__train__GSF13__0151.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/ABF10",
+          "display_sequence_id": "train/ABF10",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/ABF10/0392",
+              "frame_label": "0392",
+              "image_rel_path": "images/ho3d/20__train__ABF10__0392.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/ABF13",
+          "display_sequence_id": "train/ABF13",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/ABF13/0732",
+              "frame_label": "0732",
+              "image_rel_path": "images/ho3d/21__train__ABF13__0732.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/ND2",
+          "display_sequence_id": "train/ND2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/ND2/0468",
+              "frame_label": "0468",
+              "image_rel_path": "images/ho3d/22__train__ND2__0468.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/BB10",
+          "display_sequence_id": "train/BB10",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/BB10/0978",
+              "frame_label": "0978",
+              "image_rel_path": "images/ho3d/23__train__BB10__0978.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/ABF11",
+          "display_sequence_id": "train/ABF11",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/ABF11/0160",
+              "frame_label": "0160",
+              "image_rel_path": "images/ho3d/24__train__ABF11__0160.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SM2",
+          "display_sequence_id": "train/SM2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SM2/0713",
+              "frame_label": "0713",
+              "image_rel_path": "images/ho3d/25__train__SM2__0713.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SM4",
+          "display_sequence_id": "train/SM4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SM4/0366",
+              "frame_label": "0366",
+              "image_rel_path": "images/ho3d/26__train__SM4__0366.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SB12",
+          "display_sequence_id": "train/SB12",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/SB12/0000",
+              "frame_label": "0000",
+              "image_rel_path": "images/ho3d/27__train__SB12__0000.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MDF13",
+          "display_sequence_id": "train/MDF13",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/MDF13/0010",
+              "frame_label": "0010",
+              "image_rel_path": "images/ho3d/28__train__MDF13__0010.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/ShSu10",
+          "display_sequence_id": "train/ShSu10",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/ShSu10/0814",
+              "frame_label": "0814",
+              "image_rel_path": "images/ho3d/29__train__ShSu10__0814.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MC4",
+          "display_sequence_id": "train/MC4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "ho3d:train/MC4/0761",
+              "frame_label": "0761",
+              "image_rel_path": "images/ho3d/30__train__MC4__0761.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                false,
+                true
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataset": "h2o3d",
+      "rows": [
+        {
+          "sequence_id": "train/SB2",
+          "display_sequence_id": "train/SB2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SB2/0137",
+              "frame_label": "0137",
+              "image_rel_path": "images/h2o3d/01__train__SB2__0137.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHP23",
+          "display_sequence_id": "train/SHP23",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHP23/0431",
+              "frame_label": "0431",
+              "image_rel_path": "images/h2o3d/02__train__SHP23__0431.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHM0",
+          "display_sequence_id": "train/SHM0",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHM0/1068",
+              "frame_label": "1068",
+              "image_rel_path": "images/h2o3d/03__train__SHM0__1068.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHP11",
+          "display_sequence_id": "train/SHP11",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHP11/0181",
+              "frame_label": "0181",
+              "image_rel_path": "images/h2o3d/04__train__SHP11__0181.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SMB24",
+          "display_sequence_id": "train/SMB24",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SMB24/1047",
+              "frame_label": "1047",
+              "image_rel_path": "images/h2o3d/05__train__SMB24__1047.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SSB4",
+          "display_sequence_id": "train/SSB4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SSB4/0036",
+              "frame_label": "0036",
+              "image_rel_path": "images/h2o3d/06__train__SSB4__0036.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SMB20",
+          "display_sequence_id": "train/SMB20",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SMB20/0398",
+              "frame_label": "0398",
+              "image_rel_path": "images/h2o3d/07__train__SMB20__0398.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MM2",
+          "display_sequence_id": "train/MM2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/MM2/0561",
+              "frame_label": "0561",
+              "image_rel_path": "images/h2o3d/08__train__MM2__0561.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHCB1",
+          "display_sequence_id": "train/SHCB1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHCB1/1247",
+              "frame_label": "1247",
+              "image_rel_path": "images/h2o3d/09__train__SHCB1__1247.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHM4",
+          "display_sequence_id": "train/SHM4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHM4/0300",
+              "frame_label": "0300",
+              "image_rel_path": "images/h2o3d/10__train__SHM4__0300.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SSB3",
+          "display_sequence_id": "train/SSB3",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SSB3/0056",
+              "frame_label": "0056",
+              "image_rel_path": "images/h2o3d/11__train__SSB3__0056.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MBC2",
+          "display_sequence_id": "train/MBC2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/MBC2/0191",
+              "frame_label": "0191",
+              "image_rel_path": "images/h2o3d/12__train__MBC2__0191.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SMB11",
+          "display_sequence_id": "train/SMB11",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SMB11/0154",
+              "frame_label": "0154",
+              "image_rel_path": "images/h2o3d/13__train__SMB11__0154.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SMB13",
+          "display_sequence_id": "train/SMB13",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SMB13/0218",
+              "frame_label": "0218",
+              "image_rel_path": "images/h2o3d/14__train__SMB13__0218.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHB2",
+          "display_sequence_id": "train/SHB2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHB2/0116",
+              "frame_label": "0116",
+              "image_rel_path": "images/h2o3d/15__train__SHB2__0116.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SSPD2",
+          "display_sequence_id": "train/SSPD2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SSPD2/0242",
+              "frame_label": "0242",
+              "image_rel_path": "images/h2o3d/16__train__SSPD2__0242.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SSBC3",
+          "display_sequence_id": "train/SSBC3",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SSBC3/0083",
+              "frame_label": "0083",
+              "image_rel_path": "images/h2o3d/17__train__SSBC3__0083.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHP21",
+          "display_sequence_id": "train/SHP21",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHP21/0486",
+              "frame_label": "0486",
+              "image_rel_path": "images/h2o3d/18__train__SHP21__0486.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHP34",
+          "display_sequence_id": "train/SHP34",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHP34/0237",
+              "frame_label": "0237",
+              "image_rel_path": "images/h2o3d/19__train__SHP34__0237.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SB0",
+          "display_sequence_id": "train/SB0",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SB0/0329",
+              "frame_label": "0329",
+              "image_rel_path": "images/h2o3d/20__train__SB0__0329.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHCB4",
+          "display_sequence_id": "train/SHCB4",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHCB4/0631",
+              "frame_label": "0631",
+              "image_rel_path": "images/h2o3d/21__train__SHCB4__0631.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SMB23",
+          "display_sequence_id": "train/SMB23",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SMB23/0884",
+              "frame_label": "0884",
+              "image_rel_path": "images/h2o3d/22__train__SMB23__0884.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MM0",
+          "display_sequence_id": "train/MM0",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/MM0/0254",
+              "frame_label": "0254",
+              "image_rel_path": "images/h2o3d/23__train__MM0__0254.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SB1",
+          "display_sequence_id": "train/SB1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SB1/0536",
+              "frame_label": "0536",
+              "image_rel_path": "images/h2o3d/24__train__SB1__0536.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHM2",
+          "display_sequence_id": "train/SHM2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHM2/0723",
+              "frame_label": "0723",
+              "image_rel_path": "images/h2o3d/25__train__SHM2__0723.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SSBC1",
+          "display_sequence_id": "train/SSBC1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SSBC1/0529",
+              "frame_label": "0529",
+              "image_rel_path": "images/h2o3d/26__train__SSBC1__0529.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/MBC1",
+          "display_sequence_id": "train/MBC1",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/MBC1/0398",
+              "frame_label": "0398",
+              "image_rel_path": "images/h2o3d/27__train__MBC1__0398.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHP12",
+          "display_sequence_id": "train/SHP12",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHP12/0249",
+              "frame_label": "0249",
+              "image_rel_path": "images/h2o3d/28__train__SHP12__0249.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SHB0",
+          "display_sequence_id": "train/SHB0",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SHB0/0874",
+              "frame_label": "0874",
+              "image_rel_path": "images/h2o3d/29__train__SHB0__0874.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        },
+        {
+          "sequence_id": "train/SSC2",
+          "display_sequence_id": "train/SSC2",
+          "sequence_stream_note": "",
+          "rows": [
+            {
+              "sample_id": "h2o3d:train/SSC2/1279",
+              "frame_label": "1279",
+              "image_rel_path": "images/h2o3d/30__train__SSC2__1279.jpg",
+              "pixel_mean_mean": null,
+              "valid_slots": [
+                true,
+                true
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
