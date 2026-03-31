@@ -1,1 +1,0 @@
-historical-invalid placeholder: hcu joints mask missing for hot3d
