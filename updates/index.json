@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-03-31 \u00b7 Frame 30 Normalized-Space Native TRELLIS Overfit",
+    "date": "2026-03-31",
+    "status": "done",
+    "summary": "A forced single-image overfit on frame 000030 converged numerically under the current normalized-space decoder path, but both predicted meshes collapsed to empty outputs. The node is published as a negative result and a precise failure-mode record.",
+    "path": "updates/2026-03-31-native-trellis-frame30-normalized-space-overfit.html"
+  },
+  {
     "title": "2026-03-31 \u00b7 Native TRELLIS Single-Frame Overfit On DexYCB",
     "date": "2026-03-31",
     "status": "done",
