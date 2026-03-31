@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-03-31 \u00b7 Native TRELLIS Single-Frame Overfit On DexYCB",
+    "date": "2026-03-31",
+    "status": "done",
+    "summary": "The native sparse TRELLIS mesh decoder now runs end to end on a real visible-hand DexYCB frame. After seeding the decoder away from the empty-mesh collapse, an 80-step CUDA overfit reduced total loss from 5.63 to 0.44 and produced non-empty hand and object meshes.",
+    "path": "updates/2026-03-31-native-trellis-single-frame-overfit.html"
+  },
+  {
     "title": "2026-03-31 \u00b7 Second DexYCB Overfit On Visible-Hand Frame",
     "date": "2026-03-31",
     "status": "done",
