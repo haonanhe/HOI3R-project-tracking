@@ -6,15 +6,12 @@
     "html": "project_tracking/weekly-update-2026w13/index.html"
   },
   "assets": [
-    "project_tracking/weekly-update-2026w13/assets/s1b_mano_overlay.png",
-    "project_tracking/weekly-update-2026w13/assets/s2d_mano_overlay.png",
-    "project_tracking/weekly-update-2026w13/assets/s2d_hand_obj_render.png",
     "project_tracking/weekly-update-2026w13/assets/foundationpose_dexycb_sample.png",
     "project_tracking/weekly-update-2026w13/assets/foundationpose_ho3d_sample.png",
     "project_tracking/weekly-update-2026w13/assets/magichoi_live_test_video.mp4",
-    "project_tracking/weekly-update-2026w13/assets/hcu_original_overlay.png",
-    "project_tracking/weekly-update-2026w13/assets/hcu_unified_overlay.png",
-    "project_tracking/weekly-update-2026w13/assets/hcu_geometry_diff.png"
+    "project_tracking/weekly-update-2026w13/assets/s1b_mano_overlay.png",
+    "project_tracking/weekly-update-2026w13/assets/s2d_mano_overlay.png",
+    "project_tracking/weekly-update-2026w13/assets/s2d_hand_obj_render.png"
   ],
   "related_pages": []
 }

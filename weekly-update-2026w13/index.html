@@ -272,6 +272,83 @@
       color: var(--text);
       font-weight: 600;
     }
+    .baseline-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .baseline-stack {
+      display: grid;
+      gap: 18px;
+    }
+    .baseline-panel {
+      padding: 20px;
+    }
+    .baseline-panel h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    .baseline-panel p {
+      margin-bottom: 14px;
+    }
+    .metric-table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+    }
+    .deck-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .deck-table th,
+    .deck-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+      vertical-align: top;
+      white-space: nowrap;
+    }
+    .deck-table th {
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .deck-table tr:last-child td {
+      border-bottom: 0;
+    }
+    .deck-note {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .baseline-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .baseline-mini {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .baseline-mini h4 {
+      margin: 0 0 6px;
+      font-size: 0.98rem;
+    }
+    .baseline-mini p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
     .media-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       margin-top: 18px;
@@ -429,7 +506,7 @@
       width: 100%;
       aspect-ratio: 4 / 3;
       border-radius: 14px;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
       margin-top: 12px;
       border: 1px solid rgba(255,255,255,0.08);
@@ -562,23 +639,23 @@
             <h1>过去两周进展汇报</h1>
             <p class="hero-note">
               这两周的主线不是“把模型做重”，而是先把 <strong>baseline 证据面</strong>、
-              <strong>坐标/输入契约</strong>、以及 <strong>trellis-inspired token memory</strong> 的最小闭环稳定下来。
+              <strong>AlignNet 残差融合接口</strong>、以及 <strong>评测/可视化发布面</strong> 的最小闭环稳定下来。
             </p>
             <div class="summary-grid">
               <div class="summary-card">
                 <div class="label">Baseline Lane</div>
-                <div class="value">3 条公开面</div>
-                <small>FoundationPose DexYCB / HO3D，MagicHOI HO3D live 页面都已接入 `project_tracking`。</small>
+                <div class="value">3 类基线</div>
+                <small>object pose、hand reconstruction、hand-object reconstruction 已分开整理。</small>
               </div>
               <div class="summary-card">
                 <div class="label">Model Route</div>
                 <div class="value">S2-D 胜出</div>
-                <small>Stage-2 当前 winner 是 hand-ROI + confidence scene tokens。</small>
+                <small>当前主线是 AlignNet residual route，Stage-2 winner 是 hand-ROI + confidence scene tokens。</small>
               </div>
               <div class="summary-card">
-                <div class="label">Interface Freeze</div>
-                <div class="value">6 / 6 过线</div>
-                <small>HCU `round_25` final acceptance pass，geometry diff nonzero pixels = 0。</small>
+                <div class="label">Eval Status</div>
+                <div class="value">待继续校对</div>
+                <small>MagicHOI 先并列展示 official metrics 和我们当前 evaluator 输出，暂不做直接 claim。</small>
               </div>
             </div>
           </div>
@@ -594,9 +671,14 @@
               <small>OBJ rotation 23.70 deg, OBJ translation 5.38 cm, detection 1.0。</small>
             </div>
             <div class="stat">
+              <div class="label">HaWoR / Dyn-HaMeR</div>
+              <div class="value">0.39 AUC</div>
+              <small>DexYCB test set 上 HaWoR 明显强于 Dyn-HaMeR，后者作为弱基线保留。</small>
+            </div>
+            <div class="stat">
               <div class="label">MagicHOI HO3D</div>
-              <div class="value">1 / 5 done</div>
-              <small>3 running, 1 failed；public page 现在可以边跑边看图和视频。</small>
+              <div class="value">3.5543</div>
+              <small>official `mpjpe_ra_r=3.5543`；我们当前 evaluator 输出还在继续对齐。</small>
             </div>
             <div class="stat">
               <div class="label">GP1 → GP2</div>
@@ -613,80 +695,134 @@
         <div class="section-top">
           <div>
             <div class="eyebrow">1 / Baseline Progress</div>
-            <h2>Baseline 结果面已经能公开展示</h2>
-            <p>重点不是只看最终数字，而是把 metrics table / image / video 全都做成可复用的 public surface，组会、周报、后续论文整理都能直接复用。</p>
+            <h2>Baseline 现在按任务类型分成三类</h2>
+            <p>这页只放会前最需要的表格和图，不再把所有 baseline 混在一起。重点是先把 object、hand、hand-object 三条参考线讲清楚。</p>
           </div>
           <div class="card section-note">
             <h3>结论</h3>
-            <p><strong>FoundationPose</strong> 作为 object-only 参考面已经稳定；<strong>MagicHOI HO3D</strong> 变成了 live site，可边跑边看中间结果，不再等离线汇总。</p>
-            <p>会前版本把代表性 metrics / image / video 直接内嵌到本页，避免公开站点再依赖大体积 baseline 子站点。</p>
+            <p><strong>FoundationPose</strong> 作为 object 姿态基线已经稳定，<strong>HaWoR</strong> 是当前 hand reconstruction 强基线，<strong>MagicHOI</strong> 先并列展示 official metrics 和我们 evaluator 结果。</p>
+            <p><strong>FoundationPose + HaWoR</strong> 正在补成类似 WHOLE 的组合方案，用来构成 hand-object reconstruction 的更强拆分基线。</p>
           </div>
         </div>
 
-        <div class="card-grid">
-          <article class="card">
-            <div class="status-row">
-              <h3>FoundationPose / DexYCB</h3>
-              <span class="tag good">complete</span>
-            </div>
-            <p>完整 S0 test export 已落到静态页面，适合做 object pose 基线对照。</p>
-            <div class="kpi-list">
-              <div class="kpi-row"><span>Translation</span><strong>1.85 cm</strong></div>
-              <div class="kpi-row"><span>Rotation</span><strong>41.15 deg</strong></div>
-              <div class="kpi-row"><span>ADD</span><strong>3.33 cm</strong></div>
-              <div class="kpi-row"><span>Coverage</span><strong>704 / 704 clips</strong></div>
-            </div>
-          </article>
-          <article class="card">
-            <div class="status-row">
-              <h3>FoundationPose / HO3D</h3>
-              <span class="tag good">complete</span>
-            </div>
-            <p>HO3D sub_test object 指标已形成完整公开页，适合和后续 HOI 分支做对象侧 sanity check。</p>
-            <div class="kpi-list">
-              <div class="kpi-row"><span>OBJ rot err</span><strong>23.70 deg</strong></div>
-              <div class="kpi-row"><span>OBJ trans err</span><strong>5.38 cm</strong></div>
-              <div class="kpi-row"><span>ADD</span><strong>5.80 cm</strong></div>
-              <div class="kpi-row"><span>Detection</span><strong>1.00</strong></div>
-            </div>
-          </article>
-          <article class="card">
-            <div class="status-row">
-              <h3>MagicHOI / HO3D</h3>
-              <span class="tag warn">live</span>
-            </div>
-            <p>重点是把 long-running baseline 变成“边跑边能看”的网页面，而不是等一个最终 csv。</p>
-            <div class="kpi-list">
-              <div class="kpi-row"><span>Status</span><strong>1 done / 3 running / 1 fail</strong></div>
-              <div class="kpi-row"><span>MPJPE-PA</span><strong>42.70 mm</strong></div>
-              <div class="kpi-row"><span>OBJ rot err</span><strong>176.66 deg</strong></div>
-              <div class="kpi-row"><span>Detection</span><strong>0.1125</strong></div>
-            </div>
-          </article>
-        </div>
+        <div class="baseline-layout">
+          <div class="baseline-stack">
+            <article class="card baseline-panel">
+              <div class="status-row">
+                <h3>1. 物体姿态估计：FoundationPose</h3>
+                <span class="tag good">complete</span>
+              </div>
+              <p>完整 S0 test export 已落到静态页面，作为 object-only 参考面已经够稳，可以直接给后续 HOI object branch 做 sanity check。</p>
+              <div class="baseline-mini-grid">
+                <div class="baseline-mini">
+                  <h4>DexYCB</h4>
+                  <p>Translation 1.85 cm，Rotation 41.15 deg，ADD 3.33 cm，Coverage 704 / 704 clips。</p>
+                </div>
+                <div class="baseline-mini">
+                  <h4>HO3D</h4>
+                  <p>OBJ rot err 23.70 deg，OBJ trans err 5.38 cm，ADD 5.80 cm，Detection 1.00。</p>
+                </div>
+              </div>
+            </article>
 
-        <div class="media-grid">
-          <article class="media-card">
-            <img src="assets/foundationpose_dexycb_sample.png" alt="FoundationPose DexYCB example" />
-            <div class="media-meta">
-              <h3>DexYCB baseline sample</h3>
-              <p>静态 object pose 参考图，便于后续和 HOI object branch 做视觉对比。</p>
-            </div>
-          </article>
-          <article class="media-card">
-            <img src="assets/foundationpose_ho3d_sample.png" alt="FoundationPose HO3D example" />
-            <div class="media-meta">
-              <h3>HO3D baseline sample</h3>
-              <p>HO3D sub_test 公开页已包含 per-sequence 与 aggregate object 指标。</p>
-            </div>
-          </article>
-          <article class="media-card">
-            <video src="assets/magichoi_live_test_video.mp4" autoplay muted loop playsinline></video>
-            <div class="media-meta">
-              <h3>MagicHOI live media</h3>
-              <p>不等最终跑完，网页先展示 overview / val / test video，便于中途判断路线。</p>
-            </div>
-          </article>
+            <article class="card baseline-panel">
+              <div class="status-row">
+                <h3>2. 手重建：HaWoR / Dyn-HaMeR</h3>
+                <span class="tag good">added</span>
+              </div>
+              <p>DexYCB test set 上先把 hand reconstruction 基线拉齐。这里直接放对照表，结论很明确：<strong>HaWoR</strong> 是当前更强的 hand-only 基线。</p>
+              <div class="metric-table-wrap">
+                <table class="deck-table">
+                  <thead>
+                    <tr>
+                      <th>Method</th>
+                      <th>MPJPE</th>
+                      <th>PA-MPJPE</th>
+                      <th>AUC</th>
+                      <th>W-MPJPE</th>
+                      <th>WA-MPJPE</th>
+                      <th>RTE</th>
+                      <th>ATE</th>
+                      <th>ATE-S</th>
+                      <th>Accel</th>
+                      <th>FID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Dyn-HaMeR</td>
+                      <td>236.44</td>
+                      <td>13.47</td>
+                      <td>0.003</td>
+                      <td>330.42</td>
+                      <td>94.58</td>
+                      <td>12.16</td>
+                      <td>83.08</td>
+                      <td>73.85</td>
+                      <td><strong>8.60</strong></td>
+                      <td>87.58</td>
+                    </tr>
+                    <tr>
+                      <td>HaWoR</td>
+                      <td>85.86</td>
+                      <td>5.37</td>
+                      <td><strong>0.39</strong></td>
+                      <td>207.69</td>
+                      <td>52.24</td>
+                      <td>9.10</td>
+                      <td>44.49</td>
+                      <td>69.84</td>
+                      <td>15.56</td>
+                      <td>10.63</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="card baseline-panel">
+              <div class="status-row">
+                <h3>3. 手物重建：MagicHOI / FoundationPose + HaWoR</h3>
+                <span class="tag warn">in progress</span>
+              </div>
+              <p><strong>MagicHOI</strong> 现在先分开看两套指标：它自己的 official evaluation，以及我们当前 evaluator 跑出来的 HOI 指标。两套 protocol 还没完全对齐，所以只并列展示，不直接横向 claim。</p>
+              <div class="baseline-mini-grid">
+                <div class="baseline-mini">
+                  <h4>MagicHOI official metrics</h4>
+                  <p>`mpjpe_ra_r=3.5543`，`cd_icp=1.5352`，`f10_icp=72.8153`，`cd_right=3.5119`。</p>
+                </div>
+                <div class="baseline-mini">
+                  <h4>我们当前 evaluator</h4>
+                  <p>`mpjpe_pa_mm=42.7038`，`auc=0.0044`，`detection_rate=0.1125`，`OBJ_rot_err_deg=176.6588`；evaluator 还需要继续校对。</p>
+                </div>
+              </div>
+              <div class="deck-note">另外，类似 WHOLE 的 <strong>FoundationPose + HaWoR</strong> 组合基线正在添加，用来回答“只靠现成 object+hand 强基线拼起来能到哪里”。</div>
+            </article>
+          </div>
+
+          <div class="baseline-stack">
+            <article class="media-card">
+              <img src="assets/foundationpose_dexycb_sample.png" alt="FoundationPose DexYCB example" />
+              <div class="media-meta">
+                <h3>FoundationPose / DexYCB</h3>
+                <p>object-only 参考图，后续和 HOI object branch 对比最直接。</p>
+              </div>
+            </article>
+            <article class="media-card">
+              <img src="assets/foundationpose_ho3d_sample.png" alt="FoundationPose HO3D example" />
+              <div class="media-meta">
+                <h3>FoundationPose / HO3D</h3>
+                <p>HO3D sub_test 上的 object pose 公开样例，适合做对象侧 sanity check。</p>
+              </div>
+            </article>
+            <article class="media-card">
+              <video src="assets/magichoi_live_test_video.mp4" autoplay muted loop playsinline></video>
+              <div class="media-meta">
+                <h3>MagicHOI live media</h3>
+                <p>先把中间结果公开出来，方便边跑边判断路线；后续补齐 official-vs-ours evaluator 对齐说明。</p>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -695,13 +831,13 @@
       <div class="slide-inner">
         <div class="section-top">
           <div>
-            <div class="eyebrow">2 / Trellis-Inspired Route</div>
-            <h2>新主线：轻量 token memory，而不是直接做重头回归</h2>
-            <p>按现有设计文档，这条线的关键不是换 backbone，而是把 hand / scene / object 组织成显式 memory，再只做 residual 更新。</p>
+            <div class="eyebrow">2 / AlignNet Route</div>
+            <h2>新主线：AlignNet 残差融合，而不是直接大回归</h2>
+            <p>按现有设计文档，这条线的关键不是换 backbone，而是把 hand / scene / object 组织成显式 memory，再交给 `align_hand_net` 做 residual-only 更新。</p>
           </div>
           <div class="card section-note">
             <h3>一句话</h3>
-            <p><strong>Frozen STream3R</strong> 提供 camera/depth/world scaffold，<strong>HaMeR</strong> 提供 hand observation base，object 侧拆成 <strong>static shape prior + render-conditioned token</strong>，最后由 <strong>align_hand_net</strong> 做 residual-only refinement。</p>
+            <p><strong>Frozen STream3R</strong> 提供 camera/depth/world scaffold，<strong>HaMeR</strong> 提供 hand observation base，scene/object 只作为额外对齐信息，最后统一走 <strong>AlignNet residual refinement</strong>。</p>
           </div>
         </div>
 
@@ -728,7 +864,7 @@
             <div class="stack-index">03 / Object memory</div>
             <h3>Static + Render 双路 token</h3>
             <ul>
-              <li>借鉴 trellis / Hunyuan 的 object prior 思路。</li>
+              <li>object 侧拆成 static prior 和 render-conditioned cue。</li>
               <li>`O_static` 负责 canonical shape prior。</li>
               <li>`O_render_t` 负责 pose-conditioned visible geometry。</li>
             </ul>
@@ -759,7 +895,7 @@
           <div>
             <div class="eyebrow">3 / Experiment Evolution</div>
             <h2>实验演化：先理顺坐标，再筛 scene token</h2>
-            <p>现阶段的数字主要用来筛路线，不拿来做最终 claim。核心信息是：从 S1-A 到 S2-D，loss 下降连续；S2-D 在可用证据上是当前 winner。</p>
+            <p>现阶段的数字主要用来筛路线，不拿来做最终 claim。核心信息是：从 S1-A 到 S2-D，loss 下降连续；S2-D 是当前 AlignNet 路线下的 winner。</p>
           </div>
           <div class="card section-note">
             <h3>当前结论</h3>
@@ -834,149 +970,6 @@
             <p>为后续 Stage-3 object token / render token 路线准备视觉接口。</p>
             <img src="assets/s2d_hand_obj_render.png" alt="S2-D hand object render" />
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" id="evidence">
-      <div class="slide-inner">
-        <div class="section-top">
-          <div>
-            <div class="eyebrow">4 / Interface Evidence</div>
-            <h2>为什么现在适合往 object / tri-modal 融合推进</h2>
-            <p>因为底层输入契约已经足够稳。近两周 HCU 这条线的价值，不是又多了一个网页，而是把“多数据集输入是否一致”这件事收成了可公开核验的证据。</p>
-          </div>
-          <div class="card section-note">
-            <h3>HCU 核心结果</h3>
-            <p><strong>round_25 final acceptance pass</strong>，6 个数据集的 published overlay derivation 全部通过，geometry diff nonzero pixels = <strong>0</strong>。</p>
-            <p>这里保留最关键的 original / unified / diff 三张图，保证这一页单独发布时也能独立讲清楚输入契约稳定性。</p>
-          </div>
-        </div>
-
-        <div class="metric-strip">
-          <div class="mini">
-            <div class="label">Datasets</div>
-            <div class="value">6 / 6 pass</div>
-          </div>
-          <div class="mini">
-            <div class="label">Geometry diff</div>
-            <div class="value">0 px</div>
-          </div>
-          <div class="mini">
-            <div class="label">Final acceptance</div>
-            <div class="value">pass</div>
-          </div>
-        </div>
-
-        <div class="media-grid">
-          <article class="media-card">
-            <img src="assets/hcu_original_overlay.png" alt="original overlay" />
-            <div class="media-meta">
-              <h3>Original reference</h3>
-              <p>冻结原始参考输出，作为后续统一 MANO 输入接口的对照面。</p>
-            </div>
-          </article>
-          <article class="media-card">
-            <img src="assets/hcu_unified_overlay.png" alt="hcu overlay" />
-            <div class="media-meta">
-              <h3>Unified interface output</h3>
-              <p>现在可以确信后续 object / tri-modal 实验不是卡在输入契约漂移。</p>
-            </div>
-          </article>
-          <article class="media-card">
-            <img src="assets/hcu_geometry_diff.png" alt="geometry diff" />
-            <div class="media-meta">
-              <h3>Geometry diff</h3>
-              <p>最终轮次 `geometry_diff_nonzero_pixels = 0`，是近两周最硬的一条工程证据。</p>
-            </div>
-          </article>
-        </div>
-
-        <div class="timeline">
-          <article class="timeline-card">
-            <div class="date">2026-03-18</div>
-            <h3>Public dashboard 起步</h3>
-            <p>`project_tracking` 首页、public mirror、baseline 页面的基本骨架全部搭起来。</p>
-          </article>
-          <article class="timeline-card">
-            <div class="date">2026-03-20</div>
-            <h3>HCU round report 上线</h3>
-            <p>开始把多数据集 canonical MANO 接口变成可公开核验的 round report。</p>
-          </article>
-          <article class="timeline-card">
-            <div class="date">2026-03-27</div>
-            <h3>HCU final acceptance pass</h3>
-            <p>`round_25` 成为 closure-valid 证据链，geometry / binding / quant 全部通过。</p>
-          </article>
-          <article class="timeline-card">
-            <div class="date">2026-03-29</div>
-            <h3>Original overlay quant compare</h3>
-            <p>补上原始仓库 overlay gallery 和量化 summary，方便解释接口一致性。</p>
-          </article>
-          <article class="timeline-card">
-            <div class="date">2026-03-30 → 03-31</div>
-            <h3>Baseline live publishing</h3>
-            <p>MagicHOI HO3D 进入 live site 阶段；今天这页汇报 deck 也接进了同一套发布面。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" id="plan">
-      <div class="slide-inner">
-        <div class="section-top">
-          <div>
-            <div class="eyebrow">5 / Next Two Weeks</div>
-            <h2>接下来不是再开新坑，而是把主线收窄</h2>
-            <p>当前最重要的是把 Stage-2 winner 往 object / tri-modal 延伸，并且补齐 slice-grade 指标，而不是同时开多个高风险分支。</p>
-          </div>
-          <div class="card section-note">
-            <h3>优先级</h3>
-            <p><strong>先 oracle object，再 predicted object；先 residual fusion，再 temporal。</strong> 周末继续跑 baseline / long jobs，工作日集中做高认知设计和实验判读。</p>
-          </div>
-        </div>
-
-        <div class="plan-grid">
-          <article class="plan-card">
-            <h3>Stage 3A</h3>
-            <p>先做 oracle object ceiling，验证 object 信息是否真的能帮 hand。</p>
-            <ul>
-              <li>跑 `static-only / render-only / static+render`。</li>
-              <li>聚焦 contact subset。</li>
-              <li>形成可视化和小表格。</li>
-            </ul>
-          </article>
-          <article class="plan-card">
-            <h3>Stage 3B</h3>
-            <p>再切到 predicted object pose，检查 oracle gain 能保留多少。</p>
-            <ul>
-              <li>上线 `object_render_encoder`。</li>
-              <li>比较 predicted vs oracle gap。</li>
-              <li>继续保留 render 视频证据。</li>
-            </ul>
-          </article>
-          <article class="plan-card">
-            <h3>Stage 4</h3>
-            <p>推进 tri-modal residual fusion，但 direct regression 只做负对照。</p>
-            <ul>
-              <li>memory/query contract 冻结。</li>
-              <li>对比 full fusion 与 partial models。</li>
-              <li>避免“模型变重但不清楚谁在起作用”。</li>
-            </ul>
-          </article>
-          <article class="plan-card">
-            <h3>Publication / Tables</h3>
-            <p>继续把 baseline 和实验页面化，减少每次周报的重复整理成本。</p>
-            <ul>
-              <li>补 slice-grade 指标。</li>
-              <li>把关键图表都沉淀到 `project_tracking`。</li>
-              <li>为论文图表提前做素材池。</li>
-            </ul>
-          </article>
-        </div>
-
-        <div class="footer-note">
-          source highlights: `docs/GPTPRO_PLAN.md`, `docs/GP2_COMPARISON_NOTE.md`, `docs/superpowers/specs/2026-03-18-align-hand-net-single-frame-design-zh.md`, `project_tracking/baselines/*`, `project_tracking/hcu/*`
         </div>
       </div>
     </section>
