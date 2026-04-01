@@ -1,0 +1,152 @@
+{
+  "sequence_filter": "20200709-subject-01/20200709_141754",
+  "sequence_key": "20200709-subject-01/20200709_141754/836212060125",
+  "camera_serial": "836212060125",
+  "frame_index": 30,
+  "requested_frame_index": 30,
+  "diagnosis": {
+    "hand_stage": "projection_path_non_empty",
+    "object_stage": "camera_to_image_invalid"
+  },
+  "hand_raw": {
+    "vertex_count": 12,
+    "face_count": 8,
+    "xyz_min": [
+      0.37280285358428955,
+      -0.4997606575489044,
+      -0.4975883662700653
+    ],
+    "xyz_max": [
+      0.49776679277420044,
+      -0.12404688447713852,
+      0.25307363271713257
+    ],
+    "positive_z_count": 5
+  },
+  "object_raw": {
+    "vertex_count": 9,
+    "face_count": 4,
+    "xyz_min": [
+      0.24462907016277313,
+      -0.49962517619132996,
+      -0.49712181091308594
+    ],
+    "xyz_max": [
+      0.4944058954715729,
+      -0.24961969256401062,
+      -0.4968673288822174
+    ],
+    "positive_z_count": 0
+  },
+  "hand_sparse_field": {
+    "token_count": 8960,
+    "corner_count": 71680,
+    "raw_sdf_min": -0.012174099683761597,
+    "raw_sdf_max": 0.3430298864841461,
+    "biased_sdf_min": -0.0434240996837616,
+    "biased_sdf_max": 0.3117798864841461,
+    "negative_count": 43,
+    "positive_count": 71637,
+    "zero_count": 0,
+    "has_sign_change": true,
+    "collapse_hint": "mixed_sign"
+  },
+  "object_sparse_field": {
+    "token_count": 17408,
+    "corner_count": 139264,
+    "raw_sdf_min": -0.033702678978443146,
+    "raw_sdf_max": 0.3288513422012329,
+    "biased_sdf_min": -0.06495267897844315,
+    "biased_sdf_max": 0.2976013422012329,
+    "negative_count": 185,
+    "positive_count": 139079,
+    "zero_count": 0,
+    "has_sign_change": true,
+    "collapse_hint": "mixed_sign"
+  },
+  "hand_transition": {
+    "first_all_nonnegative_step": null,
+    "first_empty_step": null,
+    "first_geo_zero_step": null,
+    "objective_gap_step": null
+  },
+  "object_transition": {
+    "first_all_nonnegative_step": null,
+    "first_empty_step": 26,
+    "first_geo_zero_step": null,
+    "objective_gap_step": null
+  },
+  "hand_world": {
+    "vertex_count": 12,
+    "face_count": 8,
+    "xyz_min": [
+      -0.23997259140014648,
+      -0.6085293889045715,
+      0.7677346467971802
+    ],
+    "xyz_max": [
+      0.16609226167201996,
+      -0.004333183169364929,
+      1.2050021886825562
+    ],
+    "positive_z_count": 12
+  },
+  "object_world": {
+    "vertex_count": 9,
+    "face_count": 4,
+    "xyz_min": [
+      -0.18583697080612183,
+      0.6225227117538452,
+      0.9664585590362549
+    ],
+    "xyz_max": [
+      0.10604743659496307,
+      0.7596712112426758,
+      1.1118996143341064
+    ],
+    "positive_z_count": 9
+  },
+  "hand_camera_projection": {
+    "point_count": 12,
+    "positive_z_count": 12,
+    "valid_projection_count": 5,
+    "bbox_xyxy": [
+      520.8607177734375,
+      289.19281005859375,
+      521.4832153320312,
+      291.2145080566406
+    ]
+  },
+  "object_camera_projection": {
+    "point_count": 9,
+    "positive_z_count": 9,
+    "valid_projection_count": 0,
+    "bbox_xyxy": null
+  },
+  "hand_gt_camera_projection": {
+    "point_count": 778,
+    "positive_z_count": 778,
+    "valid_projection_count": 778,
+    "bbox_xyxy": [
+      221.9690399169922,
+      346.3993225097656,
+      328.7777099609375,
+      414.7523193359375
+    ]
+  },
+  "object_gt_camera_projection": {
+    "point_count": 7678,
+    "positive_z_count": 7678,
+    "valid_projection_count": 7678,
+    "bbox_xyxy": [
+      290.3808898925781,
+      328.4478759765625,
+      366.0671081542969,
+      436.7525634765625
+    ]
+  },
+  "artifacts": [
+    "camera_projection_compare.png",
+    "step_trace.json"
+  ]
+}
