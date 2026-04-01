@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · Frame 30 Denorm + Depth-Ordered Overlay Fix</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08101c;
+      --card: rgba(14, 23, 39, 0.9);
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 22rem),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 18rem),
+        linear-gradient(180deg, #040816 0%, #08101c 100%);
+    }
+    .page { max-width: 1120px; margin: 0 auto; padding: 2.5rem 1.1rem 4rem; }
+    .back { color: var(--accent); text-decoration: none; font-size: 0.92rem; }
+    .hero, .section { margin-top: 1rem; border-radius: 24px; border: 1px solid var(--border); background: var(--card); padding: 1.4rem; }
+    h1 { margin: 0; font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1.08; letter-spacing: -0.04em; }
+    h2 { margin: 0 0 0.9rem; font-size: 1.05rem; }
+    p { margin: 0; color: var(--muted); line-height: 1.72; }
+    code { color: #bae6fd; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .status { display: inline-flex; margin: 1rem 0 0.9rem; padding: 0.35rem 0.75rem; border-radius: 999px; background: rgba(34, 197, 94, 0.16); color: #bbf7d0; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+    .card { border-radius: 18px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); padding: 0.95rem 1rem; }
+    .label { color: var(--muted); font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .value { margin-top: 0.35rem; font-size: 1.06rem; font-weight: 800; }
+    .viz-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .viz-card { border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); }
+    .viz-card img { display: block; width: 100%; height: auto; background: #020617; }
+    .viz-copy { padding: 0.95rem 1rem 1rem; }
+    .viz-copy h3 { margin: 0 0 0.5rem; font-size: 0.96rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+    .links a { color: var(--accent); text-decoration: none; border: 1px solid rgba(56,189,248,0.2); border-radius: 999px; padding: 0.45rem 0.8rem; font-size: 0.9rem; }
+    @media (max-width: 980px) { .viz-grid, .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="../index.html">← Back to dashboard</a>
+    <section class="hero">
+      <h1>Frame 30 Denorm + Depth-Ordered Overlay Fix</h1>
+      <div class="status">Completed node · projection bug isolated and fixed</div>
+      <p>
+        This node separates two previously conflated failure modes. First, the native TRELLIS mesh decoder was
+        emitting vertices in its internal normalized cube, but the pipeline treated them as metric hand/object local
+        coordinates before pose transforms. Second, the overlay painter always drew object after hand, so the 2D view
+        could visually invert occlusion. The current fix adds metric bbox de-normalization before pose lifting and uses
+        camera-depth ordering in the overlay renderer.
+      </p>
+      <div class="grid">
+        <div class="card"><div class="label">Overfit Loss</div><div class="value">3.4938 → 0.0808</div></div>
+        <div class="card"><div class="label">Object Projections</div><div class="value">0 → 9 valid</div></div>
+        <div class="card"><div class="label">Hand Stage</div><div class="value"><code>projection_path_non_empty</code></div></div>
+        <div class="card"><div class="label">Object Stage</div><div class="value"><code>projection_path_non_empty</code></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Diagnosis</h2>
+      <p>
+        The root cause of the "non-empty world mesh but completely off-image" object bug was not the camera projection
+        formula. The corrected diagnosis shows the object now has <code>valid_projection_count = 9</code> with camera-space
+        bbox <code>[365.53, 433.25, 367.11, 435.87]</code>. That confirms the projection path is alive again. The residual
+        problem is now a different one: the object prediction remains too small and too bottom-right compared with GT,
+        which points to remaining shape/occupancy collapse rather than a coordinate-frame bug.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Visual Evidence</h2>
+      <div class="viz-grid">
+        <article class="viz-card">
+          <img src="../assets/frame30-denorm-overlay-fix/overlay_compare.png" alt="Frame 30 overlay compare">
+          <div class="viz-copy">
+            <h3>Overlay Compare</h3>
+            <p>GT/pred overlays now use camera-depth ordering, so hand/object occlusion follows the actual depth relation instead of draw order.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/frame30-denorm-overlay-fix/camera_projection_compare.png" alt="Frame 30 camera projection compare">
+          <div class="viz-copy">
+            <h3>Projection Diagnosis</h3>
+            <p>The object prediction is no longer fully outside the image. The remaining miss is a small projected cluster rather than zero valid pixels.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/frame30-denorm-overlay-fix/world_scene_compare.png" alt="Frame 30 world scene compare">
+          <div class="viz-copy">
+            <h3>World-Space Compare</h3>
+            <p>Hand prediction now aligns closely in world space. Object prediction stays non-empty but still collapses into a much smaller occupied region.</p>
+          </div>
+        </article>
+      </div>
+      <div class="links">
+        <a href="../assets/frame30-denorm-overlay-fix/overfit_summary.json">Overfit Summary JSON</a>
+        <a href="../assets/frame30-denorm-overlay-fix/visualization_summary.json">Visualization Summary JSON</a>
+        <a href="../assets/frame30-denorm-overlay-fix/diagnostic_summary.json">Diagnostic Summary JSON</a>
+        <a href="../assets/frame30-denorm-overlay-fix/step_trace.json">Step Trace JSON</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
