@@ -1,0 +1,115 @@
+{
+  "sequence_filter": "20200709-subject-01/20200709_141754",
+  "sequence_key": "20200709-subject-01/20200709_141754/836212060125",
+  "camera_serial": "836212060125",
+  "frame_index": 30,
+  "requested_frame_index": 30,
+  "diagnosis": {
+    "hand_stage": "mesh_extraction_empty",
+    "object_stage": "mesh_extraction_empty"
+  },
+  "hand_raw": {
+    "vertex_count": 0,
+    "face_count": 0,
+    "xyz_min": null,
+    "xyz_max": null,
+    "positive_z_count": 0
+  },
+  "object_raw": {
+    "vertex_count": 0,
+    "face_count": 0,
+    "xyz_min": null,
+    "xyz_max": null,
+    "positive_z_count": 0
+  },
+  "hand_sparse_field": {
+    "token_count": 8960,
+    "corner_count": 71680,
+    "raw_sdf_min": 0.10175246000289917,
+    "raw_sdf_max": 0.36601555347442627,
+    "biased_sdf_min": 0.07050246000289917,
+    "biased_sdf_max": 0.33476555347442627,
+    "negative_count": 0,
+    "positive_count": 71680,
+    "zero_count": 0,
+    "has_sign_change": false,
+    "collapse_hint": "all_nonnegative"
+  },
+  "object_sparse_field": {
+    "token_count": 17408,
+    "corner_count": 139264,
+    "raw_sdf_min": 0.16236643493175507,
+    "raw_sdf_max": 0.3801705241203308,
+    "biased_sdf_min": 0.13111643493175507,
+    "biased_sdf_max": 0.3489205241203308,
+    "negative_count": 0,
+    "positive_count": 139264,
+    "zero_count": 0,
+    "has_sign_change": false,
+    "collapse_hint": "all_nonnegative"
+  },
+  "hand_transition": {
+    "first_all_nonnegative_step": 41,
+    "first_empty_step": 41,
+    "first_geo_zero_step": 41,
+    "objective_gap_step": 41
+  },
+  "object_transition": {
+    "first_all_nonnegative_step": 37,
+    "first_empty_step": 27,
+    "first_geo_zero_step": 27,
+    "objective_gap_step": 27
+  },
+  "hand_world": {
+    "vertex_count": 0,
+    "face_count": 0,
+    "xyz_min": null,
+    "xyz_max": null,
+    "positive_z_count": 0
+  },
+  "object_world": {
+    "vertex_count": 0,
+    "face_count": 0,
+    "xyz_min": null,
+    "xyz_max": null,
+    "positive_z_count": 0
+  },
+  "hand_camera_projection": {
+    "point_count": 0,
+    "positive_z_count": 0,
+    "valid_projection_count": 0,
+    "bbox_xyxy": null
+  },
+  "object_camera_projection": {
+    "point_count": 0,
+    "positive_z_count": 0,
+    "valid_projection_count": 0,
+    "bbox_xyxy": null
+  },
+  "hand_gt_camera_projection": {
+    "point_count": 778,
+    "positive_z_count": 778,
+    "valid_projection_count": 778,
+    "bbox_xyxy": [
+      221.9690399169922,
+      346.3993225097656,
+      328.7777099609375,
+      414.7523193359375
+    ]
+  },
+  "object_gt_camera_projection": {
+    "point_count": 7678,
+    "positive_z_count": 7678,
+    "valid_projection_count": 7678,
+    "bbox_xyxy": [
+      290.3808898925781,
+      328.4478759765625,
+      366.0671081542969,
+      436.7525634765625
+    ]
+  },
+  "artifacts": [
+    "camera_projection_compare.png",
+    "step_trace.json"
+  ]
+}
