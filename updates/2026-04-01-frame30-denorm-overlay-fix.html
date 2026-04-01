@@ -70,6 +70,17 @@
     </section>
 
     <section class="section">
+      <h2>Architecture Diagram</h2>
+      <div class="viz-card">
+        <img src="../assets/frame30-denorm-overlay-fix/trellis_branch_architecture.svg" alt="Current DexYCB TRELLIS-style hand and object branch architecture">
+        <div class="viz-copy">
+          <h3>Current Branch At A Glance</h3>
+          <p>The diagram below summarizes the full published path used by this frame-30 experiment: DexYCB toolkit loading, custom sparse codec, shared native TRELLIS mesh decoder, normalized-cube to metric bbox recovery, and TRELLIS-style render losses. The orange panel marks the remaining gaps from original TRELLIS training.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Diagnosis</h2>
       <p>
         The root cause of the "non-empty world mesh but completely off-image" object bug was not the camera projection
@@ -77,6 +88,76 @@
         bbox <code>[365.53, 433.25, 367.11, 435.87]</code>. That confirms the projection path is alive again. The residual
         problem is now a different one: the object prediction remains too small and too bottom-right compared with GT,
         which points to remaining shape/occupancy collapse rather than a coordinate-frame bug.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Trellis-Style Branch Summary</h2>
+      <p>
+        The current hand/object branch is now a TRELLIS-style mesh path rather than the earlier dense placeholder.
+        The work completed so far is concentrated in four parts: toolkit-aligned DexYCB loading, a shared native
+        TRELLIS mesh decoder, TRELLIS-style rendering losses, and diagnosis/visualization utilities that expose failure
+        stages directly on one DexYCB frame.
+      </p>
+      <div class="grid">
+        <div class="card"><div class="label">Data Bridge</div><div class="value"><code>dexycb_toolkit_bridge.py</code></div></div>
+        <div class="card"><div class="label">Mesh Branch</div><div class="value"><code>trellis_mesh_branch.py</code></div></div>
+        <div class="card"><div class="label">Native Decoder</div><div class="value"><code>SLatMeshDecoder</code> shared by hand/object</div></div>
+        <div class="card"><div class="label">Loss Path</div><div class="value"><code>mask + depth + normal + mesh reg</code></div></div>
+      </div>
+      <p style="margin-top: 1rem;">
+        Concretely, <code>stream3r/data/dexycb_toolkit_bridge.py</code> loads DexYCB with toolkit semantics, builds hand
+        canonical coordinates by subtracting the camera-space hand root, keeps object vertices in object-local canonical
+        space, and exports <code>hand_pose_w</code>, <code>object_pose_w</code>, <code>T_ct_from_w</code>, intrinsics, GT world meshes,
+        and slot masks for a single frame. <code>stream3r/models/trellis_mesh_branch.py</code> then feeds those slots through a
+        lightweight custom codec in <code>trellis_mesh_codec.py</code> and a shared TRELLIS-native decoder in
+        <code>trellis_shared_decoder.py</code>, where both hand and object use the same <code>SLatMeshDecoder</code> / FlexiCubes mesh
+        extraction path.
+      </p>
+      <p style="margin-top: 1rem;">
+        On the supervision side, <code>stream3r/loss/trellis_geometry.py</code> renders predicted meshes with the native
+        <code>MeshRenderer</code> and trains with TRELLIS-style geometry terms: mask loss, depth loss, normal reconstruction loss,
+        and the mesh extractor's own regularization. To close the earlier zero-geometry-loss loophole, this branch also adds
+        <code>empty_mesh_penalty</code> and <code>sdf_presence_loss</code>. For debugging, the scripts
+        <code>dexycb_trellis_overfit.py</code>, <code>visualize_dexycb_trellis_overfit.py</code>, and
+        <code>dexycb_trellis_diagnose.py</code> now run one-frame overfit, export overlay/world visualizations, and label each
+        failure as raw-mesh, world-lift, world-to-camera, or camera-to-image.
+      </p>
+      <p style="margin-top: 1rem;">
+        The most recent fix in this node is also part of that branch summary: decoder outputs were originally still in the
+        native normalized cube, so this page's experiment adds metric bbox de-normalization before applying hand/object pose
+        transforms. Overlay rendering was also changed to camera-depth ordering so the 2D hand/object occlusion follows actual
+        depth instead of painter order.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Difference From Original Trellis</h2>
+      <p>
+        This is not yet a strict reproduction of TRELLIS training. The branch already uses the native mesh decoder and
+        FlexiCubes extraction, but it does not yet use a native TRELLIS encoder, native pretrained weights, or the full
+        original structured latent training distribution. The current <code>trellis_mesh_codec.py</code> is a lightweight custom
+        sparse codec that quantizes each slot independently with per-sample <code>min/max</code> normalization and pooled vertex
+        features, while scene conditioning is still a simplified token pack built from camera transforms, intrinsics, and
+        coarse hand/object anchors.
+      </p>
+      <p style="margin-top: 1rem;">
+        There is another important gap: the branch currently uses TRELLIS-style render supervision and FlexiCubes regularization,
+        but it still does not include the stronger edge-based SDF regularization used in FlexiCubes optimization examples, and the
+        internal <code>tsdf</code> regularizer path remains disabled in <code>trellis_geometry.py</code>. That means the current branch
+        is TRELLIS-like in decoder/loss structure, but not yet equivalent to the full native TRELLIS mesh training recipe.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Why Collapse Still Happens</h2>
+      <p>
+        Combining the current experiment with the TRELLIS/FlexiCubes code path gives a consistent diagnosis: the earlier
+        "object projects nowhere" bug was caused by coordinate misuse and is now fixed, but the remaining small object mesh is a
+        training-collapse issue. The likely root causes are the mismatch between our custom codec's latent semantics and the
+        native decoder's expected structured latent space, plus missing strong SDF/topology regularization. In other words,
+        the branch now uses the right decoder family, but the front half of the training path is still too weak to reliably keep
+        the object occupancy field from shrinking into a tiny surviving patch.
       </p>
     </section>
 
