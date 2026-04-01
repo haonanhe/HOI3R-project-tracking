@@ -1,0 +1,81 @@
+{
+  "sequence_filter": "20200709-subject-01/20200709_141754",
+  "sequence_key": "20200709-subject-01/20200709_141754/836212060125",
+  "camera_serial": "836212060125",
+  "frame_index": 30,
+  "requested_frame_index": 30,
+  "seed": 0,
+  "max_steps": 80,
+  "device": "cuda",
+  "lr": 0.0001,
+  "kl_weight": 1e-06,
+  "loss_mode": "trellis_geometry",
+  "train_initial_total_loss": 4.930922031402588,
+  "train_final_total_loss": 0.11147677153348923,
+  "eval_hand_geo_loss": 0.04376545548439026,
+  "eval_object_geo_loss": 0.0679023265838623,
+  "pred_hand_vertices": 19,
+  "pred_object_vertices": 9,
+  "hand_world_range_gt": [
+    [
+      0.19831416010856628,
+      -0.03888672590255737,
+      0.8380957245826721
+    ],
+    [
+      0.3430613875389099,
+      0.12691819667816162,
+      0.9742436408996582
+    ]
+  ],
+  "hand_world_range_pred": [
+    [
+      0.20496156811714172,
+      -0.03730638325214386,
+      0.8867570757865906
+    ],
+    [
+      0.3454150855541229,
+      0.11850526183843613,
+      0.9801675081253052
+    ]
+  ],
+  "object_world_range_gt": [
+    [
+      0.16221600770950317,
+      -0.05715952813625336,
+      0.840332567691803
+    ],
+    [
+      0.2744220793247223,
+      0.10890278965234756,
+      1.0115691423416138
+    ]
+  ],
+  "object_world_range_pred": [
+    [
+      0.17849940061569214,
+      0.09950640797615051,
+      0.9448682069778442
+    ],
+    [
+      0.20842058956623077,
+      0.11345777660608292,
+      0.9597269296646118
+    ]
+  ],
+  "artifacts": [
+    "loss_curve.png",
+    "overlay.png",
+    "overlay_gt.png",
+    "overlay_pred.png",
+    "overlay_compare.png",
+    "world_scene_compare.png",
+    "hand_world_scatter.png",
+    "object_world_scatter.png",
+    "hand_gt_world.ply",
+    "hand_pred_world.ply",
+    "object_gt_world.ply",
+    "object_pred_world.ply"
+  ]
+}
