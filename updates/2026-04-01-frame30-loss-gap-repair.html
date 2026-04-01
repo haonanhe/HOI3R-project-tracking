@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · Frame 30 Loss-Gap Repair</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08101c;
+      --card: rgba(14, 23, 39, 0.9);
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 22rem),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 18rem),
+        linear-gradient(180deg, #040816 0%, #08101c 100%);
+    }
+    .page { max-width: 1120px; margin: 0 auto; padding: 2.5rem 1.1rem 4rem; }
+    .back { color: var(--accent); text-decoration: none; font-size: 0.92rem; }
+    .hero, .section { margin-top: 1rem; border-radius: 24px; border: 1px solid var(--border); background: var(--card); padding: 1.4rem; }
+    h1 { margin: 0; font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1.08; letter-spacing: -0.04em; }
+    h2 { margin: 0 0 0.9rem; font-size: 1.05rem; }
+    p { margin: 0; color: var(--muted); line-height: 1.72; }
+    code { color: #bae6fd; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .status { display: inline-flex; margin: 1rem 0 0.9rem; padding: 0.35rem 0.75rem; border-radius: 999px; background: rgba(34, 197, 94, 0.16); color: #bbf7d0; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+    .card { border-radius: 18px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); padding: 0.95rem 1rem; }
+    .label { color: var(--muted); font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .value { margin-top: 0.35rem; font-size: 1.06rem; font-weight: 800; }
+    .viz-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .viz-card { border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); }
+    .viz-card img { display: block; width: 100%; height: auto; background: #020617; }
+    .viz-copy { padding: 0.95rem 1rem 1rem; }
+    .viz-copy h3 { margin: 0 0 0.5rem; font-size: 0.96rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+    .links a { color: var(--accent); text-decoration: none; border: 1px solid rgba(56,189,248,0.2); border-radius: 999px; padding: 0.45rem 0.8rem; font-size: 0.9rem; }
+    @media (max-width: 860px) { .grid, .viz-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="../index.html">← Back to dashboard</a>
+    <section class="hero">
+      <h1>Frame 30 Loss-Gap Repair Experiment</h1>
+      <div class="status">Completed node · Collapse blocked</div>
+      <p>
+        This repair experiment targets the confirmed training loophole where empty meshes received zero geometry loss.
+        The objective now adds an explicit empty-mesh penalty and a sparse-field presence constraint. On frame
+        <code>000030</code>, the experiment no longer collapses to zero-vertex hand/object meshes by the end of the run.
+      </p>
+      <div class="grid">
+        <div class="card"><div class="label">Train Loss</div><div class="value">6.6867 → 0.1083</div></div>
+        <div class="card"><div class="label">Final Hand Verts</div><div class="value">12</div></div>
+        <div class="card"><div class="label">Final Object Verts</div><div class="value">9</div></div>
+        <div class="card"><div class="label">Objective Gap</div><div class="value">removed at final step</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>What Improved</h2>
+      <div class="grid">
+        <div class="card"><div class="label">Hand Transition</div><div class="value"><code>objective_gap_step = null</code></div></div>
+        <div class="card"><div class="label">Object Transition</div><div class="value"><code>objective_gap_step = null</code></div></div>
+        <div class="card"><div class="label">Hand Field</div><div class="value"><code>mixed_sign</code></div></div>
+        <div class="card"><div class="label">Object Field</div><div class="value"><code>mixed_sign</code></div></div>
+      </div>
+      <p style="margin-top: 1rem;">
+        The previous empty-mesh collapse is no longer the dominant failure mode. Hand ends in
+        <code>projection_path_non_empty</code>. Object also stays non-empty, but its current diagnosis shifts to
+        <code>camera_to_image_invalid</code>, meaning the next blocker is now geometric placement / projection rather than
+        zero-geometry-loss collapse.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Visual Evidence</h2>
+      <div class="viz-grid">
+        <article class="viz-card">
+          <img src="../assets/frame30-loss-gap-repair/overlay_compare.png" alt="Frame 30 repaired overlay compare">
+          <div class="viz-copy">
+            <h3>Overlay Compare</h3>
+            <p>The repaired run now projects non-empty predictions. Hand has a small valid image footprint; object remains off-target.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/frame30-loss-gap-repair/world_scene_compare.png" alt="Frame 30 repaired world scene compare">
+          <div class="viz-copy">
+            <h3>World-Space Compare</h3>
+            <p>Both hand and object survive as non-empty world-space meshes, which was not true before the loss-gap repair.</p>
+          </div>
+        </article>
+      </div>
+      <div class="links">
+        <a href="../assets/frame30-loss-gap-repair/diagnostic_summary.json">Diagnostic Summary JSON</a>
+        <a href="../assets/frame30-loss-gap-repair/visualization_summary.json">Visualization Summary JSON</a>
+        <a href="../assets/frame30-loss-gap-repair/step_trace.json">Step Trace JSON</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
