@@ -1,0 +1,13 @@
+{
+  "sequence_filter": "20200709-subject-01/20200709_141754",
+  "synthetic": false,
+  "loss_mode": "trellis_geometry",
+  "sequence_key": "20200709-subject-01/20200709_141754/836212060125",
+  "camera_serial": "836212060125",
+  "frame_index": 30,
+  "max_steps": 80,
+  "initial_total_loss": 3.4937503337860107,
+  "final_total_loss": 0.08078067749738693,
+  "best_total_loss": 0.08061543852090836,
+  "loss_delta": 3.412969656288624
+}
