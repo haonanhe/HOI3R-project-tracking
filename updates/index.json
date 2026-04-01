@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-01 · Frame 30 Loss-Gap Repair Experiment",
+    "date": "2026-04-01",
+    "status": "done",
+    "summary": "A minimal loss repair added explicit empty-mesh and sparse-field presence penalties to the native TRELLIS training objective. On frame 000030, the final hand and object predictions remain non-empty and the earlier empty-mesh zero-geometry-loss collapse no longer survives to the end of training.",
+    "path": "updates/2026-04-01-frame30-loss-gap-repair.html"
+  },
+  {
     "title": "2026-04-01 · Frame 30 Transition And Objective-Gap Diagnosis",
     "date": "2026-04-01",
     "status": "done",
