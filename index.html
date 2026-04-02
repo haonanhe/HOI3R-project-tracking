@@ -141,42 +141,6 @@
     .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
     .card-desc { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.3rem; line-height: 1.5; }
 
-    .quick-links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.75rem;
-    }
-
-    .quick-link {
-      display: block;
-      text-decoration: none;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.95rem 1rem;
-      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(59,130,246,0.04));
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    }
-
-    .quick-link:hover {
-      border-color: rgba(99,102,241,0.28);
-      transform: translateY(-1px);
-      box-shadow: 0 10px 22px var(--accent-glow);
-    }
-
-    .quick-link-title {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    .quick-link-desc {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-
     /* Section label */
     .section-label {
       font-size: 0.7rem;
@@ -305,6 +269,69 @@
     }
     .daily-step.day-done .day-date { color: var(--blue); }
 
+    /* Milestones */
+    .milestone-section {
+      margin-top: 1.8rem;
+    }
+
+    .milestone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .milestone-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.05rem;
+      background: rgba(255,255,255,0.02);
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .milestone-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .milestone-status {
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.12);
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .milestone-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .milestone-summary {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .milestone-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .milestone-link:hover { text-decoration: underline; }
+
     /* Timeline */
     .timeline-section { margin-top: 1.4rem; }
     .venue-name { font-size: 0.8rem; font-weight: 600; color: var(--blue); margin-bottom: 0.6rem; }
@@ -367,51 +394,12 @@
         <button class="header-btn" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn"></button>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">Public Reports</div>
-      <div class="card-desc">Static review surfaces published alongside the dashboard mirror.</div>
-      <div class="quick-links-grid">
-        <a class="quick-link" href="weekly-update-2026w13/" target="_blank" rel="noopener">
-          <span class="quick-link-title">Two-Week Update Deck</span>
-          <span class="quick-link-desc">Web PPT for the 2026-03-31 group meeting: baseline progress, trellis-inspired route, experiment evolution, and next steps.</span>
-        </a>
-        <a class="quick-link" href="hcu/" target="_blank" rel="noopener">
-          <span class="quick-link-title">HCU Round Report</span>
-          <span class="quick-link-desc">Canonical MANO interface freeze status, blockers, overlays, and next-round handoff.</span>
-        </a>
-        <a class="quick-link" href="hcu-original-visual-compare/" target="_blank" rel="noopener">
-          <span class="quick-link-title">HCU Visual Compare</span>
-          <span class="quick-link-desc">5 sequence tracks x 10 sampled frames per dataset, comparing final HCU against <code>original_mano_reference</code>.</span>
-        </a>
-        <a class="quick-link" href="h2o3d-official-visual-compare/" target="_blank" rel="noopener">
-          <span class="quick-link-title">H2O3D Official Compare</span>
-          <span class="quick-link-desc">Frame-by-frame official `vis_H2O3D.py` save-wrapper output against `original_mano_reference`.</span>
-        </a>
-        <a class="quick-link" href="baselines/" target="_blank" rel="noopener">
-          <span class="quick-link-title">Baseline Board</span>
-          <span class="quick-link-desc">Public mirror of baseline runtime evidence, task-lane sync status, and next actions across MagicHOI and FoundationPose surfaces.</span>
-        </a>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Baseline Reports</div>
-      <div class="card-desc">Baseline-specific public reports linked from the baseline board homepage.</div>
-      <div class="quick-links-grid">
-        <a class="quick-link" href="baselines/foundationpose-dexycb/" target="_blank" rel="noopener">
-          <span class="quick-link-title">FoundationPose on DexYCB</span>
-          <span class="quick-link-desc">Full DexYCB S0 test-set object metrics exported as a static public baseline report.</span>
-        </a>
-        <a class="quick-link" href="baselines/foundationpose-ho3d/" target="_blank" rel="noopener">
-          <span class="quick-link-title">FoundationPose on HO3D</span>
-          <span class="quick-link-desc">Baseline-aligned HO3D sub_test object metrics exported as a static public baseline report.</span>
-        </a>
-        <a class="quick-link" href="baselines/magichoi-ho3d/" target="_blank" rel="noopener">
-          <span class="quick-link-title">MagicHOI on HO3D</span>
-          <span class="quick-link-desc">Live HO3D baseline status for MagicHOI, including copied images, videos, per-stage snapshots, and benchmark metrics when available.</span>
-        </a>
-      </div>
-    </div>
     <div id="projects-container"></div>
+    <div class="card milestone-section">
+      <div class="card-title">Execution Nodes</div>
+      <div class="card-desc">Standalone review pages for completed implementation checkpoints and experiment milestones.</div>
+      <div id="milestones-container" class="milestone-grid"></div>
+    </div>
   </div>
 
   <script>
@@ -458,6 +446,16 @@
         files.map(f => fetch(`projects/${f}`).then(r => r.json()))
       );
       return projects;
+    }
+
+    async function loadMilestones() {
+      try {
+        const res = await fetch("updates/index.json");
+        return await res.json();
+      } catch (error) {
+        console.error("failed to load milestone nodes", error);
+        return [];
+      }
     }
 
     const ICONS = { done: "\u2713", current: "\u25B8", pending: "\u2022" };
@@ -575,8 +573,30 @@
       }).join("");
     }
 
+    function renderMilestones(entries) {
+      const container = document.getElementById("milestones-container");
+      if (!entries.length) {
+        container.innerHTML = '<div class="milestone-summary">No completed nodes published yet.</div>';
+        return;
+      }
+      container.innerHTML = entries.map(entry => `
+        <article class="milestone-card">
+          <div class="milestone-meta">
+            <span>${entry.date}</span>
+            <span class="milestone-status">${entry.status}</span>
+          </div>
+          <div class="milestone-title">${entry.title}</div>
+          <div class="milestone-summary">${entry.summary}</div>
+          <a class="milestone-link" href="${entry.path}" target="_blank" rel="noopener">Open node page</a>
+        </article>
+      `).join("");
+    }
+
     document.getElementById("update-date").textContent = new Date().toLocaleDateString();
-    loadProjects().then(render);
+    Promise.all([loadProjects(), loadMilestones()]).then(([projects, milestones]) => {
+      render(projects);
+      renderMilestones(milestones);
+    });
   </script>
 </body>
 </html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · First Synthetic Single-Sequence Overfit Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: rgba(255,255,255,0.08);
+      --text: #e4e4e7;
+      --muted: #a1a1aa;
+      --accent: #60a5fa;
+      --good: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, rgba(34,197,94,0.12), transparent 30%), var(--bg); color: var(--text); }
+    .page { max-width: 920px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+    .back { color: var(--accent); text-decoration: none; font-size: 0.92rem; }
+    .hero, .section { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1rem; }
+    h1 { margin: 0; font-size: 1.8rem; line-height: 1.2; }
+    h2 { margin: 0 0 0.8rem; font-size: 1rem; }
+    p, li { color: var(--muted); line-height: 1.7; }
+    ul { margin: 0; padding-left: 1.2rem; }
+    .status { display: inline-flex; margin-top: 0.9rem; padding: 0.35rem 0.7rem; border-radius: 999px; background: rgba(34,197,94,0.12); color: var(--good); font-weight: 600; font-size: 0.82rem; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+    .metric { border: 1px solid var(--border); border-radius: 14px; padding: 0.85rem 0.95rem; background: rgba(255,255,255,0.02); }
+    .metric-label { color: var(--muted); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .metric-value { margin-top: 0.35rem; font-size: 1.05rem; font-weight: 700; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #bfdbfe; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="../index.html">&larr; Back to dashboard</a>
+    <section class="hero">
+      <h1>2026-03-30 · First Synthetic Single-Sequence Overfit Result</h1>
+      <div class="status">Completed node</div>
+      <p>The first runnable Trellis mesh bootstrap training loop has now produced an overfit result on a single synthetic sequence using <code>--device cuda</code>. This is the current unblocker milestone before switching the same path over to processed DexYCB data.</p>
+      <div class="metrics">
+        <div class="metric"><div class="metric-label">Sequence</div><div class="metric-value">demo/seq</div></div>
+        <div class="metric"><div class="metric-label">Steps</div><div class="metric-value">80</div></div>
+        <div class="metric"><div class="metric-label">Initial Loss</div><div class="metric-value">0.4651</div></div>
+        <div class="metric"><div class="metric-label">Final Loss</div><div class="metric-value">0.0561</div></div>
+        <div class="metric"><div class="metric-label">Best Loss</div><div class="metric-value">0.0496</div></div>
+        <div class="metric"><div class="metric-label">Loss Delta</div><div class="metric-value">0.4090</div></div>
+      </div>
+    </section>
+    <section class="section">
+      <h2>Artifacts</h2>
+      <ul>
+        <li><code>docs/artifacts/t-p14-05-synth-overfit-cuda/overfit_history.json</code></li>
+        <li><code>docs/artifacts/t-p14-05-synth-overfit-cuda/overfit_summary.json</code></li>
+      </ul>
+    </section>
+    <section class="section">
+      <h2>Interpretation</h2>
+      <ul>
+        <li>This is synthetic evidence only. It validates model plumbing, optimizer flow, loss decrease, and artifact writing.</li>
+        <li>It does not yet validate DexYCB geometry, camera transforms, or real MANO/object supervision.</li>
+        <li>The next swap is data-only: replace the synthetic batch builder with processed DexYCB sequence loading once extraction and preprocessing finish.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

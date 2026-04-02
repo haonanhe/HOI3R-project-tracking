@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · 2026-03-30 Trellis Bootstrap Status</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: rgba(255,255,255,0.08);
+      --text: #e4e4e7;
+      --muted: #a1a1aa;
+      --accent: #60a5fa;
+      --good: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, rgba(96,165,250,0.12), transparent 28%), var(--bg);
+      color: var(--text);
+    }
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.25rem 4rem;
+    }
+    .back {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.92rem;
+    }
+    .hero, .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.4rem 1.5rem;
+      margin-top: 1rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      line-height: 1.2;
+    }
+    .meta {
+      margin-top: 0.7rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.9rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.12);
+      color: var(--good);
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+    h2 {
+      margin: 0 0 0.85rem;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+    }
+    p {
+      margin: 0.4rem 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    li + li { margin-top: 0.4rem; }
+    .evidence {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.8rem;
+      margin-top: 0.9rem;
+    }
+    .evidence-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      background: rgba(255,255,255,0.02);
+    }
+    .evidence-card strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: var(--text);
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.9em;
+      color: #bfdbfe;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="../index.html">&larr; Back to dashboard</a>
+    <section class="hero">
+      <h1>2026-03-30 · Trellis Bootstrap Scaffold + DexYCB Format Alignment</h1>
+      <div class="meta">Feature branch: <code>feat/trellis-mesh-overfit-bootstrap</code></div>
+      <div class="status">Completed node</div>
+      <p>This node closes the bootstrap setup phase before real DexYCB training is available on the container. The route reset, config scaffold, shared decoder path, and synthetic single-sequence overfit runner are all in place.</p>
+    </section>
+    <section class="section">
+      <h2>What Landed</h2>
+      <ul>
+        <li>PRD, project plan, task plan, and decision log were updated for the Trellis mesh bootstrap route.</li>
+        <li>Bootstrap model pieces were added: <code>trellis_mesh_codec.py</code>, <code>trellis_shared_decoder.py</code>, <code>trellis_mesh_branch.py</code>.</li>
+        <li>A dedicated synthetic overfit entrypoint was added in <code>scripts/dexycb_trellis_overfit.py</code>.</li>
+        <li>Single-sequence config wiring was added in <code>configs/experiment/stream3r/dexycb_trellis_overfit.yaml</code>.</li>
+      </ul>
+    </section>
+    <section class="section">
+      <h2>DexYCB Data Contract</h2>
+      <p>While the raw <code>dexycbshu</code> archive is still extracting, the code path is already clear: training does not read the raw directory directly. It expects the processed output produced by <code>datasets_preprocess/preprocess_dexycb.py</code>.</p>
+      <ul>
+        <li>Processed root provides <code>manifest.json</code> and optional <code>split_lists/</code>.</li>
+        <li>Sequence payloads are frame-wise <code>.npz</code> records carrying camera intrinsics/extrinsics, MANO pose/betas/translations, and object pose / mesh references.</li>
+        <li><code>DexYCB_Multi</code> resolves single-sequence filtering through the processed manifest, so the real overfit path can be switched on as soon as preprocessing output appears.</li>
+      </ul>
+    </section>
+    <section class="section">
+      <h2>Evidence</h2>
+      <div class="evidence">
+        <div class="evidence-card">
+          <strong>Spec + plan</strong>
+          <p><code>docs/superpowers/specs/2026-03-29-trellis-mesh-bootstrap-design.md</code> and <code>docs/superpowers/plans/2026-03-29-trellis-mesh-overfit-bootstrap.md</code></p>
+        </div>
+        <div class="evidence-card">
+          <strong>Runtime target</strong>
+          <p>Remote workspace: <code>/mnt/afs/haonan/hoi3r/HOI3R</code></p>
+        </div>
+        <div class="evidence-card">
+          <strong>Next checkpoint</strong>
+          <p>Publish the first single-sequence overfit result and attach its artifact summary in a follow-up node page.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

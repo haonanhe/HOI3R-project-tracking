@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · DexYCB Readiness Probe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: rgba(255,255,255,0.08);
+      --text: #e4e4e7;
+      --muted: #a1a1aa;
+      --accent: #60a5fa;
+      --good: #22c55e;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, rgba(245,158,11,0.14), transparent 30%), var(--bg); color: var(--text); }
+    .page { max-width: 920px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+    .back { color: var(--accent); text-decoration: none; font-size: 0.92rem; }
+    .hero, .section { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1rem; }
+    h1 { margin: 0; font-size: 1.8rem; line-height: 1.2; }
+    h2 { margin: 0 0 0.8rem; font-size: 1rem; }
+    p, li { color: var(--muted); line-height: 1.7; }
+    ul { margin: 0; padding-left: 1.2rem; }
+    .status { display: inline-flex; margin-top: 0.9rem; padding: 0.35rem 0.7rem; border-radius: 999px; background: rgba(245,158,11,0.12); color: var(--warn); font-weight: 600; font-size: 0.82rem; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+    .metric { border: 1px solid var(--border); border-radius: 14px; padding: 0.85rem 0.95rem; background: rgba(255,255,255,0.02); }
+    .metric-label { color: var(--muted); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .metric-value { margin-top: 0.35rem; font-size: 1.05rem; font-weight: 700; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #bfdbfe; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="../index.html">&larr; Back to dashboard</a>
+    <section class="hero">
+      <h1>2026-03-31 · DexYCB Real-Data Readiness Probe</h1>
+      <div class="status">Completed node</div>
+      <p>The Trellis overfit runner now supports a real-data probe path through <code>--data-root</code>. In non-synthetic dry-run mode it reports processed-root readiness, locates the DexYCB processed archive, and resolves a concrete sequence/frame once canonical manifest metadata is present. The current blocker is no longer script plumbing; it is the absence of <code>processed/manifest.json</code> while extraction is still in progress.</p>
+      <div class="metrics">
+        <div class="metric"><div class="metric-label">CLI smoke</div><div class="metric-value">3 passed</div></div>
+        <div class="metric"><div class="metric-label">Related smoke</div><div class="metric-value">7 passed</div></div>
+        <div class="metric"><div class="metric-label">Processed dir</div><div class="metric-value">present</div></div>
+        <div class="metric"><div class="metric-label">Manifest</div><div class="metric-value">missing</div></div>
+        <div class="metric"><div class="metric-label">Archive</div><div class="metric-value">processed_aaa2286cbb49.tar.zst</div></div>
+        <div class="metric"><div class="metric-label">Runner output</div><div class="metric-value">readiness probe active</div></div>
+      </div>
+    </section>
+    <section class="section">
+      <h2>What Changed</h2>
+      <ul>
+        <li><code>scripts/dexycb_trellis_overfit.py</code> now accepts <code>--data-root</code> and reports real-data readiness in non-synthetic dry-run mode.</li>
+        <li>The runner resolves <code>&lt;root&gt;/manifest.json</code> or <code>&lt;root&gt;/processed/manifest.json</code>, surfaces the processed archive path when extraction is incomplete, and falls back to camera-directory scanning when canonical index metadata is not yet aligned.</li>
+        <li><code>tests/smoke/test_trellis_overfit_cli.py</code> now covers both the “archive only” case and the “processed manifest + frame selection” case.</li>
+      </ul>
+    </section>
+    <section class="section">
+      <h2>Current Probe Result</h2>
+      <ul>
+        <li>Dry-run command: <code>python scripts/dexycb_trellis_overfit.py --dry-run --sequence-filter 20200709-subject-01 --output-dir /tmp/dexycb_trellis_real_probe --data-root /mnt/afs/haonan/datasets/haonan/datasets/dexycb</code></li>
+        <li>Observed output: <code>processed_root_ready=False</code></li>
+        <li>Observed output: <code>processed_archive=/mnt/afs/haonan/datasets/haonan/datasets/dexycb/processed_aaa2286cbb49.tar.zst</code></li>
+        <li>The extracted <code>processed/</code> directory exists already, but canonical index files and <code>manifest.json</code> have not appeared yet.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

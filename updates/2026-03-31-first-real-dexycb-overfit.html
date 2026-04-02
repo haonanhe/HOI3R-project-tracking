@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · First Real DexYCB Overfit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: rgba(255,255,255,0.08);
+      --text: #e4e4e7;
+      --muted: #a1a1aa;
+      --accent: #60a5fa;
+      --good: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, rgba(96,165,250,0.16), transparent 30%), var(--bg); color: var(--text); }
+    .page { max-width: 920px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+    .back { color: var(--accent); text-decoration: none; font-size: 0.92rem; }
+    .hero, .section { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1rem; }
+    h1 { margin: 0; font-size: 1.8rem; line-height: 1.2; }
+    h2 { margin: 0 0 0.8rem; font-size: 1rem; }
+    p, li { color: var(--muted); line-height: 1.7; }
+    ul { margin: 0; padding-left: 1.2rem; }
+    .status { display: inline-flex; margin-top: 0.9rem; padding: 0.35rem 0.7rem; border-radius: 999px; background: rgba(34,197,94,0.12); color: var(--good); font-weight: 600; font-size: 0.82rem; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+    .metric { border: 1px solid var(--border); border-radius: 14px; padding: 0.85rem 0.95rem; background: rgba(255,255,255,0.02); }
+    .metric-label { color: var(--muted); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .metric-value { margin-top: 0.35rem; font-size: 1.05rem; font-weight: 700; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #bfdbfe; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="../index.html">&larr; Back to dashboard</a>
+    <section class="hero">
+      <h1>2026-03-31 · First Real DexYCB Single-Sequence Overfit Result</h1>
+      <div class="status">Completed node</div>
+      <p>The real DexYCB path now runs end to end with toolkit-aligned raw loading, explicit DexYCB-to-Stream3R world transforms, and a Trellis mesh overfit loop on one concrete sequence/camera/frame. The first stable CUDA run used the real sequence <code>20200709-subject-01/20200709_141754/836212060125</code> and reduced total loss from <code>1.8684</code> to <code>0.7956</code> in 80 steps.</p>
+      <div class="metrics">
+        <div class="metric"><div class="metric-label">Sequence</div><div class="metric-value">20200709_141754</div></div>
+        <div class="metric"><div class="metric-label">Camera</div><div class="metric-value">836212060125</div></div>
+        <div class="metric"><div class="metric-label">Device</div><div class="metric-value">CUDA</div></div>
+        <div class="metric"><div class="metric-label">Initial loss</div><div class="metric-value">1.8684</div></div>
+        <div class="metric"><div class="metric-label">Final loss</div><div class="metric-value">0.7956</div></div>
+        <div class="metric"><div class="metric-label">Loss delta</div><div class="metric-value">+1.0728</div></div>
+      </div>
+    </section>
+    <section class="section">
+      <h2>What Changed</h2>
+      <ul>
+        <li>A new DexYCB bridge module now selects sequences from the processed split/index surface without reading legacy frame payload semantics, then reloads the true sample from raw DexYCB files following <code>third_party/dex-ycb-toolkit</code> conventions.</li>
+        <li>The real-data overfit batch now uses dataset extrinsics to emit explicit <code>T_w_from_ct</code> and <code>T_ct_from_w</code> transforms and lifts hand/object geometry into Stream3R world coordinates.</li>
+        <li>The hand mesh provider now resolves local repo MANO assets from the existing benchmark copies instead of the empty toolkit submodule stub, which unblocked real training on the remote container.</li>
+      </ul>
+    </section>
+    <section class="section">
+      <h2>Verification</h2>
+      <ul>
+        <li>Smoke suite: <code>python -m pytest -q tests/smoke/test_dexycb_toolkit_bridge.py tests/smoke/test_trellis_overfit_cli.py</code> → <code>6 passed</code>.</li>
+        <li>Stable run command: <code>/mnt/afs/haonan/miniconda3/envs/human3r/bin/python scripts/dexycb_trellis_overfit.py --sequence-filter 20200709-subject-01/20200709_141754 --max-steps 80 --device cuda --scene-dim 32 --lr 1e-4 --kl-weight 0.0 --output-dir docs/artifacts/t-p14-07-dexycb-real-overfit-cuda-lr1e4-80 --data-root /mnt/afs/haonan/datasets/haonan/datasets/dexycb</code></li>
+        <li>Artifact summary: <code>docs/artifacts/t-p14-07-dexycb-real-overfit-cuda-lr1e4-80/overfit_summary.json</code></li>
+        <li>Artifact history: <code>docs/artifacts/t-p14-07-dexycb-real-overfit-cuda-lr1e4-80/overfit_history.json</code></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
