@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOI3R Node · STream3R-TRELLIS Migration Aggregate Update</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     :root {
       --bg: #07101d;
@@ -202,16 +201,14 @@
     .scene-card {
       background: var(--card-strong);
     }
-    model-viewer {
+    .scene-preview {
       display: block;
       width: 100%;
-      height: 320px;
       margin-top: 0.85rem;
       border-radius: 16px;
       background:
         radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 16rem),
         linear-gradient(180deg, #020617 0%, #0f172a 100%);
-      --poster-color: transparent;
     }
     .scene-copy p + p {
       margin-top: 0.7rem;
@@ -375,23 +372,16 @@
         <div class="evidence-label">Backbone scene export before optimization</div>
         <div class="scene-grid">
           <article class="scene-card">
-            <div class="eyebrow">STream3R Scene + Camera</div>
+            <div class="eyebrow">STream3R Scene Preview</div>
             <h3>Synthetic pre-optimization scene</h3>
             <div class="scene-copy">
               <p>
-                This exported GLB is the direct pre-optimization STream3R scene payload used for the migration
-                sanity check. It contains <code>268324</code> scene points and <code>1</code> camera, so the public page
-                now exposes the backbone output itself instead of only the downstream compare figures.
+                This static preview keeps the pre-optimization STream3R backbone output readable at publication size.
+                It shows the filtered scene point cloud from four fixed views together with the camera marker, while
+                the original <code>GLB</code> remains available for direct inspection.
               </p>
             </div>
-            <model-viewer
-              src="../assets/stream3r-trellis-migration/synthetic-pre-stream3r-scene.glb"
-              alt="Synthetic pre-optimization STream3R scene point cloud and camera"
-              camera-controls
-              touch-action="pan-y"
-              interaction-prompt="auto"
-              shadow-intensity="0">
-            </model-viewer>
+            <img class="scene-preview" src="../assets/stream3r-trellis-migration/synthetic-pre-stream3r-scene-preview.png" alt="Synthetic pre-optimization STream3R scene preview">
             <a class="scene-link" href="../assets/stream3r-trellis-migration/synthetic-pre-stream3r-scene.glb">Open <code>synthetic-pre-stream3r-scene.glb</code></a>
           </article>
         </div>
@@ -403,15 +393,15 @@
           <article class="evidence-card">
             <img src="../assets/stream3r-trellis-migration/synthetic-pre-overlay-compare.png" alt="Synthetic pre-optimization overlay compare">
             <div class="evidence-copy">
-              <h3>Pre Overlay Compare</h3>
-              <p>The migrated branch already emits a reviewable hand/object image-space compare before any gradient step.</p>
+              <h3>Mesh Overlay Compare</h3>
+              <p>The migrated branch now shows projected hand/object mesh wireframes before any gradient step instead of a raw vertex scatter.</p>
             </div>
           </article>
           <article class="evidence-card">
             <img src="../assets/stream3r-trellis-migration/synthetic-pre-world-scene-compare.png" alt="Synthetic pre-optimization world-space compare">
             <div class="evidence-copy">
-              <h3>Pre World-Space Compare</h3>
-              <p>The same pre-opt export also lands in the expected world-frame visualization path, which is the key migration check.</p>
+              <h3>Mesh Surface Compare</h3>
+              <p>The same pre-opt export now renders hand/object mesh surfaces in world space, which is easier to audit than the earlier vertex-only scatter view.</p>
             </div>
           </article>
         </div>
@@ -423,15 +413,15 @@
           <article class="evidence-card">
             <img src="../assets/stream3r-trellis-migration/synthetic-post-overlay-compare.png" alt="Synthetic post-optimization overlay compare">
             <div class="evidence-copy">
-              <h3>Post Overlay Compare</h3>
-              <p>The post-opt overlay remains aligned with the same migrated rendering path; the replay does not reveal a new structural break.</p>
+              <h3>Mesh Overlay Compare</h3>
+              <p>The post-opt overlay keeps the same mesh-wireframe publication contract, so replay can be judged from actual projected mesh structure.</p>
             </div>
           </article>
           <article class="evidence-card">
             <img src="../assets/stream3r-trellis-migration/synthetic-post-world-scene-compare.png" alt="Synthetic post-optimization world-space compare">
             <div class="evidence-copy">
-              <h3>Post World-Space Compare</h3>
-              <p>World-space export remains coherent after replay, reinforcing that the migration result is primarily a path-integrity proof.</p>
+              <h3>Mesh Surface Compare</h3>
+              <p>World-space mesh surfaces remain coherent after replay, reinforcing that this result is still a path-integrity proof rather than a convergence claim.</p>
             </div>
           </article>
         </div>
@@ -512,23 +502,16 @@
         <div class="evidence-label">Backbone scene export before optimization</div>
         <div class="scene-grid">
           <article class="scene-card">
-            <div class="eyebrow">STream3R Scene + Camera</div>
+            <div class="eyebrow">STream3R Scene Preview</div>
             <h3>Frame30 pre-optimization scene</h3>
             <div class="scene-copy">
               <p>
-                The real-data pre-opt export is published as the same GLB contract so the migrated backbone can be
-                checked directly on DexYCB frame30. This payload also contains <code>268324</code> scene points and
-                <code>1</code> camera before any optimization replay.
+                The real-data pre-opt export now uses the same fixed-view static preview contract, making the
+                DexYCB frame30 backbone scene readable without manipulating a tiny `GLB` viewer. The raw `GLB`
+                is still linked below for direct download.
               </p>
             </div>
-            <model-viewer
-              src="../assets/stream3r-trellis-migration/frame30-pre-stream3r-scene.glb"
-              alt="DexYCB frame30 pre-optimization STream3R scene point cloud and camera"
-              camera-controls
-              touch-action="pan-y"
-              interaction-prompt="auto"
-              shadow-intensity="0">
-            </model-viewer>
+            <img class="scene-preview" src="../assets/stream3r-trellis-migration/frame30-pre-stream3r-scene-preview.png" alt="DexYCB frame30 pre-optimization STream3R scene preview">
             <a class="scene-link" href="../assets/stream3r-trellis-migration/frame30-pre-stream3r-scene.glb">Open <code>frame30-pre-stream3r-scene.glb</code></a>
           </article>
         </div>
@@ -540,15 +523,15 @@
           <article class="evidence-card">
             <img src="../assets/stream3r-trellis-migration/frame30-pre-overlay-compare.png" alt="Frame30 pre-optimization overlay compare">
             <div class="evidence-copy">
-              <h3>Pre Overlay Compare</h3>
-              <p>The real-scene overlay is already reviewable before optimization, which is the minimum structural proof required for this node.</p>
+              <h3>Mesh Overlay Compare</h3>
+              <p>The real-scene overlay now uses projected mesh wireframes, so hand/object topology and silhouette mismatch are visible before optimization.</p>
             </div>
           </article>
           <article class="evidence-card">
             <img src="../assets/stream3r-trellis-migration/frame30-pre-world-scene-compare.png" alt="Frame30 pre-optimization world-space compare">
             <div class="evidence-copy">
-              <h3>Pre World-Space Compare</h3>
-              <p>The frame-30 world-space compare confirms that the migrated scene-lift and pose path still exports the expected public visualization.</p>
+              <h3>Mesh Surface Compare</h3>
+              <p>The frame-30 world-space compare now shows actual mesh surfaces, which makes the object-vs-GT mismatch directly visible instead of hiding it in a vertex cloud.</p>
             </div>
           </article>
         </div>
@@ -560,15 +543,15 @@
           <article class="evidence-card">
             <img src="../assets/stream3r-trellis-migration/frame30-post-overlay-compare.png" alt="Frame30 post-optimization overlay compare">
             <div class="evidence-copy">
-              <h3>Post Overlay Compare</h3>
-              <p>The short replay preserves the migrated real-data overlay path and yields a small numeric improvement without a qualitative overclaim.</p>
+              <h3>Mesh Overlay Compare</h3>
+              <p>The short replay preserves the migrated real-data mesh-overlay path and yields only a small numeric improvement without a qualitative overclaim.</p>
             </div>
           </article>
           <article class="evidence-card">
             <img src="../assets/stream3r-trellis-migration/frame30-post-world-scene-compare.png" alt="Frame30 post-optimization world-space compare">
             <div class="evidence-copy">
-              <h3>Post World-Space Compare</h3>
-              <p>The post-opt world compare keeps the same publication contract and shows the setting is suitable for continued real-data follow-up runs.</p>
+              <h3>Mesh Surface Compare</h3>
+              <p>The post-opt world compare keeps the same mesh-surface contract and makes it clear that this setting is structurally valid but still far from geometric convergence.</p>
             </div>
           </article>
         </div>
