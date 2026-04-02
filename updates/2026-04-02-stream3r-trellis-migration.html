@@ -408,6 +408,86 @@
       </div>
 
       <div class="evidence-block">
+        <div class="evidence-label">Decoupled Pre-Optimization Ablation</div>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <img src="../assets/stream3r-trellis-migration/synthetic-decoupled-pre-stream3r-scene-preview.png" alt="Synthetic decoupled pre-optimization STream3R scene preview">
+            <div class="evidence-copy">
+              <div class="eyebrow">Scene-Only STream3R</div>
+              <h3>STream3R Scene Preview</h3>
+              <p>This branch keeps the original pre-optimization STream3R scene output while removing hand/object mesh-token interaction from the shared decoder path.</p>
+            </div>
+          </article>
+          <article class="evidence-card">
+            <img src="../assets/stream3r-trellis-migration/synthetic-decoupled-pre-scene-projection-compare.png" alt="Synthetic decoupled pre-optimization scene projection compare">
+            <div class="evidence-copy">
+              <div class="eyebrow">Scene-Only STream3R</div>
+              <h3>Scene Projection Compare</h3>
+              <p>The scene point cloud is projected back to the current camera plane so the backbone geometry can be checked directly against the input image.</p>
+            </div>
+          </article>
+        </div>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <img src="../assets/stream3r-trellis-migration/synthetic-decoupled-pre-overlay-compare.png" alt="Synthetic decoupled pre-optimization overlay compare">
+            <div class="evidence-copy">
+              <div class="eyebrow">Mesh-Only Trellis</div>
+              <h3>Mesh Overlay Compare</h3>
+              <p>This export decodes TRELLIS directly from its initial extra tokens, so the uncoupled hand/object mesh prior is visible before any STream3R decoder interaction.</p>
+            </div>
+          </article>
+          <article class="evidence-card">
+            <img src="../assets/stream3r-trellis-migration/synthetic-decoupled-pre-world-scene-compare.png" alt="Synthetic decoupled pre-optimization world-space compare">
+            <div class="evidence-copy">
+              <div class="eyebrow">Mesh-Only Trellis</div>
+              <h3>Mesh Surface Compare</h3>
+              <p>The world-space mesh-only render isolates the raw TRELLIS initialization before coupled refinement and before optimization.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="evidence-block">
+        <div class="evidence-label">Decoupled Pre-Optimization Ablation</div>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <img src="../assets/stream3r-trellis-migration/frame30-decoupled-pre-stream3r-scene-preview.png" alt="Frame30 decoupled pre-optimization STream3R scene preview">
+            <div class="evidence-copy">
+              <div class="eyebrow">Scene-Only STream3R</div>
+              <h3>STream3R Scene Preview</h3>
+              <p>This scene-only export preserves the real-data STream3R backbone output while removing hand/object token interaction from the mesh branch.</p>
+            </div>
+          </article>
+          <article class="evidence-card">
+            <img src="../assets/stream3r-trellis-migration/frame30-decoupled-pre-scene-projection-compare.png" alt="Frame30 decoupled pre-optimization scene projection compare">
+            <div class="evidence-copy">
+              <div class="eyebrow">Scene-Only STream3R</div>
+              <h3>Scene Projection Compare</h3>
+              <p>The frame-30 scene point cloud is projected back onto the RGB camera plane, making the backbone initialization easy to compare against the original image.</p>
+            </div>
+          </article>
+        </div>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <img src="../assets/stream3r-trellis-migration/frame30-decoupled-pre-overlay-compare.png" alt="Frame30 decoupled pre-optimization overlay compare">
+            <div class="evidence-copy">
+              <div class="eyebrow">Mesh-Only Trellis</div>
+              <h3>Mesh Overlay Compare</h3>
+              <p>This mesh-only overlay shows the raw TRELLIS initialization before any shared-decoder interaction with STream3R visual tokens.</p>
+            </div>
+          </article>
+          <article class="evidence-card">
+            <img src="../assets/stream3r-trellis-migration/frame30-decoupled-pre-world-scene-compare.png" alt="Frame30 decoupled pre-optimization world-space compare">
+            <div class="evidence-copy">
+              <div class="eyebrow">Mesh-Only Trellis</div>
+              <h3>Mesh Surface Compare</h3>
+              <p>The world-space mesh-only view makes the uncoupled hand/object priors visible before they are allowed to interact with the STream3R decoder path.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="evidence-block">
         <div class="evidence-label">Post-optimization evidence</div>
         <div class="evidence-grid">
           <article class="evidence-card">
@@ -464,8 +544,8 @@
           <h3>Small numeric gain with stable pre/post public evidence</h3>
           <p>
             The published frame-30 compare images show that the migrated path remains reviewable both before and after
-            replay. The reported loss moved from <code>0.05936773866415024</code> to <code>0.05855463445186615</code>, a delta of
-            <code>0.0008131042122840881</code>. That is a real but small improvement over the short replay window.
+            replay. The reported loss moved from <code>0.05936773866415024</code> to <code>0.05873863399028778</code>, a delta of
+            <code>0.0006291046738624573</code>. That is a real but small improvement over the short replay window.
           </p>
         </article>
         <article class="report-card">
@@ -486,11 +566,11 @@
         </div>
         <div class="metric">
           <div class="metric-label">Final Loss</div>
-          <div class="metric-value">0.0585546345</div>
+          <div class="metric-value">0.0587386340</div>
         </div>
         <div class="metric">
           <div class="metric-label">Loss Delta</div>
-          <div class="metric-value">0.0008131042</div>
+          <div class="metric-value">0.0006291047</div>
         </div>
         <div class="metric">
           <div class="metric-label">Interpretation</div>

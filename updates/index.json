@@ -3,7 +3,7 @@
     "title": "2026-04-02 · STream3R-TRELLIS Migration Aggregate Update",
     "date": "2026-04-02",
     "status": "done",
-    "summary": "One aggregate public node now publishes readable pre-optimization STream3R scene previews plus mesh-based overlay and world-surface compares for the synthetic migrated overfit and the DexYCB frame30 migrated overfit. Synthetic is essentially flat, while frame30 shows only a small loss improvement, so the page is framed as migration-proof evidence rather than convergence.",
+    "summary": "One aggregate public node now publishes readable coupled STream3R scene previews plus mesh-based overlay and world-surface compares, and now adds a decoupled pre-optimization ablation with scene-projection compares and mesh-only TRELLIS checks for both the synthetic migrated overfit and DexYCB frame30.",
     "path": "updates/2026-04-02-stream3r-trellis-migration.html"
   },
   {
