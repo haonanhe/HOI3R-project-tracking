@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-05 · Dexycb Frame30 Hand Fillholes",
+    "date": "2026-04-05",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "experiment completed and showed that making the hand GT mesh watertight does not materially reduce the sparse voxel density or the decoded hand mesh explosion. Important caveat: this rerun gives `178k` open-hand predicted vertices from the same GT mesh, contradicting the earlier `1.37M` isolated record; prior isolated hand numbers should be treated as suspect until rerun",
+    "path": "updates/2026-04-05-p0-dexycb-frame30-hand-fillholes-001.html",
+    "page": "updates/2026-04-05-p0-dexycb-frame30-hand-fillholes-001.html",
+    "slug": "p0-dexycb-frame30-hand-fillholes-001",
+    "experiment_id": "P0-DEXYCB-FRAME30-HAND-FILLHOLES-001"
+  },
+  {
     "title": "2026-04-05 · DexYCB Frame 30 Official Isolated Shape Roundtrip",
     "date": "2026-04-05",
     "status": "PASS",
