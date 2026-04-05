@@ -132,7 +132,7 @@
           <ul>
             <li>Bridge GT mesh export: PASS。frame 30 明确包含手物共存，hand GT `778 / 1538`，object GT `7864 / 15728`。</li>
 <li>Official isolated shape roundtrip: PASS as experiment, negative as diagnosis。hand 预测膨胀到 `1,374,773` vertices / `4,530,864` faces；object 膨胀到 `63,136` vertices / `126,374` faces；总耗时 `118.31s`。</li>
-<li>新增官方隔离视角 artifacts: `roundtrip/*_gt_camera_mesh.ply`、`roundtrip/*_pred_camera_mesh.ply`、`viz/*_mesh_compare.png`、`viz/*_pointcloud_compare.png`、`viz/*_pointcloud.ply`、`viz/scene_mesh_compare.png`、`viz/scene_pointcloud_compare.png`。</li>
+            <li>新增官方隔离视角 artifacts: `hand/object/scene` 的 mesh compare PNG 和 point-cloud compare PNG 已发布；大体积 `.ply` 只保留在本地实验目录，不进入公开页面资产。</li>
           </ul>
         </article>
       </div>
