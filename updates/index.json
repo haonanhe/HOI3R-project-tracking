@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-05 · DexYCB Frame 30 TRELLIS.2 Rerun",
+    "date": "2026-04-05",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "rerun succeeded on frame 30 and confirmed the grasped object is `040_large_marker`; decoded object mesh still shows high sliver-face ratio on this thin-object case. Diagnosis result: mismatch vs `vae_test_initial` came from comparing different object classes and render modes; real mesh-quality issue still remains in predicted object faces",
+    "path": "updates/2026-04-05-p0-dexycb-frame30-rerun-001.html",
+    "page": "updates/2026-04-05-p0-dexycb-frame30-rerun-001.html",
+    "slug": "p0-dexycb-frame30-rerun-001",
+    "experiment_id": "P0-DEXYCB-FRAME30-RERUN-001"
+  },
+  {
     "title": "2026-04-05 · Phase 0 DexYCB Bootstrap Check",
     "date": "2026-04-05",
     "status": "PASS",
