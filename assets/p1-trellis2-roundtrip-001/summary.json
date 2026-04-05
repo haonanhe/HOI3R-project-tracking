@@ -1,0 +1,16 @@
+{
+  "sequence_key": "20200709-subject-01/20200709_141754/836212060125",
+  "frame_index": 30,
+  "camera_serial": "836212060125",
+  "hand_slot": 1,
+  "object_slot": 0,
+  "latent_dim": 32,
+  "decoder_dim": 1024,
+  "grid_size": 256,
+  "prepare_decode_seconds": 200.58036088943481,
+  "total_seconds": 309.59943652153015,
+  "hand_pred_vertices": 63167,
+  "hand_pred_faces": 46171,
+  "object_pred_vertices": 75997,
+  "object_pred_faces": 48090
+}

@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-05 · P1 TRELLIS2 Round-trip Validation",
+    "date": "2026-04-05",
+    "status": "done",
+    "summary": "This node publishes the Phase 1 Trellis.2 round-trip feasibility check on DexYCB frame 30. Hand topology remains readable, the mustard bottle keeps its silhouette, and the combined world-space layout stays plausible after canonical mesh → structured latent → decoded mesh reconstruction.",
+    "path": "updates/2026-04-05-p1-trellis2-roundtrip-validation.html"
+  },
+  {
     "title": "2026-04-02 · STream3R-TRELLIS Migration Aggregate Update",
     "date": "2026-04-02",
     "status": "done",
