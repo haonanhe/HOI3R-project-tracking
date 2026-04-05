@@ -1,10 +1,10 @@
 [
   {
-    "title": "2026-04-05 · DexYCB Bootstrap Check",
+    "title": "2026-04-05 · Phase 0 DexYCB Bootstrap Check",
     "date": "2026-04-05",
-    "status": "BLOCKED",
-    "publish_status": "blocked",
-    "summary": "STream3R passed on the selected DexYCB sequence, TRELLIS.2 remained blocked by missing `o_voxel._C`, `cumesh`, and `flex_gemm` in the offline debug container. Random sequence fixed by seed 20260405; public node should reflect partial pass + native-runtime blocker",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "STream3R passed on the selected DexYCB sequence, and TRELLIS.2 shape encoder/decoder checkpoints completed the requested frame-12 roundtrip in `human3r`. Random sequence fixed by seed 20260405; Phase 0 gate is satisfied for the requested TRELLIS.2 shape scope, not the full image-to-3D pipeline",
     "path": "updates/2026-04-05-p0-dexycb-bootstrap-001.html",
     "page": "updates/2026-04-05-p0-dexycb-bootstrap-001.html",
     "slug": "p0-dexycb-bootstrap-001",

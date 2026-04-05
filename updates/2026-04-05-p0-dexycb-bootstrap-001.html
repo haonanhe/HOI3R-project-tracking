@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HOI3R Node · DexYCB Bootstrap Check</title>
+  <title>HOI3R Node · Phase 0 DexYCB Bootstrap Check</title>
   <style>
     :root {
       --bg: #efe8db;
@@ -15,7 +15,6 @@
       --accent: #b24a2d;
       --accent-soft: #d28b5b;
       --ok: #1f7a43;
-      --blocked: #8b2f1c;
       --shadow: 0 24px 60px rgba(72, 42, 25, 0.12);
     }
     * { box-sizing: border-box; }
@@ -53,7 +52,7 @@
     code { color: #0f3c5f; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; }
     ul { margin: 0; padding-left: 1.1rem; color: var(--muted); line-height: 1.8; }
     .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem; font-weight: 800; }
-    .status { display: inline-flex; margin: 1rem 0 0.9rem; padding: 0.38rem 0.82rem; border-radius: 999px; background: rgba(139, 47, 28, 0.14); color: var(--blocked); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .status { display: inline-flex; margin: 1rem 0 0.9rem; padding: 0.38rem 0.82rem; border-radius: 999px; background: rgba(31, 122, 67, 0.14); color: var(--ok); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
     .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr); gap: 1rem; align-items: start; }
     .stats, .grid, .meta-grid, .viz-grid { display: grid; gap: 0.9rem; }
     .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -84,16 +83,16 @@
   <main class="page">
     <section class="hero">
       <div class="eyebrow">HOI3R experiment publish node</div>
-      <div class="status">BLOCKED</div>
+      <div class="status">PASS</div>
       <div class="hero-grid">
         <div>
-          <h1>DexYCB Bootstrap Check</h1>
-          <p>STream3R passed on the selected DexYCB sequence, TRELLIS.2 remained blocked by missing `o_voxel._C`, `cumesh`, and `flex_gemm` in the offline debug container. Random sequence fixed by seed 20260405; public node should reflect partial pass + native-runtime blocker</p>
+          <h1>Phase 0 DexYCB Bootstrap Check</h1>
+          <p>STream3R passed on the selected DexYCB sequence, and TRELLIS.2 shape encoder/decoder checkpoints completed the requested frame-12 roundtrip in `human3r`. Random sequence fixed by seed 20260405; Phase 0 gate is satisfied for the requested TRELLIS.2 shape scope, not the full image-to-3D pipeline</p>
         </div>
         <div class="stats">
             <div class="stat">
               <div class="label">Total Seconds</div>
-              <div class="value">95.92</div>
+              <div class="value">364.64</div>
             </div>
             <div class="stat">
               <div class="label">Frame Index</div>
@@ -106,6 +105,14 @@
             <div class="stat">
               <div class="label">STream3R Camera Count</div>
               <div class="value">8</div>
+            </div>
+            <div class="stat">
+              <div class="label">TRELLIS.2 Prepare Decode Seconds</div>
+              <div class="value">164.82</div>
+            </div>
+            <div class="stat">
+              <div class="label">TRELLIS.2 Hand Pred Vertices</div>
+              <div class="value">69,190</div>
             </div>
         </div>
       </div>
@@ -120,7 +127,7 @@
         </article>
         <article class="note-card">
           <h3>Conclusion</h3>
-          <p>部分通过。STream3R 已满足当前 Phase 0 的独立推理验证；TRELLIS.2 尚未满足 gate，下一步应先在 debug 容器补齐其原生依赖栈，再重跑同一条 DexYCB 样本。</p>
+          <p>PASS（按请求范围）。STream3R 与 TRELLIS.2 shape enc/dec 分支都已在同一条随机 DexYCB 样本上独立跑通，因此当前 Phase 0 gate 对本次目标已满足。这里不主张 full image-to-3D pipeline 已验证完成。</p>
         </article>
       </div>
     </section>
@@ -132,18 +139,18 @@
           <dl>
             <dt>Experiment ID</dt><dd>P0-DEXYCB-BOOTSTRAP-001</dd>
 <dt>Publish Date</dt><dd>2026-04-05</dd>
-<dt>Result</dt><dd>BLOCKED</dd>
+<dt>Result</dt><dd>PASS</dd>
 <dt>Sequence</dt><dd>20200928-subject-07/20200928_155503/932122060861</dd>
-<dt>Command</dt><dd>`STream3R: local-dir causal inference on frames 8-15; TRELLIS.2: local-root image-to-3D probe on frame 12`</dd>
+<dt>Command</dt><dd>`STream3R: local-dir causal inference on frames 8-15; TRELLIS.2: shape enc/dec roundtrip on frame 12`</dd>
 <dt>Branch</dt><dd>feat/pure-stream3r-trellis-migration</dd>
-<dt>Config</dt><dd>STream3R local-dir checkpoint + TRELLIS.2 local 4B root (native probe with environment shims)</dd>
+<dt>Config</dt><dd>STream3R local-dir checkpoint + TRELLIS.2 shape SC-VAE checkpoints on AFS</dd>
           </dl>
         </article>
         <article class="note-card">
           <h3>Key findings</h3>
           <ul>
             <li>STream3R: PASS。8 帧 causal 推理完成，输出 `predictions.npz`、输入拼图、两张世界点云视角图和相机轨迹图；可追溯到 48,736 个采样点和 8 个相机位姿。</li>
-<li>TRELLIS.2: BLOCKED。原生 image-to-3D 路径已进入本地模型加载，但 debug 容器缺少 `o_voxel._C`、`cumesh`、`flex_gemm`；本地组件失败后又因为容器离线，无法从 Hugging Face 回退拉取补充组件。</li>
+<li>TRELLIS.2: PASS（按本次请求范围）。shape encoder/decoder 路径成功加载 `FlexiDualGridVaeEncoder` 和 `FlexiDualGridVaeDecoder`，并在 frame 12 上完成 hand/object roundtrip；输出 hand 69,190 vertices / 48,223 faces，object 81,186 vertices / 47,211 faces，总耗时 268.71s。</li>
           </ul>
         </article>
       </div>
@@ -153,6 +160,27 @@
       <h2>Visual Evidence</h2>
       <div class="viz-grid">
         
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-bootstrap-001/trellis2/world_scene_compare.png" alt="World scene comparison">
+          <div class="viz-copy">
+            <h3>World scene comparison</h3>
+            <p>Ground-truth and reconstructed hand-object scene layout in world coordinates.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-bootstrap-001/trellis2/hand_world_scatter.png" alt="Hand world scatter">
+          <div class="viz-copy">
+            <h3>Hand world scatter</h3>
+            <p>Hand vertex distribution in world coordinates.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-bootstrap-001/trellis2/object_world_scatter.png" alt="Object world scatter">
+          <div class="viz-copy">
+            <h3>Object world scatter</h3>
+            <p>Object vertex distribution in world coordinates.</p>
+          </div>
+        </article>
         <article class="viz-card">
           <img src="../assets/p0-dexycb-bootstrap-001/stream3r/camera_trajectory.png" alt="Camera Trajectory">
           <div class="viz-copy">
@@ -171,27 +199,6 @@
           <img src="../assets/p0-dexycb-bootstrap-001/stream3r/pointcloud_view_a.png" alt="Pointcloud View A">
           <div class="viz-copy">
             <h3>Pointcloud View A</h3>
-            <p>Experiment artifact mirrored into the public asset bundle.</p>
-          </div>
-        </article>
-        <article class="viz-card">
-          <img src="../assets/p0-dexycb-bootstrap-001/stream3r/pointcloud_view_b.png" alt="Pointcloud View B">
-          <div class="viz-copy">
-            <h3>Pointcloud View B</h3>
-            <p>Experiment artifact mirrored into the public asset bundle.</p>
-          </div>
-        </article>
-        <article class="viz-card">
-          <img src="../assets/p0-dexycb-bootstrap-001/trellis2/error_summary.png" alt="Error Summary">
-          <div class="viz-copy">
-            <h3>Error Summary</h3>
-            <p>Experiment artifact mirrored into the public asset bundle.</p>
-          </div>
-        </article>
-        <article class="viz-card">
-          <img src="../assets/p0-dexycb-bootstrap-001/trellis2/input_frame.png" alt="Input Frame">
-          <div class="viz-copy">
-            <h3>Input Frame</h3>
             <p>Experiment artifact mirrored into the public asset bundle.</p>
           </div>
         </article>

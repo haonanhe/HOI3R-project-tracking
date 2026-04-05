@@ -1,15 +1,19 @@
 {
+  "status": "pass",
+  "scope": "shape_encoder_decoder_roundtrip",
   "sequence_key": "20200928-subject-07/20200928_155503/932122060861",
   "frame_index": 12,
-  "input_image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200928-subject-07/20200928_155503/932122060861/color_000012.jpg",
-  "model_root": "/mnt/afs/haonan/hoi3r/model_zoo/TRELLIS.2-4B",
-  "status": "blocked",
-  "cumesh_mode": "shim_no_hole_filling",
-  "flex_gemm_mode": "shim_import_only",
-  "blockers": [
-    "o_voxel._C is unavailable in the debug container",
-    "cumesh is unavailable in the debug container",
-    "flex_gemm is unavailable in the debug container",
-    "offline runtime prevents Hugging Face fallback when local component loading fails"
-  ]
+  "camera_serial": "932122060861",
+  "hand_slot": 1,
+  "object_slot": 0,
+  "latent_dim": 32,
+  "decoder_dim": 1024,
+  "grid_size": 256,
+  "prepare_decode_seconds": 164.81902384757996,
+  "total_seconds": 268.71342396736145,
+  "hand_pred_vertices": 69190,
+  "hand_pred_faces": 48223,
+  "object_pred_vertices": 81186,
+  "object_pred_faces": 47211,
+  "notes": "Shape encoder and decoder checkpoints loaded from /mnt/afs/haonan/TRELLIS.2-4B/ckpts and completed a DexYCB frame-12 hand-object roundtrip inside the human3r environment after native dependency repair."
 }
