@@ -114,7 +114,7 @@
       <div class="meta-grid">
         <article class="meta-card">
           <dl>
-            <dt>Experiment ID</dt><dd>P0-DEXYCB-FRAME30-HAND-FILLHOLES-001</dd>
+<dt>Experiment ID</dt><dd>P0-DEXYCB-FRAME30-HAND-FILLHOLES-001</dd>
 <dt>Publish Date</dt><dd>2026-04-05</dd>
 <dt>Result</dt><dd>PASS</dd>
 <dt>Sequence</dt><dd><code>20200928-subject-07 / 20200928_155503 / 932122060861 / frame 30</code></dd>
@@ -131,6 +131,7 @@
 <li>`filled/open` 比例仅为 `1.045x` active voxels、`1.033x` latent tokens、`1.045x` decoded vertices</li>
 <li>结论: hand GT mesh 是否 watertight 不是当前异常的主因。封腕后重建仍然碎裂，并未变回“正常密度” mesh</li>
 <li>额外诊断: `bridge/gt_meshes.pt` 与导出的 `hand_gt_camera_mesh.ply` 顶点和面完全一致，因此此前 isolated 记录中的 `1.37M` hand vertices 与本次 rerun 的 `178k` 相互矛盾，旧记录应视为待复核而非最终结论</li>
+<li>新增 mesh surface 可视化: `open_hand/mesh_compare.png` 与 `filled_hand/mesh_compare.png`，用于和已有 point-cloud 视图对照查看 GT / predicted mesh 的真实面片外观</li>
           </ul>
         </article>
       </div>
@@ -153,7 +154,7 @@
             <dt>Shape Encoder</dt><dd><code>/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16</code></dd>
             <dt>Shape Decoder</dt><dd><code>/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_dec_next_dc_f16c32_fp16</code></dd>
             <dt>Input Mesh</dt><dd><code>/mnt/afs/haonan/hoi3r/tmp_phase0/P0-DEXYCB-FRAME30-OFFICIAL-ISOLATED-001/bridge/hand_gt_camera_mesh.ply</code></dd>
-            <dt>Comparison Note</dt><dd><code>bridge/gt_meshes.pt</code> and the exported hand PLY are exactly identical; the previous 1.37M-hand record is therefore treated as suspect.</dd>
+            <dt>Consistency Check</dt><dd><code>bridge/gt_meshes.pt</code> and the exported hand PLY are exactly identical; the older 1.37M-hand record is therefore treated as suspect.</dd>
           </dl>
         </article>
       </div>
@@ -163,6 +164,13 @@
       <h2>Visual Evidence</h2>
       <div class="viz-grid">
         
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-frame30-hand-fillholes-001/filled_hand/mesh_compare.png" alt="Mesh Compare">
+          <div class="viz-copy">
+            <h3>Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
         <article class="viz-card">
           <img src="../assets/p0-dexycb-frame30-hand-fillholes-001/filled_hand/pointcloud_compare.png" alt="Pointcloud Compare">
           <div class="viz-copy">
@@ -174,6 +182,13 @@
           <img src="../assets/p0-dexycb-frame30-hand-fillholes-001/filled_hand/vertex_compare.png" alt="Vertex Compare">
           <div class="viz-copy">
             <h3>Vertex Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-frame30-hand-fillholes-001/open_hand/mesh_compare.png" alt="Mesh Compare">
+          <div class="viz-copy">
+            <h3>Mesh Compare</h3>
             <p>Experiment artifact mirrored into the public asset bundle.</p>
           </div>
         </article>
