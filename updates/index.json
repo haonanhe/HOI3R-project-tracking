@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-05 · DexYCB Frame 30 Pointcloud Export",
+    "date": "2026-04-05",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "rerun succeeded, emitted point-only PLY/PNG artifacts, and recorded the exact code + weight paths used for the run. Official encoder/decoder weights are reused, but the end-to-end HOI path is still custom HOI3R code rather than the official image-to-3D pipeline",
+    "path": "updates/2026-04-05-p0-dexycb-frame30-pointcloud-001.html",
+    "page": "updates/2026-04-05-p0-dexycb-frame30-pointcloud-001.html",
+    "slug": "p0-dexycb-frame30-pointcloud-001",
+    "experiment_id": "P0-DEXYCB-FRAME30-POINTCLOUD-001"
+  },
+  {
     "title": "2026-04-05 · DexYCB Frame 30 TRELLIS.2 Rerun",
     "date": "2026-04-05",
     "status": "PASS",
