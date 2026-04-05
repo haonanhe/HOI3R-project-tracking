@@ -1,0 +1,33 @@
+{
+  "exp_id": "P0-DEXYCB-FRAME30-OFFICIAL-ISOLATED-001",
+  "status": "pass",
+  "scope": "isolated_bridge_to_official_trellis2_shape_roundtrip",
+  "sequence_key": "20200928-subject-07/20200928_155503/932122060861",
+  "frame_index": 30,
+  "object_id": 18,
+  "object_class_name": "040_large_marker",
+  "bridge_hand_vertices": 778,
+  "bridge_hand_faces": 1538,
+  "bridge_object_vertices": 7864,
+  "bridge_object_faces": 15728,
+  "hand_pred_vertices": 1374773,
+  "hand_pred_faces": 4530864,
+  "object_pred_vertices": 63136,
+  "object_pred_faces": 126374,
+  "grid_size": 256,
+  "total_seconds": 118.30825877189636,
+  "code_paths": {
+    "bridge_code_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration/stream3r/data/dexycb_toolkit_bridge.py",
+    "official_repo_root": "/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main",
+    "official_encode_reference": "/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/data_toolkit/encode_shape_latent.py",
+    "official_decoder_impl": "/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/trellis2/models/sc_vaes/fdg_vae.py",
+    "temporary_bridge_export_script": "/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/tmp_phase0_bridge_export.py",
+    "temporary_roundtrip_script": "/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/tmp_phase0_official_shape_roundtrip.py",
+    "temporary_visualization_script": "/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/tmp_phase0_visualize_mesh_pointcloud.py"
+  },
+  "weight_paths": {
+    "shape_encoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16",
+    "shape_decoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_dec_next_dc_f16c32_fp16"
+  },
+  "notes": "This rerun obeys the isolation constraint: the existing worktree roundtrip script was not used. The DexYCB bridge was used only to resolve a hand-object coexisting frame and export GT meshes; shape encode/decode then ran inside TRELLIS.2-main using the official TRELLIS.2 core encoder/decoder code path. The geometry problem persists under this stricter setup: hand explodes from 778 GT vertices to 1,374,773 predicted vertices and 4,530,864 faces, while object inflates from 7,864 GT vertices to 63,136 predicted vertices and 126,374 faces. This means the earlier bad-looking mesh result is not explained solely by the previous custom roundtrip wrapper."
+}

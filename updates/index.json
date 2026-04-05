@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-05 · DexYCB Frame 30 Official Isolated Shape Roundtrip",
+    "date": "2026-04-05",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "experiment completed and proved the bad-looking geometry persists even after isolating away the previous custom roundtrip wrapper. Negative diagnosis: official core path still explodes the hand mesh to 1.37M vertices / 4.53M faces and inflates the object to 63k vertices / 126k faces",
+    "path": "updates/2026-04-05-p0-dexycb-frame30-official-isolated-001.html",
+    "page": "updates/2026-04-05-p0-dexycb-frame30-official-isolated-001.html",
+    "slug": "p0-dexycb-frame30-official-isolated-001",
+    "experiment_id": "P0-DEXYCB-FRAME30-OFFICIAL-ISOLATED-001"
+  },
+  {
     "title": "2026-04-05 · DexYCB Frame 30 Pointcloud Export",
     "date": "2026-04-05",
     "status": "PASS",
