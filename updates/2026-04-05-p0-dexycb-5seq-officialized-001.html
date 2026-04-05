@@ -93,7 +93,7 @@
 
             <div class="stat">
               <div class="label">Total Seconds</div>
-              <div class="value">141.05</div>
+              <div class="value">122.93</div>
             </div>
         </div>
       </div>
@@ -133,6 +133,7 @@
             <li>5/5 样本都稳定复现了 hand 的极端膨胀；hand `pred_to_gt_vertex_ratio` 分别约为 `1894.96x`, `2013.53x`, `2181.37x`, `2319.83x`, `1894.76x`</li>
 <li>object 也膨胀，但显著弱于 hand；object `pred_to_gt_vertex_ratio` 约为 `19.97x - 45.93x`</li>
 <li>这说明当前问题不是 frame-30 特例，也不是只由 `open-hand` 是否封腕决定，而是在官方ized shape 路径上跨样本稳定存在</li>
+<li>新增 10 张逐样本 mesh 对比图：5 张 `hand GT vs pred mesh`，5 张 `object GT vs pred mesh`，现在可以直接把定量异常和每个样本的面片外观对齐起来看</li>
           </ul>
         </article>
       </div>
@@ -160,6 +161,41 @@
             <p>Experiment artifact mirrored into the public asset bundle.</p>
           </div>
         </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-5seq-officialized-001/sample_00_hand_mesh_compare.png" alt="Sample 00 Hand Mesh Compare">
+          <div class="viz-copy">
+            <h3>Sample 00 Hand Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-5seq-officialized-001/sample_00_object_mesh_compare.png" alt="Sample 00 Object Mesh Compare">
+          <div class="viz-copy">
+            <h3>Sample 00 Object Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-5seq-officialized-001/sample_01_hand_mesh_compare.png" alt="Sample 01 Hand Mesh Compare">
+          <div class="viz-copy">
+            <h3>Sample 01 Hand Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-5seq-officialized-001/sample_01_object_mesh_compare.png" alt="Sample 01 Object Mesh Compare">
+          <div class="viz-copy">
+            <h3>Sample 01 Object Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-5seq-officialized-001/sample_02_hand_mesh_compare.png" alt="Sample 02 Hand Mesh Compare">
+          <div class="viz-copy">
+            <h3>Sample 02 Hand Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -177,7 +213,7 @@
         <article class="meta-card">
           <dl>
             <dt>Decoder Impl</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/trellis2/models/sc_vaes/fdg_vae.py</code></dd>
-            <dt>Batch Script</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/tmp_phase0_officialized_batch5.py</code></dd>
+            <dt>Batch Script</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/tmp_phase0_officialized_batch5_visualize.py</code></dd>
             <dt>Shape Encoder</dt><dd><code>/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16</code></dd>
             <dt>Shape Decoder</dt><dd><code>/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_dec_next_dc_f16c32_fp16</code></dd>
           </dl>
