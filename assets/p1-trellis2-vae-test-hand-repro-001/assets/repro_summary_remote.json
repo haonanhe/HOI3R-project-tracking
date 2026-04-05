@@ -1,0 +1,10 @@
+{
+  "input_obj": "/mnt/afs/haonan/TRELLIS.2/dexycb_vae_test/input_hand.obj",
+  "input_vertices": 778,
+  "input_faces": 1538,
+  "active_voxels": 178591,
+  "latent_tokens": 658,
+  "pred_vertices": 178591,
+  "pred_faces": 358096,
+  "output_obj": "/mnt/afs/haonan/hoi3r/tmp_phase0/p1_vae_test_initial_hand_repro_20260405/repro_recon_hand.obj"
+}

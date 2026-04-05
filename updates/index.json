@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-05 · P1 Trellis.2 VAE Test Hand Reproduction",
+    "date": "2026-04-05",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "reproduced the old hand-only result at 178,591 vertices / 358,096 faces, confirming the old result came from the thin non-vxz shape path. Public node ships PNG + JSON only; reproduced OBJ remains on AFS",
+    "path": "updates/2026-04-05-p1-trellis2-vae-test-hand-repro-001.html",
+    "page": "updates/2026-04-05-p1-trellis2-vae-test-hand-repro-001.html",
+    "slug": "p1-trellis2-vae-test-hand-repro-001",
+    "experiment_id": "P1-TRELLIS2-VAE-TEST-HAND-REPRO-001"
+  },
+  {
     "title": "2026-04-05 · Dexycb 5seq Officialized",
     "date": "2026-04-05",
     "status": "PASS",
