@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-05 · Dexycb 5seq Officialized",
+    "date": "2026-04-05",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "5/5 samples reproduced severe hand inflation on the officialized path, with hand pred/gt vertex ratios around `1895x - 2320x`; object also inflated but much less, around `20x - 46x`. Stronger negative result: the hand issue is not a single-frame artifact and is not explained by open-hand closure alone",
+    "path": "updates/2026-04-05-p0-dexycb-5seq-officialized-001.html",
+    "page": "updates/2026-04-05-p0-dexycb-5seq-officialized-001.html",
+    "slug": "p0-dexycb-5seq-officialized-001",
+    "experiment_id": "P0-DEXYCB-5SEQ-OFFICIALIZED-001"
+  },
+  {
     "title": "2026-04-05 · Dexycb Frame30 Officialized Round-trip Validation",
     "date": "2026-04-05",
     "status": "PASS",
