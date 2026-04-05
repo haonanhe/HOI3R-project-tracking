@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · Dexycb Frame30 Officialized Round-trip Validation</title>
+  <style>
+    :root {
+      --bg: #efe8db;
+      --card: rgba(255, 251, 243, 0.84);
+      --card-strong: #fffaf2;
+      --border: rgba(53, 38, 25, 0.12);
+      --text: #1f1a17;
+      --muted: #655d57;
+      --accent: #b24a2d;
+      --accent-soft: #d28b5b;
+      --ok: #1f7a43;
+      --shadow: 0 24px 60px rgba(72, 42, 25, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(178, 74, 45, 0.16), transparent 24rem),
+        radial-gradient(circle at top right, rgba(210, 139, 91, 0.18), transparent 20rem),
+        linear-gradient(180deg, #f5eee3 0%, var(--bg) 42%, #ece4d7 100%);
+    }
+    .page { max-width: 1160px; margin: 0 auto; padding: 2.2rem 1.1rem 4rem; }
+    .hero, .section, .footer {
+      margin-top: 1rem;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.7);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      padding: 1.45rem;
+      backdrop-filter: blur(18px);
+    }
+    .hero::after, .section::after, .footer::after {
+      content: "";
+      display: block;
+      margin-top: 1.25rem;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft), transparent 80%);
+    }
+    h1 { margin: 0; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 0.95; letter-spacing: -0.06em; max-width: 10ch; }
+    h2 { margin: 0 0 0.9rem; font-size: 1.08rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+    h3 { margin: 0 0 0.6rem; font-size: 1rem; }
+    p { margin: 0; color: var(--muted); line-height: 1.7; }
+    code { color: #0f3c5f; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; }
+    ul { margin: 0; padding-left: 1.1rem; color: var(--muted); line-height: 1.8; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem; font-weight: 800; }
+    .status { display: inline-flex; margin: 1rem 0 0.9rem; padding: 0.38rem 0.82rem; border-radius: 999px; background: rgba(31, 122, 67, 0.14); color: var(--ok); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr); gap: 1rem; align-items: start; }
+    .stats, .grid, .meta-grid, .viz-grid { display: grid; gap: 0.9rem; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid, .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .viz-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .stat, .meta-card, .note-card, .viz-card {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.55);
+      padding: 1rem;
+    }
+    .label { color: var(--muted); font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .value { margin-top: 0.35rem; font-size: 1.12rem; font-weight: 800; letter-spacing: -0.04em; }
+    .meta-card dl { margin: 0; display: grid; grid-template-columns: 9rem 1fr; gap: 0.55rem 0.75rem; }
+    .meta-card dt { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .meta-card dd { margin: 0; color: var(--text); word-break: break-word; }
+    .viz-card img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid rgba(31,26,23,0.08); background: #f2ebdf; }
+    .viz-copy { padding-top: 0.9rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+    .links a { color: var(--accent); text-decoration: none; border: 1px solid rgba(178,74,45,0.18); border-radius: 999px; padding: 0.44rem 0.78rem; font-size: 0.9rem; font-weight: 600; }
+    @media (max-width: 980px) {
+      .hero-grid, .stats, .grid, .meta-grid, .viz-grid { grid-template-columns: 1fr; }
+      .meta-card dl { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">HOI3R experiment publish node</div>
+      <div class="status">PASS</div>
+      <div class="hero-grid">
+        <div>
+          <h1>Dexycb Frame30 Officialized Round-trip Validation</h1>
+          <p>officialized rerun reproduced the earlier 1.37M-hand / 63k-object scale, showing that the smaller 178k hand result came from the non-official glue path rather than the official pack/unpack path. Revalidates the original negative diagnosis: on the officialized path, hand still explodes at voxelization and decode</p>
+        </div>
+        <div class="stats">
+
+            <div class="stat">
+              <div class="label">Total Seconds</div>
+              <div class="value">51.35</div>
+            </div>
+
+            <div class="stat">
+              <div class="label">Grid Size</div>
+              <div class="value">256</div>
+            </div>
+
+            <div class="stat">
+              <div class="label">Frame Index</div>
+              <div class="value">30</div>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Context</h2>
+      <div class="grid">
+        <article class="note-card">
+          <h3>Experiment goal</h3>
+          <p>在保留 DexYCB bridge 作为 GT mesh 来源的前提下，把 isolated roundtrip 的中间胶水层尽量对齐到官方 `TRELLIS.2-main` 实现，减少自定义差异。具体做法是：先按 `data_toolkit/dual_grid.py` 把 mesh 打包到 `vxz`，再按 `data_toolkit/encode_shape_latent.py` 从 `vxz` 读回 `SparseTensor` 送入 shape encoder，最后按 `trellis2/datasets/structured_latent_shape.py` 的方式调用 shape decoder。</p>
+        </article>
+        <article class="note-card">
+          <h3>Conclusion</h3>
+          <p>officialized rerun reproduced the earlier 1.37M-hand / 63k-object scale, showing that the smaller 178k hand result came from the non-official glue path rather than the official pack/unpack path. Revalidates the original negative diagnosis: on the officialized path, hand still explodes at voxelization and decode</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Metadata</h2>
+      <div class="meta-grid">
+        <article class="meta-card">
+          <dl>
+            <dt>Experiment ID</dt><dd>P0-DEXYCB-FRAME30-OFFICIALIZED-ROUNDTRIP-001</dd>
+<dt>Publish Date</dt><dd>2026-04-05</dd>
+<dt>Result</dt><dd>PASS</dd>
+<dt>Sequence</dt><dd>20200928-subject-07/20200928_155503/932122060861</dd>
+<dt>Command</dt><dd>`TRELLIS.2-main: officialized shape roundtrip on frame 30`</dd>
+<dt>Branch</dt><dd>feat/pure-stream3r-trellis-migration</dd>
+<dt>Config</dt><dd>Officialized isolated shape roundtrip: keep DexYCB bridge input, but switch glue layer to `dual_grid.py -&gt; write/read_vxz -&gt; encode_shape_latent.py -&gt; shape decoder`</dd>
+          </dl>
+        </article>
+        <article class="note-card">
+          <h3>Key findings</h3>
+          <ul>
+            <li>`hand`: GT `778 / 1538`, `active_voxels = 1,374,773`, `latent_tokens = 1204`, pred `1,374,773 / 4,530,770`</li>
+<li>`object`: GT `7864 / 15728`, `active_voxels = 63,136`, `latent_tokens = 218`, pred `63,136 / 126,374`</li>
+<li>总耗时 `51.35s`</li>
+<li>这次结果与最早的 isolated record 在 hand/object 尺度上重新一致，因此旧的 `1.37M` hand 统计被重新验证为“官方化路径下可稳定复现”</li>
+<li>解释: 之前 `P0-DEXYCB-FRAME30-HAND-FILLHOLES-001` 里的 `178k` hand rerun 来自一条更薄、但不完全官方的 glue path；一旦对齐到官方 `vxz` 打包/读取链路，hand 又回到 `1.37M` 规模</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Visual Evidence</h2>
+      <div class="viz-grid">
+        
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-frame30-officialized-roundtrip-001/hand_mesh_compare.png" alt="Hand Mesh Compare">
+          <div class="viz-copy">
+            <h3>Hand Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-frame30-officialized-roundtrip-001/object_mesh_compare.png" alt="Object Mesh Compare">
+          <div class="viz-copy">
+            <h3>Object Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Paths Used</h2>
+      <div class="meta-grid">
+        <article class="meta-card">
+          <dl>
+            <dt>Bridge Code</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration/stream3r/data/dexycb_toolkit_bridge.py</code></dd>
+            <dt>Official Repo Root</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main</code></dd>
+            <dt>Dual Grid Reference</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/data_toolkit/dual_grid.py</code></dd>
+            <dt>Encode Reference</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/data_toolkit/encode_shape_latent.py</code></dd>
+            <dt>Decoder Reference</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/trellis2/datasets/structured_latent_shape.py</code></dd>
+          </dl>
+        </article>
+        <article class="meta-card">
+          <dl>
+            <dt>Decoder Impl</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/trellis2/models/sc_vaes/fdg_vae.py</code></dd>
+            <dt>Roundtrip Script</dt><dd><code>/mnt/afs/haonan/hoi3r/HOI3R/TRELLIS.2-main/tmp_phase0_official_shape_roundtrip_v2.py</code></dd>
+            <dt>Shape Encoder</dt><dd><code>/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16</code></dd>
+            <dt>Shape Decoder</dt><dd><code>/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_dec_next_dc_f16c32_fp16</code></dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="footer">
+      <h2>Asset Bundle</h2>
+      <p>This page was generated from <code>/home/ps/Downloads/Codes/SLAI/hoi3r/experiments/P0-DEXYCB-FRAME30-OFFICIALIZED-ROUNDTRIP-001</code> and mirrored into <code>assets/p0-dexycb-frame30-officialized-roundtrip-001/</code>.</p>
+      <div class="links">
+        <a href="../assets/p0-dexycb-frame30-officialized-roundtrip-001/summary.json">Open summary JSON</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

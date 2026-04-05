@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-05 · Dexycb Frame30 Officialized Round-trip Validation",
+    "date": "2026-04-05",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "officialized rerun reproduced the earlier 1.37M-hand / 63k-object scale, showing that the smaller 178k hand result came from the non-official glue path rather than the official pack/unpack path. Revalidates the original negative diagnosis: on the officialized path, hand still explodes at voxelization and decode",
+    "path": "updates/2026-04-05-p0-dexycb-frame30-officialized-roundtrip-001.html",
+    "page": "updates/2026-04-05-p0-dexycb-frame30-officialized-roundtrip-001.html",
+    "slug": "p0-dexycb-frame30-officialized-roundtrip-001",
+    "experiment_id": "P0-DEXYCB-FRAME30-OFFICIALIZED-ROUNDTRIP-001"
+  },
+  {
     "title": "2026-04-05 · Dexycb Frame30 Hand Fillholes",
     "date": "2026-04-05",
     "status": "PASS",
