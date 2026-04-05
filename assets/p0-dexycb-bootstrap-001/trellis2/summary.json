@@ -1,0 +1,15 @@
+{
+  "sequence_key": "20200928-subject-07/20200928_155503/932122060861",
+  "frame_index": 12,
+  "input_image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200928-subject-07/20200928_155503/932122060861/color_000012.jpg",
+  "model_root": "/mnt/afs/haonan/hoi3r/model_zoo/TRELLIS.2-4B",
+  "status": "blocked",
+  "cumesh_mode": "shim_no_hole_filling",
+  "flex_gemm_mode": "shim_import_only",
+  "blockers": [
+    "o_voxel._C is unavailable in the debug container",
+    "cumesh is unavailable in the debug container",
+    "flex_gemm is unavailable in the debug container",
+    "offline runtime prevents Hugging Face fallback when local component loading fails"
+  ]
+}

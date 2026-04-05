@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-05 · DexYCB Bootstrap Check",
+    "date": "2026-04-05",
+    "status": "BLOCKED",
+    "publish_status": "blocked",
+    "summary": "STream3R passed on the selected DexYCB sequence, TRELLIS.2 remained blocked by missing `o_voxel._C`, `cumesh`, and `flex_gemm` in the offline debug container. Random sequence fixed by seed 20260405; public node should reflect partial pass + native-runtime blocker",
+    "path": "updates/2026-04-05-p0-dexycb-bootstrap-001.html",
+    "page": "updates/2026-04-05-p0-dexycb-bootstrap-001.html",
+    "slug": "p0-dexycb-bootstrap-001",
+    "experiment_id": "P0-DEXYCB-BOOTSTRAP-001"
+  },
+  {
     "title": "2026-04-05 · P1 TRELLIS2 Round-trip Validation",
     "date": "2026-04-05",
     "status": "done",

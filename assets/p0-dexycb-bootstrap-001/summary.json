@@ -1,0 +1,11 @@
+{
+  "exp_id": "P0-DEXYCB-BOOTSTRAP-001",
+  "sequence_key": "20200928-subject-07/20200928_155503/932122060861",
+  "frame_index": 12,
+  "total_seconds": 95.92,
+  "stream3r_status": "pass",
+  "trellis2_status": "blocked",
+  "stream3r_point_count": 48736,
+  "stream3r_camera_count": 8,
+  "notes": "STream3R local-directory checkpoint inference succeeded on frames 8-15; TRELLIS.2 native image-to-3D remained blocked by missing o_voxel._C, cumesh, and flex_gemm in the offline debug container."
+}
