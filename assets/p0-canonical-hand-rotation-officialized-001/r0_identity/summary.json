@@ -1,0 +1,21 @@
+{
+  "name": "r0_identity",
+  "euler_deg_xyz": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "active_voxels": 178591,
+  "latent_tokens": 658,
+  "pred_vertices": 178591,
+  "pred_faces": 358092,
+  "pred_to_gt_vertex_ratio": 229.55141388174806,
+  "seconds": 8.533687114715576,
+  "artifacts": {
+    "point_compare_png": "point_compare.png",
+    "gt_mesh": "gt_mesh.ply",
+    "pred_mesh": "pred_mesh.ply",
+    "gt_points": "gt_points.ply",
+    "pred_points": "pred_points.ply"
+  }
+}

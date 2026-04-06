@@ -1,0 +1,21 @@
+{
+  "name": "r1_rx45",
+  "euler_deg_xyz": [
+    45.0,
+    0.0,
+    0.0
+  ],
+  "active_voxels": 142107,
+  "latent_tokens": 512,
+  "pred_vertices": 142107,
+  "pred_faces": 285092,
+  "pred_to_gt_vertex_ratio": 182.65681233933162,
+  "seconds": 6.288352012634277,
+  "artifacts": {
+    "point_compare_png": "point_compare.png",
+    "gt_mesh": "gt_mesh.ply",
+    "pred_mesh": "pred_mesh.ply",
+    "gt_points": "gt_points.ply",
+    "pred_points": "pred_points.ply"
+  }
+}
