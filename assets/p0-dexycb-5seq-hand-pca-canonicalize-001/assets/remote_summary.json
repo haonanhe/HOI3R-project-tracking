@@ -1,0 +1,166 @@
+{
+  "experiment_id": "P0-DEXYCB-5SEQ-HAND-PCA-CANONICALIZE-001",
+  "samples": [
+    {
+      "sequence_key": "20200908-subject-05/20200908_145353/840412060917",
+      "frame_index": 40,
+      "object_class_name": "009_gelatin_box",
+      "hand_side": "left",
+      "results": {
+        "hand": {
+          "gt_vertices": 778,
+          "gt_faces": 1538,
+          "active_voxels": 165471,
+          "pred_vertices": 165471,
+          "pred_faces": 330662,
+          "latent_tokens": 605,
+          "scale": 0.9839215025517843,
+          "seconds": 9.998025894165039,
+          "pred_to_gt_vertex_ratio": 212.68766066838046
+        },
+        "object": {
+          "gt_vertices": 7866,
+          "gt_faces": 15728,
+          "active_voxels": 157114,
+          "pred_vertices": 157114,
+          "pred_faces": 314300,
+          "latent_tokens": 597,
+          "scale": 8.847176099583574,
+          "seconds": 5.142454385757446,
+          "pred_to_gt_vertex_ratio": 19.973811339944064
+        }
+      }
+    },
+    {
+      "sequence_key": "20200709-subject-01/20200709_151110/841412060263",
+      "frame_index": 38,
+      "object_class_name": "025_mug",
+      "hand_side": "left",
+      "results": {
+        "hand": {
+          "gt_vertices": 778,
+          "gt_faces": 1538,
+          "active_voxels": 162073,
+          "pred_vertices": 162073,
+          "pred_faces": 324072,
+          "latent_tokens": 586,
+          "scale": 0.9472352591962916,
+          "seconds": 4.6962809562683105,
+          "pred_to_gt_vertex_ratio": 208.32005141388174
+        },
+        "object": {
+          "gt_vertices": 7860,
+          "gt_faces": 15728,
+          "active_voxels": 361012,
+          "pred_vertices": 361012,
+          "pred_faces": 722758,
+          "latent_tokens": 953,
+          "scale": 8.028580759858457,
+          "seconds": 38.00575637817383,
+          "pred_to_gt_vertex_ratio": 45.93027989821883
+        }
+      }
+    },
+    {
+      "sequence_key": "20200820-subject-03/20200820_142319/932122060857",
+      "frame_index": 37,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "right",
+      "results": {
+        "hand": {
+          "gt_vertices": 778,
+          "gt_faces": 1538,
+          "active_voxels": 220104,
+          "pred_vertices": 220104,
+          "pred_faces": 440772,
+          "latent_tokens": 793,
+          "scale": 0.9993010944951218,
+          "seconds": 4.7073564529418945,
+          "pred_to_gt_vertex_ratio": 282.91002570694087
+        },
+        "object": {
+          "gt_vertices": 7864,
+          "gt_faces": 15728,
+          "active_voxels": 202885,
+          "pred_vertices": 202885,
+          "pred_faces": 406218,
+          "latent_tokens": 732,
+          "scale": 3.935180588743732,
+          "seconds": 7.219421863555908,
+          "pred_to_gt_vertex_ratio": 25.799211597151576
+        }
+      }
+    },
+    {
+      "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+      "frame_index": 39,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "left",
+      "results": {
+        "hand": {
+          "gt_vertices": 778,
+          "gt_faces": 1538,
+          "active_voxels": 182033,
+          "pred_vertices": 182033,
+          "pred_faces": 364316,
+          "latent_tokens": 652,
+          "scale": 0.9090848525798819,
+          "seconds": 3.6824593544006348,
+          "pred_to_gt_vertex_ratio": 233.97557840616966
+        },
+        "object": {
+          "gt_vertices": 7864,
+          "gt_faces": 15728,
+          "active_voxels": 197573,
+          "pred_vertices": 197573,
+          "pred_faces": 395660,
+          "latent_tokens": 686,
+          "scale": 3.8959790805868777,
+          "seconds": 4.320550441741943,
+          "pred_to_gt_vertex_ratio": 25.12372838250254
+        }
+      }
+    },
+    {
+      "sequence_key": "20200813-subject-02/20200813_150608/840412060917",
+      "frame_index": 24,
+      "object_class_name": "006_mustard_bottle",
+      "hand_side": "right",
+      "results": {
+        "hand": {
+          "gt_vertices": 778,
+          "gt_faces": 1538,
+          "active_voxels": 127725,
+          "pred_vertices": 127725,
+          "pred_faces": 255230,
+          "latent_tokens": 473,
+          "scale": 0.8582822039244415,
+          "seconds": 4.130773305892944,
+          "pred_to_gt_vertex_ratio": 164.17095115681235
+        },
+        "object": {
+          "gt_vertices": 7866,
+          "gt_faces": 15728,
+          "active_voxels": 176026,
+          "pred_vertices": 176026,
+          "pred_faces": 352136,
+          "latent_tokens": 682,
+          "scale": 6.178702055660087,
+          "seconds": 4.391526222229004,
+          "pred_to_gt_vertex_ratio": 22.378082888380373
+        }
+      }
+    }
+  ],
+  "code_paths": {
+    "bridge_code_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration/stream3r/data/dexycb_toolkit_bridge.py",
+    "temporary_batch_script": "/mnt/afs/haonan/hoi3r/tmp_phase0/tmp_batch5_hand_pca_canonicalize.py"
+  },
+  "weight_paths": {
+    "shape_encoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16",
+    "shape_decoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_dec_next_dc_f16c32_fp16"
+  },
+  "hand_preprocess": "normalize -> PCA align -> normalize -> officialized vxz path",
+  "object_preprocess": "normalize -> officialized vxz path",
+  "total_seconds": 89.75089263916016
+}

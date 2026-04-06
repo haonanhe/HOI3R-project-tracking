@@ -1,0 +1,101 @@
+{
+  "experiment_id": "P0-DEXYCB-5SEQ-HAND-PCA-CANONICALIZE-001",
+  "publish_date": "2026-04-06",
+  "status": "PASS",
+  "scope": "5-sequence officialized rerun with hand-only PCA canonicalization before voxelization",
+  "baseline_experiment_id": "P0-DEXYCB-5SEQ-OFFICIALIZED-001",
+  "remote_output_dir": "/mnt/afs/haonan/hoi3r/tmp_phase0/P0-DEXYCB-5SEQ-HAND-PCA-CANONICALIZE-001",
+  "conda_env": "human3r",
+  "code_paths": {
+    "bridge_code_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration/stream3r/data/dexycb_toolkit_bridge.py",
+    "temporary_batch_script": "/mnt/afs/haonan/hoi3r/tmp_phase0/tmp_batch5_hand_pca_canonicalize.py"
+  },
+  "weight_paths": {
+    "shape_encoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16",
+    "shape_decoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_dec_next_dc_f16c32_fp16"
+  },
+  "hand_preprocess": "normalize -> PCA align -> normalize -> officialized vxz path",
+  "object_preprocess": "normalize -> officialized vxz path",
+  "aggregate": {
+    "hand_ratio_before_mean": 2060.890231362468,
+    "hand_ratio_after_mean": 220.41285347043703,
+    "hand_ratio_reduction_factor_mean": 9.350136341476501,
+    "hand_voxels_before_mean": 1603372.6,
+    "hand_voxels_after_mean": 171481.2,
+    "hand_voxels_reduction_factor_mean": 9.3501363414765,
+    "object_ratio_before_mean": 27.841022821239477,
+    "object_ratio_after_mean": 27.841022821239477
+  },
+  "samples": [
+    {
+      "label": "009_gelatin_box frame 40",
+      "sequence_key": "20200908-subject-05/20200908_145353/840412060917",
+      "frame_index": 40,
+      "object_class_name": "009_gelatin_box",
+      "hand_side": "left",
+      "hand_ratio_before": 1894.956298200514,
+      "hand_ratio_after": 212.68766066838046,
+      "hand_voxels_before": 1474276,
+      "hand_voxels_after": 165471,
+      "object_ratio_before": 19.973811339944064,
+      "object_ratio_after": 19.973811339944064
+    },
+    {
+      "label": "025_mug frame 38",
+      "sequence_key": "20200709-subject-01/20200709_151110/841412060263",
+      "frame_index": 38,
+      "object_class_name": "025_mug",
+      "hand_side": "left",
+      "hand_ratio_before": 2013.53470437018,
+      "hand_ratio_after": 208.32005141388174,
+      "hand_voxels_before": 1566530,
+      "hand_voxels_after": 162073,
+      "object_ratio_before": 45.93027989821883,
+      "object_ratio_after": 45.93027989821883
+    },
+    {
+      "label": "019_pitcher_base frame 37",
+      "sequence_key": "20200820-subject-03/20200820_142319/932122060857",
+      "frame_index": 37,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "right",
+      "hand_ratio_before": 2181.3714652956296,
+      "hand_ratio_after": 282.91002570694087,
+      "hand_voxels_before": 1697107,
+      "hand_voxels_after": 220104,
+      "object_ratio_before": 25.799211597151576,
+      "object_ratio_after": 25.799211597151576
+    },
+    {
+      "label": "019_pitcher_base frame 39",
+      "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+      "frame_index": 39,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "left",
+      "hand_ratio_before": 2319.8303341902315,
+      "hand_ratio_after": 233.97557840616966,
+      "hand_voxels_before": 1804828,
+      "hand_voxels_after": 182033,
+      "object_ratio_before": 25.12372838250254,
+      "object_ratio_after": 25.12372838250254
+    },
+    {
+      "label": "006_mustard_bottle frame 24",
+      "sequence_key": "20200813-subject-02/20200813_150608/840412060917",
+      "frame_index": 24,
+      "object_class_name": "006_mustard_bottle",
+      "hand_side": "right",
+      "hand_ratio_before": 1894.758354755784,
+      "hand_ratio_after": 164.17095115681235,
+      "hand_voxels_before": 1474122,
+      "hand_voxels_after": 127725,
+      "object_ratio_before": 22.378082888380373,
+      "object_ratio_after": 22.378082888380373
+    }
+  ],
+  "notes": [
+    "This rerun changes only hand preprocessing: normalize -> PCA align -> normalize -> officialized vxz path.",
+    "Object remains on the original officialized path and serves as a control.",
+    "Result: hand inflation drops sharply but does not disappear completely."
+  ]
+}

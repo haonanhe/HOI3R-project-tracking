@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-06 · DexYCB 5seq Hand PCA Canonicalization",
+    "date": "2026-04-06",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "hand mean pred/gt vertex ratio dropped from `2060.89x` to `220.41x` and hand mean active voxels dropped by `9.35x`; object ratios stayed unchanged. Strong evidence that missing hand rotation canonicalization before voxelization is a major cause of the previous explosion",
+    "path": "updates/2026-04-06-p0-dexycb-5seq-hand-pca-canonicalize-001.html",
+    "page": "updates/2026-04-06-p0-dexycb-5seq-hand-pca-canonicalize-001.html",
+    "slug": "p0-dexycb-5seq-hand-pca-canonicalize-001",
+    "experiment_id": "P0-DEXYCB-5SEQ-HAND-PCA-CANONICALIZE-001"
+  },
+  {
     "title": "2026-04-05 · P1 Trellis.2 VAE Test Hand Reproduction",
     "date": "2026-04-05",
     "status": "PASS",

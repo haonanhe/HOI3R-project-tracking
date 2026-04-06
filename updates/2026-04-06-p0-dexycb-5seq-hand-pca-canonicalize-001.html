@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · DexYCB 5seq Hand PCA Canonicalization</title>
+  <style>
+    :root {
+      --bg: #efe8db;
+      --card: rgba(255, 251, 243, 0.84);
+      --card-strong: #fffaf2;
+      --border: rgba(53, 38, 25, 0.12);
+      --text: #1f1a17;
+      --muted: #655d57;
+      --accent: #b24a2d;
+      --accent-soft: #d28b5b;
+      --ok: #1f7a43;
+      --shadow: 0 24px 60px rgba(72, 42, 25, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(178, 74, 45, 0.16), transparent 24rem),
+        radial-gradient(circle at top right, rgba(210, 139, 91, 0.18), transparent 20rem),
+        linear-gradient(180deg, #f5eee3 0%, var(--bg) 42%, #ece4d7 100%);
+    }
+    .page { max-width: 1160px; margin: 0 auto; padding: 2.2rem 1.1rem 4rem; }
+    .hero, .section, .footer {
+      margin-top: 1rem;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.7);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      padding: 1.45rem;
+      backdrop-filter: blur(18px);
+    }
+    .hero::after, .section::after, .footer::after {
+      content: "";
+      display: block;
+      margin-top: 1.25rem;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft), transparent 80%);
+    }
+    h1 { margin: 0; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 0.95; letter-spacing: -0.06em; max-width: 10ch; }
+    h2 { margin: 0 0 0.9rem; font-size: 1.08rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+    h3 { margin: 0 0 0.6rem; font-size: 1rem; }
+    p { margin: 0; color: var(--muted); line-height: 1.7; }
+    code { color: #0f3c5f; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; }
+    ul { margin: 0; padding-left: 1.1rem; color: var(--muted); line-height: 1.8; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem; font-weight: 800; }
+    .status { display: inline-flex; margin: 1rem 0 0.9rem; padding: 0.38rem 0.82rem; border-radius: 999px; background: rgba(31, 122, 67, 0.14); color: var(--ok); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr); gap: 1rem; align-items: start; }
+    .stats, .grid, .meta-grid, .viz-grid { display: grid; gap: 0.9rem; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid, .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .viz-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .stat, .meta-card, .note-card, .viz-card {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.55);
+      padding: 1rem;
+    }
+    .label { color: var(--muted); font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .value { margin-top: 0.35rem; font-size: 1.12rem; font-weight: 800; letter-spacing: -0.04em; }
+    .meta-card dl { margin: 0; display: grid; grid-template-columns: 9rem 1fr; gap: 0.55rem 0.75rem; }
+    .meta-card dt { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .meta-card dd { margin: 0; color: var(--text); word-break: break-word; }
+    .viz-card img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid rgba(31,26,23,0.08); background: #f2ebdf; }
+    .viz-copy { padding-top: 0.9rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+    .links a { color: var(--accent); text-decoration: none; border: 1px solid rgba(178,74,45,0.18); border-radius: 999px; padding: 0.44rem 0.78rem; font-size: 0.9rem; font-weight: 600; }
+    @media (max-width: 980px) {
+      .hero-grid, .stats, .grid, .meta-grid, .viz-grid { grid-template-columns: 1fr; }
+      .meta-card dl { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">HOI3R experiment publish node</div>
+      <div class="status">PASS</div>
+      <div class="hero-grid">
+        <div>
+          <h1>DexYCB 5seq Hand PCA Canonicalization</h1>
+          <p>hand mean pred/gt vertex ratio dropped from `2060.89x` to `220.41x` and hand mean active voxels dropped by `9.35x`; object ratios stayed unchanged. Strong evidence that missing hand rotation canonicalization before voxelization is a major cause of the previous explosion</p>
+        </div>
+        <div class="stats">
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Context</h2>
+      <div class="grid">
+        <article class="note-card">
+          <h3>Experiment goal</h3>
+          <p>验证 hand 的极端膨胀是否主要来自“只做平移缩放归一化、没有做旋转 canonicalization”。具体做法是：保持 5-seq officialized baseline 的样本、权重和 object 路径不变，只在 hand 输入上增加 `normalize -&gt; PCA align -&gt; normalize`，然后继续走同一条 officialized `vxz` 路径。</p>
+        </article>
+        <article class="note-card">
+          <h3>Conclusion</h3>
+          <p>PASS。只对 hand 增加 PCA canonicalization 就能把 5-seq officialized 的 hand 膨胀整体压低约一个数量级，同时 object 结果基本不变。这是目前最强的因果证据，说明 hand 朝向 / canonicalization 才是主要敏感因素。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Metadata</h2>
+      <div class="meta-grid">
+        <article class="meta-card">
+          <dl>
+            <dt>Experiment ID</dt><dd>P0-DEXYCB-5SEQ-HAND-PCA-CANONICALIZE-001</dd>
+<dt>Publish Date</dt><dd>2026-04-06</dd>
+<dt>Result</dt><dd>PASS</dd>
+<dt>Sequence</dt><dd>n/a</dd>
+<dt>Command</dt><dd>`human3r: python /mnt/afs/haonan/hoi3r/tmp_phase0/tmp_batch5_hand_pca_canonicalize.py`</dd>
+<dt>Branch</dt><dd>feat/pure-stream3r-trellis-migration</dd>
+<dt>Config</dt><dd>5-sequence officialized rerun with hand-only `normalize -&gt; PCA align -&gt; normalize` before voxelization; object path unchanged</dd>
+          </dl>
+        </article>
+        <article class="note-card">
+          <h3>Key findings</h3>
+          <ul>
+            <li>hand 平均 `pred_to_gt_vertex_ratio` 从 `2060.89x` 降到 `220.41x`</li>
+<li>hand 平均 `active_voxels` 从 `1,603,372.6` 降到 `171,481.2`</li>
+<li>平均 ratio reduction 和 voxel reduction 都约为 `9.35x`</li>
+<li>object 平均 `pred_to_gt_vertex_ratio` 保持不变，仍为 `27.84x`</li>
+<li>5 个 hand 样本的新 ratio 分别为 `212.69x`, `208.32x`, `282.91x`, `233.98x`, `164.17x`</li>
+<li>这证明 `vxz` 不是主因，hand 在 voxelization 前缺少旋转 canonicalization 才是主要问题来源</li>
+<li>但 hand 仍然没有完全回到旧 `vae_test_initial` 的 `178k` canonical hand 量级，所以 PCA 对齐解决的是大头，不是最终完整解</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Visual Evidence</h2>
+      <div class="viz-grid">
+        
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-5seq-hand-pca-canonicalize-001/assets/hand_ratio_before_after.svg" alt="Hand Ratio Before After">
+          <div class="viz-copy">
+            <h3>Hand Ratio Before After</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-5seq-hand-pca-canonicalize-001/assets/hand_voxels_before_after.svg" alt="Hand Voxels Before After">
+          <div class="viz-copy">
+            <h3>Hand Voxels Before After</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p0-dexycb-5seq-hand-pca-canonicalize-001/assets/object_ratio_before_after.svg" alt="Object Ratio Before After">
+          <div class="viz-copy">
+            <h3>Object Ratio Before After</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="footer">
+      <h2>Asset Bundle</h2>
+      <p>This page was generated from <code>/home/ps/Downloads/Codes/SLAI/hoi3r/experiments/P0-DEXYCB-5SEQ-HAND-PCA-CANONICALIZE-001</code> and mirrored into <code>assets/p0-dexycb-5seq-hand-pca-canonicalize-001/</code>.</p>
+      <div class="links">
+        <a href="../assets/p0-dexycb-5seq-hand-pca-canonicalize-001/summary.json">Open summary JSON</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
