@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-06 · Dexycb Bridge Hand 5seq Fillholes Officialized Points",
+    "date": "2026-04-06",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "all 5 filled-hand samples became watertight and reduced hand mean active voxels from `1.60M` to `206k`, with mean vertex-ratio drop from `2060.89x` to `264.40x`. Strongest current causal evidence that the open wrist boundary is a major driver of the bridge-hand failure on the officialized path",
+    "path": "updates/2026-04-06-p0-dexycb-bridge-hand-5seq-fillholes-officialized-points-001.html",
+    "page": "updates/2026-04-06-p0-dexycb-bridge-hand-5seq-fillholes-officialized-points-001.html",
+    "slug": "p0-dexycb-bridge-hand-5seq-fillholes-officialized-points-001",
+    "experiment_id": "P0-DEXYCB-BRIDGE-HAND-5SEQ-FILLHOLES-OFFICIALIZED-POINTS-001"
+  },
+  {
     "title": "2026-04-06 · Hand Canonical vs Bridge Diff",
     "date": "2026-04-06",
     "status": "PASS",

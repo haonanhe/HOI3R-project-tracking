@@ -1,0 +1,29 @@
+{
+  "sequence_key": "20200820-subject-03/20200820_142319/932122060857",
+  "frame_index": 37,
+  "object_class_name": "019_pitcher_base",
+  "hand_side": "right",
+  "open_gt": {
+    "vertices": 778,
+    "faces": 1538,
+    "watertight": false,
+    "components": 1,
+    "euler": 1
+  },
+  "filled_gt": {
+    "vertices": 779,
+    "faces": 1554,
+    "watertight": true,
+    "components": 1,
+    "euler": 2
+  },
+  "active_voxels": 228549,
+  "latent_tokens": 815,
+  "pred_vertices": 228549,
+  "pred_faces": 458394,
+  "pred_to_filled_gt_vertex_ratio": 293.38767650834404,
+  "seconds": 3.8370521068573,
+  "artifacts": {
+    "point_compare_png": "point_compare.png"
+  }
+}

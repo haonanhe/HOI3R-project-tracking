@@ -1,0 +1,217 @@
+{
+  "experiment_id": "P0-DEXYCB-BRIDGE-HAND-5SEQ-FILLHOLES-OFFICIALIZED-POINTS-001",
+  "publish_date": "2026-04-06",
+  "status": "PASS",
+  "scope": "same 5 randomized DexYCB bridge hand samples, seal the wrist opening with official Mesh.fill_holes, then rerun the same officialized shape path with point-cloud visualization",
+  "input_source": "same previously randomized 5 DexYCB bridge hand samples used in P0-DEXYCB-BRIDGE-HAND-5SEQ-OFFICIALIZED-POINTS-001",
+  "comparison_experiment_id": "P0-DEXYCB-BRIDGE-HAND-5SEQ-OFFICIALIZED-POINTS-001",
+  "remote_output_dir": "/mnt/afs/haonan/hoi3r/tmp_phase0/P0-DEXYCB-BRIDGE-HAND-5SEQ-FILLHOLES-OFFICIALIZED-POINTS-001",
+  "conda_env": "human3r",
+  "code_paths": {
+    "temporary_script": "/mnt/afs/haonan/hoi3r/tmp_phase0/tmp_bridge_hand_5seq_fillholes_officialized_points.py",
+    "local_script": "/home/ps/Downloads/Codes/SLAI/hoi3r/tmp_bridge_hand_5seq_fillholes_officialized_points.py",
+    "bridge_code_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration/stream3r/data/dexycb_toolkit_bridge.py",
+    "official_mesh_api": "/mnt/afs/haonan/TRELLIS.2/trellis2/representations",
+    "official_dual_grid_reference": "/mnt/afs/haonan/TRELLIS.2/data_toolkit/dual_grid.py",
+    "official_encoder_reference": "/mnt/afs/haonan/TRELLIS.2/data_toolkit/encode_shape_latent.py",
+    "official_decoder_reference": "/mnt/afs/haonan/TRELLIS.2/trellis2/models/sc_vaes/fdg_vae.py"
+  },
+  "weight_paths": {
+    "shape_encoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16",
+    "shape_decoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_dec_next_dc_f16c32_fp16"
+  },
+  "fill_holes": "trellis2.representations.Mesh.fill_holes(max_hole_perimeter=1.0)",
+  "path": "bridge hand -> fill_holes -> officialized normalize -> dual_grid -> vxz -> encoder -> decoder",
+  "samples": [
+    {
+      "sequence_key": "20200908-subject-05/20200908_145353/840412060917",
+      "frame_index": 40,
+      "object_class_name": "009_gelatin_box",
+      "hand_side": "left",
+      "open_gt": {
+        "vertices": 778,
+        "faces": 1538,
+        "watertight": false,
+        "components": 1,
+        "euler": 1
+      },
+      "filled_gt": {
+        "vertices": 779,
+        "faces": 1554,
+        "watertight": true,
+        "components": 1,
+        "euler": 2
+      },
+      "active_voxels": 181404,
+      "latent_tokens": 657,
+      "pred_vertices": 181404,
+      "pred_faces": 363020,
+      "pred_to_filled_gt_vertex_ratio": 232.86777920410782,
+      "baseline_open_active_voxels": 1474276,
+      "baseline_open_pred_to_gt_vertex_ratio": 1894.956298200514,
+      "voxel_reduction_factor_vs_open": 8.127031377477895,
+      "ratio_reduction_factor_vs_open": 8.137477433233007,
+      "seconds": 7.8632121086120605,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    },
+    {
+      "sequence_key": "20200709-subject-01/20200709_151110/841412060263",
+      "frame_index": 38,
+      "object_class_name": "025_mug",
+      "hand_side": "left",
+      "open_gt": {
+        "vertices": 778,
+        "faces": 1538,
+        "watertight": false,
+        "components": 1,
+        "euler": 1
+      },
+      "filled_gt": {
+        "vertices": 779,
+        "faces": 1554,
+        "watertight": true,
+        "components": 1,
+        "euler": 2
+      },
+      "active_voxels": 196395,
+      "latent_tokens": 710,
+      "pred_vertices": 196395,
+      "pred_faces": 393212,
+      "pred_to_filled_gt_vertex_ratio": 252.11168164313221,
+      "baseline_open_active_voxels": 1566530,
+      "baseline_open_pred_to_gt_vertex_ratio": 2013.53470437018,
+      "voxel_reduction_factor_vs_open": 7.9764250617378245,
+      "ratio_reduction_factor_vs_open": 7.986677536110238,
+      "seconds": 3.102959394454956,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    },
+    {
+      "sequence_key": "20200820-subject-03/20200820_142319/932122060857",
+      "frame_index": 37,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "right",
+      "open_gt": {
+        "vertices": 778,
+        "faces": 1538,
+        "watertight": false,
+        "components": 1,
+        "euler": 1
+      },
+      "filled_gt": {
+        "vertices": 779,
+        "faces": 1554,
+        "watertight": true,
+        "components": 1,
+        "euler": 2
+      },
+      "active_voxels": 228549,
+      "latent_tokens": 815,
+      "pred_vertices": 228549,
+      "pred_faces": 458394,
+      "pred_to_filled_gt_vertex_ratio": 293.38767650834404,
+      "baseline_open_active_voxels": 1697107,
+      "baseline_open_pred_to_gt_vertex_ratio": 2181.3714652956296,
+      "voxel_reduction_factor_vs_open": 7.425571759228874,
+      "ratio_reduction_factor_vs_open": 7.435116195937393,
+      "seconds": 3.8370521068573,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    },
+    {
+      "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+      "frame_index": 39,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "left",
+      "open_gt": {
+        "vertices": 778,
+        "faces": 1538,
+        "watertight": false,
+        "components": 1,
+        "euler": 1
+      },
+      "filled_gt": {
+        "vertices": 779,
+        "faces": 1554,
+        "watertight": true,
+        "components": 1,
+        "euler": 2
+      },
+      "active_voxels": 232384,
+      "latent_tokens": 812,
+      "pred_vertices": 232384,
+      "pred_faces": 465776,
+      "pred_to_filled_gt_vertex_ratio": 298.3106546854942,
+      "baseline_open_active_voxels": 1804828,
+      "baseline_open_pred_to_gt_vertex_ratio": 2319.8303341902315,
+      "voxel_reduction_factor_vs_open": 7.7665760121178735,
+      "ratio_reduction_factor_vs_open": 7.776558757634735,
+      "seconds": 4.492718458175659,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    },
+    {
+      "sequence_key": "20200813-subject-02/20200813_150608/840412060917",
+      "frame_index": 24,
+      "object_class_name": "006_mustard_bottle",
+      "hand_side": "right",
+      "open_gt": {
+        "vertices": 778,
+        "faces": 1538,
+        "watertight": false,
+        "components": 1,
+        "euler": 1
+      },
+      "filled_gt": {
+        "vertices": 779,
+        "faces": 1554,
+        "watertight": true,
+        "components": 1,
+        "euler": 2
+      },
+      "active_voxels": 191117,
+      "latent_tokens": 711,
+      "pred_vertices": 191117,
+      "pred_faces": 382360,
+      "pred_to_filled_gt_vertex_ratio": 245.33632862644416,
+      "baseline_open_active_voxels": 1474122,
+      "baseline_open_pred_to_gt_vertex_ratio": 1894.758354755784,
+      "voxel_reduction_factor_vs_open": 7.713191395846524,
+      "ratio_reduction_factor_vs_open": 7.723105523604681,
+      "seconds": 3.2412092685699463,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    }
+  ],
+  "aggregate": {
+    "filled_gt_vertices": 779,
+    "filled_gt_faces": 1554,
+    "filled_gt_watertight": true,
+    "open_mean_active_voxels": 1603372.6,
+    "open_active_voxels_min": 1474122,
+    "open_active_voxels_max": 1804828,
+    "filled_mean_active_voxels": 205969.8,
+    "filled_active_voxels_min": 181404,
+    "filled_active_voxels_max": 232384,
+    "open_mean_pred_to_gt_vertex_ratio": 2060.8902313624676,
+    "open_ratio_min": 1894.758354755784,
+    "open_ratio_max": 2319.8303341902315,
+    "filled_mean_pred_to_filled_gt_vertex_ratio": 264.4028241335045,
+    "filled_ratio_min": 232.86777920410782,
+    "filled_ratio_max": 298.3106546854942,
+    "mean_voxel_reduction_factor_vs_open": 7.784503359230334,
+    "mean_ratio_reduction_factor_vs_open": 7.794509147609806
+  },
+  "notes": [
+    "All 5 open wrist meshes are non-watertight at 778 vertices and 1538 faces; after fill_holes they become watertight meshes at 779 vertices and 1554 faces.",
+    "Using the filled hand meshes alone drops the mean active-voxel count from 1.60M to 205,969.8 and drops the mean decoded-vertex ratio from 2060.89x to 264.40x.",
+    "This isolates wrist openness as a major cause of the bridge-hand failure on the officialized path, even without PCA canonicalization."
+  ],
+  "total_seconds": 24.81735062599182
+}
