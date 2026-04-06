@@ -1,0 +1,17 @@
+{
+  "sequence_key": "20200709-subject-01/20200709_151110/841412060263",
+  "frame_index": 38,
+  "object_class_name": "025_mug",
+  "hand_side": "left",
+  "gt_vertices": 778,
+  "gt_faces": 1538,
+  "active_voxels": 1566530,
+  "latent_tokens": 1570,
+  "pred_vertices": 1566530,
+  "pred_faces": 4740932,
+  "pred_to_gt_vertex_ratio": 2013.53470437018,
+  "seconds": 13.881535530090332,
+  "artifacts": {
+    "point_compare_png": "point_compare.png"
+  }
+}

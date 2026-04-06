@@ -1,0 +1,17 @@
+{
+  "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+  "frame_index": 39,
+  "object_class_name": "019_pitcher_base",
+  "hand_side": "left",
+  "gt_vertices": 778,
+  "gt_faces": 1538,
+  "active_voxels": 1804828,
+  "latent_tokens": 1542,
+  "pred_vertices": 1804828,
+  "pred_faces": 5626568,
+  "pred_to_gt_vertex_ratio": 2319.8303341902315,
+  "seconds": 15.276172876358032,
+  "artifacts": {
+    "point_compare_png": "point_compare.png"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "experiment_id": "P0-DEXYCB-BRIDGE-HAND-5SEQ-OFFICIALIZED-POINTS-001",
+  "publish_date": "2026-04-06",
+  "status": "PASS",
+  "scope": "same 5 randomized DexYCB bridge hand samples, no PCA canonicalization, same officialized path as canonical-hand rotation control, point-cloud visualization only",
+  "input_source": "same previously randomized 5 DexYCB bridge samples used in P0-DEXYCB-5SEQ-OFFICIALIZED-001",
+  "comparison_experiment_id": "P0-CANONICAL-HAND-ROTATION-OFFICIALIZED-001",
+  "remote_output_dir": "/mnt/afs/haonan/hoi3r/tmp_phase0/P0-DEXYCB-BRIDGE-HAND-5SEQ-OFFICIALIZED-POINTS-001",
+  "conda_env": "human3r",
+  "code_paths": {
+    "temporary_script": "/mnt/afs/haonan/hoi3r/tmp_phase0/tmp_bridge_hand_5seq_officialized_points.py",
+    "bridge_code_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration/stream3r/data/dexycb_toolkit_bridge.py",
+    "official_dual_grid_reference": "/mnt/afs/haonan/TRELLIS.2/data_toolkit/dual_grid.py",
+    "official_encoder_reference": "/mnt/afs/haonan/TRELLIS.2/data_toolkit/encode_shape_latent.py",
+    "official_decoder_reference": "/mnt/afs/haonan/TRELLIS.2/trellis2/models/sc_vaes/fdg_vae.py"
+  },
+  "weight_paths": {
+    "shape_encoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16",
+    "shape_decoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_dec_next_dc_f16c32_fp16"
+  },
+  "path": "bridge hand only -> officialized normalize -> dual_grid -> vxz -> encoder -> decoder",
+  "samples": [
+    {
+      "sequence_key": "20200908-subject-05/20200908_145353/840412060917",
+      "frame_index": 40,
+      "object_class_name": "009_gelatin_box",
+      "hand_side": "left",
+      "gt_vertices": 778,
+      "gt_faces": 1538,
+      "active_voxels": 1474276,
+      "latent_tokens": 1603,
+      "pred_vertices": 1474276,
+      "pred_faces": 4385792,
+      "pred_to_gt_vertex_ratio": 1894.956298200514,
+      "seconds": 55.74750590324402,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    },
+    {
+      "sequence_key": "20200709-subject-01/20200709_151110/841412060263",
+      "frame_index": 38,
+      "object_class_name": "025_mug",
+      "hand_side": "left",
+      "gt_vertices": 778,
+      "gt_faces": 1538,
+      "active_voxels": 1566530,
+      "latent_tokens": 1570,
+      "pred_vertices": 1566530,
+      "pred_faces": 4740932,
+      "pred_to_gt_vertex_ratio": 2013.53470437018,
+      "seconds": 13.881535530090332,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    },
+    {
+      "sequence_key": "20200820-subject-03/20200820_142319/932122060857",
+      "frame_index": 37,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "right",
+      "gt_vertices": 778,
+      "gt_faces": 1538,
+      "active_voxels": 1697107,
+      "latent_tokens": 1693,
+      "pred_vertices": 1697107,
+      "pred_faces": 5194598,
+      "pred_to_gt_vertex_ratio": 2181.3714652956296,
+      "seconds": 14.860479593276978,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    },
+    {
+      "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+      "frame_index": 39,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "left",
+      "gt_vertices": 778,
+      "gt_faces": 1538,
+      "active_voxels": 1804828,
+      "latent_tokens": 1542,
+      "pred_vertices": 1804828,
+      "pred_faces": 5626568,
+      "pred_to_gt_vertex_ratio": 2319.8303341902315,
+      "seconds": 15.276172876358032,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    },
+    {
+      "sequence_key": "20200813-subject-02/20200813_150608/840412060917",
+      "frame_index": 24,
+      "object_class_name": "006_mustard_bottle",
+      "hand_side": "right",
+      "gt_vertices": 778,
+      "gt_faces": 1538,
+      "active_voxels": 1474122,
+      "latent_tokens": 1244,
+      "pred_vertices": 1474122,
+      "pred_faces": 4910912,
+      "pred_to_gt_vertex_ratio": 1894.758354755784,
+      "seconds": 18.04949140548706,
+      "artifacts": {
+        "point_compare_png": "point_compare.png"
+      }
+    }
+  ],
+  "aggregate": {
+    "active_voxels_min": 1474122,
+    "active_voxels_max": 1804828,
+    "pred_vertices_min": 1474122,
+    "pred_vertices_max": 1804828,
+    "ratio_min": 1894.758354755784,
+    "ratio_max": 2319.8303341902315
+  },
+  "notes": [
+    "This rerun matches the canonical-hand control path except for the input hand source: bridge-derived DexYCB hand meshes instead of the old canonical OBJ.",
+    "All 5 bridge-hand samples return to the earlier 1.47M-1.80M active-voxel regime and visibly bad point-cloud structure.",
+    "Together with P0-CANONICAL-HAND-ROTATION-OFFICIALIZED-001, this shows that the bridge-hand failure is not explained by rigid rotation alone."
+  ],
+  "total_seconds": 119.45464777946472
+}

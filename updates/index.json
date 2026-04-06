@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-06 · DexYCB Bridge Hand 5seq Officialized Points",
+    "date": "2026-04-06",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "all 5 bridge-hand samples returned to the earlier `1.47M-1.80M` active-voxel regime and reproduced the bad scattered hand-point-cloud behavior. Direct contrast with `P0-CANONICAL-HAND-ROTATION-OFFICIALIZED-001`: same path, different hand source, radically different behavior",
+    "path": "updates/2026-04-06-p0-dexycb-bridge-hand-5seq-officialized-points-001.html",
+    "page": "updates/2026-04-06-p0-dexycb-bridge-hand-5seq-officialized-points-001.html",
+    "slug": "p0-dexycb-bridge-hand-5seq-officialized-points-001",
+    "experiment_id": "P0-DEXYCB-BRIDGE-HAND-5SEQ-OFFICIALIZED-POINTS-001"
+  },
+  {
     "title": "2026-04-06 · Canonical Hand Rotation Officialized",
     "date": "2026-04-06",
     "status": "PASS",
