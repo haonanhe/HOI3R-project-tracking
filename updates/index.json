@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-06 · Hand Canonical vs Bridge Diff",
+    "date": "2026-04-06",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "right-hand bridge samples share topology with canonical but still leave `~0.166` mean rigid-alignment RMS; left-hand samples add a separate topology/handedness mismatch. Strongest current input-side diagnosis: bridge hand differs from the old canonical hand by more than rigid transform or simple mirror",
+    "path": "updates/2026-04-06-p0-hand-canonical-vs-bridge-diff-001.html",
+    "page": "updates/2026-04-06-p0-hand-canonical-vs-bridge-diff-001.html",
+    "slug": "p0-hand-canonical-vs-bridge-diff-001",
+    "experiment_id": "P0-HAND-CANONICAL-VS-BRIDGE-DIFF-001"
+  },
+  {
     "title": "2026-04-06 · DexYCB Bridge Hand 5seq Officialized Points",
     "date": "2026-04-06",
     "status": "PASS",

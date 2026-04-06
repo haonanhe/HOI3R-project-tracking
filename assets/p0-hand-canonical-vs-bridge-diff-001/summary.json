@@ -1,0 +1,354 @@
+{
+  "experiment_id": "P0-HAND-CANONICAL-VS-BRIDGE-DIFF-001",
+  "publish_date": "2026-04-06",
+  "status": "PASS",
+  "scope": "compare old canonical hand input against 5 DexYCB bridge hands; inspect topology, handedness, best rigid alignment, and non-rigid residuals",
+  "canonical_obj": "/mnt/afs/haonan/TRELLIS.2/dexycb_vae_test/input_hand.obj",
+  "remote_output_dir": "/mnt/afs/haonan/hoi3r/tmp_phase0/P0-HAND-CANONICAL-VS-BRIDGE-DIFF-001",
+  "conda_env": "human3r",
+  "code_paths": {
+    "temporary_script": "/mnt/afs/haonan/hoi3r/tmp_phase0/tmp_compare_canonical_vs_bridge_hand.py",
+    "bridge_code_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration/stream3r/data/dexycb_toolkit_bridge.py"
+  },
+  "canonical_vertices": 778,
+  "canonical_faces": 1538,
+  "canonical_bbox_center": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "canonical_bbox_scale": 1.0000000135804583,
+  "samples": [
+    {
+      "sequence_key": "20200908-subject-05/20200908_145353/840412060917",
+      "frame_index": 40,
+      "object_class_name": "009_gelatin_box",
+      "hand_side": "left",
+      "faces_identical_to_canonical": false,
+      "bridge_vertices": 778,
+      "bridge_faces": 1538,
+      "bridge_bbox_center": [
+        0.13448479771614075,
+        0.01755807176232338,
+        0.8798654079437256
+      ],
+      "bridge_bbox_scale": 6.803805540699634,
+      "normalized_direct_vertex_residual": {
+        "mean": 0.5089956521987915,
+        "median": 0.5080093741416931,
+        "p95": 0.765068033337593,
+        "max": 0.9332866668701172,
+        "rms": 0.5326652526855469
+      },
+      "best_rigid_similarity": {
+        "scale": 0.7399047613143921,
+        "rotation_det": 0.9999999403953552,
+        "translation": [
+          -0.022764232009649277,
+          -0.0026948675513267517,
+          0.04683629423379898
+        ],
+        "residual": {
+          "mean": 0.2054242342710495,
+          "median": 0.1843516081571579,
+          "p95": 0.3835089564323425,
+          "max": 0.4851050078868866,
+          "rms": 0.22658294439315796
+        }
+      },
+      "best_sign_flip_similarity": {
+        "signs": [
+          -1.0,
+          -1.0,
+          -1.0
+        ],
+        "scale": 0.7399047613143921,
+        "rotation_det": 0.9999999403953552,
+        "translation": [
+          -0.018957026302814484,
+          0.002819553017616272,
+          0.04531512409448624
+        ],
+        "residual": {
+          "mean": 0.14859935641288757,
+          "median": 0.14194124937057495,
+          "p95": 0.28772813081741333,
+          "max": 0.35143229365348816,
+          "rms": 0.1613258421421051
+        }
+      },
+      "pairwise_distance_rms": 0.1305781602859497,
+      "artifacts": {
+        "overlay_png": "overlay.png"
+      }
+    },
+    {
+      "sequence_key": "20200709-subject-01/20200709_151110/841412060263",
+      "frame_index": 38,
+      "object_class_name": "025_mug",
+      "hand_side": "left",
+      "faces_identical_to_canonical": false,
+      "bridge_vertices": 778,
+      "bridge_faces": 1538,
+      "bridge_bbox_center": [
+        -0.2640736699104309,
+        0.04429083317518234,
+        0.8288329243659973
+      ],
+      "bridge_bbox_scale": 7.016022588140439,
+      "normalized_direct_vertex_residual": {
+        "mean": 0.49524301290512085,
+        "median": 0.5118930339813232,
+        "p95": 0.8170232474803925,
+        "max": 0.9811025261878967,
+        "rms": 0.5394492149353027
+      },
+      "best_rigid_similarity": {
+        "scale": 0.7686596512794495,
+        "rotation_det": 0.9999999403953552,
+        "translation": [
+          0.08973883837461472,
+          0.03560208901762962,
+          0.05031519755721092
+        ],
+        "residual": {
+          "mean": 0.19816091656684875,
+          "median": 0.18416203558444977,
+          "p95": 0.3691632702946663,
+          "max": 0.45978015661239624,
+          "rms": 0.21836811304092407
+        }
+      },
+      "best_sign_flip_similarity": {
+        "signs": [
+          -1.0,
+          -1.0,
+          -1.0
+        ],
+        "scale": 0.7686596512794495,
+        "rotation_det": 0.9999999403953552,
+        "translation": [
+          0.09450079500675201,
+          0.050441011786460876,
+          0.04079405218362808
+        ],
+        "residual": {
+          "mean": 0.1438540369272232,
+          "median": 0.1322801411151886,
+          "p95": 0.3111519336700439,
+          "max": 0.38656583428382874,
+          "rms": 0.16015245020389557
+        }
+      },
+      "pairwise_distance_rms": 0.12310486286878586,
+      "artifacts": {
+        "overlay_png": "overlay.png"
+      }
+    },
+    {
+      "sequence_key": "20200820-subject-03/20200820_142319/932122060857",
+      "frame_index": 37,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "right",
+      "faces_identical_to_canonical": true,
+      "bridge_vertices": 778,
+      "bridge_faces": 1538,
+      "bridge_bbox_center": [
+        0.15330877900123596,
+        0.13046753406524658,
+        0.4254745543003082
+      ],
+      "bridge_bbox_scale": 6.953860181406239,
+      "normalized_direct_vertex_residual": {
+        "mean": 0.5209149122238159,
+        "median": 0.5335361957550049,
+        "p95": 0.7743812590837478,
+        "max": 0.9789634346961975,
+        "rms": 0.5470081567764282
+      },
+      "best_rigid_similarity": {
+        "scale": 0.7560205459594727,
+        "rotation_det": 0.9999999403953552,
+        "translation": [
+          0.06429572403430939,
+          0.022015735507011414,
+          0.06127989664673805
+        ],
+        "residual": {
+          "mean": 0.15986819565296173,
+          "median": 0.14606265723705292,
+          "p95": 0.3110624864697456,
+          "max": 0.39448946714401245,
+          "rms": 0.17599371075630188
+        }
+      },
+      "best_sign_flip_similarity": {
+        "signs": [
+          -1.0,
+          -1.0,
+          1.0
+        ],
+        "scale": 0.7560205459594727,
+        "rotation_det": 0.9999999403953552,
+        "translation": [
+          0.06429572403430939,
+          0.022015735507011414,
+          0.06127989664673805
+        ],
+        "residual": {
+          "mean": 0.15986819565296173,
+          "median": 0.14606265723705292,
+          "p95": 0.3110624864697456,
+          "max": 0.39448946714401245,
+          "rms": 0.17599371075630188
+        }
+      },
+      "pairwise_distance_rms": 0.1437852531671524,
+      "artifacts": {
+        "overlay_png": "overlay.png"
+      }
+    },
+    {
+      "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+      "frame_index": 39,
+      "object_class_name": "019_pitcher_base",
+      "hand_side": "left",
+      "faces_identical_to_canonical": false,
+      "bridge_vertices": 778,
+      "bridge_faces": 1538,
+      "bridge_bbox_center": [
+        0.07989417016506195,
+        0.10849082469940186,
+        0.8087568879127502
+      ],
+      "bridge_bbox_scale": 7.693802591653416,
+      "normalized_direct_vertex_residual": {
+        "mean": 0.6094768643379211,
+        "median": 0.6467027068138123,
+        "p95": 0.9579727381467819,
+        "max": 1.1931884288787842,
+        "rms": 0.6635652184486389
+      },
+      "best_rigid_similarity": {
+        "scale": 0.8390756249427795,
+        "rotation_det": 1.0000001192092896,
+        "translation": [
+          0.10481537878513336,
+          -0.002626568078994751,
+          0.006639409810304642
+        ],
+        "residual": {
+          "mean": 0.21102066338062286,
+          "median": 0.19097211956977844,
+          "p95": 0.40149807929992676,
+          "max": 0.5298362970352173,
+          "rms": 0.23344239592552185
+        }
+      },
+      "best_sign_flip_similarity": {
+        "signs": [
+          -1.0,
+          -1.0,
+          -1.0
+        ],
+        "scale": 0.8390756249427795,
+        "rotation_det": 1.0000001192092896,
+        "translation": [
+          0.07846982777118683,
+          0.020791903138160706,
+          -0.007912818342447281
+        ],
+        "residual": {
+          "mean": 0.164388507604599,
+          "median": 0.14756807684898376,
+          "p95": 0.3825885280966759,
+          "max": 0.5045064687728882,
+          "rms": 0.18810203671455383
+        }
+      },
+      "pairwise_distance_rms": 0.1147911548614502,
+      "artifacts": {
+        "overlay_png": "overlay.png"
+      }
+    },
+    {
+      "sequence_key": "20200813-subject-02/20200813_150608/840412060917",
+      "frame_index": 24,
+      "object_class_name": "006_mustard_bottle",
+      "hand_side": "right",
+      "faces_identical_to_canonical": true,
+      "bridge_vertices": 778,
+      "bridge_faces": 1538,
+      "bridge_bbox_center": [
+        0.3649537265300751,
+        -0.03201696276664734,
+        0.9074240922927856
+      ],
+      "bridge_bbox_scale": 6.330101657073001,
+      "normalized_direct_vertex_residual": {
+        "mean": 0.20679068565368652,
+        "median": 0.18237416446208954,
+        "p95": 0.45422682315111157,
+        "max": 0.5921676158905029,
+        "rms": 0.24110522866249084
+      },
+      "best_rigid_similarity": {
+        "scale": 0.9483039379119873,
+        "rotation_det": 1.0,
+        "translation": [
+          -0.010576128959655762,
+          0.03383727744221687,
+          0.03989274799823761
+        ],
+        "residual": {
+          "mean": 0.13502085208892822,
+          "median": 0.11895370483398438,
+          "p95": 0.2794678583741188,
+          "max": 0.40559208393096924,
+          "rms": 0.1556193232536316
+        }
+      },
+      "best_sign_flip_similarity": {
+        "signs": [
+          -1.0,
+          -1.0,
+          1.0
+        ],
+        "scale": 0.9483039379119873,
+        "rotation_det": 1.0,
+        "translation": [
+          -0.010576128959655762,
+          0.03383727744221687,
+          0.03989274799823761
+        ],
+        "residual": {
+          "mean": 0.13502085208892822,
+          "median": 0.11895370483398438,
+          "p95": 0.2794678583741188,
+          "max": 0.40559208393096924,
+          "rms": 0.1556193232536316
+        }
+      },
+      "pairwise_distance_rms": 0.09604430943727493,
+      "artifacts": {
+        "overlay_png": "overlay.png"
+      }
+    }
+  ],
+  "aggregate": {
+    "right_hand_faces_identical_to_canonical": true,
+    "left_hand_faces_identical_to_canonical": false,
+    "right_hand_best_rigid_rms_mean": 0.16580651700496674,
+    "right_hand_pairwise_distance_rms_mean": 0.11991478130221367,
+    "left_hand_best_rigid_rms_mean": 0.22613115111986795,
+    "left_hand_best_sign_flip_rms_mean": 0.1698601096868515,
+    "closest_sample_sequence_key": "20200813-subject-02/20200813_150608/840412060917",
+    "closest_sample_frame_index": 24,
+    "closest_sample_best_sign_flip_rms": 0.1556193232536316
+  },
+  "notes": [
+    "Right-hand bridge samples have exactly the same face topology as the old canonical hand, so pointwise rigid-alignment residuals are meaningful there.",
+    "Left-hand bridge samples do not share the same face array as the canonical hand, so direct vertex-to-vertex comparison there is partly confounded by left/right template topology differences.",
+    "Even on the right-hand subset, best rigid alignment still leaves substantial residual (mean RMS about 0.166 in normalized space), which rules out the idea that the bridge hand differs from the canonical hand only by a single rigid or similarity transform."
+  ]
+}

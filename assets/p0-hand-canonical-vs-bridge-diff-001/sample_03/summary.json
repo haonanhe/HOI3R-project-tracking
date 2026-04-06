@@ -1,0 +1,63 @@
+{
+  "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+  "frame_index": 39,
+  "object_class_name": "019_pitcher_base",
+  "hand_side": "left",
+  "faces_identical_to_canonical": false,
+  "bridge_vertices": 778,
+  "bridge_faces": 1538,
+  "bridge_bbox_center": [
+    0.07989417016506195,
+    0.10849082469940186,
+    0.8087568879127502
+  ],
+  "bridge_bbox_scale": 7.693802591653416,
+  "normalized_direct_vertex_residual": {
+    "mean": 0.6094768643379211,
+    "median": 0.6467027068138123,
+    "p95": 0.9579727381467819,
+    "max": 1.1931884288787842,
+    "rms": 0.6635652184486389
+  },
+  "best_rigid_similarity": {
+    "scale": 0.8390756249427795,
+    "rotation_det": 1.0000001192092896,
+    "translation": [
+      0.10481537878513336,
+      -0.002626568078994751,
+      0.006639409810304642
+    ],
+    "residual": {
+      "mean": 0.21102066338062286,
+      "median": 0.19097211956977844,
+      "p95": 0.40149807929992676,
+      "max": 0.5298362970352173,
+      "rms": 0.23344239592552185
+    }
+  },
+  "best_sign_flip_similarity": {
+    "signs": [
+      -1.0,
+      -1.0,
+      -1.0
+    ],
+    "scale": 0.8390756249427795,
+    "rotation_det": 1.0000001192092896,
+    "translation": [
+      0.07846982777118683,
+      0.020791903138160706,
+      -0.007912818342447281
+    ],
+    "residual": {
+      "mean": 0.164388507604599,
+      "median": 0.14756807684898376,
+      "p95": 0.3825885280966759,
+      "max": 0.5045064687728882,
+      "rms": 0.18810203671455383
+    }
+  },
+  "pairwise_distance_rms": 0.1147911548614502,
+  "artifacts": {
+    "overlay_png": "overlay.png"
+  }
+}
