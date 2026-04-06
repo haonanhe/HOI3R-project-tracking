@@ -1,0 +1,20 @@
+{
+  "sequence_key": "20200709-subject-01/20200709_151110/841412060263",
+  "frame_index": 38,
+  "object_class_name": "025_mug",
+  "hand_side": "left",
+  "artifacts": {
+    "hand": {
+      "active_voxels": 162073,
+      "latent_tokens": 586,
+      "mesh_compare_png": "hand_mesh_compare.png",
+      "point_compare_png": "hand_point_compare.png"
+    },
+    "object": {
+      "active_voxels": 361012,
+      "latent_tokens": 953,
+      "mesh_compare_png": "object_mesh_compare.png",
+      "point_compare_png": "object_point_compare.png"
+    }
+  }
+}

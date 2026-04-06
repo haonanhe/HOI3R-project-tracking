@@ -8,7 +8,8 @@
   "conda_env": "human3r",
   "code_paths": {
     "bridge_code_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration/stream3r/data/dexycb_toolkit_bridge.py",
-    "temporary_batch_script": "/mnt/afs/haonan/hoi3r/tmp_phase0/tmp_batch5_hand_pca_canonicalize.py"
+    "temporary_batch_script": "/mnt/afs/haonan/hoi3r/tmp_phase0/tmp_batch5_hand_pca_canonicalize.py",
+    "temporary_visualization_script": "/mnt/afs/haonan/hoi3r/tmp_phase0/tmp_batch5_hand_pca_visualize.py"
   },
   "weight_paths": {
     "shape_encoder": "/mnt/afs/haonan/TRELLIS.2-4B/ckpts/shape_enc_next_dc_f16c32_fp16",
@@ -97,5 +98,21 @@
     "This rerun changes only hand preprocessing: normalize -> PCA align -> normalize -> officialized vxz path.",
     "Object remains on the original officialized path and serves as a control.",
     "Result: hand inflation drops sharply but does not disappear completely."
-  ]
+  ],
+  "visualization": {
+    "summary_json": "assets/viz_summary.json",
+    "per_sample_dirs": [
+      "assets/sample_00",
+      "assets/sample_01",
+      "assets/sample_02",
+      "assets/sample_03",
+      "assets/sample_04"
+    ],
+    "formats": [
+      "hand_mesh_compare.png",
+      "hand_point_compare.png",
+      "object_mesh_compare.png",
+      "object_point_compare.png"
+    ]
+  }
 }

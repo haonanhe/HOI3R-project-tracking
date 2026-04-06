@@ -1,0 +1,20 @@
+{
+  "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+  "frame_index": 39,
+  "object_class_name": "019_pitcher_base",
+  "hand_side": "left",
+  "artifacts": {
+    "hand": {
+      "active_voxels": 182033,
+      "latent_tokens": 652,
+      "mesh_compare_png": "hand_mesh_compare.png",
+      "point_compare_png": "hand_point_compare.png"
+    },
+    "object": {
+      "active_voxels": 197573,
+      "latent_tokens": 686,
+      "mesh_compare_png": "object_mesh_compare.png",
+      "point_compare_png": "object_point_compare.png"
+    }
+  }
+}
