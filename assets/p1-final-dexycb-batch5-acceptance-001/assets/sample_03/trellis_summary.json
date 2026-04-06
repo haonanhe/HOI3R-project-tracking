@@ -1,0 +1,54 @@
+{
+  "sequence_key": "20200709-subject-01/20200709_150052/932122060857",
+  "frame_index": 40,
+  "object_class_name": "019_pitcher_base",
+  "hand_side": "left",
+  "hand_open_gt": {
+    "vertices": 778,
+    "faces": 1538,
+    "watertight": false,
+    "components": 1,
+    "euler": 1
+  },
+  "hand_filled_gt": {
+    "vertices": 779,
+    "faces": 1554,
+    "watertight": true,
+    "components": 1,
+    "euler": 2
+  },
+  "artifacts": {
+    "hand": {
+      "mesh_compare_png": "hand_mesh_compare.png",
+      "point_compare_png": "hand_point_compare.png"
+    },
+    "object": {
+      "mesh_compare_png": "object_mesh_compare.png",
+      "point_compare_png": "object_point_compare.png"
+    }
+  },
+  "results": {
+    "hand": {
+      "gt_variant": "filled",
+      "gt_vertices": 779,
+      "gt_faces": 1554,
+      "active_voxels": 232337,
+      "latent_tokens": 819,
+      "pred_vertices": 232337,
+      "pred_faces": 466216,
+      "pred_to_gt_vertex_ratio": 298.25032092426187,
+      "seconds": 7.361957311630249
+    },
+    "object": {
+      "gt_variant": "open",
+      "gt_vertices": 7864,
+      "gt_faces": 15728,
+      "active_voxels": 194947,
+      "latent_tokens": 668,
+      "pred_vertices": 194947,
+      "pred_faces": 390522,
+      "pred_to_gt_vertex_ratio": 24.789801627670396,
+      "seconds": 21.766353607177734
+    }
+  }
+}

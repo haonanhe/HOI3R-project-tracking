@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-06 · Final Dexycb Batch5 Acceptance",
+    "date": "2026-04-06",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "final Phase 1 acceptance rerun completed on the same 5 samples for both branches; STream3R produced consistent `120k`-point predictions and Trellis hand/object outputs stayed in the stabilized sealed-hand regime. Final fixed Phase 1 recipe: shared sample manifest, sealed bridge hand before Trellis enc/dec, public page carries PNG + JSON + code/weight/env metadata only",
+    "path": "updates/2026-04-06-p1-final-dexycb-batch5-acceptance-001.html",
+    "page": "updates/2026-04-06-p1-final-dexycb-batch5-acceptance-001.html",
+    "slug": "p1-final-dexycb-batch5-acceptance-001",
+    "experiment_id": "P1-FINAL-DEXYCB-BATCH5-ACCEPTANCE-001"
+  },
+  {
     "title": "2026-04-06 · Dexycb Bridge Hand 5seq Fillholes Officialized Points",
     "date": "2026-04-06",
     "status": "PASS",

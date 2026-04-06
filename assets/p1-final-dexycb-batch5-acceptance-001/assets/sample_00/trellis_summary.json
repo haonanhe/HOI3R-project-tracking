@@ -1,0 +1,54 @@
+{
+  "sequence_key": "20200908-subject-05/20200908_145353/840412060917",
+  "frame_index": 40,
+  "object_class_name": "009_gelatin_box",
+  "hand_side": "left",
+  "hand_open_gt": {
+    "vertices": 778,
+    "faces": 1538,
+    "watertight": false,
+    "components": 1,
+    "euler": 1
+  },
+  "hand_filled_gt": {
+    "vertices": 779,
+    "faces": 1554,
+    "watertight": true,
+    "components": 1,
+    "euler": 2
+  },
+  "artifacts": {
+    "hand": {
+      "mesh_compare_png": "hand_mesh_compare.png",
+      "point_compare_png": "hand_point_compare.png"
+    },
+    "object": {
+      "mesh_compare_png": "object_mesh_compare.png",
+      "point_compare_png": "object_point_compare.png"
+    }
+  },
+  "results": {
+    "hand": {
+      "gt_variant": "filled",
+      "gt_vertices": 779,
+      "gt_faces": 1554,
+      "active_voxels": 181404,
+      "latent_tokens": 657,
+      "pred_vertices": 181404,
+      "pred_faces": 363022,
+      "pred_to_gt_vertex_ratio": 232.86777920410782,
+      "seconds": 121.5106406211853
+    },
+    "object": {
+      "gt_variant": "open",
+      "gt_vertices": 7866,
+      "gt_faces": 15728,
+      "active_voxels": 157114,
+      "latent_tokens": 597,
+      "pred_vertices": 157114,
+      "pred_faces": 314300,
+      "pred_to_gt_vertex_ratio": 19.973811339944064,
+      "seconds": 7.645564317703247
+    }
+  }
+}

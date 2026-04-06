@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Node · Final Dexycb Batch5 Acceptance</title>
+  <style>
+    :root {
+      --bg: #efe8db;
+      --card: rgba(255, 251, 243, 0.84);
+      --card-strong: #fffaf2;
+      --border: rgba(53, 38, 25, 0.12);
+      --text: #1f1a17;
+      --muted: #655d57;
+      --accent: #b24a2d;
+      --accent-soft: #d28b5b;
+      --ok: #1f7a43;
+      --shadow: 0 24px 60px rgba(72, 42, 25, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(178, 74, 45, 0.16), transparent 24rem),
+        radial-gradient(circle at top right, rgba(210, 139, 91, 0.18), transparent 20rem),
+        linear-gradient(180deg, #f5eee3 0%, var(--bg) 42%, #ece4d7 100%);
+    }
+    .page { max-width: 1160px; margin: 0 auto; padding: 2.2rem 1.1rem 4rem; }
+    .hero, .section, .footer {
+      margin-top: 1rem;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.7);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      padding: 1.45rem;
+      backdrop-filter: blur(18px);
+    }
+    .hero::after, .section::after, .footer::after {
+      content: "";
+      display: block;
+      margin-top: 1.25rem;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft), transparent 80%);
+    }
+    h1 { margin: 0; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 0.95; letter-spacing: -0.06em; max-width: 10ch; }
+    h2 { margin: 0 0 0.9rem; font-size: 1.08rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+    h3 { margin: 0 0 0.6rem; font-size: 1rem; }
+    p { margin: 0; color: var(--muted); line-height: 1.7; }
+    code { color: #0f3c5f; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; }
+    ul { margin: 0; padding-left: 1.1rem; color: var(--muted); line-height: 1.8; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem; font-weight: 800; }
+    .status { display: inline-flex; margin: 1rem 0 0.9rem; padding: 0.38rem 0.82rem; border-radius: 999px; background: rgba(31, 122, 67, 0.14); color: var(--ok); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr); gap: 1rem; align-items: start; }
+    .stats, .grid, .meta-grid, .viz-grid { display: grid; gap: 0.9rem; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid, .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .viz-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .stat, .meta-card, .note-card, .viz-card {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.55);
+      padding: 1rem;
+    }
+    .label { color: var(--muted); font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .value { margin-top: 0.35rem; font-size: 1.12rem; font-weight: 800; letter-spacing: -0.04em; }
+    .meta-card dl { margin: 0; display: grid; grid-template-columns: 9rem 1fr; gap: 0.55rem 0.75rem; }
+    .meta-card dt { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .meta-card dd { margin: 0; color: var(--text); word-break: break-word; }
+    .viz-card img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid rgba(31,26,23,0.08); background: #f2ebdf; }
+    .viz-copy { padding-top: 0.9rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+    .links a { color: var(--accent); text-decoration: none; border: 1px solid rgba(178,74,45,0.18); border-radius: 999px; padding: 0.44rem 0.78rem; font-size: 0.9rem; font-weight: 600; }
+    @media (max-width: 980px) {
+      .hero-grid, .stats, .grid, .meta-grid, .viz-grid { grid-template-columns: 1fr; }
+      .meta-card dl { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">HOI3R experiment publish node</div>
+      <div class="status">PASS</div>
+      <div class="hero-grid">
+        <div>
+          <h1>Final Dexycb Batch5 Acceptance</h1>
+          <p>final Phase 1 acceptance rerun completed on the same 5 samples for both branches; STream3R produced consistent `120k`-point predictions and Trellis hand/object outputs stayed in the stabilized sealed-hand regime. Final fixed Phase 1 recipe: shared sample manifest, sealed bridge hand before Trellis enc/dec, public page carries PNG + JSON + code/weight/env metadata only</p>
+        </div>
+        <div class="stats">
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Context</h2>
+      <div class="grid">
+        <article class="note-card">
+          <h3>Experiment goal</h3>
+          <p>固定第一阶段的最终验收流程，在同一份 5-sample DexYCB manifest 上同时重跑 STream3R 和 Trellis.2，并发布单个总览页。目标是把阶段内已经收敛的固定规则一次性落地: STream3R 走 8-frame causal point-cloud 路径，Trellis hand 默认先封腕再走 officialized shape enc/dec，最终样本级展示 STream3R 点云和 Trellis hand/object mesh+point 可视化。</p>
+        </article>
+        <article class="note-card">
+          <h3>Conclusion</h3>
+          <p>PASS。第一阶段最终固定流程已经形成并完成一次共享样本 rerun 验收。后续阶段继续沿用这组固定规则: DexYCB bridge hand 先封腕，公开页必须携带 `summary.json/results.html/逐样本可视化/代码路径/权重路径/conda 环境`，且公开页不发布 `.ply/.obj`。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Metadata</h2>
+      <div class="meta-grid">
+        <article class="meta-card">
+          <dl>
+            <dt>Experiment ID</dt><dd>P1-FINAL-DEXYCB-BATCH5-ACCEPTANCE-001</dd>
+<dt>Publish Date</dt><dd>2026-04-06</dd>
+<dt>Result</dt><dd>PASS</dd>
+<dt>Sequence</dt><dd>n/a</dd>
+<dt>Command</dt><dd>`human3r: python /mnt/afs/haonan/hoi3r/tmp_phase1/tmp_phase1_final_stream3r_batch5.py` and `human3r: python /mnt/afs/haonan/hoi3r/tmp_phase1/tmp_phase1_final_trellis_batch5.py`</dd>
+<dt>Branch</dt><dd>feat/pure-stream3r-trellis-migration</dd>
+<dt>Config</dt><dd>shared 5-sample DexYCB manifest; STream3R 8-frame causal point-cloud inference; Trellis.2 officialized hand/object shape roundtrip with default hand wrist sealing</dd>
+          </dl>
+        </article>
+        <article class="note-card">
+          <h3>Key findings</h3>
+          <ul>
+            <li>两个分支都严格复用了同一份 5-sample manifest，样本级对比是一一对应的</li>
+<li>STream3R 5/5 样本全部完成，`point_count` 均为 `120000`</li>
+<li>STream3R 平均耗时 `1.753s`；当前 runtime 预测包不含 `extrinsic`，因此本轮不发布 camera trajectory，只发布 montage + point-cloud views</li>
+<li>Trellis 5/5 样本全部完成，且 hand 默认先执行 `Mesh.fill_holes(max_hole_perimeter=1.0)` 封住手腕开口</li>
+<li>Trellis hand 平均 `active_voxels = 202,710.6`</li>
+<li>Trellis hand 平均 `pred_to_gt_vertex_ratio = 260.22x`</li>
+<li>Trellis object 平均 `pred_to_gt_vertex_ratio = 27.98x`</li>
+<li>hand/object 可视化都已按样本同步整理进单个 acceptance 页，且公开页只包含 `PNG + JSON + HTML`</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Visual Evidence</h2>
+      <div class="viz-grid">
+        
+        <article class="viz-card">
+          <img src="../assets/p1-final-dexycb-batch5-acceptance-001/assets/sample_00/hand_mesh_compare.png" alt="Hand Mesh Compare">
+          <div class="viz-copy">
+            <h3>Hand Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p1-final-dexycb-batch5-acceptance-001/assets/sample_00/hand_point_compare.png" alt="Hand Point Compare">
+          <div class="viz-copy">
+            <h3>Hand Point Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p1-final-dexycb-batch5-acceptance-001/assets/sample_00/input_montage.png" alt="Input Montage">
+          <div class="viz-copy">
+            <h3>Input Montage</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p1-final-dexycb-batch5-acceptance-001/assets/sample_00/object_mesh_compare.png" alt="Object Mesh Compare">
+          <div class="viz-copy">
+            <h3>Object Mesh Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p1-final-dexycb-batch5-acceptance-001/assets/sample_00/object_point_compare.png" alt="Object Point Compare">
+          <div class="viz-copy">
+            <h3>Object Point Compare</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+        <article class="viz-card">
+          <img src="../assets/p1-final-dexycb-batch5-acceptance-001/assets/sample_00/pointcloud_view_a.png" alt="Pointcloud View A">
+          <div class="viz-copy">
+            <h3>Pointcloud View A</h3>
+            <p>Experiment artifact mirrored into the public asset bundle.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="footer">
+      <h2>Asset Bundle</h2>
+      <p>This page was generated from <code>/home/ps/Downloads/Codes/SLAI/hoi3r/experiments/P1-FINAL-DEXYCB-BATCH5-ACCEPTANCE-001</code> and mirrored into <code>assets/p1-final-dexycb-batch5-acceptance-001/</code>.</p>
+      <div class="links">
+        <a href="../assets/p1-final-dexycb-batch5-acceptance-001/summary.json">Open summary JSON</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

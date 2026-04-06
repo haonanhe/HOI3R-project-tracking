@@ -1,0 +1,54 @@
+{
+  "sequence_key": "20200709-subject-01/20200709_151110/841412060263",
+  "frame_index": 40,
+  "object_class_name": "025_mug",
+  "hand_side": "left",
+  "hand_open_gt": {
+    "vertices": 778,
+    "faces": 1538,
+    "watertight": false,
+    "components": 1,
+    "euler": 1
+  },
+  "hand_filled_gt": {
+    "vertices": 779,
+    "faces": 1554,
+    "watertight": true,
+    "components": 1,
+    "euler": 2
+  },
+  "artifacts": {
+    "hand": {
+      "mesh_compare_png": "hand_mesh_compare.png",
+      "point_compare_png": "hand_point_compare.png"
+    },
+    "object": {
+      "mesh_compare_png": "object_mesh_compare.png",
+      "point_compare_png": "object_point_compare.png"
+    }
+  },
+  "results": {
+    "hand": {
+      "gt_variant": "filled",
+      "gt_vertices": 779,
+      "gt_faces": 1554,
+      "active_voxels": 194149,
+      "latent_tokens": 717,
+      "pred_vertices": 194149,
+      "pred_faces": 388756,
+      "pred_to_gt_vertex_ratio": 249.22849807445442,
+      "seconds": 9.326626062393188
+    },
+    "object": {
+      "gt_variant": "open",
+      "gt_vertices": 7860,
+      "gt_faces": 15728,
+      "active_voxels": 370438,
+      "latent_tokens": 983,
+      "pred_vertices": 370438,
+      "pred_faces": 741476,
+      "pred_to_gt_vertex_ratio": 47.1295165394402,
+      "seconds": 53.5788688659668
+    }
+  }
+}
