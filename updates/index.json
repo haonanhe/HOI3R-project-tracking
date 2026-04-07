@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-07 · Phase 2 Latent Recon Overfit",
+    "date": "2026-04-07",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "First Phase 2 training experiment. Latent-space reconstruction loss (Option B) validates encode→project→refine→unproject round-trip through token bridge + STream3R global attention. Loss dropped from 1836 to 0.051 (99.997% reduction) in 200 steps on DexYCB single-frame overfit. Token bridge (4 tensors, ~66K params) optimized; all other modules frozen. coordinate_space=normalized_space (intermediate state).",
+    "path": "updates/2026-04-07-p2-latent-recon-overfit-001.html",
+    "page": "updates/2026-04-07-p2-latent-recon-overfit-001.html",
+    "slug": "p2-latent-recon-overfit-001",
+    "experiment_id": "P2-LATENT-RECON-OVERFIT-001"
+  },
+  {
     "title": "2026-04-06 · Final Dexycb Batch5 Acceptance",
     "date": "2026-04-06",
     "status": "PASS",
