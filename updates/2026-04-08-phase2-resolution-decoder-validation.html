@@ -1,208 +1,228 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HOI3R Node - Phase 2 Resolution &amp; Decoder Validation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#07101d;--card:rgba(12,19,33,.88);--card-strong:rgba(17,25,43,.96);--border:rgba(148,163,184,.16);--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--accent-2:#f59e0b;--ok:#22c55e;--bad:#ef4444;--shadow:0 20px 56px rgba(2,6,23,.36)}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:"Inter",sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(56,189,248,.18),transparent 24rem),radial-gradient(circle at top right,rgba(245,158,11,.12),transparent 24rem),linear-gradient(180deg,#030712 0%,#07101d 100%)}
-    a{color:inherit}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#bae6fd;font-size:.94em}
-    .page{max-width:1180px;margin:0 auto;padding:2.5rem 1.15rem 4rem}
-    .back{display:inline-flex;align-items:center;gap:.45rem;color:var(--accent);text-decoration:none;font-size:.92rem;margin-bottom:1rem}
-    .hero{text-align:center;margin-bottom:3rem}
-    .hero h1{font-size:2rem;font-weight:800;margin:0 0 .5rem;background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .hero .date{color:var(--muted);font-size:.92rem}
-    .hero .status{display:inline-block;padding:.2rem .7rem;border-radius:999px;font-size:.78rem;font-weight:600;margin-top:.6rem}
-    .status-done{background:rgba(34,197,94,.14);color:var(--ok);border:1px solid rgba(34,197,94,.3)}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:1rem;padding:1.5rem;margin-bottom:1.5rem;box-shadow:var(--shadow)}
-    .card h2{font-size:1.25rem;font-weight:700;margin:0 0 1rem;color:var(--accent)}
-    .card h3{font-size:1.05rem;font-weight:600;margin:1rem 0 .5rem;color:var(--accent-2)}
-    p,li{line-height:1.7;color:var(--muted)}
-    table{width:100%;border-collapse:collapse;margin:1rem 0}
-    th,td{padding:.6rem .8rem;text-align:left;border-bottom:1px solid var(--border);font-size:.9rem}
-    th{color:var(--accent);font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
-    td{color:var(--text)}
-    .highlight{color:var(--ok);font-weight:700}
-    .dim{color:var(--muted)}
-    .winner{background:rgba(34,197,94,.08)}
-    canvas{width:100%;height:280px;display:block;margin:1rem 0}
-    .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1rem 0}
-    .metric-box{background:var(--card-strong);border:1px solid var(--border);border-radius:.75rem;padding:1rem;text-align:center}
-    .metric-box .value{font-size:1.6rem;font-weight:800;color:var(--accent)}
-    .metric-box .label{font-size:.78rem;color:var(--muted);margin-top:.3rem}
-    .metric-box .sub{font-size:.72rem;color:var(--muted)}
-    .verdict{background:linear-gradient(135deg,rgba(56,189,248,.08),rgba(245,158,11,.06));border:1px solid rgba(56,189,248,.2);border-radius:1rem;padding:1.5rem;margin:2rem 0}
-    .verdict h2{background:linear-gradient(90deg,var(--accent),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 2: Resolution &amp; Decoder Validation | HOI3R</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+  h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+  h3 { color: #34495e; margin-top: 16px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+  .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+  .error { background: #fce4ec; padding: 12px; border-left: 4px solid #e53935; margin: 12px 0; }
+  .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+  .meta-label { font-weight: 600; color: #555; }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+  .badge-pass { background: #27ae60; }
+  .badge-fix { background: #e67e22; }
+  .badge-finding { background: #3498db; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+  .toc { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .toc ul { margin: 0; padding-left: 20px; }
+  .toc li { margin: 4px 0; }
+  .toc a { text-decoration: none; color: #2c3e50; }
+</style>
 </head>
 <body>
-<div class="page">
-  <a href="../index.html" class="back">&#8592; All Updates</a>
 
-  <div class="hero">
-    <h1>Phase 2: Resolution &amp; Decoder Validation</h1>
-    <div class="date">2026-04-08 &middot; Session 2</div>
-    <div class="status status-done">Experiment Complete</div>
-  </div>
+<h1>Phase 2: Resolution &amp; Decoder Validation</h1>
+<p><strong>Goal:</strong> Validate sparse resolution 256, trainable decoder, and Triton backward-pass fix using chamfer distance and mesh visualizations.</p>
 
-  <!-- Summary -->
-  <div class="card">
-    <h2>Experiment Overview</h2>
-    <p>Validated five Phase 2 changes by running two overfit experiments on a single DexYCB frame (sequence <code>20200709-subject-01/20200709_141754/836212060125</code>, frame 30). Both ran 200 optimization steps on an H100 GPU.</p>
-    <table>
-      <tr><th>Config</th><th>Exp A (Baseline)</th><th>Exp B (New)</th></tr>
-      <tr><td>Sparse resolution</td><td>8</td><td class="highlight">256</td></tr>
-      <tr><td>Decoder mode</td><td>Frozen / eval</td><td class="highlight">Trainable / train</td></tr>
-      <tr><td>Conv backend</td><td>flex_gemm (Triton)</td><td class="highlight">explicit_gemm (PyTorch)</td></tr>
-      <tr><td>Decoder precision</td><td>fp16</td><td class="highlight">fp32</td></tr>
-      <tr><td>Trainable params</td><td>584M</td><td class="highlight">1,058M</td></tr>
-    </table>
-  </div>
-
-  <!-- Key Metrics -->
-  <div class="card">
-    <h2>Key Results</h2>
-    <div class="metric-grid">
-      <div class="metric-box">
-        <div class="value">1,226x</div>
-        <div class="label">Hand Vertex Increase</div>
-        <div class="sub">139 &rarr; 170,450</div>
-      </div>
-      <div class="metric-box">
-        <div class="value">1,340x</div>
-        <div class="label">Object Vertex Increase</div>
-        <div class="sub">197 &rarr; 263,981</div>
-      </div>
-      <div class="metric-box">
-        <div class="value">170,450</div>
-        <div class="label">Post-Opt Hand Verts (B)</div>
-        <div class="sub">vs 170,401 Trellis.2 reference</div>
-      </div>
-      <div class="metric-box">
-        <div class="value">99.94%</div>
-        <div class="label">Loss Reduction (B)</div>
-        <div class="sub">1057.95 &rarr; 0.672</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Comparison Table -->
-  <div class="card">
-    <h2>Full Comparison</h2>
-    <table>
-      <tr><th>Metric</th><th>Exp A (res=8)</th><th>Exp B (res=256)</th><th>Winner</th></tr>
-      <tr><td>Pre-opt hand vertices</td><td>57</td><td class="highlight">66,835</td><td>B</td></tr>
-      <tr class="winner"><td>Post-opt hand vertices</td><td>139</td><td class="highlight">170,450</td><td>B (+1,226x)</td></tr>
-      <tr><td>Pre-opt object vertices</td><td>149</td><td class="highlight">121,669</td><td>B</td></tr>
-      <tr class="winner"><td>Post-opt object vertices</td><td>197</td><td class="highlight">263,981</td><td>B (+1,340x)</td></tr>
-      <tr><td>Initial loss</td><td>2,022.42</td><td>1,057.95</td><td class="dim">-</td></tr>
-      <tr><td>Final loss</td><td class="highlight">0.0017</td><td>0.672</td><td class="dim">A*</td></tr>
-      <tr><td>Loss reduction %</td><td>100.00%</td><td>99.94%</td><td class="dim">Tie</td></tr>
-      <tr><td>Time (200 steps)</td><td>325s</td><td>718s</td><td class="dim">A (2x faster)</td></tr>
-    </table>
-    <p style="font-size:.82rem">* Exp A's lower absolute final loss is expected: with only ~2 latent tokens at resolution 8, the reconstruction target is trivially small. Exp B has ~3,000+ tokens at resolution 256.</p>
-  </div>
-
-  <!-- Vertex Count Chart -->
-  <div class="card">
-    <h2>Hand Vertex Count Over Training</h2>
-    <canvas id="chartVerts"></canvas>
-  </div>
-
-  <div class="card">
-    <h2>Loss Convergence (Log Scale)</h2>
-    <canvas id="chartLoss"></canvas>
-  </div>
-
-  <!-- Changes Made -->
-  <div class="card">
-    <h2>Changes Validated</h2>
-    <h3>1. Sparse resolution 8 &rarr; 256</h3>
-    <p>Updated three config files to match Trellis.2 pretrained decoder's native resolution (256). The encoder downsamples 4x to 16&sup3; bottleneck; the decoder upsamples back to 256. Resolution 8 collapsed hand/object to single-token representations.</p>
-
-    <h3>2. Global blocks (already unfrozen)</h3>
-    <p>Verified that <code>global_blocks</code> already have <code>requires_grad=True</code> when <code>freeze_stream3r_encoder=true</code>. Only <code>frame_blocks</code> and <code>patch_embed</code> are frozen. No code change was needed.</p>
-
-    <h3>3. Training-mode decoder path</h3>
-    <p>Modified <code>_decode_slot</code> to call the base <code>SparseUnetVaeDecoder.forward()</code> directly in training mode, bypassing <code>FlexiDualGridVaeDecoder</code> (which requires <code>gt_intersected</code> with matching spatial coordinates). The base decoder returns <code>(h, subs_gt, subs)</code> for supervision. Mesh extraction uses predicted intersected flags.</p>
-
-    <h3>4. Direct mesh supervision losses</h3>
-    <p>Enhanced <code>_compute_trellis_mesh_loss</code> with three new terms: intersected logits BCE, subdivision prediction BCE, and latent reconstruction MSE. Config weights added: <code>intersected_weight=1.0</code>, <code>subdiv_weight=0.5</code>, <code>latent_recon_weight=1.0</code>.</p>
-
-    <h3>5. Triton flex_gemm backward pass fix</h3>
-    <p>Three-part fix: (a) convert decoder to fp32 via <code>convert_to_fp32()</code> to resolve fp16/fp32 dtype mismatch in <code>tl.dot</code>; (b) switch to <code>explicit_gemm</code> algorithm to avoid Triton 3.x <code>tl.cdiv</code> signedness bugs; (c) patch <code>torch.flip</code> for uint32 tensors in flex_gemm.</p>
-  </div>
-
-  <!-- Verdict -->
-  <div class="verdict">
-    <h2>Verdict</h2>
-    <p>Resolution 256 produces <strong>geometrically meaningful meshes</strong> with vertex counts matching the Trellis.2 reference (170,450 vs 170,401 for hand). The trainable decoder path works end-to-end with stable gradient flow through 200 optimization steps. Resolution 8 collapsed all geometry to ~100-200 vertices.</p>
-    <p><strong>Next steps:</strong> (1) Run full closed-loop training with STream3R aggregator, (2) add chamfer distance evaluation against GT mesh, (3) profile explicit_gemm vs potential Triton kernel fixes for speed.</p>
-  </div>
-
-  <!-- Files -->
-  <div class="card">
-    <h2>Modified Files</h2>
-    <table>
-      <tr><th>File</th><th>Change</th></tr>
-      <tr><td><code>configs/experiment/stream3r/dexycb_phase2a_closed_loop_overfit.yaml</code></td><td>sparse_resolution: 256</td></tr>
-      <tr><td><code>configs/experiment/stream3r/dexycb_trellis_overfit.yaml</code></td><td>sparse_resolution: 256</td></tr>
-      <tr><td><code>configs/model/stream3r.yaml</code></td><td>grid_size: 256 + new loss weights</td></tr>
-      <tr><td><code>stream3r/models/hoi_mesh_branch_trellis2.py</code></td><td>Training-mode decoder, fp32 conversion, explicit_gemm</td></tr>
-      <tr><td><code>stream3r/loss/losses.py</code></td><td>Enhanced _compute_trellis_mesh_loss</td></tr>
-      <tr><td><code>flex_gemm (installed pkg)</code></td><td>torch.flip uint32 patch</td></tr>
-    </table>
+<div class="meta-box">
+  <div class="meta-grid">
+    <span class="meta-label">Date:</span><span class="meta-value">2026-04-08 (Session 2)</span>
+    <span class="meta-label">Branch:</span><span class="meta-value">fix/phase2-alignment-audit</span>
+    <span class="meta-label">Sequence:</span><span class="meta-value">20200709-subject-01/20200709_141754/836212060125, frame 30</span>
+    <span class="meta-label">GPU:</span><span class="meta-value">NVIDIA H100 80GB</span>
+    <span class="meta-label">Steps:</span><span class="meta-value">200 per experiment, lr=1e-4</span>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-<script>
-const stepsA=[1,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200];
-const handA=[58,38,210,85,126,154,133,143,140,137,139,139,139,139,138,139,139,138,139,139,138];
-const handB=[67103,25687,62485,128143,156233,166736,169468,170172,170320,170324,170467,170477,170481,170470,170465,170445,170465,170480,170479,170454,170447];
-const lossA=[2022.422,456.582,174.075,28.015,3.894,2.622,0.784,0.240,0.060,0.053,0.016,0.006,0.003,0.002,0.002,0.001,0.002,0.001,0.001,0.002,0.002];
-const lossB=[1057.953,686.512,389.427,224.071,129.768,72.428,39.473,21.011,11.166,6.098,3.594,2.481,1.925,1.577,1.336,1.159,1.021,0.910,0.818,0.739,0.672];
+<div class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#setup">1. Experiment Setup</a></li>
+    <li><a href="#chamfer">2. Chamfer Distance Results</a></li>
+    <li><a href="#vis-hand">3. Hand Reconstruction Visualization</a></li>
+    <li><a href="#vis-object">4. Object Reconstruction Visualization</a></li>
+    <li><a href="#analysis">5. Analysis</a></li>
+    <li><a href="#changes">6. Changes Validated</a></li>
+    <li><a href="#next">7. Next Steps</a></li>
+  </ul>
+</div>
 
-new Chart(document.getElementById('chartVerts'),{
-  type:'line',
-  data:{
-    labels:stepsA,
-    datasets:[
-      {label:'Exp A (res=8)',data:handA,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',tension:.3,pointRadius:2},
-      {label:'Exp B (res=256)',data:handB,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',tension:.3,pointRadius:2}
-    ]
-  },
-  options:{
-    responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{labels:{color:'#94a3b8'}}},
-    scales:{
-      x:{title:{display:true,text:'Step',color:'#94a3b8'},ticks:{color:'#64748b'},grid:{color:'rgba(148,163,184,.08)'}},
-      y:{title:{display:true,text:'Hand Vertices',color:'#94a3b8'},ticks:{color:'#64748b'},grid:{color:'rgba(148,163,184,.08)'},type:'logarithmic'}
-    }
-  }
-});
+<h2 id="setup">1. Experiment Setup</h2>
 
-new Chart(document.getElementById('chartLoss'),{
-  type:'line',
-  data:{
-    labels:stepsA,
-    datasets:[
-      {label:'Exp A (res=8)',data:lossA,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',tension:.3,pointRadius:2},
-      {label:'Exp B (res=256)',data:lossB,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',tension:.3,pointRadius:2}
-    ]
-  },
-  options:{
-    responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{labels:{color:'#94a3b8'}}},
-    scales:{
-      x:{title:{display:true,text:'Step',color:'#94a3b8'},ticks:{color:'#64748b'},grid:{color:'rgba(148,163,184,.08)'}},
-      y:{title:{display:true,text:'Total Loss',color:'#94a3b8'},ticks:{color:'#64748b'},grid:{color:'rgba(148,163,184,.08)'},type:'logarithmic'}
-    }
-  }
-});
-</script>
+<p>Two overfit experiments on the same DexYCB frame, differing in sparse resolution and decoder trainability:</p>
+
+<table>
+  <tr><th>Config</th><th>Exp A (Baseline)</th><th>Exp B (New)</th></tr>
+  <tr><td>Sparse resolution</td><td>8</td><td><strong>256</strong></td></tr>
+  <tr><td>Decoder mode</td><td>Frozen / eval-mode</td><td><strong>Trainable / fp32 / explicit_gemm</strong></td></tr>
+  <tr><td>Trainable params</td><td>584M</td><td>1,058M</td></tr>
+  <tr><td>Loss</td><td colspan="2">Latent recon (L2) + KL</td></tr>
+  <tr><td>GT hand verts</td><td colspan="2">778 (MANO mesh)</td></tr>
+  <tr><td>GT object verts</td><td colspan="2">7,678 (YCB mesh)</td></tr>
+</table>
+
+<h2 id="chamfer">2. Chamfer Distance Results</h2>
+
+<p>Chamfer L1 distance between predicted mesh vertices (normalized space) and GT canonical vertices:</p>
+
+<table>
+  <tr><th>Metric</th><th>Exp A (res=8)</th><th>Exp B (res=256)</th><th>Winner</th></tr>
+  <tr>
+    <td>Pre-opt chamfer (hand)</td>
+    <td>0.5446</td>
+    <td><strong>0.1565</strong></td>
+    <td><span class="badge badge-pass">B (3.5x better)</span></td>
+  </tr>
+  <tr>
+    <td>Post-opt chamfer (hand)</td>
+    <td>0.1987</td>
+    <td><strong>0.1628</strong></td>
+    <td><span class="badge badge-pass">B (1.2x better)</span></td>
+  </tr>
+  <tr>
+    <td>Pre-opt chamfer (object)</td>
+    <td>0.3419</td>
+    <td><strong>0.3135</strong></td>
+    <td><span class="badge badge-pass">B</span></td>
+  </tr>
+  <tr>
+    <td>Post-opt chamfer (object)</td>
+    <td>0.3466</td>
+    <td>0.3566</td>
+    <td><span class="badge badge-finding">Comparable</span></td>
+  </tr>
+</table>
+
+<div class="highlight">
+  <strong>Key finding:</strong> Exp B's pre-optimization chamfer (0.157) is already better than Exp A's post-optimization chamfer (0.199). Resolution 256 produces geometrically correct meshes from the encoder alone, while resolution 8 starts with heavily degraded geometry that only partially recovers through training.
+</div>
+
+<div class="warning">
+  <strong>Latent recon loss is necessary but not sufficient:</strong> Both experiments converge the latent reconstruction loss (A: 2022&rarr;0.001, B: 1116&rarr;0.75) but this doesn't translate to proportional chamfer improvement. Object chamfer is flat in both experiments. Direct mesh supervision (chamfer loss backpropagated through the decoder) is needed next.
+</div>
+
+<p>Chamfer distance over training steps:</p>
+<table>
+  <tr><th>Step</th><th>A: CD hand</th><th>A: CD obj</th><th>B: CD hand</th><th>B: CD obj</th></tr>
+  <tr><td>1</td><td>0.426</td><td>0.241</td><td><strong>0.157</strong></td><td><strong>0.316</strong></td></tr>
+  <tr><td>50</td><td>0.195</td><td>0.344</td><td><strong>0.163</strong></td><td>0.354</td></tr>
+  <tr><td>100</td><td>0.199</td><td>0.347</td><td><strong>0.163</strong></td><td>0.356</td></tr>
+  <tr><td>200</td><td>0.199</td><td>0.347</td><td><strong>0.164</strong></td><td>0.356</td></tr>
+</table>
+
+<h2 id="vis-hand">3. Hand Reconstruction Visualization</h2>
+
+<p>GT (blue) vs predicted (green) mesh point clouds for the hand branch.</p>
+
+<h3>Exp A (res=8): Hand</h3>
+<div class="panel">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div>
+      <img src="assets/phase2-validation/a_hand_pre.png" alt="Exp A hand pre">
+      <p class="caption">Pre-training: scattered sparse points (57 vertices at res=8). Nowhere close to GT hand shape.</p>
+    </div>
+    <div>
+      <img src="assets/phase2-validation/a_hand_post.png" alt="Exp A hand post">
+      <p class="caption">Post-training (200 steps): 139 vertices, chamfer=0.199. Coarse blob, rough hand outline but no finger detail.</p>
+    </div>
+  </div>
+</div>
+
+<h3>Exp B (res=256): Hand</h3>
+<div class="panel">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div>
+      <img src="assets/phase2-validation/b_hand_pre.png" alt="Exp B hand pre">
+      <p class="caption">Pre-training: dense mesh (66K vertices), chamfer=0.157. Already recognizable hand shape.</p>
+    </div>
+    <div>
+      <img src="assets/phase2-validation/b_hand_post.png" alt="Exp B hand post">
+      <p class="caption">Post-training (200 steps): 170K vertices, chamfer=0.163. Clean hand shape aligned with GT.</p>
+    </div>
+  </div>
+</div>
+
+<h2 id="vis-object">4. Object Reconstruction Visualization</h2>
+
+<h3>Exp A (res=8): Object</h3>
+<div class="panel">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div>
+      <img src="assets/phase2-validation/a_object_pre.png" alt="Exp A object pre">
+      <p class="caption">Pre-training: 149 vertices. Tiny point cluster, no recognizable object shape.</p>
+    </div>
+    <div>
+      <img src="assets/phase2-validation/a_object_post.png" alt="Exp A object post">
+      <p class="caption">Post-training: 197 vertices, chamfer=0.347. Sparse blob with no recognizable structure.</p>
+    </div>
+  </div>
+</div>
+
+<h3>Exp B (res=256): Object</h3>
+<div class="panel">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div>
+      <img src="assets/phase2-validation/b_object_pre.png" alt="Exp B object pre">
+      <p class="caption">Pre-training: 122K vertices, chamfer=0.314. Recognizable box shape matching GT object.</p>
+    </div>
+    <div>
+      <img src="assets/phase2-validation/b_object_post.png" alt="Exp B object post">
+      <p class="caption">Post-training: 264K vertices, chamfer=0.357. Dense mesh with object geometry preserved.</p>
+    </div>
+  </div>
+</div>
+
+<h2 id="analysis">5. Analysis</h2>
+
+<div class="panel">
+  <h3><span class="badge badge-pass">VALIDATED</span> Resolution 256 produces geometrically meaningful meshes</h3>
+  <p>Resolution 8 collapses hand/object to ~100-200 point blobs with chamfer &ge; 0.20. Resolution 256 produces dense meshes with chamfer 0.16 that visually match GT shapes. The encoder+decoder at res=256 is geometrically correct from initialization.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-pass">VALIDATED</span> Trainable decoder path works end-to-end</h3>
+  <p>The decoder runs in training mode with fp32 precision and explicit_gemm backend for 200 steps without errors. Gradients flow through decoder conv weights. Three Triton bugs resolved: signedness mismatch in <code>tl.cdiv</code>, dtype mismatch in <code>tl.dot</code>, uint32 <code>torch.flip</code>.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">OBSERVATION</span> Object chamfer does not improve with training</h3>
+  <p>Both experiments show flat or slightly worse object chamfer after training. The latent recon loss optimizes token bridge projections but does not directly target mesh surface distance. Direct mesh supervision (chamfer loss backpropagated through the decoder) is needed for the next phase.</p>
+</div>
+
+<h2 id="changes">6. Changes Validated</h2>
+
+<table>
+  <tr><th>#</th><th>Change</th><th>Status</th><th>Evidence</th></tr>
+  <tr><td>1</td><td>Sparse resolution 8 &rarr; 256</td><td><span class="badge badge-pass">PASS</span></td><td>Chamfer 0.199 &rarr; 0.163 (hand), visual quality dramatically better</td></tr>
+  <tr><td>2</td><td>Unfreeze global blocks</td><td><span class="badge badge-pass">PASS</span></td><td>Already unfrozen; verified requires_grad=True</td></tr>
+  <tr><td>3</td><td>Training-mode decoder path</td><td><span class="badge badge-pass">PASS</span></td><td>200 steps stable, subs_gt/subs available for supervision</td></tr>
+  <tr><td>4</td><td>Enhanced mesh supervision losses</td><td><span class="badge badge-finding">WIRED</span></td><td>Code added; chamfer backprop through decoder is next step</td></tr>
+  <tr><td>5</td><td>Triton flex_gemm backward fix</td><td><span class="badge badge-pass">PASS</span></td><td>fp32 + explicit_gemm eliminates all 3 Triton bugs</td></tr>
+</table>
+
+<h2 id="next">7. Next Steps</h2>
+
+<ul>
+  <li><strong>Add chamfer loss through decoder:</strong> Backpropagate chamfer distance through mesh vertices to directly optimize surface quality.</li>
+  <li><strong>Add render-based loss:</strong> Use <code>TrellisGeometryLoss</code> depth/normal rendering in training mode.</li>
+  <li><strong>Profile explicit_gemm performance:</strong> 2.2x slowdown vs res=8; investigate Triton kernel patches.</li>
+  <li><strong>Multi-frame training:</strong> Move from single-frame overfit to sequence-level training.</li>
+</ul>
+
 </body>
 </html>
