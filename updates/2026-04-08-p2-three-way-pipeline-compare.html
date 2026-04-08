@@ -27,7 +27,7 @@
 </head>
 <body>
 
-<h1>Phase 2: Three-Way Pipeline Comparison</h1>
+<h1>Phase 2: Four-Way Pipeline Comparison</h1>
 <p>Isolating where quality degrades in the HOI3R pipeline</p>
 
 <div class="meta-box">
@@ -39,7 +39,7 @@
   </div>
 </div>
 
-<h2>Three Paths Compared</h2>
+<h2>Four Paths Compared</h2>
 
 <table>
   <tr><th>Path</th><th>Pipeline</th><th>Latent Tokens</th><th>Pred Vertices</th><th>Status</th></tr>
@@ -56,10 +56,16 @@
     <td style="color:green">Correct</td>
   </tr>
   <tr>
-    <td style="color:#d62728;font-weight:bold">3. Full Phase2</td>
-    <td>GT mesh &rarr; _encode_slot &rarr; <b>pack (32&rarr;1024)</b> &rarr; <b>unpack (1024&rarr;32)</b> &rarr; decoder</td>
-    <td>640</td><td>52,960</td>
+    <td style="color:#d62728;font-weight:bold">3. Bridge only</td>
+    <td>GT mesh &rarr; _encode_slot &rarr; <b>input_proj (32&rarr;1024)</b> &rarr; <b>output_proj (1024&rarr;32)</b> &rarr; decoder</td>
+    <td>640</td><td>53,563</td>
     <td style="color:red">Degraded</td>
+  </tr>
+  <tr>
+    <td style="color:#9467bd;font-weight:bold">4. Full STream3R</td>
+    <td>GT mesh &rarr; _encode_slot &rarr; input_proj &rarr; <b>STream3R global_blocks</b> &rarr; output_proj &rarr; decoder</td>
+    <td>640</td><td>53,735</td>
+    <td style="color:red">Degraded (same as #3)</td>
   </tr>
 </table>
 
@@ -68,21 +74,25 @@
 </div>
 
 <div class="error">
-  <strong>Path 2 vs Path 3:</strong> The token bridge (randomly initialized <code>input_proj</code> 32&rarr;1024 + <code>output_proj</code> 1024&rarr;32) distorts the latent features, causing the decoder to produce a degraded mesh (52K vs 170K vertices). <strong>This is expected</strong> &mdash; the bridge needs training.
+  <strong>Path 2 vs Path 3:</strong> The token bridge (randomly initialized <code>input_proj</code> 32&rarr;1024 + <code>output_proj</code> 1024&rarr;32) distorts the latent features, causing the decoder to produce a degraded mesh (53K vs 170K vertices). <strong>This is expected</strong> &mdash; the bridge needs training.
+</div>
+
+<div class="warning">
+  <strong>Path 3 vs Path 4:</strong> Adding STream3R global attention blocks between input_proj and output_proj has <strong>minimal additional effect</strong> (53,563 vs 53,735 verts). The frozen STream3R global_blocks act as near-identity on these extra tokens. The degradation is entirely from the untrained token bridge projection, not from STream3R.
 </div>
 
 <h2>Side-by-Side Comparison</h2>
 
 <div class="panel">
-  <img src="assets/p2-three-way-compare/hand_3way.png" alt="3-way comparison">
-  <p class="caption">Left to right: GT canonical (778v), Direct Trellis.2 (170K), Phase2 no bridge (170K), Full Phase2 pipeline (53K). All in canonical coordinate space.</p>
+  <img src="assets/p2-three-way-compare/hand_4way.png" alt="4-way comparison">
+  <p class="caption">Left to right: GT (778v), 1.Direct (170K), 2.No bridge (170K), 3.Bridge only (53K), 4.Full STream3R (53K). All in canonical space.</p>
 </div>
 
 <h2>GT Overlay Comparison</h2>
 
 <div class="panel">
-  <img src="assets/p2-three-way-compare/hand_overlay.png" alt="GT overlays">
-  <p class="caption">Left: GT vs Direct (well-aligned). Center: GT vs No-Bridge (well-aligned, identical latents). Right: GT vs Full Pipeline (distorted by untrained token bridge).</p>
+  <img src="assets/p2-three-way-compare/hand_overlay_4way.png" alt="GT overlays">
+  <p class="caption">Left to right: GT vs Direct (aligned), GT vs No-Bridge (aligned), GT vs Bridge-Only (distorted), GT vs Full STream3R (distorted, same as bridge-only).</p>
 </div>
 
 <h2>Conclusions</h2>
