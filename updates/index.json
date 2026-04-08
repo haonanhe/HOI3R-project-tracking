@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-08 · Phase 2: Resolution & Decoder Validation (Session 2)",
+    "date": "2026-04-08",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "Validated resolution 256 vs 8, trainable decoder, Triton fix. Resolution 256 produces 170K hand vertices (1226x over baseline 139). Decoder trains stably in fp32/explicit_gemm for 200 steps. Both experiments converge: Exp A loss 2022->0.002, Exp B loss 1058->0.67.",
+    "path": "updates/2026-04-08-phase2-resolution-decoder-validation.html",
+    "page": "updates/2026-04-08-phase2-resolution-decoder-validation.html",
+    "slug": "phase2-resolution-decoder-validation",
+    "experiment_id": "P2-RES256-DECODER-VALIDATION"
+  },
+  {
     "title": "2026-04-08 · Session Summary: Phase 2 Kickoff",
     "date": "2026-04-08",
     "status": "PASS",
