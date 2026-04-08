@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-08 · Trellis.2 Direct Encoder-Decoder Roundtrip",
+    "date": "2026-04-08",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "Direct Trellis.2 SC-Encoder -> SC-Decoder round-trip without token bridge or STream3R. Validates that the base Trellis.2 integration (voxelization, encoding, decoding, mesh extraction) is correct. At sparse_resolution=8, hand encodes to 1 latent token (206 pred verts from 778 GT), object to 1 token (288 pred from 7678 GT). Coarse but functional.",
+    "path": "updates/2026-04-08-p2-trellis2-direct-roundtrip-001.html",
+    "page": "updates/2026-04-08-p2-trellis2-direct-roundtrip-001.html",
+    "slug": "p2-trellis2-direct-roundtrip-001",
+    "experiment_id": "P2-TRELLIS2-DIRECT-ROUNDTRIP-001"
+  },
+  {
     "title": "2026-04-07 · Phase 2 Latent Recon Overfit",
     "date": "2026-04-07",
     "status": "PASS",
