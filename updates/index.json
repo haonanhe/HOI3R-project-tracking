@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-08 · Latent Recon Overfit res=256 (Full STream3R)",
+    "date": "2026-04-08",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "Full STream3R pipeline overfit at res=256. Latent loss 1068->0.0099 (99.999%). Pre-training: scattered blobs. Post-training: recognizable hand and object shapes aligned with GT. Token bridge (4 tensors) successfully trained to preserve SLat through 32->1024->32 projection + STream3R attention.",
+    "path": "updates/2026-04-08-p2-latent-recon-overfit-res256.html",
+    "page": "updates/2026-04-08-p2-latent-recon-overfit-res256.html",
+    "slug": "p2-latent-recon-overfit-res256",
+    "experiment_id": "P2-LATENT-RECON-OVERFIT-RES256"
+  },
+  {
     "title": "2026-04-08 · Three-Way Pipeline Comparison",
     "date": "2026-04-08",
     "status": "PASS",

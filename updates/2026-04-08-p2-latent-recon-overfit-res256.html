@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2-LATENT-RECON-OVERFIT-RES256 | HOI3R Phase 2</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+  h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+  .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+  .meta-label { font-weight: 600; color: #555; }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+  .frozen { color: #3498db; }
+  .optimized { color: #27ae60; font-weight: 600; }
+  .coordinate-badge { display: inline-block; background: #f39c12; color: #fff; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; }
+  .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<h1>P2-LATENT-RECON-OVERFIT-RES256</h1>
+<p>Full STream3R Pipeline Overfit with Latent Reconstruction Loss at Resolution 256</p>
+
+<div class="meta-box">
+  <div class="meta-grid">
+    <span class="meta-label">Date:</span><span class="meta-value">2026-04-08</span>
+    <span class="meta-label">Branch:</span><span class="meta-value">fix/phase2-alignment-audit</span>
+    <span class="meta-label">Dataset:</span><span class="meta-value">DexYCB frame 30, single-frame overfit</span>
+    <span class="meta-label">Resolution:</span><span class="meta-value">256 (matching Phase 1)</span>
+    <span class="meta-label">Coordinate Space:</span><span><span class="coordinate-badge">normalized_space</span> (intermediate)</span>
+    <span class="meta-label">Steps:</span><span class="meta-value">200</span>
+    <span class="meta-label">LR:</span><span class="meta-value">0.001 (Adam)</span>
+  </div>
+</div>
+
+<h2>Training Modules</h2>
+
+<table>
+  <tr><th>Module</th><th>Role</th><th>Weight Init</th></tr>
+  <tr><td>stream3r.encoder (patch_embed + frame_blocks)</td><td class="frozen">frozen</td><td>pretrained</td></tr>
+  <tr><td>stream3r.decoder (global_blocks)</td><td class="frozen">frozen</td><td>pretrained</td></tr>
+  <tr><td>trellis2.sc_encoder</td><td class="frozen">frozen</td><td>pretrained</td></tr>
+  <tr><td>trellis2.sc_decoder</td><td class="frozen">frozen</td><td>pretrained</td></tr>
+  <tr><td><strong>token_bridge (input_proj + output_proj)</strong></td><td class="optimized">optimized</td><td>random_init</td></tr>
+</table>
+
+<h2>Loss Convergence</h2>
+
+<table>
+  <tr><th>Step</th><th>Latent Recon Loss</th><th>Hand Loss (monitor)</th><th>Object Loss (monitor)</th></tr>
+  <tr><td>1</td><td><strong>1068.10</strong></td><td>0.030</td><td>0.042</td></tr>
+  <tr><td>20</td><td>10.54</td><td>0.016</td><td>0.024</td></tr>
+  <tr><td>40</td><td>1.14</td><td>0.016</td><td>0.024</td></tr>
+  <tr><td>60</td><td>0.178</td><td>0.017</td><td>0.024</td></tr>
+  <tr><td>100</td><td>0.027</td><td>0.017</td><td>0.024</td></tr>
+  <tr><td>140</td><td>0.016</td><td>0.017</td><td>0.024</td></tr>
+  <tr><td>200</td><td><strong>0.0099</strong></td><td>0.016</td><td>0.024</td></tr>
+</table>
+
+<div class="highlight">
+  <strong>Loss reduction: 1068 &rarr; 0.0099 (99.999%)</strong><br>
+  At resolution 256 with 640 hand + 889 object latent tokens, the token bridge learns to faithfully preserve the SLat representation through the 32&rarr;1024&rarr;32 projection. The latent reconstruction loss converges steadily without oscillation.
+</div>
+
+<h2>Hand Mesh: Pre vs Post Training</h2>
+
+<div class="panel">
+  <img src="assets/p2-latent-recon-overfit-res256/hand_prepost.png" alt="Hand pre vs post">
+  <p class="caption">Left: GT hand (778v). Pre-training (red, 51K): scattered, unrecognizable. Post-training (green, 24K): clear hand shape aligned with GT. Right: overlay showing improvement.</p>
+</div>
+
+<h2>Object Mesh: Pre vs Post Training</h2>
+
+<div class="panel">
+  <img src="assets/p2-latent-recon-overfit-res256/object_prepost.png" alt="Object pre vs post">
+  <p class="caption">Left: GT object (7.7K). Pre-training (red, 60K): scattered noise. Post-training (green, 25K): correct rectangular shape matching GT. Right: overlay.</p>
+</div>
+
+<h2>Key Results</h2>
+
+<table>
+  <tr><th></th><th>Pre-Training</th><th>Post-Training</th><th>Direct Trellis.2 (reference)</th></tr>
+  <tr><td><strong>Hand vertices</strong></td><td>51,587 (scattered)</td><td>23,591 (hand shape)</td><td>170,401 (best quality)</td></tr>
+  <tr><td><strong>Object vertices</strong></td><td>60,391 (scattered)</td><td>24,660 (correct shape)</td><td>263,418 (best quality)</td></tr>
+  <tr><td><strong>Shape quality</strong></td><td>Unrecognizable</td><td>Recognizable, aligned</td><td>High fidelity</td></tr>
+</table>
+
+<h2>Conclusions</h2>
+
+<div class="panel">
+  <ul>
+    <li><strong>Latent reconstruction loss works:</strong> Training the token bridge (4 tensors, ~66K params) for 200 steps recovers recognizable mesh shapes from the full STream3R pipeline</li>
+    <li><strong>Resolution 256 is critical:</strong> At res=8, the pipeline had only 1 latent token (meaningless). At res=256, 640+ tokens provide enough information for faithful reconstruction</li>
+    <li><strong>Decoded shapes match GT:</strong> Post-training hand shows clear fingers/palm, object shows correct bounding geometry</li>
+    <li><strong>Vertex count gap remains:</strong> Post-training produces ~24K verts vs reference 170K. The bridge preserves latent features but not perfectly &mdash; some information loss in the 32&rarr;1024&rarr;32 projection</li>
+    <li><strong>Next steps:</strong> Unfreeze STream3R global_blocks for cross-modal fusion; increase training steps; explore direct mesh supervision</li>
+  </ul>
+</div>
+
+<h2>Reproducibility</h2>
+
+<div class="meta-box">
+<pre style="overflow-x:auto; font-size:0.85em;">
+cd /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-pure-stream3r-trellis-migration
+/mnt/afs/haonan/miniconda3/envs/human3r/bin/python scripts/dexycb_trellis_overfit.py \
+  --sequence-filter '20200709-subject-01/20200709_141754/836212060125' \
+  --frame-index 30 \
+  --data-root /mnt/afs/haonan/datasets/haonan/datasets/dexycb \
+  --output-dir /mnt/afs/haonan/hoi3r/experiments/P2-LATENT-RECON-OVERFIT-RES256 \
+  --max-steps 200 --seal-hand-wrist --freeze-decoder \
+  --grid-size 256 --lr 0.001 --device cuda
+</pre>
+</div>
+
+</body>
+</html>
