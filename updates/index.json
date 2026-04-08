@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-08 · Three-Way Pipeline Comparison",
+    "date": "2026-04-08",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "3-way comparison isolating quality degradation: (1) Direct Trellis.2 = 170K verts, correct; (2) Phase2 no bridge = 170K verts, latents identical to #1; (3) Full Phase2 with bridge = 53K verts, degraded by untrained token bridge. Encoding validated, bridge training needed.",
+    "path": "updates/2026-04-08-p2-three-way-pipeline-compare.html",
+    "page": "updates/2026-04-08-p2-three-way-pipeline-compare.html",
+    "slug": "p2-three-way-pipeline-compare",
+    "experiment_id": "P2-THREE-WAY-COMPARE"
+  },
+  {
     "title": "2026-04-08 · Trellis.2 Direct Encoder-Decoder Roundtrip",
     "date": "2026-04-08",
     "status": "PASS",
