@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary 2026-04-08 | HOI3R Phase 2</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+  h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+  h3 { color: #34495e; margin-top: 16px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+  .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+  .error { background: #fce4ec; padding: 12px; border-left: 4px solid #e53935; margin: 12px 0; }
+  .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+  .meta-label { font-weight: 600; color: #555; }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+  .badge-pass { background: #27ae60; }
+  .badge-fix { background: #e67e22; }
+  .badge-finding { background: #3498db; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+  .toc { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .toc ul { margin: 0; padding-left: 20px; }
+  .toc li { margin: 4px 0; }
+  .toc a { text-decoration: none; color: #2c3e50; }
+  .frozen { color: #3498db; }
+  .optimized { color: #27ae60; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>Session Summary &mdash; 2026-04-08</h1>
+<p><strong>Goal:</strong> Start Phase 2 &mdash; audit code alignment, fix critical issues, validate Trellis.2 integration, run first overfit experiments.</p>
+
+<div class="meta-box">
+  <div class="meta-grid">
+    <span class="meta-label">Date:</span><span class="meta-value">2026-04-07 &ndash; 2026-04-08</span>
+    <span class="meta-label">Branch:</span><span class="meta-value">fix/phase2-alignment-audit</span>
+    <span class="meta-label">Commits:</span><span class="meta-value">4 commits (audit fixes + latent loss + normalization fix)</span>
+    <span class="meta-label">Experiments:</span><span class="meta-value">5 published to project tracking</span>
+    <span class="meta-label">Phase:</span><span class="meta-value">Phase 2 &mdash; Single-Sequence Overfit</span>
+  </div>
+</div>
+
+<div class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#audit">1. Code Audit &amp; Critical Fixes</a></li>
+    <li><a href="#roundtrip">2. Trellis.2 Direct Round-Trip Validation</a></li>
+    <li><a href="#fourway">3. Four-Way Pipeline Comparison</a></li>
+    <li><a href="#overfit">4. Overfit Experiment (res=256)</a></li>
+    <li><a href="#modules">5. Current Training Modules State</a></li>
+    <li><a href="#discoveries">6. Key Discoveries</a></li>
+    <li><a href="#next">7. Open Issues &amp; Next Steps</a></li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="audit">1. Code Audit &amp; Critical Fixes</h2>
+
+<p>Audited all Phase 2 code (model, data, loss, Trellis native) against the PRD. Found and fixed 5 critical issues:</p>
+
+<table>
+  <tr><th>#</th><th>Issue</th><th>Severity</th><th>Fix</th></tr>
+  <tr><td>C1</td><td>Decoder forced <code>eval()</code> every forward, discarded <code>guide_intersected</code></td><td><span class="badge badge-fix">CRITICAL</span></td><td>Rewrote <code>_decode_slot</code> to respect training mode</td></tr>
+  <tr><td>C2</td><td><code>freeze_decoder</code> defaulted to <code>True</code> (PRD says optimize)</td><td><span class="badge badge-fix">CRITICAL</span></td><td>Changed default to <code>False</code></td></tr>
+  <tr><td>C3</td><td>Config <code>latent_dim: 64</code> vs Trellis.2 enforces 32 &rarr; crash at init</td><td><span class="badge badge-fix">CRITICAL</span></td><td>Config fixed to <code>latent_dim: 32</code></td></tr>
+  <tr><td>C5</td><td>Wrist sealing: <code>seal_hand_wrist</code> flag existed but no code called <code>fill_holes()</code></td><td><span class="badge badge-fix">CRITICAL</span></td><td>Added <code>_seal_mesh</code> method using Trellis.2 <code>Mesh.fill_holes()</code></td></tr>
+  <tr><td>N1</td><td>Per-axis normalization distorted aspect ratio (should be uniform)</td><td><span class="badge badge-fix">CRITICAL</span></td><td>Changed to Phase 1 uniform scaling: <code>(v - center) * (0.99999 / max_extent)</code></td></tr>
+</table>
+
+<p>Additional fixes: wired <code>build_hoi_mesh_branch</code> factory to <code>Trellis2HOIMeshBranch</code>, added <code>hand_faces/object_faces</code> passthrough in <code>STream3R.forward()</code>, made <code>MeshRenderer</code> import lazy, added <code>_compute_trellis_mesh_loss</code> hook to <code>CausalLoss</code>.</p>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="roundtrip">2. Trellis.2 Direct Round-Trip Validation</h2>
+
+<p>Verified the reference Trellis.2 encoder&rarr;decoder pipeline produces correct meshes at <code>sparse_resolution=256</code>.</p>
+
+<table>
+  <tr><th>Branch</th><th>GT Verts</th><th>Latent Tokens</th><th>Pred Verts</th><th>Quality</th></tr>
+  <tr><td>Hand (sealed)</td><td>778</td><td>640</td><td>170,401</td><td><span class="badge badge-pass">Correct shape</span></td></tr>
+  <tr><td>Object</td><td>7,678</td><td>889</td><td>263,418</td><td><span class="badge badge-pass">Correct shape</span></td></tr>
+</table>
+
+<div class="panel">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div>
+      <img src="assets/session-2026-04-08/direct_roundtrip_hand.png" alt="Hand roundtrip">
+      <p class="caption">Hand: GT vs decoded in canonical space. Shapes match.</p>
+    </div>
+    <div>
+      <img src="assets/session-2026-04-08/direct_roundtrip_object.png" alt="Object roundtrip">
+      <p class="caption">Object: GT vs decoded in canonical space. Shapes match.</p>
+    </div>
+  </div>
+</div>
+
+<div class="warning">
+  <strong>Bug found:</strong> Initial test used <code>sparse_resolution=8</code> which collapsed both branches to 1 latent token each, producing degenerate output. The Phase 2a config also had <code>sparse_resolution: 8</code>. Must use 256 to match Phase 1.
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="fourway">3. Four-Way Pipeline Comparison</h2>
+
+<p>Isolated where quality degrades across the HOI3R pipeline:</p>
+
+<table>
+  <tr><th>Path</th><th>Pipeline</th><th>Hand Verts</th><th>Quality</th></tr>
+  <tr><td style="color:#2ca02c;font-weight:bold">1. Direct Trellis.2</td><td>reference encoder &rarr; reference decoder</td><td>170,401</td><td><span class="badge badge-pass">Correct</span></td></tr>
+  <tr><td style="color:#ff7f0e;font-weight:bold">2. Phase2 no bridge</td><td><code>_encode_slot</code> &rarr; decoder (bypass bridge)</td><td>170,504</td><td><span class="badge badge-pass">Correct</span></td></tr>
+  <tr><td style="color:#d62728;font-weight:bold">3. Bridge only</td><td>_encode_slot &rarr; <code>input_proj</code> &rarr; <code>output_proj</code> &rarr; decoder</td><td>53,563</td><td><span class="badge badge-fix">Degraded</span></td></tr>
+  <tr><td style="color:#9467bd;font-weight:bold">4. Full STream3R</td><td>_encode_slot &rarr; input_proj &rarr; <code>global_blocks</code> &rarr; output_proj &rarr; decoder</td><td>53,735</td><td><span class="badge badge-fix">Degraded</span></td></tr>
+</table>
+
+<div class="panel">
+  <img src="assets/session-2026-04-08/four_way.png" alt="4-way comparison">
+  <p class="caption">GT, Direct Trellis.2, Phase2 no bridge, Bridge only, Full STream3R. Paths 1&amp;2 produce correct hand shapes. Paths 3&amp;4 are degraded identically.</p>
+</div>
+
+<div class="panel">
+  <img src="assets/session-2026-04-08/four_way_overlay.png" alt="4-way overlay">
+  <p class="caption">GT overlays. Paths 1&amp;2 align with GT. Paths 3&amp;4 are scattered due to untrained token bridge.</p>
+</div>
+
+<div class="highlight">
+  <strong>Proven:</strong>
+  <ul style="margin:4px 0">
+    <li>Encoding is correct &mdash; Phase 2 <code>_encode_slot</code> produces <strong>identical</strong> latents to the reference (diff=0.000000)</li>
+    <li>Path 3 &asymp; Path 4 &mdash; frozen STream3R global_blocks act as near-identity; all degradation comes from the untrained token bridge</li>
+    <li>Token bridge is the sole training target</li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="overfit">4. Overfit Experiment (res=256, 200 steps)</h2>
+
+<p>Full STream3R pipeline overfit with latent-space reconstruction loss:</p>
+
+<table>
+  <tr><th>Step</th><th>Latent Recon Loss</th><th>Hand Loss (monitor)</th><th>Object Loss (monitor)</th></tr>
+  <tr><td>1</td><td><strong>1068.10</strong></td><td>0.030</td><td>0.042</td></tr>
+  <tr><td>20</td><td>10.54</td><td>0.016</td><td>0.024</td></tr>
+  <tr><td>100</td><td>0.027</td><td>0.017</td><td>0.024</td></tr>
+  <tr><td>200</td><td><strong>0.0099</strong></td><td>0.016</td><td>0.024</td></tr>
+</table>
+
+<div class="highlight">
+  <strong>Loss: 1068 &rarr; 0.0099 (99.999% reduction)</strong>. Token bridge learns to preserve SLat through the 32&rarr;1024&rarr;32 projection + STream3R attention.
+</div>
+
+<div class="panel">
+  <img src="assets/session-2026-04-08/hand_prepost.png" alt="Hand pre vs post">
+  <p class="caption">Hand: Pre-training (red) is scattered. Post-training (green) shows hand shape aligned with GT (blue). Overlay shows all three.</p>
+</div>
+
+<div class="panel">
+  <img src="assets/session-2026-04-08/object_prepost.png" alt="Object pre vs post">
+  <p class="caption">Object: Pre-training (red) is noise. Post-training (green) shows correct rectangular shape matching GT (blue).</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="modules">5. Current Training Modules State</h2>
+
+<table>
+  <tr><th>Module</th><th>Role</th><th>Init</th><th>Notes</th></tr>
+  <tr><td>stream3r.encoder (patch_embed + frame_blocks)</td><td class="frozen">frozen</td><td>pretrained</td><td>Visual feature extraction</td></tr>
+  <tr><td>stream3r.decoder (global_blocks)</td><td class="frozen">frozen</td><td>pretrained</td><td>Acts as near-identity on SLat tokens</td></tr>
+  <tr><td>trellis2.sc_encoder (FlexiDualGridVaeEncoder)</td><td class="frozen">frozen</td><td>pretrained</td><td>Produces identical latents to reference</td></tr>
+  <tr><td>trellis2.sc_decoder (FlexiDualGridVaeDecoder)</td><td class="frozen">frozen</td><td>pretrained</td><td>Eval-mode decode (non-differentiable mesh)</td></tr>
+  <tr><td><strong>token_bridge (input_proj + output_proj)</strong></td><td class="optimized">optimized</td><td>random_init</td><td>4 tensors, ~66K params. Sole training target.</td></tr>
+</table>
+
+<p><strong>Loss:</strong> Latent-space L2 (Option B) &mdash; compare refined SLat (after STream3R attention + output_proj) vs original encoder SLat. Gradients flow through output_proj &rarr; global_blocks &rarr; input_proj.</p>
+<p><strong>Coordinate space:</strong> <code>normalized_space</code> (intermediate state). World-coordinate output is a follow-up.</p>
+<p><strong>Sparse resolution:</strong> 256 (required; res=8 produces degenerate 1-token latents).</p>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="discoveries">6. Key Discoveries</h2>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> Trellis.2 decoder is non-differentiable in eval mode</h3>
+  <p>The reference <code>FlexiDualGridVaeDecoder</code> calls <code>flexible_dual_grid_to_mesh</code> which is wrapped in <code>@torch.no_grad()</code> equivalent during eval. Training mode requires <code>gt_intersected</code> at the decoder's output resolution, which our pipeline doesn't produce. This blocks direct mesh supervision through the decoder.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> flex_gemm sparse conv backward has Triton bug</h3>
+  <p>Letting gradients flow through the Trellis.2 decoder triggers a <code>triton.compiler.errors.CompilationError</code> in <code>flex_gemm</code> (uint32/int32 signedness mismatch). Must wrap decoder in <code>torch.no_grad()</code> until resolved.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> sparse_resolution=8 is catastrophic</h3>
+  <p>At grid_size=8, both hand and object compress to 1 latent token each (dim=32). This destroys all geometric information. The Phase 2a config had this setting. Must use 256+ for meaningful experiments.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> Per-axis normalization distorts shapes</h3>
+  <p>The original <code>_encode_slot</code> used <code>(v - min) / span - 0.5</code> (per-axis), stretching the mesh to fill the unit cube. Phase 1 / reference uses uniform scaling <code>(v - center) * (0.99999 / max_extent)</code> which preserves aspect ratio. Fixed.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> Frozen STream3R global_blocks are near-identity on SLat tokens</h3>
+  <p>Path 3 (bridge only) &asymp; Path 4 (full STream3R): 53,563 vs 53,735 vertices. The pretrained global attention blocks don't meaningfully transform the extra SLat tokens. Cross-modal fusion requires unfreezing these blocks.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="next">7. Open Issues &amp; Next Steps</h2>
+
+<table>
+  <tr><th>Priority</th><th>Item</th><th>Details</th></tr>
+  <tr><td>P0</td><td>Update <code>sparse_resolution</code> in Phase 2a config</td><td>Change from 8 to 256 in <code>dexycb_phase2a_closed_loop_overfit.yaml</code></td></tr>
+  <tr><td>P1</td><td>Unfreeze STream3R global_blocks</td><td>Enable cross-modal attention between visual tokens and SLat tokens</td></tr>
+  <tr><td>P1</td><td>Build gt_intersected data pipeline</td><td>Required for differentiable decoder training. Needs voxelization at decoder output resolution.</td></tr>
+  <tr><td>P1</td><td>Direct mesh supervision</td><td>Current latent L2 loss trains bridge but doesn't directly optimize mesh quality. Need chamfer / render-based loss with differentiable decode.</td></tr>
+  <tr><td>P2</td><td>Coordinate transform: normalized &rarr; world W</td><td>Phase 2 requirement; deferred until mesh quality is acceptable</td></tr>
+  <tr><td>P2</td><td>Bridge Lightning data path (H5)</td><td>Connect <code>DexYCB_Multi</code> Lightning dataloader to Trellis batch format for Hydra training</td></tr>
+  <tr><td>P2</td><td>Fix flex_gemm Triton bug</td><td>Blocks gradient flow through decoder. May need different sparse conv backend.</td></tr>
+</table>
+
+<h2>Commits</h2>
+
+<table>
+  <tr><th>SHA</th><th>Message</th></tr>
+  <tr><td><code>4a71b02</code></td><td>fix: align code with Phase 2 design requirements (C1-C5)</td></tr>
+  <tr><td><code>457262e</code></td><td>fix: complete Phase 2 smoke test pipeline</td></tr>
+  <tr><td><code>15cd942</code></td><td>feat: add latent-space reconstruction loss for Phase 2 overfit</td></tr>
+  <tr><td><code>(pending)</code></td><td>fix: uniform normalization, roundtrip script, 4-way comparison</td></tr>
+</table>
+
+<h2>Published Experiment Pages</h2>
+
+<table>
+  <tr><th>Experiment</th><th>Link</th></tr>
+  <tr><td>P2-LATENT-RECON-OVERFIT-001 (res=8, deprecated)</td><td><a href="2026-04-07-p2-latent-recon-overfit-001.html">page</a></td></tr>
+  <tr><td>P2-TRELLIS2-DIRECT-ROUNDTRIP-001 (res=256)</td><td><a href="2026-04-08-p2-trellis2-direct-roundtrip-001.html">page</a></td></tr>
+  <tr><td>P2 Four-Way Pipeline Comparison</td><td><a href="2026-04-08-p2-three-way-pipeline-compare.html">page</a></td></tr>
+  <tr><td>P2-LATENT-RECON-OVERFIT-RES256</td><td><a href="2026-04-08-p2-latent-recon-overfit-res256.html">page</a></td></tr>
+</table>
+
+</body>
+</html>

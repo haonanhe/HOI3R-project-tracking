@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-08 · Session Summary: Phase 2 Kickoff",
+    "date": "2026-04-08",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "Phase 2 session: audited code (5 critical fixes), validated Trellis.2 roundtrip at res=256, ran 4-way pipeline comparison proving token bridge is sole degradation source, trained bridge overfit (loss 1068->0.01, shapes recovered). Key findings: res=8 catastrophic, normalization must be uniform, decoder non-differentiable in eval mode, frozen STream3R global_blocks are near-identity.",
+    "path": "updates/2026-04-08-session-summary.html",
+    "page": "updates/2026-04-08-session-summary.html",
+    "slug": "session-summary-2026-04-08",
+    "experiment_id": "SESSION-2026-04-08"
+  },
+  {
     "title": "2026-04-08 · Latent Recon Overfit res=256 (Full STream3R)",
     "date": "2026-04-08",
     "status": "PASS",
