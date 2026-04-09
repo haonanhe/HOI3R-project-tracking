@@ -1,607 +1,394 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HOI3R — NeurIPS 2026 Project Overview</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #0f1417;
-      --bg-2: #172025;
-      --panel: rgba(21, 28, 33, 0.88);
-      --panel-2: rgba(27, 37, 44, 0.94);
-      --line: rgba(255, 255, 255, 0.1);
-      --text: #f3efe2;
-      --muted: #b6b09d;
-      --sand: #e3c37a;
-      --orange: #e9793e;
-      --teal: #57c8b7;
-      --lime: #b3d67d;
-      --red: #ef8a69;
-      --shadow: rgba(0, 0, 0, 0.26);
-      --hero: radial-gradient(circle at 15% 20%, rgba(227, 195, 122, 0.22), transparent 30%), radial-gradient(circle at 85% 10%, rgba(87, 200, 183, 0.18), transparent 28%), linear-gradient(160deg, #12181c 0%, #0b1013 100%);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
-    body {
-      margin: 0; color: var(--text);
-      background: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px), var(--bg);
-      background-size: 28px 28px, 28px 28px, auto;
-      font-family: "Noto Sans SC", sans-serif;
-    }
-    a { color: inherit; text-decoration: none; }
-    .frame { position: fixed; inset: 18px; border: 1px solid rgba(255,255,255,0.06); pointer-events: none; z-index: 1; }
-    .rail { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 3; display: flex; flex-direction: column; gap: 8px; }
-    .rail a { width: 11px; height: 11px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.28); background: rgba(255,255,255,0.08); transition: transform 0.2s, background 0.2s; }
-    .rail a:hover { background: var(--sand); transform: scale(1.16); }
-    .deck { position: relative; z-index: 2; }
-    .slide { min-height: 100vh; padding: 54px 72px 40px; display: grid; align-items: center; scroll-snap-align: start; }
-    .slide-inner { width: min(1280px, 100%); margin: 0 auto; }
-    .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 0.86rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sand); margin-bottom: 14px; }
-    h1, h2, h3 { margin: 0; font-family: "Space Grotesk", "Noto Sans SC", sans-serif; letter-spacing: -0.04em; }
-    h1 { font-size: clamp(3rem, 6vw, 5.6rem); line-height: 0.92; max-width: 14ch; }
-    h2 { font-size: clamp(2.2rem, 4vw, 3.8rem); margin-bottom: 14px; }
-    p { margin: 0; color: var(--muted); line-height: 1.65; font-size: 1.02rem; }
-    .hero { background: var(--hero); border: 1px solid var(--line); border-radius: 30px; overflow: hidden; box-shadow: 0 24px 60px var(--shadow); }
-    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(350px, 0.8fr); gap: 26px; padding: 38px; }
-    .hero-note { max-width: 58ch; margin-top: 18px; }
-    .hero-note strong { color: var(--text); }
-    .hero-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start; }
-    .stat, .card, .metric-card, .plan-card, .stack-card, .timeline-card, .media-card, .compare-card, .summary-card {
-      border: 1px solid var(--line); border-radius: 22px; background: var(--panel); backdrop-filter: blur(10px); box-shadow: 0 14px 30px var(--shadow);
-    }
-    .stat, .metric-card, .summary-card { padding: 18px 18px 16px; }
-    .stat .label, .metric-card .label, .summary-card .label { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-    .stat .value, .metric-card .value, .summary-card .value { font-size: 1.9rem; line-height: 1; font-weight: 700; color: var(--text); font-family: "Space Grotesk", "Noto Sans SC", sans-serif; }
-    .stat small, .metric-card small, .summary-card small { display: block; margin-top: 9px; color: var(--muted); font-size: 0.86rem; line-height: 1.45; }
-    .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
-    .section-top { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.8fr); gap: 24px; margin-bottom: 24px; }
-    .section-note { padding: 22px; }
-    .section-note strong { color: var(--text); }
-    .card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .card, .metric-card, .plan-card, .stack-card, .timeline-card, .media-card, .compare-card { padding: 20px; }
-    .card h3, .stack-card h3, .plan-card h3, .compare-card h3 { font-size: 1.25rem; margin-bottom: 10px; }
-    .tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; font-size: 0.82rem; color: var(--text); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); }
-    .tag.good { color: var(--lime); }
-    .tag.warn { color: var(--sand); }
-    .tag.bad { color: var(--red); }
-    .tag.current { color: var(--orange); }
-    .kpi-list { display: grid; gap: 8px; margin-top: 12px; }
-    .kpi-row { display: flex; justify-content: space-between; gap: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); color: var(--muted); font-size: 0.95rem; }
-    .kpi-row strong { color: var(--text); font-weight: 600; }
-    .media-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
-    .media-card { padding: 0; overflow: hidden; background: var(--panel-2); }
-    .media-card img { width: 100%; display: block; aspect-ratio: 16 / 10; object-fit: cover; background: #090d10; }
-    .media-card.tall img { aspect-ratio: 4 / 3; object-fit: contain; }
-    .media-meta { padding: 16px 16px 18px; }
-    .media-meta h3 { font-size: 1rem; margin-bottom: 7px; letter-spacing: -0.02em; }
-    .media-meta p { font-size: 0.9rem; }
-    .stack-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
-    .stack-card { min-height: 220px; position: relative; overflow: hidden; padding: 20px; }
-    .stack-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent 70%); pointer-events: none; }
-    .stack-index { font-family: "IBM Plex Mono", monospace; color: var(--sand); font-size: 0.84rem; margin-bottom: 18px; }
-    .stack-card ul, .plan-card ul, .compare-card ul { margin: 12px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.55; font-size: 0.94rem; }
-    .stack-card li, .plan-card li, .compare-card li { margin-bottom: 8px; }
-    .arch-ribbon { margin-top: 18px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
-    .ribbon { padding: 14px 16px; border-radius: 16px; border: 1px solid var(--line); font-family: "IBM Plex Mono", monospace; font-size: 0.82rem; background: rgba(255,255,255,0.04); color: var(--muted); text-align: center; }
-    .ribbon strong { display: block; color: var(--text); font-size: 0.92rem; margin-bottom: 4px; }
-    .ribbon .status { margin-top: 6px; font-size: 0.76rem; }
-    .ribbon .status.frozen { color: var(--teal); }
-    .ribbon .status.optimize { color: var(--orange); }
-    .pair-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin-top: 18px; }
-    .compare-card img { width: 100%; border-radius: 14px; object-fit: contain; display: block; margin-top: 12px; border: 1px solid rgba(255,255,255,0.08); background: #0a0d0f; }
-    .compare-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 18px; }
-    .plan-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
-    .plan-card { min-height: 240px; padding: 20px; }
-    .footer-note { margin-top: 22px; font-family: "IBM Plex Mono", monospace; font-size: 0.82rem; color: var(--muted); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOI3R — NeurIPS 2026 Project Overview | HOI3R</title>
+<style>
+  :root {
+    --accent: #2c3e50;
+    --green: #27ae60;
+    --blue: #3498db;
+    --orange: #e67e22;
+    --red: #e74c3c;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; }
 
-    /* flow arrow between ribbons */
-    .arch-flow { display: flex; align-items: center; gap: 0; margin-top: 18px; }
-    .arch-flow .ribbon { flex: 1; border-radius: 16px; }
-    .arch-flow .arrow { color: var(--sand); font-size: 1.4rem; padding: 0 6px; flex-shrink: 0; }
+  /* ---- slide system ---- */
+  .slide { min-height: 100vh; max-width: 1200px; margin: 0 auto; padding: 48px 32px 60px; border-bottom: 3px solid #e0e0e0; display: flex; flex-direction: column; justify-content: center; }
+  .slide:last-child { border-bottom: none; }
+  .slide-num { font-size: 0.78em; color: #999; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
+  h1 { font-size: 2.4em; color: var(--accent); margin: 0 0 8px; line-height: 1.15; }
+  h1 small { font-size: 0.45em; color: #888; font-weight: 400; display: block; margin-top: 6px; }
+  h2 { font-size: 1.6em; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin: 0 0 16px; }
+  h3 { color: #444; margin: 18px 0 8px; font-size: 1.1em; }
+  p { margin: 0 0 10px; line-height: 1.55; }
+  .subtitle { font-size: 1.15em; color: #555; max-width: 700px; }
 
-    /* progress bar */
-    .progress-track { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; margin-top: 10px; }
-    .progress-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--orange), var(--sand), var(--teal)); }
+  /* ---- panels & cards ---- */
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 12px 0; }
+  .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+  .caption { font-size: 0.82em; color: #666; margin-top: 6px; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid var(--green); margin: 12px 0; border-radius: 0 6px 6px 0; }
+  .warning { background: #fff3e0; padding: 12px; border-left: 4px solid var(--orange); margin: 12px 0; border-radius: 0 6px 6px 0; }
 
-    /* timeline */
-    .timeline-row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
-    .timeline-card { padding: 16px; min-height: 140px; }
-    .timeline-card .date { font-family: "IBM Plex Mono", monospace; color: var(--sand); font-size: 0.88rem; margin-bottom: 10px; }
-    .timeline-card h3 { font-size: 1.02rem; margin-bottom: 8px; }
-    .timeline-card p { font-size: 0.9rem; line-height: 1.55; }
-    .timeline-card.done { border-color: rgba(179,214,125,0.3); }
-    .timeline-card.active { border-color: rgba(233,121,62,0.5); }
+  /* ---- grids ---- */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
 
-    /* baseline table */
-    .deck-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-    .deck-table th, .deck-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left; vertical-align: top; }
-    .deck-table th { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.06em; }
-    .deck-table tr:last-child td { border-bottom: 0; }
-    .metric-table-wrap { overflow-x: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; background: rgba(255,255,255,0.03); }
+  /* ---- stat cards ---- */
+  .stat-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 14px; text-align: center; }
+  .stat-card .num { font-size: 1.8em; font-weight: 700; color: var(--accent); line-height: 1.1; }
+  .stat-card .label { font-size: 0.78em; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+  .stat-card.green .num { color: var(--green); }
+  .stat-card.orange .num { color: var(--orange); }
+  .stat-card.blue .num { color: var(--blue); }
 
-    /* two-col media */
-    .media-2col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+  /* ---- tables ---- */
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; background: #fff; font-size: 0.9em; }
+  th, td { border: 1px solid #ddd; padding: 7px 10px; text-align: left; }
+  th { background: var(--accent); color: #fff; font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.04em; }
+  tr:nth-child(even) { background: #f9f9f9; }
 
-    @media (max-width: 1100px) {
-      .slide { padding: 64px 24px 28px; }
-      .hero-grid, .section-top, .pair-grid { grid-template-columns: 1fr; }
-      .card-grid, .media-grid, .stack-grid, .compare-grid, .plan-grid, .summary-grid, .timeline-row, .media-2col { grid-template-columns: 1fr; }
-      .arch-ribbon, .arch-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); flex-wrap: wrap; }
-      .hero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 700px) {
-      .rail, .frame { display: none; }
-      .hero-stats, .arch-ribbon { grid-template-columns: 1fr; }
-    }
-  </style>
+  /* ---- badges ---- */
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.82em; color: #fff; }
+  .badge-done { background: var(--green); }
+  .badge-active { background: var(--orange); }
+  .badge-pending { background: #bbb; }
+
+  /* ---- architecture flow ---- */
+  .arch-flow { display: flex; align-items: stretch; gap: 0; margin: 16px 0; }
+  .arch-box { flex: 1; background: #fff; border: 1px solid #ddd; padding: 12px; text-align: center; border-radius: 0; }
+  .arch-box:first-child { border-radius: 8px 0 0 8px; }
+  .arch-box:last-child { border-radius: 0 8px 8px 0; }
+  .arch-box h4 { margin: 0 0 4px; font-size: 0.95em; color: var(--accent); }
+  .arch-box p { margin: 0; font-size: 0.82em; color: #666; }
+  .arch-box .status { margin-top: 6px; font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .arch-box .status.frozen { color: var(--blue); }
+  .arch-box .status.opt { color: var(--orange); }
+  .arch-arrow { display: flex; align-items: center; padding: 0 4px; font-size: 1.4em; color: #bbb; }
+
+  /* ---- timeline ---- */
+  .timeline { display: flex; gap: 0; margin: 16px 0; }
+  .tl-item { flex: 1; background: #fff; border: 1px solid #ddd; padding: 12px 10px; text-align: center; }
+  .tl-item:first-child { border-radius: 8px 0 0 8px; }
+  .tl-item:last-child { border-radius: 0 8px 8px 0; }
+  .tl-item h4 { margin: 0; font-size: 0.9em; }
+  .tl-item p { margin: 4px 0 0; font-size: 0.78em; color: #666; }
+  .tl-item.done { border-bottom: 3px solid var(--green); }
+  .tl-item.active { border-bottom: 3px solid var(--orange); background: #fff8f0; }
+  .tl-item.pending { border-bottom: 3px solid #ddd; }
+
+  /* ---- nav dots ---- */
+  .nav { position: fixed; right: 16px; top: 50%; transform: translateY(-50%); z-index: 10; display: flex; flex-direction: column; gap: 8px; }
+  .nav a { width: 10px; height: 10px; border-radius: 50%; background: #ccc; border: 1px solid #aaa; display: block; }
+  .nav a:hover { background: var(--accent); }
+
+  @media (max-width: 900px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .arch-flow, .timeline { flex-direction: column; }
+    .arch-box, .tl-item { border-radius: 8px !important; }
+    .nav { display: none; }
+  }
+</style>
 </head>
 <body>
-  <div class="frame"></div>
-  <nav class="rail" aria-label="slide navigation">
-    <a href="#hero" title="Cover"></a>
-    <a href="#background" title="Background"></a>
-    <a href="#method" title="Method"></a>
-    <a href="#progress" title="Progress"></a>
-    <a href="#baselines" title="Baselines"></a>
-    <a href="#plan" title="Plan"></a>
-  </nav>
 
-  <main class="deck">
+<nav class="nav">
+  <a href="#cover" title="Cover"></a>
+  <a href="#background" title="Background"></a>
+  <a href="#method" title="Method"></a>
+  <a href="#progress" title="Progress"></a>
+  <a href="#baselines" title="Baselines"></a>
+  <a href="#plan" title="Plan"></a>
+</nav>
 
-    <!-- ===== SLIDE 1: COVER ===== -->
-    <section class="slide" id="hero">
-      <div class="slide-inner hero">
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow">HOI3R / NeurIPS 2026 / Project Overview</div>
-            <h1>HOI3R</h1>
-            <p class="hero-note" style="font-size:1.18rem; margin-top:12px; color:var(--text); font-weight:500;">
-              End-to-End 3D Reconstruction from Monocular Hand-Object Interaction Videos
-            </p>
-            <p class="hero-note">
-              单目手物交互视频 → <strong>场景点云</strong> + <strong>相机参数</strong> + <strong>手部 mesh</strong> + <strong>物体 mesh</strong>。
-              基于 STream3R 点云主干与 Trellis.2 mesh latent 分支的端到端架构。
-            </p>
-            <div class="summary-grid" style="margin-top:24px;">
-              <div class="summary-card">
-                <div class="label">Architecture</div>
-                <div class="value" style="font-size:1.4rem;">STream3R + Trellis.2</div>
-                <small>Frozen encoders, optimized decoder + token bridge for cross-modal fusion.</small>
-              </div>
-              <div class="summary-card">
-                <div class="label">Target Venue</div>
-                <div class="value" style="font-size:1.4rem;">NeurIPS 2026</div>
-                <small>Full paper deadline: 2026-05-06 AoE. Internal freeze: 2026-05-04.</small>
-              </div>
-              <div class="summary-card">
-                <div class="label">Current Phase</div>
-                <div class="value" style="font-size:1.4rem;">Phase 2</div>
-                <small>Single-sequence overfit validated. Training closed-loop established.</small>
-              </div>
-            </div>
-          </div>
-          <div class="hero-stats">
-            <div class="stat">
-              <div class="label">Outputs</div>
-              <div class="value">4 Modalities</div>
-              <small>Point cloud, camera, hand mesh, object mesh — all from a single video.</small>
-            </div>
-            <div class="stat">
-              <div class="label">Datasets</div>
-              <div class="value">4 Train / 5 Test</div>
-              <small>DexYCB, HO3D, H2O3D, H2O for training. + HOT3D for test only.</small>
-            </div>
-            <div class="stat">
-              <div class="label">Baselines</div>
-              <div class="value">6 Methods</div>
-              <small>FoundationPose, HaWoR, Dyn-HaMeR, MagicHOI + joint combinations.</small>
-            </div>
-            <div class="stat">
-              <div class="label">Hardware</div>
-              <div class="value">H100 GPU</div>
-              <small>Debug on 1× H100. Full training via ACP compute cluster.</small>
-            </div>
-          </div>
-        </div>
+<!-- ===== SLIDE 1: COVER ===== -->
+<div class="slide" id="cover">
+  <div class="slide-num">HOI3R / NeurIPS 2026 / 2026-04-09</div>
+  <h1>HOI3R<small>End-to-End 3D Reconstruction from Monocular Hand-Object Interaction Videos</small></h1>
+  <p class="subtitle">Single RGB video &rarr; scene point clouds + camera poses + hand meshes + object meshes, all in a shared world coordinate system.</p>
+
+  <div class="grid-4" style="margin-top:24px;">
+    <div class="stat-card"><div class="num">4</div><div class="label">Output Modalities</div></div>
+    <div class="stat-card blue"><div class="num">STream3R + Trellis.2</div><div class="label">Architecture</div></div>
+    <div class="stat-card orange"><div class="num">Phase 2</div><div class="label">Current Stage</div></div>
+    <div class="stat-card"><div class="num">May 6</div><div class="label">Submission Deadline</div></div>
+  </div>
+
+  <div class="grid-3" style="margin-top:16px;">
+    <div class="panel" style="text-align:center;">
+      <img src="assets/project-slides/p1_input.png" alt="Input frames">
+      <p class="caption">Input: monocular video frames (DexYCB)</p>
+    </div>
+    <div class="panel" style="text-align:center;">
+      <img src="assets/project-slides/p1_pointcloud.png" alt="Point cloud">
+      <p class="caption">Output: scene point cloud (120K pts)</p>
+    </div>
+    <div class="panel" style="text-align:center;">
+      <img src="assets/project-slides/p1_hand_mesh.png" alt="Hand mesh">
+      <p class="caption">Output: hand mesh (GT vs pred)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 2: BACKGROUND ===== -->
+<div class="slide" id="background">
+  <div class="slide-num">1 / Background</div>
+  <h2>Why End-to-End HOI Reconstruction?</h2>
+
+  <div class="grid-3">
+    <div class="panel">
+      <h3>Isolated Pipelines</h3>
+      <p>Hand recon (HaWoR) and object pose (FoundationPose) run independently &mdash; no shared scene understanding.</p>
+      <img src="assets/project-slides/fp_ho3d.png" alt="FP object-only">
+      <p class="caption">FoundationPose: object-only, no hand context</p>
+    </div>
+    <div class="panel">
+      <h3>No Joint Reasoning</h3>
+      <p>Without scene geometry and cameras, hand-object spatial relationships cannot be resolved.</p>
+      <img src="assets/project-slides/fp_hawor_world3d.png" alt="FP+HaWoR combined">
+      <p class="caption">FP + HaWoR combined: misalignment visible</p>
+    </div>
+    <div class="panel">
+      <h3>Coordinate Fragmentation</h3>
+      <p>Each method uses its own coordinate space. Post-hoc alignment introduces errors; prevents end-to-end training.</p>
+      <img src="assets/project-slides/fp_hawor_overlay.png" alt="Camera overlay">
+      <p class="caption">Camera-space overlay: alignment challenges</p>
+    </div>
+  </div>
+
+  <div class="highlight" style="margin-top:16px;">
+    <strong>Our approach:</strong> A single model that jointly outputs point clouds, cameras, hand meshes, and object meshes in one shared world coordinate system, enabling end-to-end training with cross-modal supervision.
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: METHOD ===== -->
+<div class="slide" id="method">
+  <div class="slide-num">2 / Method Pipeline</div>
+  <h2>Architecture: STream3R + Trellis.2 Fusion</h2>
+
+  <div class="arch-flow">
+    <div class="arch-box">
+      <h4>Images</h4>
+      <p>STream3R Encoder</p>
+      <div class="status frozen">Frozen</div>
+      <p>&darr; image tokens</p>
+    </div>
+    <div class="arch-arrow">&rarr;</div>
+    <div class="arch-box" style="flex:1.5; border-color:var(--orange);">
+      <h4>STream3R Decoder</h4>
+      <p>Token fusion via cross-attention<br>image tokens + hand/obj SLat</p>
+      <div class="status opt">Optimized</div>
+    </div>
+    <div class="arch-arrow">&rarr;</div>
+    <div class="arch-box">
+      <h4>Scene Heads</h4>
+      <p>Point cloud + Camera</p>
+      <div class="status opt">Optimized</div>
+    </div>
+  </div>
+
+  <div class="arch-flow">
+    <div class="arch-box">
+      <h4>Canonical Mesh</h4>
+      <p>Trellis.2 SC-Encoder</p>
+      <div class="status frozen">Frozen</div>
+      <p>&darr; Structured Latents</p>
+    </div>
+    <div class="arch-arrow">&rarr;</div>
+    <div class="arch-box" style="border-color:var(--orange);">
+      <h4>Token Bridge</h4>
+      <p>SLat &harr; image tokens<br>~66K trainable params</p>
+      <div class="status opt">Optimized</div>
+    </div>
+    <div class="arch-arrow">&rarr;</div>
+    <div class="arch-box" style="flex:1.5; border-color:var(--orange);">
+      <h4>Trellis.2 SC-Decoder</h4>
+      <p>Refined SLat &rarr; posed hand/object meshes</p>
+      <div class="status opt">Optimized</div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-top:16px;">
+    <div class="panel" style="text-align:center;">
+      <h3>Frozen Encoders</h3>
+      <p>Preserve pretrained representations. No gradient through STream3R encoder or Trellis.2 SC-Encoder.</p>
+    </div>
+    <div class="panel" style="text-align:center;">
+      <h3>Token Bridge</h3>
+      <p>Lightweight (~66K params) projection between SLat and STream3R token spaces. Core trainable fusion module.</p>
+    </div>
+    <div class="panel" style="text-align:center;">
+      <h3>Output: World <code>W</code></h3>
+      <p>All outputs in STream3R world coordinate (= first-frame camera). No post-hoc alignment needed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: PROGRESS ===== -->
+<div class="slide" id="progress">
+  <div class="slide-num">3 / Main Method Progress</div>
+  <h2>Phase 1 &rarr; Phase 2: Validation to Training</h2>
+
+  <div class="grid-2">
+    <div>
+      <h3><span class="badge badge-done">Phase 1 Done</span> Branch Validation</h3>
+      <div class="panel">
+        <img src="assets/project-slides/p1_pointcloud_02.png" alt="STream3R point cloud">
+        <p class="caption">STream3R: 120K point cloud from 5 DexYCB sequences</p>
       </div>
-    </section>
-
-    <!-- ===== SLIDE 2: BACKGROUND ===== -->
-    <section class="slide" id="background">
-      <div class="slide-inner">
-        <div class="section-top">
-          <div>
-            <div class="eyebrow">1 / Background &amp; Motivation</div>
-            <h2>Why End-to-End HOI Reconstruction?</h2>
-            <p>Existing methods tackle hand reconstruction, object pose, and scene geometry <strong style="color:var(--text);">separately</strong>. This creates error accumulation and misalignment when combining outputs. We propose a <strong style="color:var(--text);">unified pipeline</strong> that jointly reasons about hands, objects, and scenes.</p>
-          </div>
-          <div class="stat section-note">
-            <div class="label">Problem Setting</div>
-            <div class="value" style="font-size:1.3rem;">Monocular Video → Full 3D</div>
-            <small>Input: RGB video of hand-object interaction.<br/>Output: scene point clouds, camera poses, hand mesh (L/R), object mesh — all in a <strong>shared world coordinate</strong> system.</small>
-          </div>
-        </div>
-        <div class="card-grid">
-          <div class="card">
-            <div class="tag bad">Gap 1</div>
-            <h3 style="margin-top:12px;">Isolated Pipelines</h3>
-            <p>Hand recon (HaWoR, HaMeR) and object pose (FoundationPose) run independently with no shared scene understanding.</p>
-          </div>
-          <div class="card">
-            <div class="tag bad">Gap 2</div>
-            <h3 style="margin-top:12px;">No Joint Scene Context</h3>
-            <p>Without scene point clouds and camera geometry, hand-object spatial relationships cannot be properly resolved.</p>
-          </div>
-          <div class="card">
-            <div class="tag bad">Gap 3</div>
-            <h3 style="margin-top:12px;">Coordinate Misalignment</h3>
-            <p>Each method uses its own coordinate space. Post-hoc alignment introduces errors and prevents end-to-end training.</p>
-          </div>
-        </div>
-        <div class="media-grid" style="grid-template-columns: repeat(2, 1fr); margin-top:24px;">
-          <div class="media-card tall">
-            <img src="images/fp_ho3d_sample.png" alt="FoundationPose HO3D — object-only pose" />
-            <div class="media-meta">
-              <h3>Object-Only Baseline</h3>
-              <p>FoundationPose recovers object pose but has no hand awareness — misses interaction context.</p>
-            </div>
-          </div>
-          <div class="media-card tall">
-            <img src="images/fp_hawor_hot3d.png" alt="FP + HaWoR HOT3D combined" />
-            <div class="media-meta">
-              <h3>Combined Baseline on HOT3D</h3>
-              <p>FoundationPose + HaWoR pipeline — shows the gap when merging separate systems.</p>
-            </div>
-          </div>
-        </div>
+      <div class="grid-2" style="gap:8px;">
+        <div class="panel" style="margin:0;"><img src="assets/project-slides/p1_hand_mesh.png"><p class="caption">Hand mesh round-trip (sealed wrist)</p></div>
+        <div class="panel" style="margin:0;"><img src="assets/project-slides/p1_object_mesh.png"><p class="caption">Object mesh encode &rarr; decode</p></div>
       </div>
-    </section>
-
-    <!-- ===== SLIDE 3: METHOD PIPELINE ===== -->
-    <section class="slide" id="method">
-      <div class="slide-inner">
-        <div class="eyebrow">2 / Method Pipeline</div>
-        <h2>Architecture: STream3R + Trellis.2 Fusion</h2>
-        <p style="max-width:72ch;">Five-stage pipeline: frozen encoders extract image tokens and mesh latents, the STream3R decoder fuses them via a trainable token bridge, then Trellis.2 decoder outputs posed meshes.</p>
-
-        <div class="arch-flow" style="margin-top:28px;">
-          <div class="ribbon" style="flex:1.2;">
-            <strong>Images</strong>
-            STream3R Encoder
-            <div class="status frozen">FROZEN</div>
-            → image tokens
-          </div>
-          <div class="arrow">→</div>
-          <div class="ribbon" style="flex:1.6; border-color: rgba(233,121,62,0.4);">
-            <strong>STream3R Decoder</strong>
-            Token fusion + cross-attention
-            <div class="status optimize">OPTIMIZED</div>
-            tokens + SLat interaction
-          </div>
-          <div class="arrow">→</div>
-          <div class="ribbon" style="flex:1;">
-            <strong>Scene Heads</strong>
-            Point cloud + Camera
-            <div class="status optimize">OPTIMIZED</div>
-          </div>
-        </div>
-        <div class="arch-flow" style="margin-top:12px;">
-          <div class="ribbon" style="flex:1.2;">
-            <strong>Hand / Object Mesh</strong>
-            Trellis.2 SC-Encoder
-            <div class="status frozen">FROZEN</div>
-            → Structured Latents (SLat)
-          </div>
-          <div class="arrow">→</div>
-          <div class="ribbon" style="flex:1.6; border-color: rgba(233,121,62,0.4);">
-            <strong>Token Bridge</strong>
-            SLat ↔ image tokens
-            <div class="status optimize">OPTIMIZED</div>
-            ~66K trainable params
-          </div>
-          <div class="arrow">→</div>
-          <div class="ribbon" style="flex:1; border-color: rgba(233,121,62,0.4);">
-            <strong>Trellis.2 SC-Decoder</strong>
-            SLat → posed mesh
-            <div class="status optimize">OPTIMIZED</div>
-          </div>
-        </div>
-
-        <div class="card-grid" style="margin-top:28px;">
-          <div class="card">
-            <h3 style="color:var(--teal);">Frozen Encoders</h3>
-            <ul>
-              <li>STream3R encoder: pretrained 3D scene understanding</li>
-              <li>Trellis.2 SC-Encoder: canonical mesh → Structured Latents</li>
-              <li>No gradient, preserves pretrained representations</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3 style="color:var(--orange);">Token Bridge</h3>
-            <ul>
-              <li>Projects SLat into STream3R token space</li>
-              <li>Cross-modal attention in decoder global blocks</li>
-              <li>Only ~66K parameters — lightweight fusion</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3 style="color:var(--sand);">Output Contract</h3>
-            <ul>
-              <li>All outputs in STream3R world coordinate <code>W</code></li>
-              <li><code>W</code> = first-frame camera coordinate system</li>
-              <li>Hand/object mesh directly in <code>W</code>, no post-hoc alignment</li>
-            </ul>
-          </div>
-        </div>
+    </div>
+    <div>
+      <h3><span class="badge badge-active">Phase 2 Active</span> Training Closed-Loop</h3>
+      <div class="panel">
+        <img src="assets/project-slides/exp2a_compare.png" alt="Exp 2a compare">
+        <p class="caption">500-step overfit: GT posed (blue) vs pre-train (orange) vs post-train (green). CD: 0.063 &rarr; 0.044.</p>
       </div>
-    </section>
-
-    <!-- ===== SLIDE 4: PROGRESS — PHASE 1 ===== -->
-    <section class="slide" id="progress">
-      <div class="slide-inner">
-        <div class="section-top">
-          <div>
-            <div class="eyebrow">3 / Progress — Phase 1 &amp; 2 Results</div>
-            <h2>From Validation to Training Closed-Loop</h2>
-            <p>Phase 1 independently validated both branches. Phase 2 achieved the first end-to-end training overfit with <strong style="color:var(--lime);">99.997% loss reduction</strong> in 200 steps.</p>
-          </div>
-          <div class="stat section-note">
-            <div class="label">Phase 2 Overfit</div>
-            <div class="value" style="color:var(--lime);">1836 → 0.05</div>
-            <small>Latent reconstruction loss on DexYCB single frame. Validates encode→project→refine→unproject round-trip.</small>
-          </div>
-        </div>
-
-        <!-- Phase 1 visuals -->
-        <h3 style="color:var(--teal); margin-bottom:14px;">Phase 1: Independent Branch Validation</h3>
-        <div class="media-grid">
-          <div class="media-card tall">
-            <img src="images/p1_input_montage.png" alt="Input video frames" />
-            <div class="media-meta">
-              <h3>Input: DexYCB Frames</h3>
-              <p>Multi-view input sequence from DexYCB dataset.</p>
-            </div>
-          </div>
-          <div class="media-card tall">
-            <img src="images/p1_pointcloud_a.png" alt="STream3R point cloud" />
-            <div class="media-meta">
-              <h3>STream3R Point Cloud</h3>
-              <p>120K points per sample. Scene geometry from frozen encoder.</p>
-            </div>
-          </div>
-          <div class="media-card tall">
-            <img src="images/p1_hand_mesh.png" alt="Hand mesh GT vs pred" />
-            <div class="media-meta">
-              <h3>Hand Mesh: GT vs Pred</h3>
-              <p>Trellis.2 encode→decode round-trip with wrist sealing.</p>
-            </div>
-          </div>
-        </div>
+      <div class="grid-2" style="gap:8px;">
+        <div class="stat-card green"><div class="num">&minus;31%</div><div class="label">Chamfer Distance</div></div>
+        <div class="stat-card green"><div class="num">0.044</div><div class="label">Best CD (500 steps)</div></div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- ===== SLIDE 5: PROGRESS — PHASE 2 OVERFIT ===== -->
-    <section class="slide" id="overfit">
-      <div class="slide-inner">
-        <div class="eyebrow">3b / Phase 2 — Latent Reconstruction Overfit</div>
-        <h2>Training Closed-Loop Validated</h2>
-        <p style="max-width:72ch; margin-bottom:20px;">200-step overfit on single DexYCB frame. Token bridge learns to reconstruct SLat through STream3R decoder. Loss: 1836.53 → 0.051.</p>
+  <div class="highlight" style="margin-top:12px;">
+    <strong>Key result:</strong> Canonical &rarr; posed deformation learning works. Token bridge + chamfer + latent supervision achieves 31% CD reduction on single-frame overfit, closing 23% of the deformation gap. Latent loss converges by step ~350, mesh loss continues improving.
+  </div>
+</div>
 
-        <div class="pair-grid">
-          <div class="compare-card">
-            <h3>Before Optimization</h3>
-            <img src="images/p2_pre_overlay.png" alt="Pre-optimization overlay" />
-          </div>
-          <div class="compare-card">
-            <h3>After Optimization (200 steps)</h3>
-            <img src="images/p2_post_overlay.png" alt="Post-optimization overlay" />
-          </div>
-        </div>
-        <div class="pair-grid" style="margin-top:16px;">
-          <div class="compare-card">
-            <h3>Pre: Scene Comparison</h3>
-            <img src="images/p2_pre_scene.png" alt="Pre-optimization scene" />
-          </div>
-          <div class="compare-card">
-            <h3>Post: Scene Comparison</h3>
-            <img src="images/p2_post_scene.png" alt="Post-optimization scene" />
-          </div>
-        </div>
+<!-- ===== SLIDE 5: PROGRESS DETAIL ===== -->
+<div class="slide" id="progress-detail">
+  <div class="slide-num">3b / Training Evolution</div>
+  <h2>Experiment Progression</h2>
 
-        <div class="summary-grid" style="margin-top:20px; grid-template-columns: repeat(4, 1fr);">
-          <div class="summary-card">
-            <div class="label">Initial Loss</div>
-            <div class="value" style="font-size:1.4rem; color:var(--red);">1836.53</div>
-          </div>
-          <div class="summary-card">
-            <div class="label">Final Loss</div>
-            <div class="value" style="font-size:1.4rem; color:var(--lime);">0.051</div>
-          </div>
-          <div class="summary-card">
-            <div class="label">Reduction</div>
-            <div class="value" style="font-size:1.4rem; color:var(--lime);">99.997%</div>
-          </div>
-          <div class="summary-card">
-            <div class="label">Trainable Params</div>
-            <div class="value" style="font-size:1.4rem;">~66K</div>
-            <small>Token bridge only</small>
-          </div>
-        </div>
-      </div>
-    </section>
+  <table>
+    <tr><th>Experiment</th><th>Setup</th><th>CD (post)</th><th>Key Finding</th></tr>
+    <tr><td>Latent-only overfit</td><td>200 steps, latent L2 loss only</td><td>&mdash;</td><td>Loss 1836&rarr;0.05, validates SLat round-trip</td></tr>
+    <tr><td>Mesh chamfer (Exp 1)</td><td>200 steps, chamfer loss</td><td>~0.055</td><td>Mesh-level supervision works but slow</td></tr>
+    <tr><td>Chamfer + latent (Exp 2a)</td><td>200 steps, chamfer + latent</td><td>0.052</td><td>Two-loss combo more stable</td></tr>
+    <tr><td>Exp 2a optimized</td><td>200 steps, shared-bbox norm, uniform scale</td><td>0.050</td><td>Correct normalization matters: 20% CD gain</td></tr>
+    <tr><td><strong>Exp 2a, 500 steps</strong></td><td>500 steps, chamfer + latent</td><td><strong>0.044</strong></td><td>Steady improvement, no oscillation, &minus;31% CD</td></tr>
+  </table>
 
-    <!-- ===== SLIDE 6: BASELINES ===== -->
-    <section class="slide" id="baselines">
-      <div class="slide-inner">
-        <div class="eyebrow">4 / Baseline Methods</div>
-        <h2>Three-Lane Baseline Comparison</h2>
-        <p style="max-width:72ch; margin-bottom:20px;">Benchmarks split by task: object pose estimation, hand reconstruction, and joint hand-object reconstruction. HOI3R aims to outperform all three lanes with a single model.</p>
+  <div class="grid-3" style="margin-top:16px;">
+    <div class="panel" style="text-align:center;">
+      <img src="assets/project-slides/exp2a_pre.png" alt="Pre-train">
+      <p class="caption">Pre-train: prediction = canonical shape</p>
+    </div>
+    <div class="panel" style="text-align:center;">
+      <img src="assets/project-slides/exp2a_post.png" alt="Post-train 500 steps">
+      <p class="caption">Post-train (500 steps): deformed toward GT</p>
+    </div>
+    <div class="panel" style="text-align:center;">
+      <img src="assets/project-slides/correct_space_views.png" alt="Correct space views">
+      <p class="caption">Canonical vs posed in shared MANO space</p>
+    </div>
+  </div>
+</div>
 
-        <div class="card-grid">
-          <div class="card">
-            <div class="tag good">Object Pose</div>
-            <h3 style="margin-top:12px;">FoundationPose</h3>
-            <div class="kpi-list">
-              <div class="kpi-row"><span>DexYCB Trans.</span><strong>1.85 cm</strong></div>
-              <div class="kpi-row"><span>DexYCB Rot.</span><strong>41.15°</strong></div>
-              <div class="kpi-row"><span>DexYCB ADD</span><strong>3.33 cm</strong></div>
-              <div class="kpi-row"><span>HO3D Trans.</span><strong>5.38 cm</strong></div>
-              <div class="kpi-row"><span>HO3D Rot.</span><strong>23.70°</strong></div>
-              <div class="kpi-row"><span>Clips</span><strong>704 / 704</strong></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="tag good">Hand Recon</div>
-            <h3 style="margin-top:12px;">HaWoR vs Dyn-HaMeR</h3>
-            <div class="kpi-list">
-              <div class="kpi-row"><span>HaWoR AUC</span><strong>0.39</strong></div>
-              <div class="kpi-row"><span>Dyn-HaMeR AUC</span><strong>0.003</strong></div>
-              <div class="kpi-row"><span>HaWoR MPJPE</span><strong>Lower</strong></div>
-              <div class="kpi-row"><span>Dataset</span><strong>DexYCB test</strong></div>
-            </div>
-            <p style="margin-top:12px;">HaWoR significantly stronger. Dyn-HaMeR retained as weak baseline.</p>
-          </div>
-          <div class="card">
-            <div class="tag warn">Hand-Object Joint</div>
-            <h3 style="margin-top:12px;">MagicHOI</h3>
-            <div class="kpi-list">
-              <div class="kpi-row"><span>mpjpe_ra_r</span><strong>3.5543</strong></div>
-              <div class="kpi-row"><span>cd_icp</span><strong>1.5352</strong></div>
-              <div class="kpi-row"><span>f10_icp</span><strong>72.82</strong></div>
-              <div class="kpi-row"><span>Dataset</span><strong>HO3D</strong></div>
-            </div>
-            <p style="margin-top:12px;">Official metrics shown. Our evaluator alignment in progress.</p>
-          </div>
-        </div>
-        <div class="media-grid" style="margin-top:20px;">
-          <div class="media-card tall">
-            <img src="images/fp_dexycb_sample.png" alt="FoundationPose DexYCB" />
-            <div class="media-meta">
-              <h3>FoundationPose — DexYCB</h3>
-              <p>Object pose estimation sample from DexYCB S0 test set.</p>
-            </div>
-          </div>
-          <div class="media-card tall">
-            <img src="images/fp_ho3d_sample2.png" alt="FoundationPose HO3D" />
-            <div class="media-meta">
-              <h3>FoundationPose — HO3D</h3>
-              <p>HO3D sub_test object pose baseline result.</p>
-            </div>
-          </div>
-          <div class="media-card tall">
-            <img src="images/fp_hawor_world3d.png" alt="FP+HaWoR HOT3D world mesh" />
-            <div class="media-meta">
-              <h3>FP + HaWoR — HOT3D</h3>
-              <p>Combined baseline: hand + object mesh in world coordinates.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- ===== SLIDE 6: BASELINES ===== -->
+<div class="slide" id="baselines">
+  <div class="slide-num">4 / Baseline Methods</div>
+  <h2>Three-Lane Baseline Comparison</h2>
 
-    <!-- ===== SLIDE 7: FUTURE PLAN ===== -->
-    <section class="slide" id="plan">
-      <div class="slide-inner">
-        <div class="section-top">
-          <div>
-            <div class="eyebrow">5 / Roadmap &amp; Timeline</div>
-            <h2>Path to NeurIPS 2026</h2>
-            <p>6 phases from validation to submission. Phase 1 complete, Phase 2 in progress. Internal freeze on <strong style="color:var(--text);">May 4</strong>, full paper due <strong style="color:var(--text);">May 6</strong>.</p>
-          </div>
-          <div class="stat section-note">
-            <div class="label">Days Remaining</div>
-            <div class="value" style="color:var(--orange);">27</div>
-            <small>Until internal freeze (2026-05-04). Method iteration window closes Apr 19.</small>
-          </div>
-        </div>
+  <div class="grid-3">
+    <div class="panel">
+      <h3>Object Pose: FoundationPose</h3>
+      <table>
+        <tr><th>Dataset</th><th>Trans.</th><th>Rot.</th><th>ADD</th></tr>
+        <tr><td>DexYCB</td><td>1.85 cm</td><td>41.2&deg;</td><td>3.33 cm</td></tr>
+        <tr><td>HO3D</td><td>5.38 cm</td><td>23.7&deg;</td><td>5.80 cm</td></tr>
+      </table>
+      <img src="assets/project-slides/fp_ho3d_2.png" alt="FP HO3D">
+      <p class="caption">704 clips DexYCB, 17 seqs HO3D. Full coverage.</p>
+    </div>
+    <div class="panel">
+      <h3>Hand Recon: HaWoR</h3>
+      <table>
+        <tr><th>Method</th><th>AUC</th><th>Det. Rate</th></tr>
+        <tr><td>HaWoR</td><td><strong>0.39</strong></td><td>high</td></tr>
+        <tr><td>Dyn-HaMeR</td><td>0.003</td><td>low</td></tr>
+      </table>
+      <div class="highlight" style="margin-top:8px;">HaWoR significantly stronger on DexYCB test. Dyn-HaMeR retained as weak baseline only.</div>
+    </div>
+    <div class="panel">
+      <h3>Hand-Object: MagicHOI</h3>
+      <table>
+        <tr><th>Metric</th><th>Official</th></tr>
+        <tr><td>MPJPE-RA-R</td><td>3.5543</td></tr>
+        <tr><td>CD (ICP)</td><td>1.5352</td></tr>
+        <tr><td>F10 (ICP)</td><td>72.82</td></tr>
+      </table>
+      <p style="margin-top:8px; font-size:0.88em; color:#666;">HO3D test. 1/5 seqs completed; evaluator alignment in progress.</p>
+    </div>
+  </div>
 
-        <div class="timeline-row">
-          <div class="timeline-card done">
-            <div class="date">Phase 1</div>
-            <h3 style="color:var(--lime);">Validation</h3>
-            <p>Branch isolation, visualization pipeline, normalized-space diagnostics. <span class="tag good" style="font-size:0.72rem; padding:3px 7px;">DONE</span></p>
-          </div>
-          <div class="timeline-card active">
-            <div class="date">Phase 2</div>
-            <h3 style="color:var(--orange);">Overfit</h3>
-            <p>Single-sequence closed-loop training. Latent recon loss validated. Next: mesh-level loss.</p>
-          </div>
-          <div class="timeline-card">
-            <div class="date">Phase 3</div>
-            <h3>Convergence</h3>
-            <p>Full DexYCB training. Loss convergence + qualitative results.</p>
-          </div>
-          <div class="timeline-card">
-            <div class="date">Phase 4</div>
-            <h3>Multi-Dataset</h3>
-            <p>DexYCB + HO3D + H2O3D + H2O. MANO → SMPLX unification.</p>
-          </div>
-          <div class="timeline-card">
-            <div class="date">Phase 5</div>
-            <h3>Ablation</h3>
-            <p>Architecture ablation study. Select optimal configuration.</p>
-          </div>
-          <div class="timeline-card">
-            <div class="date">Phase 6</div>
-            <h3>Benchmark</h3>
-            <p>Full evaluation on all 5 test sets. Paper figures and tables.</p>
-          </div>
-        </div>
+  <p style="margin-top:12px; font-size:0.88em; color:#888;">
+    Details: <a href="../baselines/" style="color:var(--blue);">haonanhe.github.io/HOI3R-project-tracking/baselines/</a>
+    &mdash; FoundationPose (<a href="../baselines/foundationpose-dexycb/" style="color:var(--blue);">DexYCB</a>,
+    <a href="../baselines/foundationpose-ho3d/" style="color:var(--blue);">HO3D</a>),
+    <a href="../baselines/magichoi-ho3d/" style="color:var(--blue);">MagicHOI</a>,
+    <a href="../baselines/fp-hawor-hot3d/" style="color:var(--blue);">FP+HaWoR HOT3D</a>
+  </p>
+</div>
 
-        <h3 style="margin-top:32px; margin-bottom:14px;">Weekly Execution Plan</h3>
-        <div class="plan-grid">
-          <div class="plan-card" style="border-color: rgba(179,214,125,0.3);">
-            <div class="tag good" style="margin-bottom:10px;">W1–W2 Done</div>
-            <h3>Scope & Baseline</h3>
-            <ul>
-              <li>Paper skeleton locked</li>
-              <li>6 baselines evaluated</li>
-              <li>Eval protocol frozen</li>
-              <li>Data transfer complete</li>
-            </ul>
-          </div>
-          <div class="plan-card" style="border-color: rgba(233,121,62,0.5);">
-            <div class="tag current" style="margin-bottom:10px;">W3–W4 Current</div>
-            <h3>Main-Route Iteration</h3>
-            <ul>
-              <li>Freeze main route</li>
-              <li>Training runs A → B</li>
-              <li>Iteration checkpoints</li>
-              <li>Architecture freeze by W4</li>
-            </ul>
-          </div>
-          <div class="plan-card">
-            <div class="tag" style="margin-bottom:10px;">W5</div>
-            <h3>Final Iteration</h3>
-            <ul>
-              <li>Training run C / decisive rerun</li>
-              <li>Claim-critical experiments</li>
-              <li>Ablation jobs</li>
-              <li>Method iteration freeze: Apr 19</li>
-            </ul>
-          </div>
-          <div class="plan-card">
-            <div class="tag" style="margin-bottom:10px;">W6–W8</div>
-            <h3>Paper & Submission</h3>
-            <ul>
-              <li>Frozen results → tables/figures</li>
-              <li>Write intro/method/experiments</li>
-              <li>Internal freeze: May 4</li>
-              <li>Full paper due: May 6 AoE</li>
-            </ul>
-          </div>
-        </div>
+<!-- ===== SLIDE 7: FUTURE PLAN ===== -->
+<div class="slide" id="plan">
+  <div class="slide-num">5 / Roadmap</div>
+  <h2>Path to NeurIPS 2026</h2>
 
-        <div class="footer-note" style="margin-top:28px; text-align:center;">
-          HOI3R Project Overview — Generated 2026-04-09 — <a href="../" style="color:var(--sand);">← Back to Dashboard</a>
-        </div>
-      </div>
-    </section>
+  <div class="timeline">
+    <div class="tl-item done"><h4>Phase 1</h4><p>Validation</p></div>
+    <div class="tl-item active"><h4>Phase 2</h4><p>Overfit</p></div>
+    <div class="tl-item pending"><h4>Phase 3</h4><p>Convergence</p></div>
+    <div class="tl-item pending"><h4>Phase 4</h4><p>Multi-dataset</p></div>
+    <div class="tl-item pending"><h4>Phase 5</h4><p>Ablation</p></div>
+    <div class="tl-item pending"><h4>Phase 6</h4><p>Benchmark</p></div>
+  </div>
 
-  </main>
+  <div class="grid-4" style="margin-top:20px;">
+    <div class="stat-card green"><div class="num">W1&ndash;W2</div><div class="label">Scope &amp; Baselines Done</div></div>
+    <div class="stat-card orange"><div class="num">W3&ndash;W4</div><div class="label">Route Iteration (now)</div></div>
+    <div class="stat-card"><div class="num">W5</div><div class="label">Final Iteration</div></div>
+    <div class="stat-card"><div class="num">W6&ndash;W8</div><div class="label">Paper &amp; Submission</div></div>
+  </div>
+
+  <div class="grid-2" style="margin-top:16px;">
+    <div class="panel">
+      <h3>Immediate Next Steps</h3>
+      <ul>
+        <li>Multi-frame training (same sequence, different poses)</li>
+        <li>Full decoder gradient flow (resolve Triton sparse conv bug)</li>
+        <li>Scale from single-frame to full DexYCB sequence training</li>
+        <li>Add object branch to joint hand+object deformation</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Key Milestones</h3>
+      <table>
+        <tr><th>Date</th><th>Milestone</th></tr>
+        <tr><td>Apr 19</td><td>Method iteration freeze</td></tr>
+        <tr><td>Apr 20&ndash;26</td><td>Paper figures &amp; tables</td></tr>
+        <tr><td>May 4</td><td>Internal hard deadline</td></tr>
+        <tr><td>May 6</td><td>NeurIPS full paper AoE</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="warning" style="margin-top:12px;">
+    <strong>27 days to internal freeze.</strong> Critical path: multi-frame convergence &rarr; multi-dataset &rarr; benchmark evaluation &rarr; paper writing.
+  </div>
+
+  <p style="margin-top:24px; font-size:0.82em; color:#999; text-align:center;">
+    HOI3R Project Overview &mdash; Generated 2026-04-09
+  </p>
+</div>
+
 </body>
 </html>
