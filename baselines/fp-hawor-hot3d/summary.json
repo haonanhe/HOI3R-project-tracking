@@ -6,10 +6,10 @@
   "world_frame": "hawor_world",
   "processed_root": "/mnt/hdd_volume/datasets/HOT3D/processed",
   "data_root": "/mnt/hdd_volume/datasets/HOT3D",
-  "output_dir": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_overlayfix",
-  "checkpoint": "/data/haonan/HOI/HaWoR/weights/hawor/checkpoints/hawor.ckpt",
-  "foundationpose_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/foundationpose_hot3d_smoke_20260408/summary/hot3d_test_stride01.json",
-  "hawor_world_hand_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/hot3d_world_hand_summary_smoke_20260409_P0001_10a27bf7/hot3d_world_hand_summary.json",
+  "output_dir": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_haworslam_fpstride20",
+  "checkpoint": "/data/haonan/HOI/HOI3R/third_party/HaWoR/weights/hawor/checkpoints/hawor.ckpt",
+  "foundationpose_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/foundationpose_hot3d_smoke_20260409_haworseq/summary/hot3d_test_stride20.json",
+  "hawor_world_hand_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/hawor_hot3d_slam_hand_summary_smoke_20260409_P0001_10a27bf7/hawor_hot3d_slam_hand_summary.json",
   "weights": {
     "greproj": 1.0,
     "gtemp": 0.1
@@ -17,22 +17,22 @@
   "metrics": {
     "hand_world_root_err_mm": 0.0,
     "hand_world_joint_err_mm": 0.0,
-    "object_translation_cm": 7260.79345703125,
-    "object_rotation_deg": 140.36154174804688,
-    "object_add_cm": 10386.0556640625,
+    "object_translation_cm": 46773.3984375,
+    "object_rotation_deg": 108.01527404785156,
+    "object_add_cm": 49596.671875,
     "fused_reproj_error_px": null,
-    "fused_temporal_position_delta": 0.24445438385009766
+    "fused_temporal_position_delta": 0.4650498330593109
   },
   "counts": {
     "evaluated_sequences": 1,
     "skipped_sequences": 0,
-    "total_gt_hands": 8,
-    "total_frames": 8,
-    "hand_valid_frames": 8,
-    "object_valid_frames": 8,
-    "object_interpolated_frames": 0,
+    "total_gt_hands": 174,
+    "total_frames": 174,
+    "hand_valid_frames": 174,
+    "object_valid_frames": 97,
+    "object_interpolated_frames": 62,
     "world_visualizations": 1,
     "camera_overlays": 1
   },
-  "generated_at": "2026-04-09 06:36:33 UTC"
+  "generated_at": "2026-04-09 09:34:13 UTC"
 }
