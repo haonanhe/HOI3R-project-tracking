@@ -58,7 +58,9 @@
     <li><a href="#vis-object">3. Object Reconstruction (GT vs Pred)</a></li>
     <li><a href="#overlay">4. Image Overlay Comparison</a></li>
     <li><a href="#world">5. World-Space Scene Comparison</a></li>
-    <li><a href="#analysis">6. Analysis</a></li>
+    <li><a href="#modules">6. Training Modules State</a></li>
+    <li><a href="#analysis">7. Analysis: Why Chamfer Doesn't Improve</a></li>
+    <li><a href="#next">8. What Needs to Change</a></li>
   </ul>
 </div>
 
@@ -157,23 +159,93 @@
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<h2 id="analysis">6. Analysis</h2>
+<h2 id="modules">6. Training Modules State</h2>
+
+<table>
+  <tr><th>Module</th><th>Status</th><th>Params</th><th>Role</th></tr>
+  <tr><td><code>aggregator.patch_embed</code></td><td>frozen</td><td>603K</td><td>Image patch embedding (DINOv2)</td></tr>
+  <tr><td><code>aggregator.frame_blocks</code></td><td>frozen</td><td>302M</td><td>Per-frame self-attention (pretrained)</td></tr>
+  <tr><td><code>aggregator.global_blocks</code></td><td style="color:#27ae60;font-weight:bold">optimized</td><td>302M</td><td>Cross-view + cross-modal attention</td></tr>
+  <tr><td><code>hoi_mesh_branch.shape_slat_encoder</code></td><td>frozen</td><td>354M</td><td>Trellis.2 SC-Encoder: mesh &rarr; SLat</td></tr>
+  <tr><td><code>hoi_mesh_branch.shape_slat_decoder</code></td><td style="color:#27ae60;font-weight:bold">optimized*</td><td>474M</td><td>Trellis.2 SC-Decoder: SLat &rarr; mesh</td></tr>
+  <tr><td><code>hoi_mesh_branch.token_bridge</code></td><td style="color:#27ae60;font-weight:bold">optimized</td><td>67K</td><td>SLat &harr; decoder-dim projection (32&rarr;1024&rarr;32)</td></tr>
+  <tr><td><code>camera_head</code>, <code>point_head</code>, <code>depth_head</code></td><td style="color:#27ae60;font-weight:bold">optimized</td><td>281M</td><td>Scene reconstruction heads</td></tr>
+</table>
+
+<p style="font-size:0.85em;color:#666">*Decoder has <code>requires_grad=True</code> but receives <strong>zero gradient</strong> under current loss &mdash; see analysis below.</p>
+
+<p><strong>Loss function:</strong> <code>total_loss = latent_recon_loss + kl_weight * trellis_kl</code></p>
+<ul>
+  <li><strong>latent_recon_loss</strong> = L2(refined_latents, encoder_latents.detach()) &mdash; masked over valid tokens</li>
+  <li><strong>trellis_kl</strong> = KL divergence of encoder posterior (detached, monitoring only)</li>
+  <li><strong>geo_loss</strong> (hand_loss + object_loss from TrellisGeometryLoss) = render-based depth/normal loss &mdash; computed for monitoring only, <strong>not in backward graph</strong></li>
+</ul>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="analysis">7. Analysis: Why Chamfer Doesn't Improve</h2>
 
 <div class="panel">
-  <h3><span class="badge badge-pass">VALIDATED</span> res=256 single-frame overfit with existing pipeline</h3>
-  <p>The existing <code>dexycb_trellis_overfit.py</code> runs cleanly with <code>--grid-size 256</code> for 500 steps. Latent reconstruction loss converges to 0.10 (99.99% reduction). The token bridge successfully learns to preserve SLat through the STream3R attention blocks.</p>
+  <h3><span class="badge badge-pass">VALIDATED</span> Token bridge learns to preserve SLat</h3>
+  <p>Latent reconstruction loss: 1023 &rarr; 0.10 (99.99%). The token bridge successfully learns the 32&rarr;1024&rarr;32 roundtrip through STream3R attention. This is the intended Phase 2 objective.</p>
 </div>
 
 <div class="panel">
-  <h3><span class="badge badge-pass">VALIDATED</span> Visual quality matches session 1 results</h3>
-  <p>Post-training hand and object meshes show recognizable shapes aligned with GT, consistent with the session 1 overfit results at res=256. The visualization pipeline (denormalization, world-space scatter, overlay) works correctly.</p>
+  <h3><span class="badge badge-finding">ROOT CAUSE</span> Gradient flow does not reach the decoder</h3>
+  <p>The latent reconstruction loss compares <code>refined_latents</code> (output of <code>token_bridge.output_proj</code>) against <code>encoder_latents.detach()</code>. The gradient path is:</p>
+  <pre style="background:#f4f4f4;padding:12px;border-radius:4px;overflow-x:auto;font-size:0.85em">
+loss = L2(refined_latents, encoder_latents.detach())
+         │
+         ▼
+  token_bridge.output_proj  ← receives gradient ✓
+         │
+         ▼
+  aggregator.global_blocks  ← receives gradient ✓
+         │
+         ▼
+  token_bridge.input_proj   ← receives gradient ✓
+         │
+         ▼
+  shape_slat_encoder        ← frozen, gradient stops here
+
+  shape_slat_decoder        ← NOT in this gradient path at all ✗
+  (decoder runs AFTER output_proj, but loss is computed BEFORE decoder)</pre>
+  <p>The decoder produces meshes, but the loss is on latent features <strong>before</strong> the decoder. Even though the decoder has <code>requires_grad=True</code>, it never participates in the backward pass. Its 474M parameters are effectively frozen.</p>
 </div>
 
 <div class="panel">
-  <h3><span class="badge badge-finding">OBSERVATION</span> Chamfer plateau — latent recon loss doesn't drive surface improvement</h3>
-  <p>Chamfer distance remains flat throughout training (~0.006 hand, ~0.009 object). The latent recon loss ensures the token bridge faithfully reconstructs encoder latents, but this doesn't directly translate to improved mesh surface quality. The encoder's reconstruction fidelity is the ceiling for this loss alone.</p>
-  <p><strong>Next step:</strong> Add direct mesh supervision (chamfer loss or render-based loss backpropagated through the trainable decoder) to push chamfer below the encoder baseline.</p>
+  <h3><span class="badge badge-finding">CONSEQUENCE</span> Chamfer is bounded by encoder roundtrip fidelity</h3>
+  <p>Since only the token bridge is trained, the best achievable mesh is what the frozen encoder+decoder produce in a direct roundtrip (latent_recon=0 means perfect bridge, so decoder input = encoder output). The pre-optimization chamfer of Exp B (hand=0.0054, object=0.0095 from the Phase 2 validation) already represents this ceiling &mdash; the Trellis.2 encoder&rarr;decoder lossy compression limit. Training the bridge can only <strong>recover</strong> this ceiling, never <strong>exceed</strong> it.</p>
 </div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">OBSERVATION</span> Geo loss (monitor) is also flat</h3>
+  <p>The render-based geometry loss (hand=0.017, object=0.024) stays constant from step 1 to step 500, confirming that mesh quality doesn't change. This is consistent with the chamfer plateau.</p>
+</div>
+
+<h2 id="next">8. What Needs to Change</h2>
+
+<p>To actually improve mesh reconstruction quality beyond the encoder roundtrip ceiling, we need loss gradients to flow through the <strong>decoder</strong>:</p>
+
+<table>
+  <tr><th>Approach</th><th>Gradient path</th><th>What it optimizes</th></tr>
+  <tr>
+    <td><strong>A. Chamfer loss through decoder</strong></td>
+    <td>chamfer(pred_mesh, gt_mesh) &rarr; decoder convs &rarr; latent features &rarr; token bridge</td>
+    <td>Decoder learns to produce meshes closer to GT</td>
+  </tr>
+  <tr>
+    <td><strong>B. Render loss through decoder</strong></td>
+    <td>L1(rendered_depth, gt_depth) &rarr; differentiable renderer &rarr; decoder &rarr; latent &rarr; bridge</td>
+    <td>Decoder learns to produce meshes that render correctly</td>
+  </tr>
+  <tr>
+    <td><strong>C. Subdivision + intersected supervision</strong></td>
+    <td>BCE(subs_pred, subs_gt) &rarr; decoder upsample blocks</td>
+    <td>Decoder learns correct spatial structure (already wired, needs activation)</td>
+  </tr>
+</table>
+
+<p>The decoder training-mode path (calling <code>SparseUnetVaeDecoder.forward</code> to get <code>subs_gt/subs</code>) and the <code>explicit_gemm</code> backward fix are already implemented. The missing piece is a loss term that flows through the decoder output to the decoder parameters.</p>
 
 </body>
 </html>
