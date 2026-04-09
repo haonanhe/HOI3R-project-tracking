@@ -10,7 +10,7 @@
       "object_rotation_deg": 140.36154174804688,
       "object_add_cm": 10386.0556640625,
       "fused_reproj_error_px": null,
-      "fused_temporal_position_delta": 24.445438385009766
+      "fused_temporal_position_delta": 0.24445436894893646
     },
     "counts": {
       "total_frames": 8,
@@ -39,14 +39,14 @@
         "world_topdown_hand_mesh": "world_topdown_hand_mesh.png",
         "world_3d_hand_mesh": "world_3d_hand_mesh.png"
       },
-      "manifest_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/world_visual_manifest.json",
-      "world_view_strip_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/world_view_strip.png",
-      "world_trajectory_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/world_trajectory.png",
-      "world_trajectory_json_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/world_trajectory.json",
-      "world_topdown_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/world_topdown_mesh.png",
-      "world_3d_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/world_3d_mesh.png",
-      "world_topdown_hand_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/world_topdown_hand_mesh.png",
-      "world_3d_hand_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/world_3d_hand_mesh.png"
+      "manifest_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/world_visual_manifest.json",
+      "world_view_strip_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/world_view_strip.png",
+      "world_trajectory_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/world_trajectory.png",
+      "world_trajectory_json_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/world_trajectory.json",
+      "world_topdown_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/world_topdown_mesh.png",
+      "world_3d_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/world_3d_mesh.png",
+      "world_topdown_hand_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/world_topdown_hand_mesh.png",
+      "world_3d_hand_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/world_3d_hand_mesh.png"
     },
     "camera_overlay": {
       "schema_version": "fp_hawor_camera_overlay.v1",
@@ -57,9 +57,9 @@
         "camera_overlay_strip": "camera_overlay_strip.png",
         "camera_overlay_grid": "camera_overlay_grid.png"
       },
-      "manifest_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/camera_overlay_manifest.json",
-      "camera_overlay_strip_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/camera_overlay_strip.png",
-      "camera_overlay_grid_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_visfix2/P0001_10a27bf7/camera_overlay_grid.png"
+      "manifest_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/camera_overlay_manifest.json",
+      "camera_overlay_strip_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/camera_overlay_strip.png",
+      "camera_overlay_grid_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7_unitsfix2/P0001_10a27bf7/camera_overlay_grid.png"
     },
     "frames": [
       {
@@ -11694,19 +11694,19 @@
             0.6407139897346497,
             -0.20328567922115326,
             0.7403784394264221,
-            23.335124969482422
+            0.32711440324783325
           ],
           [
             -0.6516528129577637,
             -0.6539064645767212,
             0.38438886404037476,
-            25.640153884887695
+            0.34815964102745056
           ],
           [
             0.4059975743293762,
             -0.7287531495094299,
             -0.5514386296272278,
-            31.450490951538086
+            0.3886725902557373
           ],
           [
             0.0,
@@ -23378,19 +23378,19 @@
             0.4998701512813568,
             -0.30582037568092346,
             0.8103107213973999,
-            45.709049224853516
+            0.5508536100387573
           ],
           [
             -0.8076496720314026,
             -0.50246661901474,
             0.3085920512676239,
-            36.93227767944336
+            0.4610809087753296
           ],
           [
             0.3127804398536682,
             -0.8087033629417419,
             -0.49816378951072693,
-            50.619651794433594
+            0.5803642272949219
           ],
           [
             0.0,
@@ -35062,19 +35062,19 @@
             0.46325746178627014,
             -0.3141290843486786,
             0.8286827802658081,
-            43.65909957885742
+            0.5303541421890259
           ],
           [
             -0.824580729007721,
             -0.4954282343387604,
             0.27316200733184814,
-            37.47349548339844
+            0.46649307012557983
           ],
           [
             0.3247447907924652,
             -0.8098602294921875,
             -0.4885353744029999,
-            64.11508178710938
+            0.7153184413909912
           ],
           [
             0.0,
@@ -46746,19 +46746,19 @@
             0.42673707008361816,
             -0.32459452748298645,
             0.8441170454025269,
-            37.41956329345703
+            0.4679587483406067
           ],
           [
             -0.8199979066848755,
             -0.5325447916984558,
             0.2097603976726532,
-            34.5298957824707
+            0.4370570778846741
           ],
           [
             0.38144317269325256,
             -0.7816867828369141,
             -0.4934232831001282,
-            72.82057189941406
+            0.8023732900619507
           ],
           [
             0.0,
@@ -58430,19 +58430,19 @@
             0.37665173411369324,
             -0.36836469173431396,
             0.8499650955200195,
-            30.646562576293945
+            0.40022873878479004
           ],
           [
             -0.8344927430152893,
             -0.5332827568054199,
             0.13867689669132233,
-            23.886083602905273
+            0.3306189477443695
           ],
           [
             0.40218818187713623,
             -0.7615227103233337,
             -0.5082593560218811,
-            82.4426498413086
+            0.8985941410064697
           ],
           [
             0.0,
@@ -70114,19 +70114,19 @@
             0.27750417590141296,
             -0.5353448390960693,
             0.7977450489997864,
-            17.826589584350586
+            0.2720290422439575
           ],
           [
             -0.8701539635658264,
             -0.49201276898384094,
             -0.027483830228447914,
-            8.097918510437012
+            0.17273733019828796
           ],
           [
             0.4072141945362091,
             -0.6865342259407043,
             -0.6023679375648499,
-            59.138858795166016
+            0.6655563116073608
           ],
           [
             0.0,
@@ -81798,19 +81798,19 @@
             0.35647332668304443,
             -0.6358678936958313,
             0.6845425963401794,
-            40.775238037109375
+            0.5015155076980591
           ],
           [
             -0.8225037455558777,
             -0.5611202120780945,
             -0.09290525317192078,
-            20.219995498657227
+            0.2939580976963043
           ],
           [
             0.44318631291389465,
             -0.5299206972122192,
             -0.7230281233787537,
-            68.00028991699219
+            0.7541705369949341
           ],
           [
             0.0,
@@ -93482,19 +93482,19 @@
             0.35498663783073425,
             -0.7072672843933105,
             0.6113569140434265,
-            16.25170135498047
+            0.25628018379211426
           ],
           [
             -0.8035562038421631,
             -0.5650539994239807,
             -0.18711227178573608,
-            3.856658697128296
+            0.13032473623752594
           ],
           [
             0.4777882397174835,
             -0.4248373806476593,
             -0.7689157724380493,
-            40.122093200683594
+            0.47538861632347107
           ],
           [
             0.0,
