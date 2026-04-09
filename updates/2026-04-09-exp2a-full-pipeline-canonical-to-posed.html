@@ -112,6 +112,30 @@ Encoder input: canonical T-pose hand (MANO pose=0, shape=0)
 </div>
 
 <!-- ═══════════════════════════════════════ -->
+<h2>Loss &amp; Chamfer Curves</h2>
+
+<div class="panel" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+  <div><canvas id="chartLoss"></canvas></div>
+  <div><canvas id="chartCD"></canvas></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+const steps=[1,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500];
+const losses=[0.0164,0.0166,0.0169,0.0162,0.0178,0.0171,0.0172,0.0181,0.0169,0.0174,0.0188,0.0183,0.0174,0.0170,0.0174,0.0173,0.0168,0.0169,0.0165,0.0161,0.0164,0.0158,0.0153,0.0155,0.0157,0.0154,0.0154,0.0145,0.0149,0.0144,0.0145,0.0144,0.0144,0.0145,0.0148,0.0148,0.0141,0.0145,0.0148,0.0148,0.0156,0.0154,0.0157,0.0157,0.0164,0.0164,0.0153,0.0164,0.0155,0.0164,0.0158];
+const cds=[0.0677,0.0667,0.0661,0.0642,0.0656,0.0644,0.0646,0.0652,0.0645,0.0641,0.0650,0.0651,0.0646,0.0639,0.0646,0.0644,0.0639,0.0630,0.0621,0.0624,0.0621,0.0609,0.0603,0.0600,0.0599,0.0601,0.0588,0.0591,0.0581,0.0574,0.0576,0.0581,0.0580,0.0584,0.0587,0.0582,0.0583,0.0567,0.0594,0.0594,0.0602,0.0589,0.0605,0.0596,0.0602,0.0613,0.0594,0.0614,0.0599,0.0617,0.0607];
+
+new Chart(document.getElementById('chartLoss'),{
+  type:'line',data:{labels:steps,datasets:[{label:'Chamfer Loss',data:losses,borderColor:'#e53935',backgroundColor:'rgba(229,57,53,.1)',tension:.3,pointRadius:1}]},
+  options:{responsive:true,plugins:{legend:{labels:{font:{size:11}}}},scales:{x:{title:{display:true,text:'Step'}},y:{title:{display:true,text:'Loss'}}}}
+});
+new Chart(document.getElementById('chartCD'),{
+  type:'line',data:{labels:steps,datasets:[{label:'CD vs GT',data:cds,borderColor:'#1e88e5',backgroundColor:'rgba(30,136,229,.1)',tension:.3,pointRadius:1}]},
+  options:{responsive:true,plugins:{legend:{labels:{font:{size:11}}}},scales:{x:{title:{display:true,text:'Step'}},y:{title:{display:true,text:'Chamfer Distance'}}}}
+});
+</script>
+
+<!-- ═══════════════════════════════════════ -->
 <h2 id="vis">3. Visualization</h2>
 
 <h3>Pre-training</h3>
