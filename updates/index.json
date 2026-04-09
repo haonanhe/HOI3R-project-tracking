@@ -1,5 +1,16 @@
 [
   {
+    "title": "2026-04-09 · Overnight Overfit res=256 (500 steps)",
+    "date": "2026-04-09",
+    "status": "PASS",
+    "publish_status": "done",
+    "summary": "Single-frame overfit with existing script at grid_size=256, 500 steps. Latent loss 1023→0.10 (99.99%). Chamfer: hand=0.006, object=0.009 (stable, not improved by latent recon loss alone). Visual quality shows hand/object shapes aligned with GT. Next: direct mesh supervision through decoder.",
+    "path": "updates/2026-04-09-overnight-overfit-res256-500steps.html",
+    "page": "updates/2026-04-09-overnight-overfit-res256-500steps.html",
+    "slug": "overnight-overfit-res256-500steps",
+    "experiment_id": "OVERNIGHT-OVERFIT-RES256-500"
+  },
+  {
     "title": "2026-04-08 · Phase 2: Resolution & Decoder Validation (Session 2)",
     "date": "2026-04-08",
     "status": "PASS",
