@@ -78,51 +78,51 @@
 
 <h2 id="chamfer">2. Chamfer Distance Results</h2>
 
-<p>Chamfer L1 distance between predicted mesh vertices (normalized space) and GT canonical vertices:</p>
+<p>Chamfer L1 distance computed in GT canonical space (predicted vertices denormalized via <code>denormalize_vertices_from_reference_bounds</code>):</p>
 
 <table>
   <tr><th>Metric</th><th>Exp A (res=8)</th><th>Exp B (res=256)</th><th>Winner</th></tr>
   <tr>
     <td>Pre-opt chamfer (hand)</td>
-    <td>0.5446</td>
-    <td><strong>0.1565</strong></td>
-    <td><span class="badge badge-pass">B (3.5x better)</span></td>
+    <td>0.0809</td>
+    <td><strong>0.0054</strong></td>
+    <td><span class="badge badge-pass">B (15x better)</span></td>
   </tr>
   <tr>
     <td>Post-opt chamfer (hand)</td>
-    <td>0.1987</td>
-    <td><strong>0.1628</strong></td>
-    <td><span class="badge badge-pass">B (1.2x better)</span></td>
+    <td>0.0096</td>
+    <td><strong>0.0059</strong></td>
+    <td><span class="badge badge-pass">B (1.6x better)</span></td>
   </tr>
   <tr>
     <td>Pre-opt chamfer (object)</td>
-    <td>0.3419</td>
-    <td><strong>0.3135</strong></td>
-    <td><span class="badge badge-pass">B</span></td>
+    <td>0.0652</td>
+    <td><strong>0.0093</strong></td>
+    <td><span class="badge badge-pass">B (7x better)</span></td>
   </tr>
   <tr>
     <td>Post-opt chamfer (object)</td>
-    <td>0.3466</td>
-    <td>0.3566</td>
-    <td><span class="badge badge-finding">Comparable</span></td>
+    <td>0.0106</td>
+    <td><strong>0.0092</strong></td>
+    <td><span class="badge badge-pass">B (1.2x better)</span></td>
   </tr>
 </table>
 
 <div class="highlight">
-  <strong>Key finding:</strong> Exp B's pre-optimization chamfer (0.157) is already better than Exp A's post-optimization chamfer (0.199). Resolution 256 produces geometrically correct meshes from the encoder alone, while resolution 8 starts with heavily degraded geometry that only partially recovers through training.
+  <strong>Key finding:</strong> Exp B's pre-optimization hand chamfer (0.0054) is already 1.8x better than Exp A's post-optimization (0.0096). Resolution 256 produces geometrically correct meshes from the encoder alone, while resolution 8 starts with heavily degraded geometry that only partially recovers through training.
 </div>
 
 <div class="warning">
-  <strong>Latent recon loss is necessary but not sufficient:</strong> Both experiments converge the latent reconstruction loss (A: 2022&rarr;0.001, B: 1116&rarr;0.75) but this doesn't translate to proportional chamfer improvement. Object chamfer is flat in both experiments. Direct mesh supervision (chamfer loss backpropagated through the decoder) is needed next.
+  <strong>Latent recon loss is necessary but not sufficient:</strong> Both experiments converge the latent reconstruction loss (A: 2100&rarr;0.001, B: 1120&rarr;0.70) but this doesn't translate to proportional chamfer improvement. Chamfer is stable in both experiments after initial convergence. Direct mesh supervision (chamfer loss backpropagated through the decoder) is needed next.
 </div>
 
 <p>Chamfer distance over training steps:</p>
 <table>
   <tr><th>Step</th><th>A: CD hand</th><th>A: CD obj</th><th>B: CD hand</th><th>B: CD obj</th></tr>
-  <tr><td>1</td><td>0.426</td><td>0.241</td><td><strong>0.157</strong></td><td><strong>0.316</strong></td></tr>
-  <tr><td>50</td><td>0.195</td><td>0.344</td><td><strong>0.163</strong></td><td>0.354</td></tr>
-  <tr><td>100</td><td>0.199</td><td>0.347</td><td><strong>0.163</strong></td><td>0.356</td></tr>
-  <tr><td>200</td><td>0.199</td><td>0.347</td><td><strong>0.164</strong></td><td>0.356</td></tr>
+  <tr><td>1</td><td>0.0756</td><td>0.0514</td><td><strong>0.0054</strong></td><td><strong>0.0095</strong></td></tr>
+  <tr><td>50</td><td>0.0095</td><td>0.0104</td><td><strong>0.0059</strong></td><td><strong>0.0093</strong></td></tr>
+  <tr><td>100</td><td>0.0096</td><td>0.0105</td><td><strong>0.0059</strong></td><td><strong>0.0092</strong></td></tr>
+  <tr><td>200</td><td>0.0098</td><td>0.0106</td><td><strong>0.0059</strong></td><td><strong>0.0092</strong></td></tr>
 </table>
 
 <h2 id="vis-hand">3. Hand Reconstruction Visualization</h2>
@@ -138,7 +138,7 @@
     </div>
     <div>
       <img src="assets/phase2-validation/a_hand_post.png" alt="Exp A hand post">
-      <p class="caption">Post-training (200 steps): 139 vertices, chamfer=0.199. Coarse blob, rough hand outline but no finger detail.</p>
+      <p class="caption">Post-training (200 steps): 139 vertices, chamfer=0.0096. Coarse blob, rough hand outline but no finger detail.</p>
     </div>
   </div>
 </div>
@@ -148,11 +148,11 @@
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
     <div>
       <img src="assets/phase2-validation/b_hand_pre.png" alt="Exp B hand pre">
-      <p class="caption">Pre-training: dense mesh (66K vertices), chamfer=0.157. Already recognizable hand shape.</p>
+      <p class="caption">Pre-training: dense mesh (66K vertices), chamfer=0.0054. Already recognizable hand shape.</p>
     </div>
     <div>
       <img src="assets/phase2-validation/b_hand_post.png" alt="Exp B hand post">
-      <p class="caption">Post-training (200 steps): 170K vertices, chamfer=0.163. Clean hand shape aligned with GT.</p>
+      <p class="caption">Post-training (200 steps): 170K vertices, chamfer=0.0059. Clean hand shape aligned with GT.</p>
     </div>
   </div>
 </div>
@@ -168,7 +168,7 @@
     </div>
     <div>
       <img src="assets/phase2-validation/a_object_post.png" alt="Exp A object post">
-      <p class="caption">Post-training: 197 vertices, chamfer=0.347. Sparse blob with no recognizable structure.</p>
+      <p class="caption">Post-training: 197 vertices, chamfer=0.0106. Sparse blob with no recognizable structure.</p>
     </div>
   </div>
 </div>
@@ -178,11 +178,11 @@
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
     <div>
       <img src="assets/phase2-validation/b_object_pre.png" alt="Exp B object pre">
-      <p class="caption">Pre-training: 122K vertices, chamfer=0.314. Recognizable box shape matching GT object.</p>
+      <p class="caption">Pre-training: 122K vertices, chamfer=0.0093. Recognizable box shape matching GT object.</p>
     </div>
     <div>
       <img src="assets/phase2-validation/b_object_post.png" alt="Exp B object post">
-      <p class="caption">Post-training: 264K vertices, chamfer=0.357. Dense mesh with object geometry preserved.</p>
+      <p class="caption">Post-training: 264K vertices, chamfer=0.0092. Dense mesh with object geometry preserved.</p>
     </div>
   </div>
 </div>
@@ -191,7 +191,7 @@
 
 <div class="panel">
   <h3><span class="badge badge-pass">VALIDATED</span> Resolution 256 produces geometrically meaningful meshes</h3>
-  <p>Resolution 8 collapses hand/object to ~100-200 point blobs with chamfer &ge; 0.20. Resolution 256 produces dense meshes with chamfer 0.16 that visually match GT shapes. The encoder+decoder at res=256 is geometrically correct from initialization.</p>
+  <p>Resolution 8 collapses hand/object to ~100-200 point blobs with pre-opt chamfer 0.08. Resolution 256 produces dense meshes with pre-opt chamfer 0.005 (15x better) that visually match GT shapes from initialization.</p>
 </div>
 
 <div class="panel">
@@ -208,7 +208,7 @@
 
 <table>
   <tr><th>#</th><th>Change</th><th>Status</th><th>Evidence</th></tr>
-  <tr><td>1</td><td>Sparse resolution 8 &rarr; 256</td><td><span class="badge badge-pass">PASS</span></td><td>Chamfer 0.199 &rarr; 0.163 (hand), visual quality dramatically better</td></tr>
+  <tr><td>1</td><td>Sparse resolution 8 &rarr; 256</td><td><span class="badge badge-pass">PASS</span></td><td>Post-opt chamfer: hand 0.0096 &rarr; 0.0059 (1.6x), pre-opt 15x better</td></tr>
   <tr><td>2</td><td>Unfreeze global blocks</td><td><span class="badge badge-pass">PASS</span></td><td>Already unfrozen; verified requires_grad=True</td></tr>
   <tr><td>3</td><td>Training-mode decoder path</td><td><span class="badge badge-pass">PASS</span></td><td>200 steps stable, subs_gt/subs available for supervision</td></tr>
   <tr><td>4</td><td>Enhanced mesh supervision losses</td><td><span class="badge badge-finding">WIRED</span></td><td>Code added; chamfer backprop through decoder is next step</td></tr>
