@@ -35,12 +35,12 @@
         "world_topdown_mesh": "world_topdown_mesh.png",
         "world_3d_mesh": "world_3d_mesh.png"
       },
-      "manifest_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409/P0001_10a27bf7/world_visual_manifest.json",
-      "world_view_strip_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409/P0001_10a27bf7/world_view_strip.png",
-      "world_trajectory_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409/P0001_10a27bf7/world_trajectory.png",
-      "world_trajectory_json_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409/P0001_10a27bf7/world_trajectory.json",
-      "world_topdown_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409/P0001_10a27bf7/world_topdown_mesh.png",
-      "world_3d_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409/P0001_10a27bf7/world_3d_mesh.png"
+      "manifest_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7/P0001_10a27bf7/world_visual_manifest.json",
+      "world_view_strip_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7/P0001_10a27bf7/world_view_strip.png",
+      "world_trajectory_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7/P0001_10a27bf7/world_trajectory.png",
+      "world_trajectory_json_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7/P0001_10a27bf7/world_trajectory.json",
+      "world_topdown_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7/P0001_10a27bf7/world_topdown_mesh.png",
+      "world_3d_mesh_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7/P0001_10a27bf7/world_3d_mesh.png"
     },
     "camera_overlay": {
       "schema_version": "fp_hawor_camera_overlay.v1",
@@ -49,8 +49,8 @@
       "outputs": {
         "camera_overlay_strip": "camera_overlay_strip.png"
       },
-      "manifest_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409/P0001_10a27bf7/camera_overlay_manifest.json",
-      "camera_overlay_strip_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409/P0001_10a27bf7/camera_overlay_strip.png"
+      "manifest_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7/P0001_10a27bf7/camera_overlay_manifest.json",
+      "camera_overlay_strip_path": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260409_seqP0001_10a27bf7/P0001_10a27bf7/camera_overlay_strip.png"
     },
     "frames": [
       {
