@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOI3R Baseline Board</title>
+  <style>
+    :root {
+      --bg: #0e141b;
+      --panel: #18222e;
+      --line: rgba(255,255,255,0.08);
+      --text: #eef2f7;
+      --muted: #94a3b8;
+      --accent: #f59e0b;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --info: #38bdf8;
+      --soft: rgba(255,255,255,0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0%, var(--bg) 54%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 36px 20px 48px;
+    }
+    h1, h2, p { margin: 0; }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .lede {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(24,34,46,0.96), rgba(14,20,27,0.98));
+      margin-bottom: 18px;
+    }
+    .panel h2 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .panel p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px 16px;
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .legend code {
+      color: var(--text);
+      background: var(--soft);
+      padding: 0.1rem 0.35rem;
+      border-radius: 999px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(24,34,46,0.96), rgba(14,20,27,0.98));
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(245,158,11,0.32);
+      box-shadow: 0 16px 36px rgba(245,158,11,0.12);
+    }
+    .eyebrow {
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.55rem;
+    }
+    .title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+    }
+    .desc {
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 0.9rem;
+    }
+    .meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 0.9rem;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.22rem 0.6rem;
+      font-size: 0.8rem;
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+    .pill strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .good { color: var(--good); }
+    .warn { color: var(--warn); }
+    .info { color: var(--info); }
+    .next {
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 0.85rem;
+    }
+    .links a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,158,11,0.4);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Baseline Board</h1>
+    <p class="lede">Public entrypoint for baseline progress. This page mirrors the current baseline reconciliation summary: published runtime evidence, task-board coverage, and the sync gap between them.</p>
+
+    <section class="panel">
+      <h2>How To Read This Board</h2>
+      <p>Use <code>runtime_status</code> for published/runtime evidence state, <code>task_status</code> for task-board state, and <code>sync_status</code> for whether those two views are aligned. Runtime authority still lives in repo-visible artifacts and manifests; this page is the public mirror, not the root authority.</p>
+      <div class="legend">
+        <div><code>runtime_status</code>: `completed`, `active`, `partial`, `not-started`</div>
+        <div><code>task_status</code>: `doing`, `todo`, `done`, `blocked`, `no-dedicated-lane`</div>
+        <div><code>sync_status</code>: `aligned`, `runtime-ahead`, `task-ahead`</div>
+      </div>
+    </section>
+
+    <div class="summary-grid">
+      <div class="card">
+        <div class="eyebrow">MagicHOI</div>
+        <div class="title">MagicHOI HO3D</div>
+        <p class="meta">Family: <code>MagicHOI HO3D</code> on HO3D <code>sub_test</code></p>
+        <div class="status-row">
+          <span class="pill"><strong>runtime_status</strong> <span class="warn">active</span></span>
+          <span class="pill"><strong>task_status</strong> <span class="info">todo</span></span>
+          <span class="pill"><strong>sync_status</strong> <span class="warn">runtime-ahead</span></span>
+        </div>
+        <p class="desc">Published multi-shard HO3D page already exposes live sequence status. A dedicated `P15 / T-P15-01..02` audit lane now tracks failed-sequence root cause on the official HO3D dataset path plus metric-semantic differences between MagicHOI official code and the repo baseline framework.</p>
+        <p class="meta">Evidence: public report manifest shows mixed `completed`, `running`, and `failed` sequence states as of 2026-03-31, and the latest recovery reruns for `SMu40/SMu41` still fail because `3d_ref_weight/save` is missing.</p>
+        <div class="links">
+          <a href="magichoi-ho3d/" target="_blank" rel="noopener">Open report</a>
+        </div>
+        <div class="next">Next action: execute `T-P15-01` to fully root-cause the failed/stalled sequences, then `T-P15-02` to freeze the official-vs-baseline metric diff.</div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">MagicHOI</div>
+        <div class="title">MagicHOI DexYCB</div>
+        <p class="meta">Family: <code>MagicHOI DexYCB</code> on DexYCB <code>test</code></p>
+        <div class="status-row">
+          <span class="pill"><strong>runtime_status</strong> <span class="warn">partial</span></span>
+          <span class="pill"><strong>task_status</strong> <span class="info">doing</span></span>
+          <span class="pill"><strong>sync_status</strong> <span class="info">task-ahead</span></span>
+        </div>
+        <p class="desc">Runner, adapter, and smoke coverage exist in-repo, and `P14` is active, but no public DexYCB baseline page has been published yet under `project_tracking/baselines/`.</p>
+        <p class="meta">Evidence: `P14 / T-P14-00..08` is the dedicated comparison lane; runtime code exists but public report page is still absent.</p>
+        <div class="next">Next action: close `T-P14-00`, then publish the first real DexYCB baseline surface once smoke/full artifacts exist.</div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">FoundationPose</div>
+        <div class="title">FoundationPose DexYCB</div>
+        <p class="meta">Family: <code>FoundationPose DexYCB</code> on DexYCB <code>test</code></p>
+        <div class="status-row">
+          <span class="pill"><strong>runtime_status</strong> <span class="good">completed</span></span>
+          <span class="pill"><strong>task_status</strong> <span class="info">no-dedicated-lane</span></span>
+          <span class="pill"><strong>sync_status</strong> <span class="warn">runtime-ahead</span></span>
+        </div>
+        <p class="desc">Public object-pose baseline page already exists for the full DexYCB test evaluation. There is publication/framework coverage, but no dedicated comparison lane in `P14`.</p>
+        <p class="meta">Evidence: published summary covers 704 clips and 21120 frames.</p>
+        <div class="links">
+          <a href="foundationpose-dexycb/" target="_blank" rel="noopener">Open report</a>
+        </div>
+        <div class="next">Next action: keep as published evidence unless a dedicated FoundationPose comparison lane is explicitly opened.</div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">FoundationPose</div>
+        <div class="title">FoundationPose HO3D</div>
+        <p class="meta">Family: <code>FoundationPose HO3D</code> on HO3D <code>sub_test</code></p>
+        <div class="status-row">
+          <span class="pill"><strong>runtime_status</strong> <span class="good">completed</span></span>
+          <span class="pill"><strong>task_status</strong> <span class="info">no-dedicated-lane</span></span>
+          <span class="pill"><strong>sync_status</strong> <span class="warn">runtime-ahead</span></span>
+        </div>
+        <p class="desc">Public HO3D object baseline page already exists. Like DexYCB, this is published evidence without a dedicated ongoing comparison lane.</p>
+        <p class="meta">Evidence: published summary covers 17 sequences and 30769 frames.</p>
+        <div class="links">
+          <a href="foundationpose-ho3d/" target="_blank" rel="noopener">Open report</a>
+        </div>
+        <div class="next">Next action: keep as published evidence unless a dedicated FoundationPose comparison lane is explicitly opened.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <a class="card" href="foundationpose-dexycb/" target="_blank" rel="noopener">
+        <div class="eyebrow">FoundationPose</div>
+        <div class="title">DexYCB Test Set</div>
+        <p class="desc">Static object-pose metrics exported from the full DexYCB S0 test evaluation, including aggregate metrics and per-object rows.</p>
+        <p class="meta">Path: <code>project_tracking/baselines/foundationpose-dexycb/</code></p>
+      </a>
+      <a class="card" href="foundationpose-ho3d/" target="_blank" rel="noopener">
+        <div class="eyebrow">FoundationPose</div>
+        <div class="title">HO3D Sub-Test</div>
+        <p class="desc">Baseline-aligned HO3D sub_test export for FoundationPose with object metrics, counts, and per-sequence rows.</p>
+        <p class="meta">Path: <code>project_tracking/baselines/foundationpose-ho3d/</code></p>
+      </a>
+      <a class="card" href="magichoi-ho3d/" target="_blank" rel="noopener">
+        <div class="eyebrow">MagicHOI</div>
+        <div class="title">HO3D Baseline</div>
+        <p class="desc">Aggregated from the live HO3D multi-shard run. Includes copied images, copied videos, per-sequence status, and metrics as soon as each sequence summary finishes.</p>
+        <p class="meta">Path: <code>project_tracking/baselines/magichoi-ho3d/</code></p>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

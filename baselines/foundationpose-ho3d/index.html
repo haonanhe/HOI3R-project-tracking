@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoundationPose on HO3D Sub-Test</title>
+  <style>
+    :root {
+      --bg: #0e141b;
+      --panel: #18222e;
+      --line: rgba(255,255,255,0.08);
+      --text: #eef2f7;
+      --muted: #94a3b8;
+      --accent: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0%, var(--bg) 54%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 36px 20px 48px;
+    }
+    h1, h2, p { margin: 0; }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .lede { color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .meta { color: var(--muted); margin-bottom: 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+    section {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(24,34,46,0.96), rgba(14,20,27,0.98));
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-size: 0.82rem; }
+    code { color: #fde68a; white-space: pre-wrap; }
+    .muted { color: var(--muted); }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .gallery-card {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+    }
+    .gallery-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #0b1016;
+    }
+    .gallery-card figcaption {
+      padding: 10px 12px 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .gallery-card strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>FoundationPose on HO3D Sub-Test</h1>
+    <p class="lede">Object-only pose metrics exported from the FoundationPose baseline-aligned HO3D sub_test evaluation.</p>
+    <p class="meta">Generated 2026-03-31 02:41:21 UTC. Source summary copy: <code>project_tracking/baselines/foundationpose-ho3d/summary.json</code></p>
+    <section class="grid">
+      <div>
+        <h2>Metrics</h2>
+        <table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>mean_translation_cm</td><td>5.3836</td></tr><tr><td>mean_rotation_deg</td><td>23.7011</td></tr><tr><td>mean_add_cm</td><td>5.7985</td></tr><tr><td>OBJ_rot_err_deg</td><td>23.7011</td></tr><tr><td>OBJ_trans_err</td><td>0.0538</td></tr><tr><td>OBJ_rot_orth_err</td><td>0.0000</td></tr><tr><td>OBJ_rot_det_err</td><td>0.0000</td></tr><tr><td>OBJ_detection_rate</td><td>1.0000</td></tr></tbody></table>
+      </div>
+      <div>
+        <h2>Counts</h2>
+        <table><thead><tr><th>Count</th><th>Value</th></tr></thead><tbody><tr><td>expected_sequences</td><td>17</td></tr><tr><td>completed_sequences</td><td>17</td></tr><tr><td>missing_sequences</td><td>0</td></tr><tr><td>total_sequences</td><td>17</td></tr><tr><td>total_frames</td><td>30769</td></tr><tr><td>gt_frames</td><td>30769</td></tr><tr><td>matched_frames</td><td>30769</td></tr><tr><td>object_valid_frames</td><td>30769</td></tr><tr><td>object_matched_frames</td><td>30769</td></tr><tr><td>object_missing_frames</td><td>0</td></tr><tr><td>object_class_mismatch</td><td>0</td></tr></tbody></table>
+      </div>
+    </section>
+    <section>
+      <h2>Per Object</h2>
+      <table><thead><tr><th>Object</th><th>Records</th><th>mean_translation_cm</th><th>mean_rotation_deg</th><th>mean_add_cm</th></tr></thead><tbody><tr><td>004_sugar_box</td><td>8</td><td>0.4680</td><td>3.8513</td><td>0.5704</td></tr><tr><td>011_banana</td><td>5</td><td>10.1225</td><td>37.0511</td><td>10.6019</td></tr><tr><td>025_mug</td><td>4</td><td>9.2912</td><td>46.7132</td><td>10.2507</td></tr></tbody></table>
+    </section>
+    <section>
+      <h2>Records</h2>
+      <table><thead><tr><th>Record</th><th>Object</th><th>Frames</th><th>Metrics</th></tr></thead><tbody><tr><td>SMu1</td><td>025_mug</td><td>1777</td><td><code>mean_translation_cm=0.1848 | mean_rotation_deg=3.3449 | mean_add_cm=0.2958</code></td></tr><tr><td>SMu40</td><td>025_mug</td><td>2000</td><td><code>mean_translation_cm=0.3205 | mean_rotation_deg=5.0502 | mean_add_cm=0.4717</code></td></tr><tr><td>SMu41</td><td>025_mug</td><td>2000</td><td><code>mean_translation_cm=0.8794 | mean_rotation_deg=60.0890 | mean_add_cm=3.2309</code></td></tr><tr><td>SMu42</td><td>025_mug</td><td>2000</td><td><code>mean_translation_cm=35.7801 | mean_rotation_deg=118.3686 | mean_add_cm=37.0043</code></td></tr><tr><td>SS1</td><td>004_sugar_box</td><td>898</td><td><code>mean_translation_cm=0.3374 | mean_rotation_deg=3.4704 | mean_add_cm=0.4462</code></td></tr><tr><td>SS2</td><td>004_sugar_box</td><td>898</td><td><code>mean_translation_cm=0.3794 | mean_rotation_deg=3.5428 | mean_add_cm=0.4744</code></td></tr><tr><td>SS3</td><td>004_sugar_box</td><td>898</td><td><code>mean_translation_cm=0.3827 | mean_rotation_deg=3.6177 | mean_add_cm=0.4956</code></td></tr><tr><td>ShSu10</td><td>004_sugar_box</td><td>1731</td><td><code>mean_translation_cm=0.5574 | mean_rotation_deg=3.8245 | mean_add_cm=0.6400</code></td></tr><tr><td>ShSu12</td><td>004_sugar_box</td><td>1731</td><td><code>mean_translation_cm=0.6426 | mean_rotation_deg=4.3166 | mean_add_cm=0.7478</code></td></tr><tr><td>ShSu13</td><td>004_sugar_box</td><td>1731</td><td><code>mean_translation_cm=0.6287 | mean_rotation_deg=4.8568 | mean_add_cm=0.7327</code></td></tr><tr><td>ShSu14</td><td>004_sugar_box</td><td>1731</td><td><code>mean_translation_cm=0.4746 | mean_rotation_deg=3.7625 | mean_add_cm=0.5811</code></td></tr><tr><td>SiBF10</td><td>011_banana</td><td>2485</td><td><code>mean_translation_cm=25.3371 | mean_rotation_deg=73.0473 | mean_add_cm=26.1274</code></td></tr><tr><td>SiBF11</td><td>011_banana</td><td>2509</td><td><code>mean_translation_cm=0.7243 | mean_rotation_deg=11.3998 | mean_add_cm=0.9682</code></td></tr><tr><td>SiBF12</td><td>011_banana</td><td>2509</td><td><code>mean_translation_cm=23.5324 | mean_rotation_deg=74.2598 | mean_add_cm=24.3123</code></td></tr><tr><td>SiBF13</td><td>011_banana</td><td>2509</td><td><code>mean_translation_cm=0.4546 | mean_rotation_deg=10.4801 | mean_add_cm=0.6819</code></td></tr><tr><td>SiBF14</td><td>011_banana</td><td>2509</td><td><code>mean_translation_cm=0.5642 | mean_rotation_deg=16.0685 | mean_add_cm=0.9195</code></td></tr><tr><td>SiS1</td><td>004_sugar_box</td><td>853</td><td><code>mean_translation_cm=0.3412 | mean_rotation_deg=3.4190 | mean_add_cm=0.4454</code></td></tr></tbody></table>
+    </section>
+    <section>
+      <h2>Visualization Gallery</h2>
+      <div class="gallery"><figure class="gallery-card"><img src="images/ho3d_00_00_1705.png" alt="SMu1"><figcaption><strong>SMu1</strong><br><span>025_mug · frame 1705</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_00_01_0350.png" alt="SMu1"><figcaption><strong>SMu1</strong><br><span>025_mug · frame 0350</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_00_02_0201.png" alt="SMu1"><figcaption><strong>SMu1</strong><br><span>025_mug · frame 0201</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_01_00_1607.png" alt="SMu40"><figcaption><strong>SMu40</strong><br><span>025_mug · frame 1607</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_01_01_0590.png" alt="SMu40"><figcaption><strong>SMu40</strong><br><span>025_mug · frame 0590</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_01_02_0751.png" alt="SMu40"><figcaption><strong>SMu40</strong><br><span>025_mug · frame 0751</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_02_00_1594.png" alt="ShSu14"><figcaption><strong>ShSu14</strong><br><span>004_sugar_box · frame 1594</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_02_01_1368.png" alt="ShSu14"><figcaption><strong>ShSu14</strong><br><span>004_sugar_box · frame 1368</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_02_02_0587.png" alt="ShSu14"><figcaption><strong>ShSu14</strong><br><span>004_sugar_box · frame 0587</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_03_00_1246.png" alt="ShSu12"><figcaption><strong>ShSu12</strong><br><span>004_sugar_box · frame 1246</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_03_01_0838.png" alt="ShSu12"><figcaption><strong>ShSu12</strong><br><span>004_sugar_box · frame 0838</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_03_02_0592.png" alt="ShSu12"><figcaption><strong>ShSu12</strong><br><span>004_sugar_box · frame 0592</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_04_00_1095.png" alt="SMu41"><figcaption><strong>SMu41</strong><br><span>025_mug · frame 1095</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_04_01_1059.png" alt="SMu41"><figcaption><strong>SMu41</strong><br><span>025_mug · frame 1059</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_04_02_1640.png" alt="SMu41"><figcaption><strong>SMu41</strong><br><span>025_mug · frame 1640</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_05_00_0162.png" alt="SMu42"><figcaption><strong>SMu42</strong><br><span>025_mug · frame 0162</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_05_01_1579.png" alt="SMu42"><figcaption><strong>SMu42</strong><br><span>025_mug · frame 1579</span></figcaption></figure><figure class="gallery-card"><img src="images/ho3d_05_02_1708.png" alt="SMu42"><figcaption><strong>SMu42</strong><br><span>025_mug · frame 1708</span></figcaption></figure></div>
+    </section>
+  </main>
+</body>
+</html>

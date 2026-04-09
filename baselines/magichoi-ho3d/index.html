@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MagicHOI on HO3D Sub-Test</title>
+  <style>
+    :root {
+      --bg: #11161c;
+      --panel: #1b2430;
+      --panel-alt: #202c39;
+      --line: rgba(255,255,255,0.1);
+      --text: #edf2f7;
+      --muted: #9aa5b1;
+      --accent: #f59e0b;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --pending: #64748b;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Inter", "Segoe UI", sans-serif; background: radial-gradient(circle at top, #1f2937 0%, var(--bg) 52%); color: var(--text); }
+    main { max-width: 1320px; margin: 0 auto; padding: 32px 20px 48px; }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .lede { color: var(--muted); margin-bottom: 1.25rem; line-height: 1.5; }
+    section { background: rgba(17, 24, 39, 0.74); border: 1px solid var(--line); border-radius: 18px; padding: 18px; margin-top: 18px; backdrop-filter: blur(8px); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-size: 0.82rem; }
+    code { color: #fde68a; white-space: pre-wrap; }
+    ul { margin: 0; padding-left: 1.2rem; color: var(--muted); }
+    .muted { color: var(--muted); }
+    .sequence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+    .sequence-card { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: linear-gradient(180deg, rgba(32,44,57,0.92), rgba(17,24,39,0.96)); }
+    .sequence-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+    .status { display: inline-flex; align-items: center; justify-content: center; min-width: 92px; padding: 4px 10px; border-radius: 999px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .status-completed { background: rgba(34,197,94,0.16); color: #86efac; }
+    .status-running { background: rgba(245,158,11,0.16); color: #fcd34d; }
+    .status-failed { background: rgba(239,68,68,0.16); color: #fca5a5; }
+    .status-pending { background: rgba(100,116,139,0.16); color: #cbd5e1; }
+    .meta { color: var(--muted); margin-top: 6px; font-size: 0.92rem; }
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 14px; }
+    .media-card { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel-alt); }
+    .media-label { padding: 10px 12px; font-size: 0.82rem; color: var(--muted); border-bottom: 1px solid var(--line); }
+    img, video { display: block; width: 100%; background: #000; }
+    .section-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>MagicHOI on HO3D Sub-Test</h1>
+    <p class="lede">Generated 2026-03-31 03:32:17 UTC. This page aggregates live shard outputs, preserves copied images/videos, and fills metrics automatically as sequence summaries land.</p>
+    <section class="grid">
+      <div>
+        <div class="section-title"><h2>Metrics</h2><span class="muted">Completed sequences only</span></div>
+        <table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>mpjpe_mm</td><td>135.9908</td></tr><tr><td>mpjpe_root_mm</td><td>62.1030</td></tr><tr><td>mpjpe_pa_mm</td><td>42.7038</td></tr><tr><td>mpjpe_2d_px</td><td>127.9998</td></tr><tr><td>auc</td><td>0.0044</td></tr><tr><td>detection_rate</td><td>0.1125</td></tr><tr><td>success_rate</td><td>NA</td></tr><tr><td>fscore_5mm</td><td>0.0000</td></tr><tr><td>fscore_15mm</td><td>0.0000</td></tr><tr><td>OBJ_rot_err_deg</td><td>176.6588</td></tr><tr><td>OBJ_trans_err</td><td>0.9134</td></tr><tr><td>OBJ_detection_rate</td><td>0.1125</td></tr></tbody></table>
+      </div>
+      <div>
+        <div class="section-title"><h2>MagicHOI Official Metrics</h2><span class="muted">Completed sequences only</span></div>
+        <table><thead><tr><th>Official Metric</th><th>Value</th></tr></thead><tbody><tr><td>mpjpe_ra_r</td><td>3.5543</td></tr><tr><td>cd_icp</td><td>1.5352</td></tr><tr><td>f10_icp</td><td>72.8153</td></tr><tr><td>cd_right</td><td>3.5119</td></tr></tbody></table>
+      </div>
+      <div>
+        <div class="section-title"><h2>Counts</h2><span class="muted">Run state snapshot</span></div>
+        <table><thead><tr><th>Count</th><th>Value</th></tr></thead><tbody><tr><td>completed</td><td>1</td></tr><tr><td>running</td><td>3</td></tr><tr><td>failed</td><td>1</td></tr><tr><td>pending</td><td>0</td></tr></tbody></table>
+      </div>
+    </section>
+    <section>
+      <div class="section-title"><h2>Sources</h2><span class="muted">Artifact roots</span></div>
+      <ul><li><code>magichoi_ho3d_sub_test_20260330_shard0</code></li><li><code>magichoi_ho3d_sub_test_20260330_shard1</code></li><li><code>magichoi_ho3d_sub_test_20260330_shard2</code></li><li><code>magichoi_ho3d_sub_test_20260330_shard3</code></li></ul>
+    </section>
+    <section>
+      <div class="section-title"><h2>Sequence Status</h2><span class="muted">Shard-level aggregation</span></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Sequence</th>
+            <th>Status</th>
+            <th>Latest Stage</th>
+            <th>Updated</th>
+            <th>MPJPE-PA (mm)</th>
+            <th>OBJ Rot Err (deg)</th>
+            <th>Failure / Note</th>
+          </tr>
+        </thead>
+        <tbody><tr><td>SMu1</td><td>running</td><td>3d_ref</td><td>2026-03-30 20:57:05 UTC</td><td>NA</td><td>NA</td><td>stale failure record present; live process active</td></tr><tr><td>SMu40</td><td>failed</td><td></td><td>2026-03-30 19:27:58 UTC</td><td>NA</td><td>NA</td><td>RuntimeError: MagicHOI command failed (1): /home/haonan/anaconda3/envs/MagicHOI/bin/python run.py --sequence-manifest /mnt/hdd_volume/datasets/HO3D/magichoi_runtime_20260330/artifacts/magichoi_ho3d_sub_test_20260330_shard1/SMu40/sequence_manifest.json --gpu 0 --seq_list hold_SMu40_ho3d_subtest_9e4f3917.0 --execute_list only_3d --process_list rm_unused_images_after_colmap rebuild_hand crop_hand hand_pose_hamer validate_hamer --rebuild. See /mnt/hdd_volume/datasets/HO3D/magichoi_runtime_20260330/artifacts/magichoi_ho3d_sub_test_20260330_shard1/SMu40/pipeline.log</td></tr><tr><td>SMu41</td><td>running</td><td>3d_ref_weight</td><td>2026-03-30 16:55:26 UTC</td><td>NA</td><td>NA</td><td>stale failure record present; live process active</td></tr><tr><td>SMu42</td><td>completed</td><td>3d_ref_weight</td><td>2026-03-31 02:30:04 UTC</td><td>42.7038</td><td>176.6588</td><td>RuntimeError: MagicHOI command failed (1): /home/haonan/anaconda3/envs/MagicHOI/bin/python run.py --sequence-manifest /mnt/hdd_volume/datasets/HO3D/magichoi_runtime_20260330/artifacts/magichoi_ho3d_sub_test_20260330_shard3/SMu42/sequence_manifest.json --gpu 0 --seq_list hold_SMu42_ho3d_subtest_a448c9f0.0 --execute_list only_3d --process_list colmap validate_colmap gen_HO3D --rebuild. See /mnt/hdd_volume/datasets/HO3D/magichoi_runtime_20260330/artifacts/magichoi_ho3d_sub_test_20260330_shard3/SMu42/pipeline.log</td></tr><tr><td>ShSu10</td><td>running</td><td></td><td>2026-03-30 20:03:04 UTC</td><td>NA</td><td>NA</td><td></td></tr></tbody>
+      </table>
+    </section>
+    <section>
+      <div class="section-title"><h2>Gallery</h2><span class="muted">Copied media for HTML publishing</span></div>
+      <div class="sequence-grid"><article class="sequence-card"><div class="sequence-top"><h3>SMu1</h3><span class="status status-running">running</span></div><p class="muted">hold_SMu1_ho3d_subtest_13ea6622.0</p><p class="meta">Latest stage: <code>3d_ref</code></p><p class="meta">Last updated: <code>2026-03-30 20:57:05 UTC</code></p><p class="meta">MPJPE-PA: <strong>NA</strong> | OBJ rot err: <strong>NA</strong></p><div class="media-grid"><div class="media-card"><div class="media-label">only_3d overview</div><img src="media/SMu1/only_3d/overview.png" alt="only_3d overview" loading="lazy" /></div><div class="media-card"><div class="media-label">only_3d val_video</div><video controls preload="metadata" src="media/SMu1/only_3d/val_video.mp4"></video></div><div class="media-card"><div class="media-label">only_3d test_video</div><video controls preload="metadata" src="media/SMu1/only_3d/test_video.mp4"></video></div><div class="media-card"><div class="media-label">only_3d icp_projection</div><img src="media/SMu1/only_3d/icp_projection.png" alt="only_3d icp_projection" loading="lazy" /></div><div class="media-card"><div class="media-label">only_ref overview</div><img src="media/SMu1/only_ref/overview.png" alt="only_ref overview" loading="lazy" /></div><div class="media-card"><div class="media-label">only_ref val_video</div><video controls preload="metadata" src="media/SMu1/only_ref/val_video.mp4"></video></div><div class="media-card"><div class="media-label">only_ref test_video</div><video controls preload="metadata" src="media/SMu1/only_ref/test_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref overview</div><img src="media/SMu1/3d_ref/overview.png" alt="3d_ref overview" loading="lazy" /></div><div class="media-card"><div class="media-label">3d_ref val_video</div><video controls preload="metadata" src="media/SMu1/3d_ref/val_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref test_video</div><video controls preload="metadata" src="media/SMu1/3d_ref/test_video.mp4"></video></div></div></article><article class="sequence-card"><div class="sequence-top"><h3>SMu40</h3><span class="status status-failed">failed</span></div><p class="muted">hold_SMu40_ho3d_subtest_9e4f3917.0</p><p class="meta">Latest stage: <code>NA</code></p><p class="meta">Last updated: <code>2026-03-30 19:27:58 UTC</code></p><p class="meta">MPJPE-PA: <strong>NA</strong> | OBJ rot err: <strong>NA</strong></p><div class="media-grid"><p class="muted">No copied media yet.</p></div></article><article class="sequence-card"><div class="sequence-top"><h3>SMu41</h3><span class="status status-running">running</span></div><p class="muted">hold_SMu41_ho3d_subtest_57b56d0b.0</p><p class="meta">Latest stage: <code>3d_ref_weight</code></p><p class="meta">Last updated: <code>2026-03-30 16:55:26 UTC</code></p><p class="meta">MPJPE-PA: <strong>NA</strong> | OBJ rot err: <strong>NA</strong></p><div class="media-grid"><div class="media-card"><div class="media-label">only_3d overview</div><img src="media/SMu41/only_3d/overview.png" alt="only_3d overview" loading="lazy" /></div><div class="media-card"><div class="media-label">only_3d val_video</div><video controls preload="metadata" src="media/SMu41/only_3d/val_video.mp4"></video></div><div class="media-card"><div class="media-label">only_3d test_video</div><video controls preload="metadata" src="media/SMu41/only_3d/test_video.mp4"></video></div><div class="media-card"><div class="media-label">only_3d icp_projection</div><img src="media/SMu41/only_3d/icp_projection.png" alt="only_3d icp_projection" loading="lazy" /></div><div class="media-card"><div class="media-label">only_ref overview</div><img src="media/SMu41/only_ref/overview.png" alt="only_ref overview" loading="lazy" /></div><div class="media-card"><div class="media-label">only_ref val_video</div><video controls preload="metadata" src="media/SMu41/only_ref/val_video.mp4"></video></div><div class="media-card"><div class="media-label">only_ref test_video</div><video controls preload="metadata" src="media/SMu41/only_ref/test_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref overview</div><img src="media/SMu41/3d_ref/overview.png" alt="3d_ref overview" loading="lazy" /></div><div class="media-card"><div class="media-label">3d_ref val_video</div><video controls preload="metadata" src="media/SMu41/3d_ref/val_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref test_video</div><video controls preload="metadata" src="media/SMu41/3d_ref/test_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref_weight overview</div><img src="media/SMu41/3d_ref_weight/overview.png" alt="3d_ref_weight overview" loading="lazy" /></div></div></article><article class="sequence-card"><div class="sequence-top"><h3>SMu42</h3><span class="status status-completed">completed</span></div><p class="muted">hold_SMu42_ho3d_subtest_a448c9f0.0</p><p class="meta">Latest stage: <code>3d_ref_weight</code></p><p class="meta">Last updated: <code>2026-03-31 02:30:04 UTC</code></p><p class="meta">MPJPE-PA: <strong>42.7038</strong> | OBJ rot err: <strong>176.6588</strong></p><p class="meta">MagicHOI official: <strong>MPJPE=3.5543</strong> | <strong>CD=1.5352</strong> | <strong>F10=72.8153</strong></p><div class="media-grid"><div class="media-card"><div class="media-label">only_3d overview</div><img src="media/SMu42/only_3d/overview.png" alt="only_3d overview" loading="lazy" /></div><div class="media-card"><div class="media-label">only_3d val_video</div><video controls preload="metadata" src="media/SMu42/only_3d/val_video.mp4"></video></div><div class="media-card"><div class="media-label">only_3d test_video</div><video controls preload="metadata" src="media/SMu42/only_3d/test_video.mp4"></video></div><div class="media-card"><div class="media-label">only_3d icp_projection</div><img src="media/SMu42/only_3d/icp_projection.png" alt="only_3d icp_projection" loading="lazy" /></div><div class="media-card"><div class="media-label">only_ref overview</div><img src="media/SMu42/only_ref/overview.png" alt="only_ref overview" loading="lazy" /></div><div class="media-card"><div class="media-label">only_ref val_video</div><video controls preload="metadata" src="media/SMu42/only_ref/val_video.mp4"></video></div><div class="media-card"><div class="media-label">only_ref test_video</div><video controls preload="metadata" src="media/SMu42/only_ref/test_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref overview</div><img src="media/SMu42/3d_ref/overview.png" alt="3d_ref overview" loading="lazy" /></div><div class="media-card"><div class="media-label">3d_ref val_video</div><video controls preload="metadata" src="media/SMu42/3d_ref/val_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref test_video</div><video controls preload="metadata" src="media/SMu42/3d_ref/test_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref_weight overview</div><img src="media/SMu42/3d_ref_weight/overview.png" alt="3d_ref_weight overview" loading="lazy" /></div><div class="media-card"><div class="media-label">3d_ref_weight val_video</div><video controls preload="metadata" src="media/SMu42/3d_ref_weight/val_video.mp4"></video></div><div class="media-card"><div class="media-label">3d_ref_weight test_video</div><video controls preload="metadata" src="media/SMu42/3d_ref_weight/test_video.mp4"></video></div></div></article><article class="sequence-card"><div class="sequence-top"><h3>ShSu10</h3><span class="status status-running">running</span></div><p class="muted">hold_ShSu10_ho3d_subtest_a448c9f0.0</p><p class="meta">Latest stage: <code>NA</code></p><p class="meta">Last updated: <code>2026-03-30 20:03:04 UTC</code></p><p class="meta">MPJPE-PA: <strong>NA</strong> | OBJ rot err: <strong>NA</strong></p><div class="media-grid"><p class="muted">No copied media yet.</p></div></article></div>
+    </section>
+  </main>
+</body>
+</html>

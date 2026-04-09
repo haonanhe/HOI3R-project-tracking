@@ -4,7 +4,7 @@
   "steps": [
     {
       "label": "W1 Scope / Story / Infra Kickoff",
-      "status": "current",
+      "status": "done",
       "days": [
         {
           "date": "2026-03-16",
@@ -19,53 +19,53 @@
         {
           "date": "2026-03-18",
           "focus": "Lock the paper skeleton",
-          "status": "current"
+          "status": "done"
         },
         {
           "date": "2026-03-19",
-          "focus": "Parallel infra lane kickoff",
-          "status": "pending"
+          "focus": "Point tracking execution lane kickoff",
+          "status": "done"
         },
         {
           "date": "2026-03-20",
-          "focus": "Parallel data-transfer preflight",
-          "status": "pending"
+          "focus": "Data-transfer preflight and storage freeze",
+          "status": "done"
         },
         {
           "date": "2026-03-21",
-          "focus": "Weekend reserve: data migration",
-          "status": "pending"
+          "focus": "Weekend reserve: bulk data migration",
+          "status": "done"
         },
         {
           "date": "2026-03-22",
           "focus": "Weekend reserve: infra validation",
-          "status": "pending"
+          "status": "done"
         }
       ]
     },
     {
       "label": "W2 Eval Protocol / Baseline Freeze",
-      "status": "pending",
+      "status": "current",
       "days": [
         {
           "date": "2026-03-23",
-          "focus": "Freeze evaluator inputs/outputs",
-          "status": "pending"
+          "focus": "sam-3d-objects bring-up and validation",
+          "status": "done"
         },
         {
           "date": "2026-03-24",
-          "focus": "Baseline reproducibility check",
-          "status": "pending"
+          "focus": "Point tracking integration progress sync",
+          "status": "done"
         },
         {
           "date": "2026-03-25",
-          "focus": "Current HOI3R result audit",
-          "status": "pending"
+          "focus": "Point tracking result and readiness audit",
+          "status": "done"
         },
         {
           "date": "2026-03-26",
-          "focus": "Fix evaluator or reporting blockers",
-          "status": "pending"
+          "focus": "Point tracking website and tracker sync",
+          "status": "current"
         },
         {
           "date": "2026-03-27",

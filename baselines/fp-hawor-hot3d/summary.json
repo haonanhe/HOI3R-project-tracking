@@ -1,0 +1,38 @@
+{
+  "baseline": "fp_hawor",
+  "variant": "simple",
+  "dataset": "hot3d_test",
+  "split": "test",
+  "world_frame": "hawor_world",
+  "processed_root": "/mnt/hdd_volume/datasets/HOT3D/processed",
+  "data_root": "/mnt/hdd_volume/datasets/HOT3D",
+  "output_dir": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_world_mesh_smoke_20260409",
+  "checkpoint": "/data/haonan/HOI/HOI3R/third_party/HaWoR/weights/hawor/checkpoints/hawor.ckpt",
+  "foundationpose_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/foundationpose_hot3d_smoke_20260408/summary/hot3d_test_stride01.json",
+  "hawor_world_hand_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/hot3d_world_hand_mesh_smoke_20260409/hot3d_world_hand_summary.json",
+  "weights": {
+    "greproj": 1.0,
+    "gtemp": 0.1
+  },
+  "metrics": {
+    "hand_world_root_err_mm": 0.0,
+    "hand_world_joint_err_mm": 0.0,
+    "object_translation_cm": 7260.79345703125,
+    "object_rotation_deg": 140.36154174804688,
+    "object_add_cm": 10386.0556640625,
+    "fused_reproj_error_px": null,
+    "fused_temporal_position_delta": 24.445438385009766
+  },
+  "counts": {
+    "evaluated_sequences": 1,
+    "skipped_sequences": 0,
+    "total_gt_hands": 8,
+    "total_frames": 8,
+    "hand_valid_frames": 8,
+    "object_valid_frames": 8,
+    "object_interpolated_frames": 0,
+    "world_visualizations": 1,
+    "camera_overlays": 1
+  },
+  "generated_at": "2026-04-09 03:46:49 UTC"
+}

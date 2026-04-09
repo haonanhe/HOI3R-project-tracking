@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoundationPose on HOT3D Test</title>
+  <style>
+    :root {
+      --bg: #0e141b;
+      --panel: #18222e;
+      --line: rgba(255,255,255,0.08);
+      --text: #eef2f7;
+      --muted: #94a3b8;
+      --accent: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0%, var(--bg) 54%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 36px 20px 48px;
+    }
+    h1, h2, p { margin: 0; }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .lede { color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .meta { color: var(--muted); margin-bottom: 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+    section {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(24,34,46,0.96), rgba(14,20,27,0.98));
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-size: 0.82rem; }
+    code { color: #fde68a; white-space: pre-wrap; }
+    .muted { color: var(--muted); }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .gallery-card {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+    }
+    .gallery-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #0b1016;
+    }
+    .gallery-card figcaption {
+      padding: 10px 12px 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .gallery-card strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>FoundationPose on HOT3D Test</h1>
+    <p class="lede">Object-only pose metrics exported from the FoundationPose HOT3D test evaluation.</p>
+    <p class="meta">Generated 2026-04-08 12:30:46 UTC. Source summary copy: <code>project_tracking/baselines/foundationpose-hot3d/summary.json</code></p>
+    <section class="grid">
+      <div>
+        <h2>Metrics</h2>
+        <table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>mean_translation_cm</td><td>7260.7933</td></tr><tr><td>mean_rotation_deg</td><td>140.3615</td></tr><tr><td>mean_add_cm</td><td>10386.0561</td></tr></tbody></table>
+      </div>
+      <div>
+        <h2>Counts</h2>
+        <table><thead><tr><th>Count</th><th>Value</th></tr></thead><tbody><tr><td>expected_sequences</td><td>1</td></tr><tr><td>completed_sequences</td><td>1</td></tr><tr><td>missing_sequences</td><td>0</td></tr><tr><td>total_sequences</td><td>1</td></tr><tr><td>total_frames</td><td>8</td></tr><tr><td>object_valid_frames</td><td>8</td></tr><tr><td>object_matched_frames</td><td>8</td></tr><tr><td>object_missing_frames</td><td>0</td></tr></tbody></table>
+      </div>
+    </section>
+    <section>
+      <h2>Per Object</h2>
+      <table><thead><tr><th>Object</th><th>Records</th><th>mean_translation_cm</th><th>mean_rotation_deg</th><th>mean_add_cm</th></tr></thead><tbody><tr><td>dumbbell_5lb</td><td>1</td><td>7260.7933</td><td>140.3615</td><td>10386.0561</td></tr></tbody></table>
+    </section>
+    <section>
+      <h2>Records</h2>
+      <table><thead><tr><th>Record</th><th>Object</th><th>Frames</th><th>Metrics</th></tr></thead><tbody><tr><td>P0001_10a27bf7</td><td>dumbbell_5lb</td><td>8</td><td><code>mean_translation_cm=7260.7933 | mean_rotation_deg=140.3615 | mean_add_cm=10386.0561</code></td></tr></tbody></table>
+    </section>
+    <section>
+      <h2>Visualization Gallery</h2>
+      <p class="muted">No visualization samples exported yet.</p>
+    </section>
+  </main>
+</body>
+</html>

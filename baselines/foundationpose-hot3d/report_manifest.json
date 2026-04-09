@@ -1,0 +1,97 @@
+{
+  "schema_version": "foundationpose-baseline-site.v1",
+  "dataset": "hot3d",
+  "generated_at_utc": "2026-04-08T12:30:46.490938Z",
+  "source_summary": "project_tracking/baselines/foundationpose-hot3d/summary.json",
+  "outputs": {
+    "html": "project_tracking/baselines/foundationpose-hot3d/index.html",
+    "report_manifest": "project_tracking/baselines/foundationpose-hot3d/report_manifest.json",
+    "summary_json": "project_tracking/baselines/foundationpose-hot3d/summary.json"
+  },
+  "summary": {
+    "metrics": {
+      "mean_translation_cm": 7260.793304443359,
+      "mean_rotation_deg": 140.36153438215564,
+      "mean_add_cm": 10386.056137084961
+    },
+    "counts": {
+      "expected_sequences": 1,
+      "completed_sequences": 1,
+      "missing_sequences": 0,
+      "total_sequences": 1,
+      "total_frames": 8,
+      "object_valid_frames": 8,
+      "object_matched_frames": 8,
+      "object_missing_frames": 0
+    },
+    "records": [
+      {
+        "num_frames": 8,
+        "mean_translation_cm": 7260.793304443359,
+        "mean_rotation_deg": 140.36153438215564,
+        "mean_add_cm": 10386.056137084961,
+        "per_frame": [
+          {
+            "frame_id": "000000",
+            "translation_cm": 4699.18098449707,
+            "rotation_deg": 137.08480382179047,
+            "add_cm": 9439.348602294922
+          },
+          {
+            "frame_id": "000001",
+            "translation_cm": 7778.706359863281,
+            "rotation_deg": 135.1864552392843,
+            "add_cm": 11211.932373046875
+          },
+          {
+            "frame_id": "000002",
+            "translation_cm": 8641.86782836914,
+            "rotation_deg": 136.67807555838243,
+            "add_cm": 11762.46337890625
+          },
+          {
+            "frame_id": "000003",
+            "translation_cm": 8916.888427734375,
+            "rotation_deg": 140.02353898214912,
+            "add_cm": 11842.241668701172
+          },
+          {
+            "frame_id": "000004",
+            "translation_cm": 9153.729248046875,
+            "rotation_deg": 141.77254084775632,
+            "add_cm": 11781.498718261719
+          },
+          {
+            "frame_id": "000005",
+            "translation_cm": 6276.865386962891,
+            "rotation_deg": 143.80588130232147,
+            "add_cm": 9211.376190185547
+          },
+          {
+            "frame_id": "000006",
+            "translation_cm": 8223.076629638672,
+            "rotation_deg": 143.3485508377324,
+            "add_cm": 10414.511108398438
+          },
+          {
+            "frame_id": "000007",
+            "translation_cm": 4396.03157043457,
+            "rotation_deg": 144.99242846782863,
+            "add_cm": 7425.077056884766
+          }
+        ],
+        "sequence": "P0001_10a27bf7",
+        "stream_id": "214-1",
+        "object_id": 1258632124,
+        "object_uid": "27078911029651",
+        "object_name": "dumbbell_5lb",
+        "mesh_file": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/foundationpose_hot3d_smoke_20260408/clips/hot3d__P0001_10a27bf7__214-1__stride01/object_mesh.obj",
+        "clip_root": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/foundationpose_hot3d_smoke_20260408/clips/hot3d__P0001_10a27bf7__214-1__stride01",
+        "prediction_dir": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/foundationpose_hot3d_smoke_20260408/runs/hot3d__P0001_10a27bf7__214-1__stride01",
+        "object_valid_frames": 8,
+        "object_matched_frames": 8,
+        "object_missing_frames": 0
+      }
+    ]
+  }
+}

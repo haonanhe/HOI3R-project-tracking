@@ -1,0 +1,339 @@
+{
+  "schema_version": "magichoi-ho3d-baseline-site.v1",
+  "generated_at_utc": "2026-03-31T03:32:17.130968Z",
+  "source_artifact_roots": [
+    "magichoi_ho3d_sub_test_20260330_shard0",
+    "magichoi_ho3d_sub_test_20260330_shard1",
+    "magichoi_ho3d_sub_test_20260330_shard2",
+    "magichoi_ho3d_sub_test_20260330_shard3"
+  ],
+  "outputs": {
+    "html": "project_tracking/baselines/magichoi-ho3d/index.html",
+    "report_manifest": "project_tracking/baselines/magichoi-ho3d/report_manifest.json",
+    "media_dir": "project_tracking/baselines/magichoi-ho3d/media"
+  },
+  "summary": {
+    "counts": {
+      "completed": 1,
+      "running": 3,
+      "failed": 1,
+      "pending": 0
+    },
+    "completed_sequences": 1,
+    "pending_sequences": 0,
+    "failed_sequences": 1,
+    "running_sequences": 3,
+    "sequence_count": 5,
+    "metrics": {
+      "mpjpe_mm": "135.9908",
+      "mpjpe_root_mm": "62.1030",
+      "mpjpe_pa_mm": "42.7038",
+      "mpjpe_2d_px": "127.9998",
+      "auc": "0.0044",
+      "detection_rate": "0.1125",
+      "success_rate": "NA",
+      "fscore_5mm": "0.0000",
+      "fscore_15mm": "0.0000",
+      "OBJ_rot_err_deg": "176.6588",
+      "OBJ_trans_err": "0.9134",
+      "OBJ_detection_rate": "0.1125"
+    },
+    "official_metrics": {
+      "mpjpe_ra_r": "3.5543",
+      "cd_icp": "1.5352",
+      "f10_icp": "72.8153",
+      "cd_right": "3.5119"
+    }
+  },
+  "sequences": [
+    {
+      "sequence": "SMu1",
+      "sequence_id": "hold_SMu1_ho3d_subtest_13ea6622.0",
+      "status": "running",
+      "latest_stage": "3d_ref",
+      "updated_at_utc": "2026-03-30 20:57:05 UTC",
+      "failure_reason": "stale failure record present; live process active",
+      "benchmark_metrics": {},
+      "official_metrics": {},
+      "metrics": {},
+      "media": [
+        {
+          "label": "only_3d overview",
+          "kind": "image",
+          "rel_path": "media/SMu1/only_3d/overview.png"
+        },
+        {
+          "label": "only_3d val_video",
+          "kind": "video",
+          "rel_path": "media/SMu1/only_3d/val_video.mp4"
+        },
+        {
+          "label": "only_3d test_video",
+          "kind": "video",
+          "rel_path": "media/SMu1/only_3d/test_video.mp4"
+        },
+        {
+          "label": "only_3d icp_projection",
+          "kind": "image",
+          "rel_path": "media/SMu1/only_3d/icp_projection.png"
+        },
+        {
+          "label": "only_ref overview",
+          "kind": "image",
+          "rel_path": "media/SMu1/only_ref/overview.png"
+        },
+        {
+          "label": "only_ref val_video",
+          "kind": "video",
+          "rel_path": "media/SMu1/only_ref/val_video.mp4"
+        },
+        {
+          "label": "only_ref test_video",
+          "kind": "video",
+          "rel_path": "media/SMu1/only_ref/test_video.mp4"
+        },
+        {
+          "label": "3d_ref overview",
+          "kind": "image",
+          "rel_path": "media/SMu1/3d_ref/overview.png"
+        },
+        {
+          "label": "3d_ref val_video",
+          "kind": "video",
+          "rel_path": "media/SMu1/3d_ref/val_video.mp4"
+        },
+        {
+          "label": "3d_ref test_video",
+          "kind": "video",
+          "rel_path": "media/SMu1/3d_ref/test_video.mp4"
+        }
+      ]
+    },
+    {
+      "sequence": "SMu40",
+      "sequence_id": "hold_SMu40_ho3d_subtest_9e4f3917.0",
+      "status": "failed",
+      "latest_stage": "",
+      "updated_at_utc": "2026-03-30 19:27:58 UTC",
+      "failure_reason": "RuntimeError: MagicHOI command failed (1): /home/haonan/anaconda3/envs/MagicHOI/bin/python run.py --sequence-manifest /mnt/hdd_volume/datasets/HO3D/magichoi_runtime_20260330/artifacts/magichoi_ho3d_sub_test_20260330_shard1/SMu40/sequence_manifest.json --gpu 0 --seq_list hold_SMu40_ho3d_subtest_9e4f3917.0 --execute_list only_3d --process_list rm_unused_images_after_colmap rebuild_hand crop_hand hand_pose_hamer validate_hamer --rebuild. See /mnt/hdd_volume/datasets/HO3D/magichoi_runtime_20260330/artifacts/magichoi_ho3d_sub_test_20260330_shard1/SMu40/pipeline.log",
+      "benchmark_metrics": {},
+      "official_metrics": {},
+      "metrics": {},
+      "media": []
+    },
+    {
+      "sequence": "SMu41",
+      "sequence_id": "hold_SMu41_ho3d_subtest_57b56d0b.0",
+      "status": "running",
+      "latest_stage": "3d_ref_weight",
+      "updated_at_utc": "2026-03-30 16:55:26 UTC",
+      "failure_reason": "stale failure record present; live process active",
+      "benchmark_metrics": {},
+      "official_metrics": {},
+      "metrics": {},
+      "media": [
+        {
+          "label": "only_3d overview",
+          "kind": "image",
+          "rel_path": "media/SMu41/only_3d/overview.png"
+        },
+        {
+          "label": "only_3d val_video",
+          "kind": "video",
+          "rel_path": "media/SMu41/only_3d/val_video.mp4"
+        },
+        {
+          "label": "only_3d test_video",
+          "kind": "video",
+          "rel_path": "media/SMu41/only_3d/test_video.mp4"
+        },
+        {
+          "label": "only_3d icp_projection",
+          "kind": "image",
+          "rel_path": "media/SMu41/only_3d/icp_projection.png"
+        },
+        {
+          "label": "only_ref overview",
+          "kind": "image",
+          "rel_path": "media/SMu41/only_ref/overview.png"
+        },
+        {
+          "label": "only_ref val_video",
+          "kind": "video",
+          "rel_path": "media/SMu41/only_ref/val_video.mp4"
+        },
+        {
+          "label": "only_ref test_video",
+          "kind": "video",
+          "rel_path": "media/SMu41/only_ref/test_video.mp4"
+        },
+        {
+          "label": "3d_ref overview",
+          "kind": "image",
+          "rel_path": "media/SMu41/3d_ref/overview.png"
+        },
+        {
+          "label": "3d_ref val_video",
+          "kind": "video",
+          "rel_path": "media/SMu41/3d_ref/val_video.mp4"
+        },
+        {
+          "label": "3d_ref test_video",
+          "kind": "video",
+          "rel_path": "media/SMu41/3d_ref/test_video.mp4"
+        },
+        {
+          "label": "3d_ref_weight overview",
+          "kind": "image",
+          "rel_path": "media/SMu41/3d_ref_weight/overview.png"
+        }
+      ]
+    },
+    {
+      "sequence": "SMu42",
+      "sequence_id": "hold_SMu42_ho3d_subtest_a448c9f0.0",
+      "status": "completed",
+      "latest_stage": "3d_ref_weight",
+      "updated_at_utc": "2026-03-31 02:30:04 UTC",
+      "failure_reason": "RuntimeError: MagicHOI command failed (1): /home/haonan/anaconda3/envs/MagicHOI/bin/python run.py --sequence-manifest /mnt/hdd_volume/datasets/HO3D/magichoi_runtime_20260330/artifacts/magichoi_ho3d_sub_test_20260330_shard3/SMu42/sequence_manifest.json --gpu 0 --seq_list hold_SMu42_ho3d_subtest_a448c9f0.0 --execute_list only_3d --process_list colmap validate_colmap gen_HO3D --rebuild. See /mnt/hdd_volume/datasets/HO3D/magichoi_runtime_20260330/artifacts/magichoi_ho3d_sub_test_20260330_shard3/SMu42/pipeline.log",
+      "benchmark_metrics": {
+        "sequence": "SMu42",
+        "camera": "mono",
+        "sequence_id": "hold_SMu42_ho3d_subtest_a448c9f0.0",
+        "frames": 2000,
+        "gt_frames": 2000,
+        "matched_frames": 225,
+        "gt_hands": 2000,
+        "matched_hands": 225,
+        "invalid_projection_frames": 0,
+        "mpjpe_mm": 135.99078497992622,
+        "mpjpe_root_mm": 62.10298784044054,
+        "mpjpe_pa_mm": 42.70379511515299,
+        "mpjpe_2d_px": 127.9998151312934,
+        "auc": 0.0043534391534391535,
+        "detection_rate": 0.1125,
+        "OBJ_rot_err_deg": 176.65880005207018,
+        "OBJ_trans_err": 0.9133582587614656,
+        "OBJ_rot_orth_err": 0.8875000148138051,
+        "OBJ_rot_det_err": 0.8875000042021275,
+        "OBJ_rot_err_sum": 353317.60010414035,
+        "OBJ_trans_err_sum": 1826.716517522931,
+        "OBJ_rot_orth_err_sum": 1775.0000296276103,
+        "OBJ_rot_det_err_sum": 1775.000008404255,
+        "OBJ_detection_rate": 0.1125,
+        "OBJ_valid_frames": 2000.0,
+        "OBJ_matched_frames": 225.0,
+        "OBJ_missing_frames": 1775.0,
+        "OBJ_class_mismatch": 0.0,
+        "fscore_5mm": 0.0,
+        "fscore_15mm": 0.0
+      },
+      "official_metrics": {
+        "cd_icp": 1.5351671276597771,
+        "cd_icp_no_scale": 1.7886136069369027,
+        "cd_right": 3.511855779440516,
+        "f10_icp": 72.81530197806076,
+        "f10_icp_no_scale": 68.45441967280449,
+        "f10_right": 42.774590238133534,
+        "f5_icp": 47.01722993717855,
+        "f5_icp_no_scale": 37.239103542515714,
+        "f5_right": 20.248937624432518,
+        "mpjpe_ra_r": 3.5543441772460938,
+        "scale": 0.21513772900265438,
+        "seq_name": "hold_SMu42_ho3d_subtest_a448c9f0.0"
+      },
+      "metrics": {
+        "mpjpe_mm": 135.99078497992622,
+        "mpjpe_root_mm": 62.10298784044054,
+        "mpjpe_pa_mm": 42.70379511515299,
+        "mpjpe_2d_px": 127.9998151312934,
+        "auc": 0.0043534391534391535,
+        "detection_rate": 0.1125,
+        "fscore_5mm": 0.0,
+        "fscore_15mm": 0.0,
+        "OBJ_rot_err_deg": 176.65880005207018,
+        "OBJ_trans_err": 0.9133582587614656,
+        "OBJ_detection_rate": 0.1125
+      },
+      "media": [
+        {
+          "label": "only_3d overview",
+          "kind": "image",
+          "rel_path": "media/SMu42/only_3d/overview.png"
+        },
+        {
+          "label": "only_3d val_video",
+          "kind": "video",
+          "rel_path": "media/SMu42/only_3d/val_video.mp4"
+        },
+        {
+          "label": "only_3d test_video",
+          "kind": "video",
+          "rel_path": "media/SMu42/only_3d/test_video.mp4"
+        },
+        {
+          "label": "only_3d icp_projection",
+          "kind": "image",
+          "rel_path": "media/SMu42/only_3d/icp_projection.png"
+        },
+        {
+          "label": "only_ref overview",
+          "kind": "image",
+          "rel_path": "media/SMu42/only_ref/overview.png"
+        },
+        {
+          "label": "only_ref val_video",
+          "kind": "video",
+          "rel_path": "media/SMu42/only_ref/val_video.mp4"
+        },
+        {
+          "label": "only_ref test_video",
+          "kind": "video",
+          "rel_path": "media/SMu42/only_ref/test_video.mp4"
+        },
+        {
+          "label": "3d_ref overview",
+          "kind": "image",
+          "rel_path": "media/SMu42/3d_ref/overview.png"
+        },
+        {
+          "label": "3d_ref val_video",
+          "kind": "video",
+          "rel_path": "media/SMu42/3d_ref/val_video.mp4"
+        },
+        {
+          "label": "3d_ref test_video",
+          "kind": "video",
+          "rel_path": "media/SMu42/3d_ref/test_video.mp4"
+        },
+        {
+          "label": "3d_ref_weight overview",
+          "kind": "image",
+          "rel_path": "media/SMu42/3d_ref_weight/overview.png"
+        },
+        {
+          "label": "3d_ref_weight val_video",
+          "kind": "video",
+          "rel_path": "media/SMu42/3d_ref_weight/val_video.mp4"
+        },
+        {
+          "label": "3d_ref_weight test_video",
+          "kind": "video",
+          "rel_path": "media/SMu42/3d_ref_weight/test_video.mp4"
+        }
+      ]
+    },
+    {
+      "sequence": "ShSu10",
+      "sequence_id": "hold_ShSu10_ho3d_subtest_a448c9f0.0",
+      "status": "running",
+      "latest_stage": "",
+      "updated_at_utc": "2026-03-30 20:03:04 UTC",
+      "failure_reason": "",
+      "benchmark_metrics": {},
+      "official_metrics": {},
+      "metrics": {},
+      "media": []
+    }
+  ]
+}

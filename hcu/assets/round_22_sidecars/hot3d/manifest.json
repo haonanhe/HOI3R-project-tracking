@@ -1,0 +1,48 @@
+{
+  "schema_version": "hcu-overlay-geometry.v1",
+  "generated_at_utc": "2026-03-27T18:27:53.254796Z",
+  "dataset": "hot3d",
+  "sample_id": "P0001_10a27bf7#ts57734008221729",
+  "run_id": "t-hcu-36-round_22-20260327T181150Z",
+  "summary_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_22/baseline_canonical/summary.json",
+  "summary_sha256": "c6cea48464a58b31fefc95d4e253755751299b279d2db9ec251c97ecd686faeb",
+  "runner_identity": {
+    "runner": "manolayer",
+    "runner_kwargs": {
+      "use_pca": false,
+      "ncomps": 45,
+      "flat_hand_mean": true,
+      "pose_source": "axis_angle",
+      "transl_mode": "direct",
+      "left_flip_yz": false,
+      "transl_scale": 1.0,
+      "output_unit_scale": 0.001
+    }
+  },
+  "render_canvas": [
+    1408,
+    1408
+  ],
+  "render_params_sha256": "2f0c3b98f1f43bd90caa86f7228538cce929b0ee37a5539bdd4c76c92e312679",
+  "original_joint_source_sha256": "fe9aae7b1020a4e717cf9c28b8871239540e6ccbd60636c4657df9f1ac76245f",
+  "hcu_joint_source_sha256": "d4b62c6a716b3b203a831d1dcee7a47dbd148433c685de9feb3a9d67c8c9d08e",
+  "original_overlay_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_22/compare_overlays_fresh/geometry_by_dataset/hot3d/original_overlay.png",
+  "original_overlay_sha256": "830a9de67ed9eeadb54fc921ee6a8f34914fd23a4136f9050588ef71eff6c005",
+  "hcu_overlay_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_22/compare_overlays_fresh/geometry_by_dataset/hot3d/hcu_overlay.png",
+  "hcu_overlay_sha256": "2d77a559319c51dab5126bc7298c2f3a10b24d4083adf5230f8cfc34bfaea95e",
+  "original_joints_mask_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_22/compare_overlays_fresh/geometry_by_dataset/hot3d/original_joints_mask.png",
+  "original_joints_mask_sha256": "c06e42aeb0fefa3637e2cc7a5265c5b46b568d7e470e0e305c0d18f1eef247df",
+  "original_joints_mask_nonzero_pixels": 4187,
+  "hcu_joints_mask_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_22/compare_overlays_fresh/geometry_by_dataset/hot3d/hcu_joints_mask.png",
+  "hcu_joints_mask_sha256": "1cd30c74009bb7908213dac81a12e74ac14f0d499c48c497c19078f9c1a8c16e",
+  "hcu_joints_mask_nonzero_pixels": 4087,
+  "geometry_diff_path": "/data/haonan/HOI/HOI3R/docs/artifacts/hand_camera_unified_interface/t-hcu-36/round_22/compare_overlays_fresh/geometry_by_dataset/hot3d/geometry_diff.png",
+  "geometry_diff_sha256": "d5471bc976352c31259eab28f50da94275f59feebefd8d1994ae4effcf3d73e4",
+  "geometry_diff_nonzero_pixels": 2986,
+  "geometry_diff_bbox": null,
+  "published_overlay_derivation_ok": true,
+  "published_overlay_pair_sha256": "f187ce21d95bc0f8b9a33b07a2f35081b505dfcac6ba79bbea9c950ae3b7b84d",
+  "published_overlay_pair_render_params_sha256": "2f0c3b98f1f43bd90caa86f7228538cce929b0ee37a5539bdd4c76c92e312679",
+  "fresh_round": true,
+  "comparison_mode": "hcu_unified_vs_original_mano_reference"
+}

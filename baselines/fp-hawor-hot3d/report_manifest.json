@@ -1,0 +1,12 @@
+{
+  "schema_version": "fp-hawor-hot3d-site.v1",
+  "dataset": "hot3d_test",
+  "baseline": "fp_hawor",
+  "outputs": {
+    "html": "index.html",
+    "images_dir": "images",
+    "summary_json": "summary.json",
+    "per_sequence_json": "per_sequence.json",
+    "skipped_json": "skipped.json"
+  }
+}
