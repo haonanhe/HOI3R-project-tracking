@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canonical vs Posed: Correct Shared Space | HOI3R</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+  h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+  .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+  .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+  .meta-label { font-weight: 600; color: #555; }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+  .badge-fix { background: #e67e22; }
+  .badge-finding { background: #3498db; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Canonical vs Posed: Correct Shared Space</h1>
+<p><strong>Goal:</strong> Visualize canonical and posed (no orient) meshes in the same MANO output coordinate frame. Both have <code>orient=identity, transl=0</code> &mdash; the only difference is finger articulation (pose) and hand proportions (shape).</p>
+
+<div class="meta-box">
+  <div class="meta-grid">
+    <span class="meta-label">Canonical:</span><span class="meta-value">MANO(pose=0, shape=0, orient=I, transl=0)</span>
+    <span class="meta-label">Posed:</span><span class="meta-value">MANO(pose=GT, shape=GT, orient=I, transl=0)</span>
+    <span class="meta-label">Space:</span><span class="meta-value">MANO output (meters), no separate centering</span>
+  </div>
+</div>
+
+<h2>1. Vertex Ranges (MANO output space)</h2>
+
+<table>
+  <tr><th>Mesh</th><th>X range</th><th>Y range</th><th>Z range</th><th>Centroid</th></tr>
+  <tr><td>Canonical</td><td>[&minus;0.040, 0.114]</td><td>[&minus;0.062, 0.035]</td><td>[&minus;0.052, 0.057]</td><td>(0.010, &minus;0.024, 0.001)</td></tr>
+  <tr><td>Posed (no orient)</td><td>[&minus;0.071, 0.111]</td><td>[&minus;0.079, 0.032]</td><td>[&minus;0.055, 0.059]</td><td>(0.002, &minus;0.008, &minus;0.004)</td></tr>
+</table>
+
+<div class="highlight">
+  <strong>Bounding boxes are similar in size</strong> (both ~0.15m extent). Centroids differ by ~0.02m due to finger articulation shifting the mean vertex position. The meshes occupy the same spatial region.
+</div>
+
+<p><strong>Chamfer distance (MANO space): 0.0162</strong> &mdash; this is the true deformation distance the pipeline needs to learn.</p>
+
+<h2>2. Same-Space Visualization</h2>
+
+<div class="panel">
+  <img src="assets/correct-space/same_space.png" alt="Same space">
+  <p class="caption">Left: canonical T-pose (blue). Middle: posed with GT finger articulation (green). Right: overlay. Both in the same MANO output space (orient=I, transl=0). The meshes overlap significantly &mdash; only finger positions differ.</p>
+</div>
+
+<h2>3. Three-View Overlay</h2>
+
+<div class="panel">
+  <img src="assets/correct-space/three_views.png" alt="Three views">
+  <p class="caption">Front, side, and top views of canonical (blue) and posed (green) overlaid. The palm is nearly identical; fingers diverge. CD=0.0162 in MANO space.</p>
+</div>
+
+<h2>4. Shared-Bbox Normalization</h2>
+
+<div class="panel">
+  <img src="assets/correct-space/shared_norm.png" alt="Shared normalization">
+  <p class="caption">Both meshes normalized to [&minus;0.5, 0.5] using a shared bounding box (union of both meshes). This is the correct normalization for the chamfer loss &mdash; both in the same unit cube. CD=0.087 in this normalized space.</p>
+</div>
+
+<div class="warning">
+  <strong><span class="badge badge-fix">BUG</span> Previous experiments used separate centering.</strong> Earlier code centered each mesh at its own centroid before normalization: <code>canonical_c = canonical - canonical.mean(0)</code> and <code>posed_c = posed - posed.mean(0)</code>. Since the centroids differ by ~0.02m, this introduced a systematic shift between the two meshes, making them appear more different than they are and polluting the chamfer loss. The correct approach: keep both in MANO output space (or normalize with a shared bbox).
+</div>
+
+<h2>5. Implications for Training</h2>
+
+<p>For the chamfer loss in normalized space, both pred and GT must be normalized using the <strong>same</strong> reference bbox:</p>
+
+<table>
+  <tr><th>Method</th><th>CD</th><th>Correctness</th></tr>
+  <tr><td>Separate centroid centering (old, buggy)</td><td>varies</td><td>Wrong &mdash; shifts meshes apart</td></tr>
+  <tr><td>Shared MANO space (no normalization)</td><td>0.0162</td><td>Correct but not normalized</td></tr>
+  <tr><td>Shared-bbox normalization</td><td>0.0872</td><td>Correct &mdash; use this for training</td></tr>
+</table>
+
+</body>
+</html>
