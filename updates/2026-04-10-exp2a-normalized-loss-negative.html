@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exp 2a: Normalized Loss (Negative Result) | HOI3R</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+  h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+  .error { background: #fce4ec; padding: 12px; border-left: 4px solid #e53935; margin: 12px 0; }
+  .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+  .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+  .meta-label { font-weight: 600; color: #555; }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+  .badge-fail { background: #e53935; }
+  .badge-finding { background: #3498db; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Exp 2a: Normalized Loss &mdash; Negative Result</h1>
+<p><strong>Goal:</strong> Normalize mesh and latent losses to equal scale (~1.0 each) so both contribute equally throughout training.</p>
+
+<div class="meta-box">
+  <div class="meta-grid">
+    <span class="meta-label">Date:</span><span class="meta-value">2026-04-10</span>
+    <span class="meta-label">Loss:</span><span class="meta-value"><code>mesh/mesh.detach() + latent/latent.detach()</code> = always 2.0</span>
+    <span class="meta-label">Steps:</span><span class="meta-value">640/1000 (crashed)</span>
+    <span class="meta-label">LR:</span><span class="meta-value">1e-4</span>
+    <span class="meta-label">Status:</span><span class="meta-value">GPU OOM crash at step 640</span>
+  </div>
+</div>
+
+<h2>Results</h2>
+
+<table>
+  <tr><th>Metric</th><th>&lambda;=0.001 (best)</th><th>Normalized (this run)</th></tr>
+  <tr><td>Pre-train CD</td><td>0.0637</td><td>0.0628</td></tr>
+  <tr><td>Best CD</td><td><strong>0.0420</strong></td><td>0.0462</td></tr>
+  <tr><td>CD at step 500</td><td><strong>0.0437</strong></td><td>0.0498</td></tr>
+  <tr><td>Mesh loss trend</td><td>0.016 &rarr; 0.007 (decreasing)</td><td>0.016 &rarr; 0.011 (stalled)</td></tr>
+  <tr><td>Outcome</td><td>Completed 1000 steps</td><td>Crashed at step 640</td></tr>
+</table>
+
+<div class="error">
+  <strong><span class="badge badge-fail">WORSE</span> Normalized loss underperforms &lambda;=0.001.</strong> CD plateaus at 0.050 (vs 0.043). The normalization prevents the latent loss from "finishing" &mdash; when latent loss is near zero, dividing by it amplifies gradients, destabilizing training and eventually causing GPU OOM.
+</div>
+
+<h2>Training Curves</h2>
+
+<div class="panel"><canvas id="chartCD" height="250"></canvas></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+const s=[1,10,20,30,40,50,60,70,80,90,100,120,140,160,180,200,250,300,350,400,450,500,550,600,640];
+const cd_norm=[.063,.061,.052,.051,.054,.055,.053,.053,.051,.049,.049,.048,.046,.049,.049,.049,.049,.050,.049,.050,.050,.050,.051,.050,.050];
+const cd_best=[.064,.062,.054,.049,.059,.058,.059,.052,.051,.049,.052,.050,.048,.048,.048,.047,.046,.043,.046,.045,.044,.044,.044,.043,.043];
+new Chart(document.getElementById('chartCD'),{type:'line',data:{labels:s,datasets:[
+  {label:'Normalized loss (this run)',data:cd_norm,borderColor:'#e53935',tension:.3,pointRadius:2},
+  {label:'λ=0.001 (best previous)',data:cd_best,borderColor:'#4CAF50',tension:.3,pointRadius:2,borderDash:[5,5]}
+]},options:{responsive:true,scales:{x:{title:{display:true,text:'Step'}},y:{title:{display:true,text:'CD (shared norm)'},min:0.04,max:0.07}}}});
+</script>
+
+<h2>Analysis</h2>
+
+<div class="panel">
+  <h3><span class="badge badge-fail">FAILURE</span> Loss normalization is counterproductive for converging losses</h3>
+  <p><code>loss / loss.detach()</code> maintains unit gradient magnitude regardless of loss value. When the latent loss converges toward zero, this amplifies its gradient, which:</p>
+  <ul>
+    <li>Prevents the model from settling (latent loss keeps perturbing features)</li>
+    <li>Increases mesh loss (0.009 &rarr; 0.011) instead of letting it decrease</li>
+    <li>Eventually causes GPU OOM from large gradient magnitudes</li>
+  </ul>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">CONCLUSION</span> &lambda;=0.001 remains the best approach</h3>
+  <p>The reweighted approach (&lambda;=0.001) naturally transitions from "latent-guided early" to "mesh-loss-driven late" as the latent converges. This two-phase behavior is a feature, not a bug. Final best: <strong>CD=0.043, &lambda;=0.001, 1000 steps.</strong></p>
+</div>
+
+</body>
+</html>
