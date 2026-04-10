@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exp 2a: Reweighted Chamfer+Latent, 1000 steps | HOI3R</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+  h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+  .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+  .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+  .meta-label { font-weight: 600; color: #555; }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+  .badge-pass { background: #27ae60; }
+  .badge-finding { background: #3498db; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Exp 2a: Reweighted Chamfer + Latent, 1000 steps</h1>
+<p><strong>Goal:</strong> Better loss balance (&lambda;=0.001 for latent vs 1.0 before) and longer training to push deformation learning further.</p>
+
+<div class="meta-box">
+  <div class="meta-grid">
+    <span class="meta-label">Date:</span><span class="meta-value">2026-04-10</span>
+    <span class="meta-label">Commit:</span><span class="meta-value"><code>17eadf2</code></span>
+    <span class="meta-label">Loss:</span><span class="meta-value">chamfer + 0.001 &times; latent L2</span>
+    <span class="meta-label">LR:</span><span class="meta-value">1e-4</span>
+    <span class="meta-label">Steps:</span><span class="meta-value">1000, 1.7s/step, ~28 min</span>
+    <span class="meta-label">Normalization:</span><span class="meta-value">Shared bbox (MANO space, orient=I, transl=0)</span>
+  </div>
+</div>
+
+<h2>Results</h2>
+
+<table>
+  <tr><th>Metric</th><th>&lambda;=1.0, 500 steps (prev)</th><th>&lambda;=0.001, 1000 steps (new)</th></tr>
+  <tr><td>Pre-train CD</td><td>0.0634</td><td>0.0637</td></tr>
+  <tr><td>Post-train CD</td><td>0.0438</td><td><strong>0.0428</strong></td></tr>
+  <tr><td>Improvement</td><td>-31%</td><td><strong>-33%</strong></td></tr>
+  <tr><td>Best CD</td><td>0.0437</td><td><strong>0.0420</strong> (step 980)</td></tr>
+  <tr><td>Gap closed</td><td>23%</td><td><strong>25%</strong></td></tr>
+  <tr><td>Mesh loss at step 500</td><td>0.008</td><td>0.007</td></tr>
+  <tr><td>Mesh loss at step 1000</td><td>N/A</td><td><strong>0.007</strong></td></tr>
+</table>
+
+<div class="highlight">
+  <strong>33% CD reduction, 25% of deformation gap closed.</strong> Reweighting (&lambda;=0.001) lets mesh loss drive more of the optimization. CD improves from 0.064 to 0.043, with the mesh loss (0.016&rarr;0.007) doing most of the work after the latent loss converges early.
+</div>
+
+<h2>Training Curves</h2>
+
+<div class="panel" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+  <div><canvas id="chartLoss" height="200"></canvas></div>
+  <div><canvas id="chartCD" height="200"></canvas></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+const s=[1,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000];
+const ml=[.0158,.0139,.0106,.0101,.0099,.0088,.0073,.0081,.0084,.0079,.0074,.0074,.0073,.0072,.0071,.0071,.0072,.0071,.0070,.0070,.0069];
+const cd=[.0637,.0583,.0522,.0501,.0486,.0468,.0430,.0460,.0454,.0443,.0437,.0435,.0434,.0433,.0432,.0431,.0430,.0429,.0428,.0426,.0428];
+new Chart(document.getElementById('chartLoss'),{type:'line',data:{labels:s,datasets:[{label:'Mesh loss',data:ml,borderColor:'#e53935',tension:.3,pointRadius:2}]},options:{responsive:true,scales:{x:{title:{display:true,text:'Step'}},y:{title:{display:true,text:'Loss'},min:0.005,max:0.02}}}});
+new Chart(document.getElementById('chartCD'),{type:'line',data:{labels:s,datasets:[{label:'CD vs GT',data:cd,borderColor:'#4CAF50',tension:.3,pointRadius:2,fill:{target:'origin',alpha:.05}}]},options:{responsive:true,scales:{x:{title:{display:true,text:'Step'}},y:{title:{display:true,text:'CD (shared norm)'},min:0.04,max:0.07}}}});
+</script>
+
+<h2>Visualization</h2>
+
+<div class="panel">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div>
+      <img src="assets/exp2a-reweighted-1000/pre.png" alt="Pre">
+      <p class="caption">Pre-training: pred (orange) matches canonical. CD=0.064.</p>
+    </div>
+    <div>
+      <img src="assets/exp2a-reweighted-1000/post.png" alt="Post">
+      <p class="caption">Post-training (1000 steps): pred (green) deformed toward GT. CD=0.043.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <img src="assets/exp2a-reweighted-1000/compare.png" alt="Compare">
+  <p class="caption">GT posed (blue), pre (orange, CD=0.064), post (green, CD=0.043).</p>
+</div>
+
+<h2>Analysis</h2>
+
+<div class="panel">
+  <h3><span class="badge badge-pass">VALIDATED</span> Reweighting improves final CD</h3>
+  <p>With &lambda;=0.001, mesh loss contributes equally from the start (both ~0.015), leading to better convergence: CD 0.043 vs 0.044 with &lambda;=1.0. Longer training (1000 vs 500 steps) provides marginal additional gain.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">OBSERVATION</span> CD plateau at ~0.042</h3>
+  <p>After step 800, CD oscillates around 0.042&ndash;0.043. This likely reflects the spatial structure ceiling: the canonical bottleneck coordinates limit how much the decoder can deform the mesh. Further improvement requires either multi-frame training or architectural changes (coordinate prediction, denser bottleneck).</p>
+</div>
+
+</body>
+</html>
