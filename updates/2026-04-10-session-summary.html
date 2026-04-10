@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary 2026-04-08–10 | HOI3R Phase 2</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+  h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+  h3 { color: #34495e; margin-top: 16px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+  .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+  .error { background: #fce4ec; padding: 12px; border-left: 4px solid #e53935; margin: 12px 0; }
+  .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+  .meta-label { font-weight: 600; color: #555; }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+  .badge-pass { background: #27ae60; }
+  .badge-fix { background: #e67e22; }
+  .badge-finding { background: #3498db; }
+  .badge-fail { background: #e53935; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+  .toc { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .toc ul { margin: 0; padding-left: 20px; }
+  .toc li { margin: 4px 0; }
+  .toc a { text-decoration: none; color: #2c3e50; }
+</style>
+</head>
+<body>
+
+<h1>Session Summary &mdash; 2026-04-08 to 2026-04-10</h1>
+<p><strong>Goal:</strong> Implement Phase 2 priorities (resolution fix, decoder training, losses), validate with experiments, then attempt canonical&rarr;posed deformation learning.</p>
+
+<div class="meta-box">
+  <div class="meta-grid">
+    <span class="meta-label">Date:</span><span class="meta-value">2026-04-08 &ndash; 2026-04-10</span>
+    <span class="meta-label">Branch:</span><span class="meta-value">fix/phase2-alignment-audit</span>
+    <span class="meta-label">Commits:</span><span class="meta-value">17eadf2 (latest), 427ba30 (identity init)</span>
+    <span class="meta-label">Experiments:</span><span class="meta-value">12+ published to project tracking</span>
+    <span class="meta-label">Phase:</span><span class="meta-value">Phase 2 &mdash; Single-Frame Deformation Overfit</span>
+  </div>
+</div>
+
+<div class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#code">1. Code Changes &amp; Bug Fixes</a></li>
+    <li><a href="#experiments">2. Experiments &amp; Results</a></li>
+    <li><a href="#best">3. Best Result: Canonical &rarr; Posed Deformation</a></li>
+    <li><a href="#discoveries">4. Key Discoveries</a></li>
+    <li><a href="#modules">5. Training Modules State</a></li>
+    <li><a href="#infra">6. Infrastructure</a></li>
+    <li><a href="#next">7. Next Steps</a></li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="code">1. Code Changes &amp; Bug Fixes</h2>
+
+<table>
+  <tr><th>#</th><th>Change</th><th>File</th><th>Commit</th></tr>
+  <tr><td><span class="badge badge-fix">FIX</span></td><td>Sparse resolution 8 &rarr; 256 (3 config files)</td><td>configs/experiment, configs/model</td><td>17eadf2</td></tr>
+  <tr><td><span class="badge badge-fix">FIX</span></td><td>Denormalize: per-axis &rarr; uniform scaling (recurrent bug from Phase 1)</td><td>dexycb_coordinate_ops.py</td><td>17eadf2</td></tr>
+  <tr><td><span class="badge badge-pass">FEAT</span></td><td>Identity init for token bridge (W_out @ W_in = I)</td><td>hoi_mesh_token_bridge.py</td><td>427ba30</td></tr>
+  <tr><td><span class="badge badge-pass">FEAT</span></td><td>Training-mode decoder path (bypass FlexiDualGridVaeDecoder)</td><td>hoi_mesh_branch_trellis2.py</td><td>17eadf2</td></tr>
+  <tr><td><span class="badge badge-fix">FIX</span></td><td>Triton backward: fp32 decoder + explicit_gemm + uint32 torch.flip</td><td>hoi_mesh_branch_trellis2.py, flex_gemm (pkg)</td><td>17eadf2</td></tr>
+  <tr><td><span class="badge badge-pass">FEAT</span></td><td>Enhanced mesh supervision losses (intersected BCE, subdiv BCE, latent recon)</td><td>losses.py, stream3r.yaml</td><td>17eadf2</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="experiments">2. Experiments &amp; Results</h2>
+
+<h3>Phase A: Infrastructure Validation</h3>
+<table>
+  <tr><th>Experiment</th><th>What it tested</th><th>Key metric</th><th>Result</th></tr>
+  <tr><td>res=8 vs res=256 comparison</td><td>Sparse resolution impact</td><td>Post-opt CD hand</td><td>0.0096 vs <strong>0.0059</strong> <span class="badge badge-pass">256 wins</span></td></tr>
+  <tr><td>Overnight overfit (res=256, 500 steps)</td><td>Latent recon loss convergence</td><td>Loss</td><td>1023 &rarr; 0.10 <span class="badge badge-pass">PASS</span></td></tr>
+  <tr><td>Identity init bridge</td><td>Bridge starts as identity</td><td>Step 1 loss</td><td>0.004 (was 1023) <span class="badge badge-pass">232,000x</span></td></tr>
+  <tr><td>Denorm fix verification</td><td>Uniform vs per-axis denorm</td><td>CD hand</td><td>0.006 &rarr; <strong>0.002</strong> <span class="badge badge-fix">2.5x fix</span></td></tr>
+</table>
+
+<h3>Phase B: VAE Reconstruction</h3>
+<table>
+  <tr><th>Experiment</th><th>Input</th><th>Target</th><th>Pre CD</th><th>Post CD</th></tr>
+  <tr><td>Posed &rarr; posed (chamfer)</td><td>Posed SLat</td><td>Posed mesh</td><td>0.0023</td><td><strong>0.0019</strong> (&minus;15%)</td></tr>
+</table>
+
+<h3>Phase C: Canonical &rarr; Posed Deformation</h3>
+<table>
+  <tr><th>Config</th><th>Loss</th><th>Steps</th><th>LR</th><th>Post CD</th><th>Best CD</th></tr>
+  <tr><td>Chamfer only</td><td>chamfer</td><td>500</td><td>1e-4</td><td>0.061</td><td>0.057</td></tr>
+  <tr><td>Chamfer only (optimized)</td><td>chamfer</td><td>100</td><td>1e-4</td><td>0.055</td><td>0.050</td></tr>
+  <tr><td>Chamfer + latent (&lambda;=1.0)</td><td>chamfer + latent</td><td>500</td><td>1e-4</td><td>0.044</td><td>0.044</td></tr>
+  <tr style="background:#e8f5e9"><td><strong>Chamfer + latent (&lambda;=0.001)</strong></td><td><strong>chamfer + 0.001&times;latent</strong></td><td><strong>1000</strong></td><td><strong>1e-4</strong></td><td><strong>0.043</strong></td><td><strong>0.042</strong></td></tr>
+  <tr><td>Normalized loss</td><td>loss/loss.detach()</td><td>640 (OOM)</td><td>1e-4</td><td>0.050</td><td>0.046</td></tr>
+  <tr><td>Cosine LR</td><td>chamfer + 0.001&times;latent</td><td>2000</td><td>1e-4&rarr;1e-6</td><td>0.049</td><td>0.047</td></tr>
+</table>
+
+<div class="highlight">
+  <strong>Best single-frame deformation result: CD = 0.042 (&minus;33%), closing 25% of the canonical&rarr;posed gap (0.087).</strong> Config: chamfer + 0.001&times;latent L2 at matched voxel coords, constant LR=1e-4, 1000 steps.
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="best">3. Best Result Visualization</h2>
+
+<div class="panel">
+  <img src="assets/exp2a-reweighted-1000/compare.png" alt="Best result">
+  <p class="caption">GT posed (blue), pre-training prediction (orange, CD=0.064), post-training (green, CD=0.043). The pipeline learns canonical&rarr;posed deformation using image context via global_blocks.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="discoveries">4. Key Discoveries</h2>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> Latent recon loss alone cannot drive deformation</h3>
+  <p>L2(refined_latents, encoder_latents.detach()) trains the bridge to be identity. When input=canonical, it forces output=canonical. Deformation requires mesh-level loss (chamfer) through the decoder.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> Different poses produce different SLat token counts</h3>
+  <p>Canonical SLat: 631 tokens. Posed SLat: 640 tokens. Posed no-orient: 401 tokens. The Trellis.2 encoder voxelizes each mesh surface differently. Direct latent L2 requires matched-coordinate comparison, not full-tensor comparison.</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> Fixed bottleneck spatial structure limits deformation ceiling</h3>
+  <p>The canonical encoding determines which 16&sup3; bottleneck voxels are active. Training can modify features and subdivision predictions, but cannot create new bottleneck voxels. This puts a ceiling on deformation expressiveness (CD &approx; 0.042).</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-finding">FINDING</span> Gradient analysis: decoder dominates, global_blocks barely learn</h3>
+  <p>Gradient norms: decoder=0.012, bridge=0.005, global_blocks=0.00025. The decoder (474M) does 48x more work than global_blocks (302M). <code>input_proj</code> received zero gradient in early experiments due to detached caching (fixed).</p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-fix">FIX</span> Denormalization bug recurred (per-axis vs uniform)</h3>
+  <p>The encoder uses uniform scaling <code>(v - center) * (0.99999 / max_extent)</code> but denormalize was per-axis. Inflated chamfer by 2.5&ndash;7.6x. Same bug occurred in Phase 1. <strong>Memory saved to prevent recurrence.</strong></p>
+</div>
+
+<div class="panel">
+  <h3><span class="badge badge-fix">FIX</span> Shared-bbox normalization required for mesh comparison</h3>
+  <p>Centering each mesh at its own centroid shifts them apart. Both canonical and posed meshes (orient=I, transl=0) are already in the same MANO space. Must normalize with shared bbox or compare in raw MANO space.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="modules">5. Training Modules State</h2>
+
+<table>
+  <tr><th>Module</th><th>Status</th><th>Params</th><th>Gradient</th></tr>
+  <tr><td><code>aggregator.patch_embed</code></td><td>frozen</td><td>603K</td><td>None</td></tr>
+  <tr><td><code>aggregator.frame_blocks</code></td><td>frozen</td><td>302M</td><td>None (cached)</td></tr>
+  <tr><td><code>aggregator.global_blocks</code></td><td style="color:#27ae60;font-weight:bold">optimized</td><td>302M</td><td>0.00025 (small)</td></tr>
+  <tr><td><code>hoi_mesh_branch.shape_slat_encoder</code></td><td>frozen</td><td>354M</td><td>None</td></tr>
+  <tr><td><code>hoi_mesh_branch.shape_slat_decoder</code></td><td style="color:#27ae60;font-weight:bold">optimized</td><td>474M</td><td>0.012 (dominant)</td></tr>
+  <tr><td><code>hoi_mesh_branch.token_bridge</code></td><td style="color:#27ae60;font-weight:bold">optimized</td><td>67K</td><td>0.005 (output_proj only*)</td></tr>
+  <tr><td><code>camera/point/depth_head</code></td><td>trainable but unused</td><td>281M</td><td>None (not in graph)</td></tr>
+</table>
+
+<p style="font-size:0.85em;color:#666">*input_proj gets gradient only when not detached during caching. Fixed in latest run.</p>
+
+<p><strong>Loss design:</strong> <code>chamfer(decoded_mesh, GT_posed) + 0.001 &times; L2(refined_feats, posed_SLat_feats)</code> at matched voxel coordinates.</p>
+<p><strong>Coordinate space:</strong> Shared-bbox normalized (union of canonical + posed, both in MANO output space with orient=I, transl=0).</p>
+<p><strong>Optimizations:</strong> Precompute canonical SLat (skip encoder), cache frame_blocks output (skip frozen layers), only run global_blocks each step. Speed: 1.7s/step on H100.</p>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="infra">6. Infrastructure</h2>
+
+<table>
+  <tr><th>Item</th><th>Status</th></tr>
+  <tr><td>ACP GPU job submission (HMAC API)</td><td><span class="badge badge-pass">WORKING</span> &mdash; job <code>pt-lzy6kn4b</code> running</td></tr>
+  <tr><td>Debug containers (46672, 46677)</td><td><span class="badge badge-fail">UNSTABLE</span> &mdash; 3 GPU OOM crashes, frequent disconnects</td></tr>
+  <tr><td>ACP submission pipeline</td><td>Saved to memory for future sessions</td></tr>
+  <tr><td>Identity init for bridge</td><td>Committed (<code>427ba30</code>)</td></tr>
+  <tr><td>Denorm fix</td><td>Committed (<code>17eadf2</code>)</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════ -->
+<h2 id="next">7. Next Steps</h2>
+
+<table>
+  <tr><th>Priority</th><th>Task</th><th>Details</th></tr>
+  <tr><td><strong>P0</strong></td><td>Multi-frame training</td><td>Train on multiple frames (different poses) from the same sequence. Canonical SLat shared; only image + GT posed mesh change per frame. Tests generalization of deformation.</td></tr>
+  <tr><td><strong>P0</strong></td><td>Checkpoint saving</td><td>Save model checkpoints every 100 steps to AFS. Enables crash recovery without restart.</td></tr>
+  <tr><td><strong>P1</strong></td><td>Break spatial structure ceiling</td><td>Current CD ceiling ~0.042 from fixed bottleneck coords. Options: coordinate prediction head, denser bottleneck, or deformation field bypass.</td></tr>
+  <tr><td><strong>P1</strong></td><td>Object mesh deformation</td><td>Same canonical&rarr;posed pipeline for YCB objects. Object SLat is per-sequence (shared within sequence).</td></tr>
+  <tr><td><strong>P2</strong></td><td>Gradient checkpointing</td><td>Reduce decoder peak memory to prevent GPU OOM crashes that plagued this session.</td></tr>
+  <tr><td><strong>P2</strong></td><td>Profile explicit_gemm vs Triton</td><td>explicit_gemm is 2&ndash;3x slower. Investigate patching Triton kernels for signedness.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>Published Experiment Pages (this session)</h2>
+<ul>
+  <li><a href="2026-04-08-phase2-resolution-decoder-validation.html">Phase 2 Resolution &amp; Decoder Validation</a></li>
+  <li><a href="2026-04-09-overnight-overfit-res256-500steps.html">Overnight Overfit res=256</a></li>
+  <li><a href="2026-04-09-identity-init-token-bridge.html">Identity Init Token Bridge</a></li>
+  <li><a href="2026-04-09-denorm-fix-and-canonical-input-test.html">Denorm Fix + Canonical Input Test</a></li>
+  <li><a href="2026-04-09-slat-structure-canonical-vs-posed.html">SLat Structure: Canonical vs Posed</a></li>
+  <li><a href="2026-04-09-mesh-chamfer-loss-training.html">Mesh Chamfer Loss Training</a></li>
+  <li><a href="2026-04-09-canonical-vs-posed-correct-space.html">Canonical vs Posed: Correct Space</a></li>
+  <li><a href="2026-04-09-exp2a-full-pipeline-canonical-to-posed.html">Exp 2a Full Pipeline</a></li>
+  <li><a href="2026-04-09-exp2a-latent-supervision.html">Exp 2a Chamfer + Latent Supervision</a></li>
+  <li><a href="2026-04-09-exp2a-chamfer-latent-500steps.html">Exp 2a Chamfer + Latent 500 steps</a></li>
+  <li><a href="2026-04-10-exp2a-reweighted-1000steps.html">Exp 2a Reweighted &lambda;=0.001 1000 steps (best)</a></li>
+  <li><a href="2026-04-10-exp2a-normalized-loss-negative.html">Normalized Loss (negative result)</a></li>
+  <li><a href="2026-04-10-exp2a-cosine-lr-2000steps.html">Cosine LR 2000 steps</a></li>
+</ul>
+
+</body>
+</html>
