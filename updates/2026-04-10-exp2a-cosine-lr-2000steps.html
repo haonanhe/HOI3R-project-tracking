@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exp 2a: Cosine LR + Grad Clip, 2000 steps | HOI3R</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+  h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+  .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+  .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+  .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+  .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+  .meta-label { font-weight: 600; color: #555; }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+  .badge-pass { background: #27ae60; }
+  .badge-finding { background: #3498db; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Exp 2a: Cosine LR + Grad Clip, 2000 steps</h1>
+<p><strong>Goal:</strong> Push for best single-frame deformation result with cosine LR schedule, gradient clipping, and longer training.</p>
+
+<div class="meta-box">
+  <div class="meta-grid">
+    <span class="meta-label">Date:</span><span class="meta-value">2026-04-10</span>
+    <span class="meta-label">Loss:</span><span class="meta-value">chamfer + 0.001 &times; latent L2</span>
+    <span class="meta-label">LR:</span><span class="meta-value">1e-4 &rarr; 1e-6 cosine anneal over 2000 steps</span>
+    <span class="meta-label">Grad clip:</span><span class="meta-value">max_norm=1.0</span>
+    <span class="meta-label">Steps:</span><span class="meta-value">2000, 1.75s/step, ~58 min</span>
+  </div>
+</div>
+
+<h2>Results — All Configurations Compared</h2>
+
+<table>
+  <tr><th>Config</th><th>Steps</th><th>LR</th><th>&lambda;</th><th>Post CD</th><th>Best CD</th></tr>
+  <tr><td>Chamfer only</td><td>500</td><td>1e-4 const</td><td>0</td><td>0.0606</td><td>0.0567</td></tr>
+  <tr><td>Chamfer + latent (&lambda;=1.0)</td><td>500</td><td>1e-4 const</td><td>1.0</td><td>0.0438</td><td>0.0437</td></tr>
+  <tr style="background:#e8f5e9"><td><strong>Chamfer + latent (&lambda;=0.001)</strong></td><td><strong>1000</strong></td><td><strong>1e-4 const</strong></td><td><strong>0.001</strong></td><td><strong>0.0428</strong></td><td><strong>0.0420</strong></td></tr>
+  <tr><td>Normalized loss</td><td>640 (crashed)</td><td>1e-4 const</td><td>norm</td><td>0.050</td><td>0.046</td></tr>
+  <tr><td>Cosine LR + grad clip (this)</td><td>2000</td><td>1e-4&rarr;1e-6</td><td>0.001</td><td>0.0488</td><td>0.0473</td></tr>
+</table>
+
+<div class="highlight">
+  <strong>Best result: &lambda;=0.001, constant LR=1e-4, 1000 steps &rarr; CD=0.042.</strong> Cosine LR schedule (this run) underperforms because it reduces LR too aggressively in mid-training, causing the mesh loss to plateau at 0.010 instead of reaching 0.007.
+</div>
+
+<div class="warning">
+  <strong>Cosine schedule insight:</strong> For single-frame overfitting, constant LR works better because the loss landscape is simple (one sample). Cosine schedule helps for multi-sample training where generalization matters, but for overfitting a constant high LR allows the optimizer to fully exploit the loss gradient.
+</div>
+
+<h2>Training Curve</h2>
+
+<div class="panel"><canvas id="chartCD" height="250"></canvas></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+const s=[1,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000];
+const cd_cosine=[.063,.049,.048,.047,.048,.049,.050,.050,.050,.050,.050,.050,.050,.050,.050,.050,.049,.049,.049,.049,.049];
+const cd_best=[.064,.052,.049,.043,.045,.044,.044,.043,.043,.043,.043,null,null,null,null,null,null,null,null,null,null];
+new Chart(document.getElementById('chartCD'),{type:'line',data:{labels:s,datasets:[
+  {label:'Cosine LR 2000 steps (this)',data:cd_cosine,borderColor:'#1e88e5',tension:.3,pointRadius:2},
+  {label:'Constant LR 1000 steps (best)',data:cd_best,borderColor:'#4CAF50',tension:.3,pointRadius:2,borderDash:[5,5],spanGaps:false}
+]},options:{responsive:true,scales:{x:{title:{display:true,text:'Step'}},y:{title:{display:true,text:'CD (shared norm)'},min:0.04,max:0.07}}}});
+</script>
+
+<h2>Visualization</h2>
+
+<div class="panel">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div>
+      <img src="assets/exp2a-cosine-2000/pre.png" alt="Pre">
+      <p class="caption">Pre-training. CD=0.063.</p>
+    </div>
+    <div>
+      <img src="assets/exp2a-cosine-2000/post.png" alt="Post">
+      <p class="caption">Post-training (2000 steps, cosine LR). CD=0.049.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <img src="assets/exp2a-cosine-2000/compare.png" alt="Compare">
+  <p class="caption">GT (blue), pre (orange), post (green). Deformation visible but not as strong as constant-LR best.</p>
+</div>
+
+<h2>Conclusion</h2>
+
+<div class="panel">
+  <h3><span class="badge badge-pass">BEST CONFIG</span> &lambda;=0.001, constant LR=1e-4, 1000 steps</h3>
+  <p>Single-frame deformation learning reaches <strong>CD=0.042</strong>, closing 25% of the canonical&rarr;posed gap (0.087). This represents the practical ceiling for single-frame overfitting with the current architecture. Key factors:</p>
+  <ul>
+    <li><strong>Chamfer loss through decoder</strong> provides direct mesh-level supervision</li>
+    <li><strong>Latent loss at matched coords</strong> (&lambda;=0.001) bootstraps early training, then mesh loss takes over</li>
+    <li><strong>Identity init bridge</strong> ensures correct latent flow from step 0</li>
+    <li><strong>Constant LR=1e-4</strong> maximizes optimization for single-sample overfitting</li>
+  </ul>
+  <p><strong>Next:</strong> Multi-frame training to learn generalizable deformation across poses.</p>
+</div>
+
+</body>
+</html>
