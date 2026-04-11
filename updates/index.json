@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-11 · DCF Phase 1a: STream3R + DCF Full Pipeline Overfit",
+    "date": "2026-04-11",
+    "status": "done",
+    "summary": "First end-to-end STream3R encoder + DCF decoder overfit with coordinate-aligned supervision. Per-frame predictions in camera space. Hand L1=8.5mm, Object L1=9.1mm after 200 steps on 4-frame DexYCB clip.",
+    "path": "updates/2026-04-11-dcf-phase1a-stream3r-overfit.html"
+  },
+  {
     "title": "2026-04-11 · DCF Phase 1: DexYCB Single-Sequence Overfit",
     "date": "2026-04-11",
     "status": "done",

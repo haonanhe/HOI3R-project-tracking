@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCF Phase 1a: STream3R + DCF Full Pipeline Overfit</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+    h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+    h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+    h3 { color: #34495e; margin-top: 20px; }
+    a { color: #2980b9; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background: #2c3e50; color: #fff; }
+    tr:nth-child(even) { background: #f2f2f2; }
+    code { background: #eef; padding: 2px 6px; border-radius: 3px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9em; }
+    .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+    .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+    .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+    .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+    .meta-label { font-weight: 600; color: #555; }
+    .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+    .badge-pass { background: #27ae60; }
+    .badge-fix { background: #e67e22; }
+    .badge-finding { background: #3498db; }
+    .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+    .toc { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .toc ul { margin: 8px 0; padding-left: 24px; }
+    .toc li { margin: 4px 0; }
+    .back-link { margin-bottom: 16px; }
+    .viz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .viz-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+    @media (max-width: 900px) { .viz-grid { grid-template-columns: 1fr; } .viz-grid-4 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .viz-grid-4 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <p class="back-link"><a href="../index.html">&larr; Back to dashboard</a></p>
+
+  <h1>DCF Phase 1a: STream3R + DCF Full Pipeline Overfit</h1>
+
+  <!-- Meta box -->
+  <div class="meta-box">
+    <div class="meta-grid">
+      <span class="meta-label">Date</span>
+      <span class="meta-value">2026-04-11</span>
+      <span class="meta-label">Branch</span>
+      <span class="meta-value">feat/dcf</span>
+      <span class="meta-label">Commit</span>
+      <span class="meta-value">39c3f04</span>
+      <span class="meta-label">Phase</span>
+      <span class="meta-value">Phase 1a &mdash; Full pipeline validation with coordinate alignment</span>
+      <span class="meta-label">Status</span>
+      <span class="meta-value"><span class="badge badge-pass">PASS</span> End-to-end STream3R + DCF overfit</span>
+    </div>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="toc">
+    <strong>Contents</strong>
+    <ul>
+      <li><a href="#summary">0. Summary</a></li>
+      <li><a href="#coord-fix">1. Coordinate Fix</a></li>
+      <li><a href="#results">2. Results</a></li>
+      <li><a href="#visualizations">3. Visualizations</a></li>
+      <li><a href="#modules">4. Training Modules</a></li>
+      <li><a href="#findings">5. Findings</a></li>
+      <li><a href="#next-steps">6. Next Steps</a></li>
+    </ul>
+  </div>
+
+  <!-- Section 0: Summary -->
+  <h2 id="summary">0. Summary</h2>
+
+  <div class="highlight">
+    <strong>First successful end-to-end STream3R encoder + DCF decoder overfit.</strong>
+    Hand/object canonical point tokens participate in decoder global attention alongside image tokens.
+    Per-frame predictions in camera-space coordinates.
+    Hand L1: <strong>8.5&thinsp;mm</strong>, Object L1: <strong>9.1&thinsp;mm</strong> after 200 steps.
+  </div>
+
+  <!-- Section 1: Coordinate Fix -->
+  <h2 id="coord-fix">1. Coordinate Fix</h2>
+
+  <div class="panel">
+    <p><span class="badge badge-fix">FIX</span> <strong>GT now in camera space (not DexYCB-w).</strong>
+       Camera space = first-frame camera = STream3R world for a static camera.
+       Previous experiments supplied GT in a world-frame that differed from the STream3R encoder's canonical frame,
+       causing systematic offset in the supervision signal.</p>
+  </div>
+
+  <div class="panel">
+    <p><span class="badge badge-fix">FIX</span> <strong>Per-frame forward pass (not sequence-level with averaged GT).</strong>
+       Each frame is now processed independently, ensuring the loss gradient reflects per-frame prediction error
+       rather than an aggregated average that masked frame-level failures.</p>
+  </div>
+
+  <div class="panel">
+    <p><span class="badge badge-fix">FIX</span> <strong><code>DCFBranch head_input_dim=1024</code> (matches aggregator extra token dim, not <code>2*embed_dim</code>).</strong>
+       The aggregator injects extra tokens at the global block output dimension (1024), not at the
+       concatenated scene-head input size (2048). Correcting this mismatch prevented a silent projection error
+       in the trajectory and contact heads.</p>
+  </div>
+
+  <!-- Section 2: Results -->
+  <h2 id="results">2. Results</h2>
+
+  <h3>2.1 Overall Loss</h3>
+  <table>
+    <tr><th>Metric</th><th>Initial</th><th>Final</th><th>Best</th></tr>
+    <tr><td>Total loss</td><td>0.777</td><td>0.018</td><td>&mdash;</td></tr>
+    <tr><td>Hand L1</td><td>0.336</td><td>0.0085</td><td>8.5&thinsp;mm</td></tr>
+    <tr><td>Object L1</td><td>0.378</td><td>0.0091</td><td>9.1&thinsp;mm</td></tr>
+  </table>
+
+  <h3>2.2 Per-Frame L2 Error (after 200 steps)</h3>
+  <table>
+    <tr><th>Frame</th><th>Hand L2 (mm)</th><th>Object L2 (mm)</th></tr>
+    <tr><td>0</td><td>13.4</td><td>20.4</td></tr>
+    <tr><td>1</td><td>13.2</td><td>20.4</td></tr>
+    <tr><td>2</td><td>26.1</td><td>22.0</td></tr>
+    <tr><td>3</td><td>14.9</td><td>21.3</td></tr>
+  </table>
+
+  <!-- Section 3: Visualizations -->
+  <h2 id="visualizations">3. Visualizations</h2>
+
+  <h3>3.1 Loss Curves (3-panel)</h3>
+  <div class="panel">
+    <img src="assets/dcf-phase1a-stream3r-overfit/loss_curve.png" alt="Loss curves: total, hand L1, object L1 over 200 steps">
+    <p class="caption">Three-panel loss curve over 200 optimization steps: total loss (log scale), hand L1, and object L1.
+       Both hand and object trajectory losses converge steadily, with total loss dropping from 0.777 to 0.018.</p>
+  </div>
+
+  <h3>3.2 Per-Frame Comparison (all frames)</h3>
+  <div class="panel">
+    <img src="assets/dcf-phase1a-stream3r-overfit/comparison_all_frames.png" alt="GT vs predicted comparison across frames 0-3">
+    <p class="caption">Side-by-side comparison of ground truth (blue/green) and predicted (red/orange) hand and object point clouds
+       across all 4 frames in camera space. Scene point cloud is shown in the background for spatial context.</p>
+  </div>
+
+  <h3>3.3 Individual Frame Plots</h3>
+  <div class="viz-grid-4">
+    <div class="panel">
+      <img src="assets/dcf-phase1a-stream3r-overfit/frame_0000.png" alt="Frame 0: GT vs predicted with scene points">
+      <p class="caption">Frame 0 &mdash; Hand L2: 13.4&thinsp;mm, Object L2: 20.4&thinsp;mm</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-phase1a-stream3r-overfit/frame_0001.png" alt="Frame 1: GT vs predicted with scene points">
+      <p class="caption">Frame 1 &mdash; Hand L2: 13.2&thinsp;mm, Object L2: 20.4&thinsp;mm</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-phase1a-stream3r-overfit/frame_0002.png" alt="Frame 2: GT vs predicted with scene points">
+      <p class="caption">Frame 2 &mdash; Hand L2: 26.1&thinsp;mm, Object L2: 22.0&thinsp;mm</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-phase1a-stream3r-overfit/frame_0003.png" alt="Frame 3: GT vs predicted with scene points">
+      <p class="caption">Frame 3 &mdash; Hand L2: 14.9&thinsp;mm, Object L2: 21.3&thinsp;mm</p>
+    </div>
+  </div>
+
+  <h3>3.4 Animated Visualization</h3>
+  <div class="panel">
+    <img src="assets/dcf-phase1a-stream3r-overfit/visualization.gif" alt="Animated visualization of GT vs predicted hand/object motion across frames">
+    <p class="caption">Animated GIF showing predicted vs ground-truth hand and object point trajectories across the 4-frame DexYCB clip,
+       with background scene point cloud from STream3R.</p>
+  </div>
+
+  <!-- Section 4: Training Modules -->
+  <h2 id="modules">4. Training Modules</h2>
+
+  <table>
+    <tr><th>Module</th><th>Status</th><th>Params</th></tr>
+    <tr>
+      <td>STream3R encoder (<code>patch_embed</code> + <code>frame_blocks</code>)</td>
+      <td><span class="badge badge-fix">frozen</span></td>
+      <td>~603M</td>
+    </tr>
+    <tr>
+      <td>STream3R decoder (<code>global_blocks</code>)</td>
+      <td><span class="badge badge-pass">optimized</span></td>
+      <td>~302M</td>
+    </tr>
+    <tr>
+      <td>DCF hand point encoder</td>
+      <td><span class="badge badge-pass">optimized</span></td>
+      <td>random init</td>
+    </tr>
+    <tr>
+      <td>DCF object point encoder</td>
+      <td><span class="badge badge-pass">optimized</span></td>
+      <td>random init</td>
+    </tr>
+    <tr>
+      <td>DCF hand trajectory head</td>
+      <td><span class="badge badge-pass">optimized</span></td>
+      <td>random init</td>
+    </tr>
+    <tr>
+      <td>DCF object trajectory head</td>
+      <td><span class="badge badge-pass">optimized</span></td>
+      <td>random init</td>
+    </tr>
+    <tr>
+      <td>DCF contact head</td>
+      <td><span class="badge badge-pass">optimized</span></td>
+      <td>random init</td>
+    </tr>
+    <tr>
+      <td>Scene heads (point, camera, depth)</td>
+      <td><span class="badge badge-fix">frozen</span></td>
+      <td>&mdash;</td>
+    </tr>
+  </table>
+
+  <!-- Section 5: Findings -->
+  <h2 id="findings">5. Findings</h2>
+
+  <div class="panel">
+    <p><span class="badge badge-finding">FINDING</span> <strong>Extra tokens from aggregator are at <code>embed_dim=1024</code>, not <code>2*embed_dim</code>.</strong>
+       Scene heads receive a 2048-dim input (frame + global token concat), but DCF extra tokens are injected
+       only through the global blocks at 1024. This means the two head families operate on different-dimensional
+       feature slices. Keeping them separate avoids projection dimension bugs.</p>
+  </div>
+
+  <div class="panel">
+    <p><span class="badge badge-finding">FINDING</span> <strong>Per-frame forward passes avoid OOM.</strong>
+       Running 8 frames in a single batch with DPT heads causes an out-of-memory error on the current GPU.
+       Processing 4 frames &times; 1 frame per pass fits within memory and produces stable gradients.
+       Gradient accumulation across frames works correctly.</p>
+  </div>
+
+  <div class="panel">
+    <p><span class="badge badge-finding">FINDING</span> <strong>Hand predictions show 13&ndash;26&thinsp;mm L2 error after overfit. Object ~20&thinsp;mm.</strong>
+       These residuals are non-trivial for a 200-step overfit and suggest room for improvement.
+       NLF-style barycentric surface sampling with MANO LBS supervision (Phase 1b) is expected to provide
+       denser, more informative gradient signal and reduce per-point error.</p>
+  </div>
+
+  <!-- Section 6: Next Steps -->
+  <h2 id="next-steps">6. Next Steps</h2>
+
+  <table>
+    <tr><th>Priority</th><th>Task</th></tr>
+    <tr>
+      <td><span class="badge badge-pass">P0</span></td>
+      <td>NLF-style query points: barycentric surface sampling + MANO LBS supervision</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-pass">P0</span></td>
+      <td>Multi-frame generalization test (train on frames 0&ndash;3, test on frames 4&ndash;7)</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-fix">P1</span></td>
+      <td>Add 2D reprojection loss</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-fix">P1</span></td>
+      <td>Progressive contact loss activation</td>
+    </tr>
+  </table>
+
+  <hr style="margin-top: 40px; border: none; border-top: 1px solid #ddd;">
+  <p class="caption">Generated by HOI3R experiment tracking pipeline. Commit <code>39c3f04</code> on branch <code>feat/dcf</code>.</p>
+</body>
+</html>
