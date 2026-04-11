@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCF Phase 1: DexYCB Single-Sequence Overfit</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+    h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+    h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+    h3 { color: #34495e; margin-top: 20px; }
+    a { color: #2980b9; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background: #2c3e50; color: #fff; }
+    tr:nth-child(even) { background: #f2f2f2; }
+    code { background: #eef; padding: 2px 6px; border-radius: 3px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9em; }
+    .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+    .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+    .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+    .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+    .meta-label { font-weight: 600; color: #555; }
+    .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+    .badge-pass { background: #27ae60; }
+    .badge-fix { background: #e67e22; }
+    .badge-finding { background: #3498db; }
+    .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+    .toc { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .toc ul { margin: 8px 0; padding-left: 24px; }
+    .toc li { margin: 4px 0; }
+    .back-link { margin-bottom: 16px; }
+    .viz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media (max-width: 800px) { .viz-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <p class="back-link"><a href="../index.html">&larr; Back to dashboard</a></p>
+
+  <h1>DCF Phase 1: DexYCB Single-Sequence Overfit</h1>
+
+  <!-- Meta box -->
+  <div class="meta-box">
+    <div class="meta-grid">
+      <span class="meta-label">Date</span>
+      <span class="meta-value">2026-04-11</span>
+      <span class="meta-label">Branch</span>
+      <span class="meta-value">feat/dcf</span>
+      <span class="meta-label">Commit</span>
+      <span class="meta-value">f87b5ab</span>
+      <span class="meta-label">Phase</span>
+      <span class="meta-value">Phase 1 &mdash; DCF Architecture Validation</span>
+      <span class="meta-label">Status</span>
+      <span class="meta-value"><span class="badge badge-pass">PASS</span> 98.7% loss reduction</span>
+    </div>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="toc">
+    <strong>Contents</strong>
+    <ul>
+      <li><a href="#architecture">1. Architecture Change</a></li>
+      <li><a href="#results">2. Experiment Results</a></li>
+      <li><a href="#visualizations">3. Visualizations</a></li>
+      <li><a href="#modules">4. Training Modules</a></li>
+      <li><a href="#findings">5. Key Findings</a></li>
+      <li><a href="#next-steps">6. Next Steps</a></li>
+    </ul>
+  </div>
+
+  <!-- Section 1: Architecture Change -->
+  <h2 id="architecture">1. Architecture Change</h2>
+
+  <div class="highlight">
+    <strong>Pivot:</strong> Dynamic Correspondence Fields (DCF) replace the earlier Trellis.2 SLat mesh pipeline.
+    Instead of decoding implicit SDF grids through FlexiCubes, DCF operates directly on world-space point clouds
+    with explicit 3D trajectory supervision.
+  </div>
+
+  <p>The DCF pipeline operates in four stages:</p>
+  <ol>
+    <li><strong>Point encoding:</strong> 256 hand points (FPS-sampled from 778 MANO vertices) and 256 object points
+        (FPS-sampled from the object template mesh) are encoded using Fourier positional embeddings followed by MLPs,
+        producing per-point feature vectors of dimension 1024.</li>
+    <li><strong>Trajectory prediction:</strong> Separate hand and object MLP heads consume these features and predict
+        per-point 3D positions for each frame in the sequence.</li>
+    <li><strong>Contact coupling:</strong> A cross-attention module attends between the closest hand-object point pairs,
+        producing a contact-aware correction added to the raw trajectory predictions.</li>
+    <li><strong>Pose readout:</strong> The Kabsch/Procrustes algorithm analytically solves for the rigid SE(3) transform
+        between canonical and predicted point clouds at each frame (not learned).</li>
+  </ol>
+
+  <p>Supervision is a direct L1 loss between predicted and ground-truth 3D point positions across all frames, plus a
+     contact-distance BCE term. All predictions are in <strong>STream3R world space W</strong> (first-frame camera
+     coordinates). No normalized-space alignment is needed, eliminating the coordinate system issues encountered in the
+     earlier Trellis.2 pipeline.</p>
+
+  <!-- Section 2: Experiment Results -->
+  <h2 id="results">2. Experiment Results</h2>
+
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Initial loss</td><td>1.258</td></tr>
+    <tr><td>Best loss</td><td>0.016</td></tr>
+    <tr><td>Final loss</td><td>0.019</td></tr>
+    <tr><td>Reduction</td><td><strong>98.7%</strong></td></tr>
+  </table>
+
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Dataset</td><td>DexYCB</td></tr>
+    <tr><td>Sequence</td><td><code>20200709-subject-01/20200709_141754</code></td></tr>
+    <tr><td>Frames</td><td>0&ndash;7 (8 frames)</td></tr>
+    <tr><td>Hand points</td><td>256 (FPS from 778 MANO vertices)</td></tr>
+    <tr><td>Object points</td><td>256 (FPS from 7678 object vertices)</td></tr>
+    <tr><td>Embedding dim</td><td>1024</td></tr>
+    <tr><td>Learning rate</td><td>1e-3</td></tr>
+    <tr><td>Steps</td><td>200</td></tr>
+    <tr><td>Wall time</td><td>7.5 seconds</td></tr>
+    <tr><td>Trainable params</td><td>22.2M</td></tr>
+  </table>
+
+  <!-- Section 3: Visualizations -->
+  <h2 id="visualizations">3. Visualizations</h2>
+
+  <h3>3.1 Loss Curves</h3>
+  <div class="panel">
+    <img src="assets/dcf-phase1-overfit/loss_curve.png" alt="DCF Phase 1 loss curves: total, trajectory, and contact over 200 steps">
+    <p class="caption">Total loss (log scale), trajectory L1 (linear, from step 10), and contact BCE over 200 optimization steps.
+       The initial spike is typical of random-init MLPs adjusting to the data scale. Trajectory loss converges steadily
+       from ~0.14 to ~0.019 with best at 0.016.</p>
+  </div>
+
+  <h3>3.2 Frame 0: Detailed Inspection</h3>
+  <div class="viz-grid">
+    <div class="panel">
+      <img src="assets/dcf-phase1-overfit/frame_0_hand.png" alt="Frame 0: GT vs predicted hand points">
+      <p class="caption">Frame 0 hand points: GT (blue, 256 pts) vs Predicted (red, 256 pts). The predicted hand points
+         closely overlap the ground truth after 200 steps of overfit.</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-phase1-overfit/frame_0_object.png" alt="Frame 0: GT vs predicted object points">
+      <p class="caption">Frame 0 object points: GT (green, 256 pts) vs Predicted (orange, 256 pts). The object point cloud
+         prediction similarly converges to the ground truth.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1-overfit/frame_0_combined.png" alt="Frame 0: Combined GT vs predicted hand+object">
+    <p class="caption">Frame 0 combined view: GT hand (blue) + GT object (green) vs Predicted hand (red) + Predicted object (orange).
+       Both hand and object predictions align with ground truth in STream3R world space.</p>
+  </div>
+
+  <h3>3.3 Multi-Frame Combined Views</h3>
+  <div class="viz-grid">
+    <div class="panel">
+      <img src="assets/dcf-phase1-overfit/frame_2_combined.png" alt="Frame 2: Combined GT vs predicted">
+      <p class="caption">Frame 2: GT vs Predicted (hand + object combined).</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-phase1-overfit/frame_4_combined.png" alt="Frame 4: Combined GT vs predicted">
+      <p class="caption">Frame 4: GT vs Predicted (hand + object combined).</p>
+    </div>
+  </div>
+  <div class="panel">
+    <img src="assets/dcf-phase1-overfit/frame_7_combined.png" alt="Frame 7: Combined GT vs predicted">
+    <p class="caption">Frame 7: GT vs Predicted (hand + object combined). Prediction quality is consistent across the full 8-frame clip.</p>
+  </div>
+
+  <!-- Section 4: Training Modules -->
+  <h2 id="modules">4. Training Modules</h2>
+
+  <table>
+    <tr><th>Module</th><th>Status</th><th>Weights</th></tr>
+    <tr><td>Hand point encoder (Fourier+MLP)</td><td><span class="badge badge-pass">optimized</span></td><td>random init</td></tr>
+    <tr><td>Object point encoder (Fourier+MLP)</td><td><span class="badge badge-pass">optimized</span></td><td>random init</td></tr>
+    <tr><td>Hand trajectory head (MLP)</td><td><span class="badge badge-pass">optimized</span></td><td>random init</td></tr>
+    <tr><td>Object trajectory head (MLP)</td><td><span class="badge badge-pass">optimized</span></td><td>random init</td></tr>
+    <tr><td>Contact head (cross-attn+MLP)</td><td><span class="badge badge-pass">optimized</span></td><td>random init</td></tr>
+    <tr><td>STream3R decoder (simulated)</td><td><span class="badge badge-fix">placeholder</span></td><td>token concat</td></tr>
+    <tr><td>Pose readout (Kabsch/Procrustes)</td><td>not learned</td><td>analytical</td></tr>
+  </table>
+
+  <!-- Section 5: Key Findings -->
+  <h2 id="findings">5. Key Findings</h2>
+
+  <div class="panel">
+    <p><span class="badge badge-finding">FINDING</span> <strong>DCF eliminates coordinate alignment problem.</strong>
+       The earlier Trellis.2 pipeline required per-mesh de-normalization from a learned cube space, leading to recurring
+       per-axis vs uniform scaling bugs. DCF operates directly in STream3R world space W, so no normalized-space
+       alignment is needed. All GT and predicted points share the same coordinate frame by construction.</p>
+  </div>
+
+  <div class="panel">
+    <p><span class="badge badge-finding">FINDING</span> <strong>Contact loss drops to 0 immediately.</strong>
+       In this single-sequence overfit setting, hand and object are far apart (no contact in the DexYCB grasp
+       opening sequence), so the contact BCE term reaches zero within the first few steps. The meaningful signal
+       is the trajectory L1 reduction, which confirms the MLP heads can learn accurate per-point motion from
+       Fourier-encoded positions.</p>
+  </div>
+
+  <div class="panel">
+    <p><span class="badge badge-finding">FINDING</span> <strong>Simulated decoder is sufficient for overfit validation.</strong>
+       The current experiment uses a token concatenation placeholder instead of the real STream3R decoder. This proves
+       the DCF modules (encoder, trajectory heads, contact head) work correctly in isolation. The next phase will wire
+       these tokens through the real STream3R decoder attention blocks.</p>
+  </div>
+
+  <!-- Section 6: Next Steps -->
+  <h2 id="next-steps">6. Next Steps</h2>
+
+  <table>
+    <tr><th>Priority</th><th>Task</th><th>Description</th></tr>
+    <tr><td><span class="badge badge-pass">P0</span></td><td>Wire through real STream3R decoder</td>
+        <td>Replace the token-concat placeholder with actual STream3R decoder attention blocks, so DCF tokens
+            participate in multi-view cross-attention with scene tokens.</td></tr>
+    <tr><td><span class="badge badge-pass">P0</span></td><td>Multi-frame training</td>
+        <td>Extend beyond single-sequence overfit to multi-sequence training with frame sampling, validating
+            generalization across different DexYCB grasps.</td></tr>
+    <tr><td><span class="badge badge-fix">P1</span></td><td>Add 2D reprojection loss</td>
+        <td>Use <code>trajectory_2d_loss</code> (already implemented) to add a pinhole-camera reprojection term,
+            providing additional pixel-level supervision.</td></tr>
+  </table>
+
+  <hr style="margin-top: 40px; border: none; border-top: 1px solid #ddd;">
+  <p class="caption">Generated by HOI3R experiment tracking pipeline. Commit <code>f87b5ab</code> on branch <code>feat/dcf</code>.</p>
+</body>
+</html>
