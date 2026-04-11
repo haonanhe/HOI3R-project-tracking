@@ -6,10 +6,10 @@
   "world_frame": "hawor_world",
   "processed_root": "/mnt/hdd_volume/datasets/HOT3D/processed",
   "data_root": "/mnt/hdd_volume/datasets/HOT3D",
-  "output_dir": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260410_seqP0001_23fa0ee8_8f",
+  "output_dir": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260411_seqP0001_8d136980_cellphone_stride4",
   "checkpoint": "/data/haonan/HOI/HaWoR/weights/hawor/checkpoints/hawor.ckpt",
-  "foundationpose_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260410_seqP0001_23fa0ee8_inputs/foundationpose_hot3d_stride20_8f.json",
-  "hawor_world_hand_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/fp_hawor_hot3d_smoke_20260410_seqP0001_23fa0ee8_inputs/hawor_hot3d_slam_hand_summary_8f.json",
+  "foundationpose_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/foundationpose_hot3d_smoke_20260411_P0001_8d136980_haworslam/summary/hot3d_test_stride20.json",
+  "hawor_world_hand_summary_json": "/data/haonan/HOI/HOI3R/docs/artifacts/baselines/hawor_hot3d_slam_hand_summary_smoke_20260411_P0001_8d136980/hawor_hot3d_slam_hand_summary.json",
   "weights": {
     "greproj": 1.0,
     "gtemp": 0.1
@@ -17,22 +17,22 @@
   "metrics": {
     "hand_world_root_err_mm": 0.0,
     "hand_world_joint_err_mm": 0.0,
-    "object_translation_cm": 5760.1494140625,
-    "object_rotation_deg": 165.60081481933594,
-    "object_add_cm": 23316.4453125,
+    "object_translation_cm": 2607.430419921875,
+    "object_rotation_deg": 97.34199523925781,
+    "object_add_cm": 6408.2177734375,
     "fused_reproj_error_px": null,
-    "fused_temporal_position_delta": 0.41464075446128845
+    "fused_temporal_position_delta": 0.07714991271495819
   },
   "counts": {
     "evaluated_sequences": 1,
     "skipped_sequences": 0,
-    "total_gt_hands": 8,
-    "total_frames": 8,
-    "hand_valid_frames": 8,
-    "object_valid_frames": 8,
-    "object_interpolated_frames": 0,
+    "total_gt_hands": 41,
+    "total_frames": 41,
+    "hand_valid_frames": 41,
+    "object_valid_frames": 7,
+    "object_interpolated_frames": 27,
     "world_visualizations": 1,
     "camera_overlays": 1
   },
-  "generated_at": "2026-04-10 07:52:34 UTC"
+  "generated_at": "2026-04-11 07:07:33 UTC"
 }
