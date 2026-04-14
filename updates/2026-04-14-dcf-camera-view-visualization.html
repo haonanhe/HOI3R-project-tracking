@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCF Camera-View Visualization: Scene + Hand + Object</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+    h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+    h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+    h3 { color: #34495e; margin-top: 20px; }
+    a { color: #2980b9; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background: #2c3e50; color: #fff; }
+    tr:nth-child(even) { background: #f2f2f2; }
+    code { background: #eef; padding: 2px 6px; border-radius: 3px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9em; }
+    .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+    .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+    .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+    .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
+    .meta-label { font-weight: 600; color: #555; }
+    .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+    .badge-pass { background: #27ae60; }
+    .badge-fix { background: #e67e22; }
+    .badge-finding { background: #3498db; }
+    .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
+    .toc { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .toc ul { margin: 8px 0; padding-left: 24px; }
+    .toc li { margin: 4px 0; }
+    .back-link { margin-bottom: 16px; }
+    .viz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media (max-width: 900px) { .viz-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <p class="back-link"><a href="../index.html">&larr; Back to dashboard</a></p>
+
+  <h1>DCF Camera-View Visualization: Scene + Hand + Object</h1>
+
+  <!-- Meta box -->
+  <div class="meta-box">
+    <div class="meta-grid">
+      <span class="meta-label">Date</span>
+      <span class="meta-value">2026-04-14</span>
+
+      <span class="meta-label">Branch</span>
+      <span class="meta-value">feat/dcf</span>
+
+      <span class="meta-label">Phase</span>
+      <span class="meta-value">Phase 1a — Fourier encoding vs GPS encoding comparison</span>
+
+      <span class="meta-label">Experiment Runs</span>
+      <span class="meta-value">dcf_stream3r_v2_overfit (Fourier) &amp; dcf_gps_overfit (GPS)</span>
+
+      <span class="meta-label">Data</span>
+      <span class="meta-value">DexYCB — 20200709-subject-01/20200709_141754, 4 frames</span>
+    </div>
+  </div>
+
+  <!-- Key finding highlight -->
+  <div class="highlight">
+    Camera-view rendering of STream3R scene points with RGB colors, plus hand/object trajectory predictions overlaid. Following STream3R visualization approach where <code>world_points[h,w]</code> maps to pixel <code>(h,w)</code> colors. Fourier encoding achieves hand L2 avg 16.9mm vs GPS 51.5mm after 200 overfit steps.
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <strong>Contents</strong>
+    <ul>
+      <li><a href="#setup">1. Experiment Setup</a></li>
+      <li><a href="#fourier">2. Fourier Encoding Results (DCFPointEncoder)</a></li>
+      <li><a href="#gps">3. GPS Encoding Results (MANOGPSField)</a></li>
+      <li><a href="#comparison">4. Comparison: Fourier vs GPS</a></li>
+      <li><a href="#findings">5. Findings</a></li>
+      <li><a href="#next">6. Next Steps</a></li>
+    </ul>
+  </div>
+
+  <!-- Section 1: Setup -->
+  <h2 id="setup">1. Experiment Setup</h2>
+
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Details</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Architecture</td><td>STream3R encoder (frozen) + decoder (optimized) + DCFBranch</td></tr>
+      <tr><td>Training steps</td><td>200 overfit steps per run</td></tr>
+      <tr><td>Dataset</td><td>DexYCB — 20200709-subject-01/20200709_141754, 4 frames</td></tr>
+      <tr><td>Visualization</td><td>3-panel per frame: Input Image | Scene Points RGB | Scene + Hand/Object Overlay</td></tr>
+      <tr><td>Scene points color</td><td>RGB from pixels via STream3R world_points[h,w] → pixel(h,w)</td></tr>
+      <tr><td>GT Hand</td><td>Blue markers</td></tr>
+      <tr><td>Pred Hand</td><td>Red markers</td></tr>
+      <tr><td>GT Object</td><td>Green markers</td></tr>
+      <tr><td>Pred Object</td><td>Orange markers</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 2: Fourier Encoding -->
+  <h2 id="fourier">2. Fourier Encoding Results (DCFPointEncoder)</h2>
+
+  <p>Fourier positional encoding over 3D scene points. Trained with <code>dcf_stream3r_v2_overfit</code> config.</p>
+
+  <table>
+    <thead>
+      <tr><th>Frame</th><th>Hand L2 (mm)</th><th>Object L2 (mm)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td>13.4</td><td>20.4</td></tr>
+      <tr><td>1</td><td>13.2</td><td>20.4</td></tr>
+      <tr><td>2</td><td>26.1</td><td>22.0</td></tr>
+      <tr><td>3</td><td>14.9</td><td>21.3</td></tr>
+      <tr><td><strong>Avg</strong></td><td><strong>16.9</strong></td><td><strong>21.0</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/fourier/frame_0000.png" alt="Fourier Frame 0">
+    <p class="caption">Frame 0: Input | Scene RGB points | Overlay (Hand L2: 13.4mm, Obj L2: 20.4mm)</p>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/fourier/frame_0001.png" alt="Fourier Frame 1">
+    <p class="caption">Frame 1: Input | Scene RGB points | Overlay (Hand L2: 13.2mm, Obj L2: 20.4mm)</p>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/fourier/frame_0002.png" alt="Fourier Frame 2">
+    <p class="caption">Frame 2: Input | Scene RGB points | Overlay (Hand L2: 26.1mm, Obj L2: 22.0mm)</p>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/fourier/frame_0003.png" alt="Fourier Frame 3">
+    <p class="caption">Frame 3: Input | Scene RGB points | Overlay (Hand L2: 14.9mm, Obj L2: 21.3mm)</p>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/fourier/summary_all_frames.png" alt="Fourier Summary">
+    <p class="caption">All 4 frames comparison — Fourier encoding</p>
+  </div>
+
+  <!-- Section 3: GPS Encoding -->
+  <h2 id="gps">3. GPS Encoding Results (MANOGPSField)</h2>
+
+  <p>GPS-style encoding using MLP distilled from MANO surface geometry. Trained with <code>dcf_gps_overfit</code> config.</p>
+
+  <div class="warning">
+    GPS distillation had high validation loss (~1978), suggesting the MLP approximation is not yet accurate enough. Results here reflect 200 overfit steps on the current distilled field.
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Frame</th><th>Hand L2 (mm)</th><th>Object L2 (mm)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td>51.2</td><td>32.3</td></tr>
+      <tr><td>1</td><td>51.2</td><td>32.3</td></tr>
+      <tr><td>2</td><td>51.5</td><td>30.8</td></tr>
+      <tr><td>3</td><td>52.1</td><td>31.6</td></tr>
+      <tr><td><strong>Avg</strong></td><td><strong>51.5</strong></td><td><strong>31.8</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/gps/frame_0000.png" alt="GPS Frame 0">
+    <p class="caption">Frame 0: Input | Scene RGB points | Overlay (Hand L2: 51.2mm, Obj L2: 32.3mm)</p>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/gps/frame_0001.png" alt="GPS Frame 1">
+    <p class="caption">Frame 1: Input | Scene RGB points | Overlay (Hand L2: 51.2mm, Obj L2: 32.3mm)</p>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/gps/frame_0002.png" alt="GPS Frame 2">
+    <p class="caption">Frame 2: Input | Scene RGB points | Overlay (Hand L2: 51.5mm, Obj L2: 30.8mm)</p>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/gps/frame_0003.png" alt="GPS Frame 3">
+    <p class="caption">Frame 3: Input | Scene RGB points | Overlay (Hand L2: 52.1mm, Obj L2: 31.6mm)</p>
+  </div>
+
+  <div class="panel">
+    <img src="assets/dcf-phase1a-camview/gps/summary_all_frames.png" alt="GPS Summary">
+    <p class="caption">All 4 frames comparison — GPS encoding</p>
+  </div>
+
+  <!-- Section 4: Comparison -->
+  <h2 id="comparison">4. Comparison: Fourier vs GPS</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Encoding</th>
+        <th>Hand L1 final</th>
+        <th>Obj L1 final</th>
+        <th>Hand L2 avg (mm)</th>
+        <th>Obj L2 avg (mm)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fourier (DCFPointEncoder)</strong></td>
+        <td>0.0085</td>
+        <td>0.0091</td>
+        <td><strong>16.9</strong></td>
+        <td>20.8</td>
+      </tr>
+      <tr>
+        <td>GPS (MANOGPSField)</td>
+        <td>0.0256</td>
+        <td>0.0122</td>
+        <td>51.5</td>
+        <td><strong>31.8</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warning">
+    GPS encoding currently underperforms Fourier after 200 steps. The GPS distillation had high validation loss (~1978), suggesting the MLP approximation is not accurate enough. With better distillation and more training steps, GPS should improve — its structured surface representation is theoretically better suited for contact-aware predictions.
+  </div>
+
+  <!-- Section 5: Findings -->
+  <h2 id="findings">5. Findings</h2>
+
+  <p><span class="badge badge-pass">PASS</span> Camera-view RGB rendering shows scene structure clearly — the STream3R world_points[h,w] → pixel(h,w) mapping produces clean, photo-realistic point cloud renders.</p>
+
+  <p><span class="badge badge-finding">FINDING</span> Fourier encoding (DCFPointEncoder) converges significantly faster than GPS for 200-step overfit: hand L2 16.9mm vs 51.5mm.</p>
+
+  <p><span class="badge badge-finding">FINDING</span> GPS hand loss plateaus around 0.25 for ~60 steps before breaking through, suggesting the GPS field representation creates an optimization barrier early in training.</p>
+
+  <p><span class="badge badge-fix">FIX</span> Coordinate alignment confirmed — scene points and hand/object keypoints overlap correctly in camera view, validating the camera-space supervision pipeline introduced in Phase 1a.</p>
+
+  <!-- Section 6: Next Steps -->
+  <h2 id="next">6. Next Steps</h2>
+
+  <table>
+    <thead>
+      <tr><th>Priority</th><th>Task</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>P0</td><td>Improve GPS distillation — reduce validation loss below 100 for reliable surface field approximation</td></tr>
+      <tr><td>P0</td><td>NLF-style barycentric surface sampling + MANO LBS supervision for contact-aware trajectory fields</td></tr>
+      <tr><td>P1</td><td>Multi-frame generalization test: train on 4 frames, eval on held-out frames from same sequence</td></tr>
+      <tr><td>P1</td><td>Train GPS encoding for 1000+ steps — may close the gap with Fourier at larger step counts</td></tr>
+    </tbody>
+  </table>
+
+  <hr style="margin-top: 40px;">
+  <p style="font-size: 0.8em; color: #999;">Published 2026-04-14 &middot; Branch: feat/dcf &middot; Logs: dcf_stream3r_v2_overfit, dcf_gps_overfit</p>
+</body>
+</html>
