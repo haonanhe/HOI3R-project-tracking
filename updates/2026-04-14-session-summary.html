@@ -1,618 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2026-04-14 Session Summary: DCF Architecture Implementation &amp; Validation</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
-    h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
-    h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
-    h3 { color: #34495e; margin-top: 20px; }
-    a { color: #2980b9; }
-    table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
-    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
-    th { background: #2c3e50; color: #fff; }
-    tr:nth-child(even) { background: #f2f2f2; }
-    code { background: #eef; padding: 2px 6px; border-radius: 3px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9em; }
-    pre { background: #2c3e50; color: #ecf0f1; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
-    .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
-    .panel img { max-width: 100%; height: auto; border-radius: 4px; }
-    .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
-    .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
-    .error { background: #fce4ec; padding: 12px; border-left: 4px solid #e53935; margin: 12px 0; }
-    .info { background: #e3f2fd; padding: 12px; border-left: 4px solid #2196f3; margin: 12px 0; }
-    .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
-    .meta-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px; }
-    .meta-label { font-weight: 600; color: #555; }
-    .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
-    .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
-    .badge-pass { background: #27ae60; }
-    .badge-fail { background: #e53935; }
-    .badge-fix { background: #e67e22; }
-    .badge-finding { background: #3498db; }
-    .badge-critical { background: #e53935; }
-    .badge-warn { background: #f39c12; }
-    .caption { font-size: 0.85em; color: #666; margin-top: 4px; }
-    .toc { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
-    .toc ul { margin: 8px 0; padding-left: 24px; }
-    .toc li { margin: 4px 0; }
-    .toc a { text-decoration: none; color: #2c3e50; }
-    .back-link { margin-bottom: 16px; }
-    .viz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
-    @media (max-width: 900px) { .viz-grid { grid-template-columns: 1fr; } }
-    .big-number { font-size: 2em; font-weight: 700; }
-    .metric-green { color: #27ae60; }
-    .metric-red { color: #e74c3c; }
-    .metric-orange { color: #e67e22; }
-    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
-    .summary-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; text-align: center; }
-    @media (max-width: 900px) { .summary-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 600px) { .summary-grid { grid-template-columns: 1fr; } }
-    .status-grid { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; align-items: center; }
-    .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-    .status-green { background: #27ae60; }
-    .status-red { background: #e53935; }
-    .status-orange { background: #f39c12; }
-    .status-blue { background: #3498db; }
-    .findings-list { list-style: none; padding: 0; }
-    .findings-list li { padding: 8px 0; border-bottom: 1px solid #eee; }
-    .findings-list li:last-child { border-bottom: none; }
-    .timeline { position: relative; padding-left: 30px; }
-    .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: #ddd; }
-    .timeline-item { position: relative; margin-bottom: 20px; }
-    .timeline-item::before { content: ''; position: absolute; left: -25px; top: 5px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #2c3e50; background: #fff; }
-    .timeline-item.success::before { background: #27ae60; border-color: #27ae60; }
-    .timeline-item.failure::before { background: #e53935; border-color: #e53935; }
-    .timeline-item.partial::before { background: #f39c12; border-color: #f39c12; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary 2026-04-14 | HOI3R DCF</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1200px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}h3{color:#34495e}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}th,td{border:1px solid #ddd;padding:8px 12px;text-align:left}th{background:#2c3e50;color:#fff}tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}.panel img{max-width:100%;height:auto;border-radius:4px}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff}
+.badge-pass{background:#27ae60}.badge-fix{background:#e67e22}.badge-finding{background:#3498db}.badge-fail{background:#e53935}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em}
+.caption{font-size:.85em;color:#666;margin-top:4px}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.toc ul{margin:0;padding-left:20px}.toc li{margin:4px 0}.toc a{text-decoration:none;color:#2c3e50}
+</style>
 </head>
 <body>
-  <p class="back-link"><a href="../index.html">&larr; Back to dashboard</a></p>
 
-  <h1>Session Summary: DCF Architecture Implementation &amp; Validation</h1>
-  <p style="color: #666; font-size: 0.95em;">Full-day session covering 9 experiments across DCF module implementation, encoding strategies, overfit validation, and generalization analysis.</p>
-
-  <!-- Meta box -->
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Date</span>
-      <span class="meta-value">2026-04-14</span>
-
-      <span class="meta-label">Branch</span>
-      <span class="meta-value">feat/dcf</span>
-
-      <span class="meta-label">Goal</span>
-      <span class="meta-value">Implement DCF architecture replacing Trellis.2, validate through overfit experiments, identify architectural issues</span>
-
-      <span class="meta-label">Experiments</span>
-      <span class="meta-value">9 total (Phase 0 impl + 8 training experiments)</span>
-
-      <span class="meta-label">Commits</span>
-      <span class="meta-value">26 commits (815d285 &mdash; 4916cc2)</span>
-
-      <span class="meta-label">Key Result</span>
-      <span class="meta-value" style="color: #e53935; font-weight: 600;">Object generalizes, hand memorizes; scene collapses without scene losses</span>
-    </div>
-  </div>
-
-  <!-- Top-level findings -->
-  <div class="error">
-    <strong>Critical Issue #1:</strong> Hand trajectory memorizes training frames instead of learning from images. Train 20mm vs test 185mm (+164mm gap). Even with 72 frames and 2000 steps, hand L2 plateaus at 190mm.
-  </div>
-  <div class="error">
-    <strong>Critical Issue #2:</strong> No scene losses in training &mdash; scene reconstruction collapses with more DCF training steps. Scene std drops from 1.240 (200 steps) to 0.243 (500 steps) due to shared global attention corruption.
-  </div>
-  <div class="highlight">
-    <strong>Positive:</strong> Object trajectory generalizes perfectly across frames (16mm train, 16mm test). NLF-style barycentric sampling cuts hand L2 from 20mm to 8mm in overfit.
-  </div>
-
-  <!-- TOC -->
-  <div class="toc">
-    <strong>Contents</strong>
-    <ul>
-      <li><a href="#overview">1. Session Overview &amp; Summary Cards</a></li>
-      <li><a href="#phase0">2. Phase 0: DCF Module Implementation</a></li>
-      <li><a href="#phase1">3. Phase 1: Simulated Decoder Overfit</a></li>
-      <li><a href="#phase1a">4. Phase 1a: Full STream3R + DCF Pipeline</a></li>
-      <li><a href="#gps">5. GPS Encoding Attempt (FAILED)</a></li>
-      <li><a href="#overfit500">6. ACP Overfit 500 Steps</a></li>
-      <li><a href="#generalization">7. Generalization Test (KEY EXPERIMENT)</a></li>
-      <li><a href="#contact">8. Contact Overfit</a></li>
-      <li><a href="#nlf">9. NLF Query Overfit</a></li>
-      <li><a href="#fullseq">10. Full-Sequence Training (72 Frames)</a></li>
-      <li><a href="#findings">11. Key Findings</a></li>
-      <li><a href="#modules">12. Training Modules State</a></li>
-      <li><a href="#commits">13. Code Changes</a></li>
-      <li><a href="#nextsteps">14. Open Issues &amp; Next Steps</a></li>
-    </ul>
-  </div>
-
-  <!-- Section 1: Overview -->
-  <h2 id="overview">1. Session Overview</h2>
-
-  <div class="summary-grid">
-    <div class="summary-card">
-      <div class="big-number metric-green">62</div>
-      <div>Smoke Tests Passing</div>
-      <div class="caption">14 implementation tasks</div>
-    </div>
-    <div class="summary-card">
-      <div class="big-number metric-green">26</div>
-      <div>Git Commits</div>
-      <div class="caption">815d285 &mdash; 4916cc2</div>
-    </div>
-    <div class="summary-card">
-      <div class="big-number metric-red">190mm</div>
-      <div>Hand L2 @ 2000 Steps</div>
-      <div class="caption">72 frames, stuck</div>
-    </div>
-    <div class="summary-card">
-      <div class="big-number metric-green">8mm</div>
-      <div>Best Hand L2 (Overfit)</div>
-      <div class="caption">NLF barycentric, 4 frames</div>
-    </div>
-    <div class="summary-card">
-      <div class="big-number metric-green">16mm</div>
-      <div>Object L2 (Generalizes)</div>
-      <div class="caption">Train = Test</div>
-    </div>
-    <div class="summary-card">
-      <div class="big-number metric-red">185mm</div>
-      <div>Hand L2 (Test)</div>
-      <div class="caption">vs 20mm train</div>
-    </div>
-  </div>
-
-  <!-- Section 2: Phase 0 -->
-  <h2 id="phase0">2. Phase 0: DCF Module Implementation</h2>
-
-  <p>Complete implementation of the Dynamic Correspondence Fields architecture, replacing the Trellis.2 Structured Latent pipeline. 14 implementation tasks, 12 commits, 62 smoke tests all passing.</p>
-
-  <table>
-    <tr><th>Module</th><th>File</th><th>Description</th></tr>
-    <tr><td>Data Utils</td><td><code>dcf_data_utils.py</code></td><td>DexYCB loading, MANO/object mesh canonical points, camera-space GT</td></tr>
-    <tr><td>Point Encoder</td><td><code>dcf_point_encoder.py</code></td><td>Fourier positional encoding of canonical 3D coordinates</td></tr>
-    <tr><td>Trajectory Head</td><td><code>dcf_trajectory_head.py</code></td><td>MLP: image tokens + point embeddings &rarr; per-frame 3D positions</td></tr>
-    <tr><td>Contact Head</td><td><code>dcf_contact_head.py</code></td><td>Cross-attention + MLP: hand-object contact prediction</td></tr>
-    <tr><td>Pose Readout</td><td><code>dcf_pose_readout.py</code></td><td>Kabsch/Procrustes: canonical + predicted positions &rarr; SE(3)</td></tr>
-    <tr><td>Losses</td><td><code>dcf_losses.py</code></td><td>Trajectory L1, contact BCE, pointer CE</td></tr>
-    <tr><td>DCFBranch</td><td><code>dcf_branch.py</code></td><td>Main branch module wiring all components</td></tr>
-    <tr><td>STream3R Wiring</td><td><code>stream3r.py</code>, <code>hoi_mesh_branch.py</code></td><td>Integration into STream3R decoder pipeline</td></tr>
-    <tr><td>Loss Wiring</td><td><code>losses.py</code></td><td>CausalLoss integration for DCF terms</td></tr>
-    <tr><td>Hydra Configs</td><td><code>dcf_smoke.yaml</code>, <code>dcf_overfit.yaml</code></td><td>Configuration files for experiments</td></tr>
-    <tr><td>E2E Smoke Test</td><td><code>test_dcf_smoke.py</code></td><td>End-to-end validation test</td></tr>
-  </table>
-
-  <div class="highlight">
-    <strong>All 62 smoke tests passing.</strong> Commits: <code>815d285</code> through <code>cdde81f</code> (12 commits).
-  </div>
-
-  <!-- Section 3: Phase 1 -->
-  <h2 id="phase1">3. Phase 1: Simulated Decoder Overfit</h2>
-
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Setup</span>
-      <span class="meta-value">DexYCB, 4 frames, 200 steps, simulated decoder (token concat)</span>
-      <span class="meta-label">Commit</span>
-      <span class="meta-value"><code>f87b5ab</code></span>
-    </div>
-  </div>
-
-  <table>
-    <tr><th>Metric</th><th>Start</th><th>End</th><th>Reduction</th></tr>
-    <tr><td>Hand L1</td><td>1.258</td><td>0.016</td><td style="color: #27ae60; font-weight: 600;">98.7%</td></tr>
-  </table>
-
-  <div class="highlight">
-    <strong>Validates DCF pipeline design.</strong> With a simulated decoder (not real STream3R), hand trajectory L1 drops 98.7%. This proves the encode &rarr; predict trajectory &rarr; contact coupling pipeline works.
-  </div>
-
-  <!-- Section 4: Phase 1a -->
-  <h2 id="phase1a">4. Phase 1a: Full STream3R + DCF Pipeline</h2>
-
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Setup</span>
-      <span class="meta-value">DexYCB, 4 frames, 200 steps, Fourier encoding, real STream3R encoder</span>
-      <span class="meta-label">Commit</span>
-      <span class="meta-value"><code>39c3f04</code></span>
-      <span class="meta-label">Key Fixes</span>
-      <span class="meta-value">GT in camera space (not DexYCB-w), per-frame forward, head_input_dim=1024</span>
-    </div>
-  </div>
-
-  <div class="panel">
-    <img src="assets/2026-04-14-session/phase1a_frame0.png" alt="Phase 1a camera view visualization">
-    <p class="caption">Phase 1a baseline: STream3R scene points (RGB) with hand (blue) and object (red) trajectory overlay. GT shown as circles, predictions as crosses.</p>
-  </div>
-
-  <table>
-    <tr><th>Metric</th><th>Value</th></tr>
-    <tr><td>Hand L2</td><td>13.4mm</td></tr>
-    <tr><td>Object L2</td><td>20.4mm</td></tr>
-  </table>
-
-  <div class="warning">
-    <strong>FIX: Coordinate alignment.</strong> GT must be in camera space (STream3R world W), not DexYCB extrinsic world. DCFBranch <code>head_input_dim=1024</code> (extra tokens at embed_dim), not 2048 (only visual tokens get 2x concat).
-  </div>
-
-  <!-- Section 5: GPS -->
-  <h2 id="gps">5. GPS Encoding Attempt <span class="badge badge-fail">FAILED</span></h2>
-
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Setup</span>
-      <span class="meta-value">MANO LBO eigenvectors as GPS encoding, distilled to MLP</span>
-      <span class="meta-label">Commits</span>
-      <span class="meta-value"><code>46025d2</code>, <code>9109e3e</code></span>
-      <span class="meta-label">LBO Stats</span>
-      <span class="meta-value">5079 tet nodes, 23190 elements, 1025 eigenvalues</span>
-    </div>
-  </div>
-
-  <div class="viz-grid">
-    <div class="panel">
-      <img src="assets/2026-04-14-session/mano_geometry_check.png" alt="MANO geometry check">
-      <p class="caption">Canonical vs posed MANO mesh diagnostic</p>
-    </div>
-    <div class="panel">
-      <img src="assets/2026-04-14-session/gps_collapse_frame0.png" alt="GPS collapse">
-      <p class="caption">GPS encoding result: hand points collapsed to single position, scene range compressed 5x</p>
-    </div>
-  </div>
-
-  <table>
-    <tr><th>Metric</th><th>Value</th><th>Status</th></tr>
-    <tr><td>GPS Distillation val_loss</td><td>1978</td><td style="color: #e53935;">Poor</td></tr>
-    <tr><td>Hand Point Spread</td><td>0.0000</td><td style="color: #e53935;">Collapsed</td></tr>
-    <tr><td>Scene World Points Range</td><td>1.2m (was 6.6m)</td><td style="color: #e53935;">5x compression</td></tr>
-  </table>
-
-  <div class="error">
-    <strong>Complete failure.</strong> All 256 hand query points collapsed to the same position (spread=0). Scene reconstruction corrupted: world_points range shrank from 6.6m to 1.2m. Root cause: poor GPS distillation produces identical embeddings for all query points, which then corrupt visual tokens through shared global attention.
-  </div>
-
-  <!-- Section 6: ACP Overfit 500 -->
-  <h2 id="overfit500">6. ACP Overfit 500 Steps</h2>
-
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Setup</span>
-      <span class="meta-value">Fourier encoding, FPS sampling, 4 frames, 500 steps</span>
-      <span class="meta-label">ACP Job</span>
-      <span class="meta-value"><code>pt-jahu9j58</code> (SPOT quota)</span>
-    </div>
-  </div>
-
-  <div class="panel">
-    <img src="assets/2026-04-14-session/acp_overfit500_frame0.png" alt="ACP overfit 500 steps">
-    <p class="caption">500-step overfit: hand and object predictions overlaid on scene points</p>
-  </div>
-
-  <table>
-    <tr><th>Metric</th><th>Start</th><th>End</th><th>Reduction</th></tr>
-    <tr><td>Hand L1</td><td>0.369</td><td>0.011</td><td style="color: #27ae60;">97%</td></tr>
-    <tr><td>Object L1</td><td>0.350</td><td>0.007</td><td style="color: #27ae60;">98%</td></tr>
-    <tr><td>Per-frame Hand L2</td><td>&mdash;</td><td>20-22mm</td><td>&mdash;</td></tr>
-    <tr><td>Per-frame Object L2</td><td>&mdash;</td><td>12-13mm</td><td>&mdash;</td></tr>
-  </table>
-
-  <div class="warning">
-    <strong>Scene degradation detected.</strong> Scene std dropped from 1.240 (at 200 steps) to 0.622 (at 500 steps). More DCF training degrades scene reconstruction because there are no scene losses to counterbalance.
-  </div>
-
-  <!-- Section 7: Generalization -->
-  <h2 id="generalization">7. Generalization Test <span class="badge badge-critical">KEY EXPERIMENT</span></h2>
-
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Setup</span>
-      <span class="meta-value">500 steps, train on frames 0/5/10/15, test on frames 20/25/30/35</span>
-      <span class="meta-label">ACP Job</span>
-      <span class="meta-value"><code>pt-gzpcpo5l</code></span>
-    </div>
-  </div>
-
-  <div class="viz-grid">
-    <div class="panel">
-      <img src="assets/2026-04-14-session/generalization_train_frame0.png" alt="Generalization train frame">
-      <p class="caption">Train frame 0: hand and object well-positioned (hand 20mm, obj 16mm)</p>
-    </div>
-    <div class="panel">
-      <img src="assets/2026-04-14-session/generalization_test_frame4.png" alt="Generalization test frame">
-      <p class="caption">Test frame 4 (frame 35): hand collapsed to memorized position (185mm), object still accurate (16mm)</p>
-    </div>
-  </div>
-
-  <table>
-    <tr><th>Split</th><th>Frame</th><th>Hand L2 (mm)</th><th>Object L2 (mm)</th></tr>
-    <tr style="background: #e8f5e9;"><td>Train</td><td>0</td><td>20</td><td>16</td></tr>
-    <tr style="background: #e8f5e9;"><td>Train</td><td>5</td><td>20</td><td>16</td></tr>
-    <tr style="background: #e8f5e9;"><td>Train</td><td>10</td><td>20</td><td>16</td></tr>
-    <tr style="background: #e8f5e9;"><td>Train</td><td>15</td><td>20</td><td>16</td></tr>
-    <tr style="background: #fce4ec;"><td>Test</td><td>20</td><td style="color: #e53935; font-weight: 600;">116</td><td>16</td></tr>
-    <tr style="background: #fce4ec;"><td>Test</td><td>25</td><td style="color: #e53935; font-weight: 600;">190</td><td>16</td></tr>
-    <tr style="background: #fce4ec;"><td>Test</td><td>30</td><td style="color: #e53935; font-weight: 600;">211</td><td>16</td></tr>
-    <tr style="background: #fce4ec;"><td>Test</td><td>35</td><td style="color: #e53935; font-weight: 600;">222</td><td>16</td></tr>
-  </table>
-
-  <div class="summary-grid" style="grid-template-columns: 1fr 1fr;">
-    <div class="summary-card" style="border: 2px solid #e53935;">
-      <div class="caption">Hand Trajectory</div>
-      <div class="big-number metric-red">+164mm</div>
-      <div>Train &rarr; Test Gap</div>
-      <div class="caption">20mm &rarr; 185mm average</div>
-    </div>
-    <div class="summary-card" style="border: 2px solid #27ae60;">
-      <div class="caption">Object Trajectory</div>
-      <div class="big-number metric-green">+0.5mm</div>
-      <div>Train &rarr; Test Gap</div>
-      <div class="caption">16mm &rarr; 16mm average</div>
-    </div>
-  </div>
-
-  <div class="error">
-    <strong>Critical finding: hand memorizes, object generalizes.</strong> Test hand error increases monotonically with frame distance from training set: 116 &rarr; 190 &rarr; 211 &rarr; 222mm. This means the hand trajectory head is memorizing training frame positions rather than learning to decode from image features. Object trajectory generalizes perfectly because rigid SE(3) is inherently easier to learn.
-  </div>
-
-  <!-- Section 8: Contact -->
-  <h2 id="contact">8. Contact Overfit</h2>
-
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Setup</span>
-      <span class="meta-value">Bowl grasping sequence (308 contact points), 500 steps</span>
-      <span class="meta-label">ACP Job</span>
-      <span class="meta-value"><code>pt-1c1ty7bb</code></span>
-      <span class="meta-label">Sequence</span>
-      <span class="meta-value">20200813-subject-02/20200813_153728</span>
-    </div>
-  </div>
-
-  <div class="panel">
-    <img src="assets/2026-04-14-session/contact_frame3.png" alt="Contact overfit frame 3">
-    <p class="caption">Contact overfit frame 3 (82 contact points): hand and object trajectories with contact predictions</p>
-  </div>
-
-  <table>
-    <tr><th>Metric</th><th>Value</th></tr>
-    <tr><td>Hand L2</td><td>31-33mm</td></tr>
-    <tr><td>Object L2</td><td>32-34mm</td></tr>
-    <tr><td>Contact BCE</td><td>0.247</td></tr>
-    <tr><td>Pointer CE</td><td>1.53</td></tr>
-    <tr><td>Contact points per frame</td><td>0, 23, 69, 82</td></tr>
-  </table>
-
-  <div class="info">
-    Contact head trains alongside trajectory heads. The bowl grasping sequence provides a natural progression from no-contact to full-grasp frames, validating the contact prediction pathway.
-  </div>
-
-  <!-- Section 9: NLF -->
-  <h2 id="nlf">9. NLF Query Overfit <span class="badge badge-pass">BEST RESULT</span></h2>
-
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Setup</span>
-      <span class="meta-value">Barycentric surface sampling (NLF-style), Fourier encoding, 4 frames, 500 steps</span>
-      <span class="meta-label">Innovation</span>
-      <span class="meta-value">Sample query points on mesh surface via barycentric coordinates instead of FPS on vertices</span>
-    </div>
-  </div>
-
-  <div class="panel">
-    <img src="assets/2026-04-14-session/nlf_bary_geometry_check.png" alt="NLF barycentric geometry check">
-    <p class="caption">NLF barycentric query point sampling diagnostic: surface points (blue) vs FPS vertices (red)</p>
-  </div>
-
-  <table>
-    <tr><th>Frame</th><th>Hand L2 (NLF)</th><th>Hand L2 (FPS)</th><th>Object L2 (NLF)</th></tr>
-    <tr><td>0</td><td style="color: #27ae60; font-weight: 600;">7.9mm</td><td>20mm</td><td>8mm</td></tr>
-    <tr><td>1</td><td style="color: #27ae60; font-weight: 600;">7.9mm</td><td>20mm</td><td>9mm</td></tr>
-    <tr><td>2</td><td style="color: #e67e22;">33.6mm</td><td>22mm</td><td>8mm</td></tr>
-    <tr><td>3</td><td>15.9mm</td><td>20mm</td><td>9mm</td></tr>
-  </table>
-
-  <div class="summary-grid" style="grid-template-columns: 1fr 1fr;">
-    <div class="summary-card" style="border: 2px solid #27ae60;">
-      <div class="caption">NLF Barycentric (Best Frame)</div>
-      <div class="big-number metric-green">7.9mm</div>
-      <div>Hand L2</div>
-    </div>
-    <div class="summary-card">
-      <div class="caption">FPS Baseline</div>
-      <div class="big-number">20mm</div>
-      <div>Hand L2</div>
-    </div>
-  </div>
-
-  <div class="highlight">
-    <strong>NLF barycentric sampling outperforms FPS: 8mm vs 20mm hand L2.</strong> Surface sampling provides better coverage of the mesh geometry than vertex-only FPS, leading to 2.5x better hand trajectory prediction in the best frames.
-  </div>
-
-  <!-- Section 10: Full Sequence -->
-  <h2 id="fullseq">10. Full-Sequence Training (72 Frames, 2000 Steps)</h2>
-
-  <div class="meta-box">
-    <div class="meta-grid">
-      <span class="meta-label">Setup</span>
-      <span class="meta-value">72 frames, 2000 steps, random 4-frame sampling per step</span>
-      <span class="meta-label">ACP Job</span>
-      <span class="meta-value"><code>pt-989nmeqd</code></span>
-    </div>
-  </div>
-
-  <table>
-    <tr><th>Step</th><th>Hand L2 (mm)</th><th>Object L2 (mm)</th></tr>
-    <tr><td>200</td><td>241.5</td><td>124.6</td></tr>
-    <tr><td>600</td><td>228.8</td><td>77.6</td></tr>
-    <tr><td>1000</td><td>207.0</td><td style="color: #27ae60;">29.5</td></tr>
-    <tr><td>1400</td><td>192.7</td><td>52.0</td></tr>
-    <tr><td>2000</td><td style="color: #e53935;">190.1</td><td>37.1</td></tr>
-  </table>
-
-  <div class="summary-grid" style="grid-template-columns: 1fr 1fr;">
-    <div class="summary-card" style="border: 2px solid #e53935;">
-      <div class="caption">Hand L2 Trajectory</div>
-      <div class="big-number metric-red">190mm</div>
-      <div>Stuck &mdash; does not learn from images</div>
-      <div class="caption">241 &rarr; 190mm in 2000 steps (21% reduction)</div>
-    </div>
-    <div class="summary-card" style="border: 2px solid #27ae60;">
-      <div class="caption">Object L2 Trajectory</div>
-      <div class="big-number metric-green">37mm</div>
-      <div>Learns well from images</div>
-      <div class="caption">125 &rarr; 37mm in 2000 steps (70% reduction)</div>
-    </div>
-  </div>
-
-  <div class="error">
-    <strong>Hand is stuck at ~190mm.</strong> Object L2 drops 70% (125 &rarr; 37mm), confirming the pipeline works for rigid objects. Hand only drops 21% and plateaus early. The hand trajectory head cannot extract articulation information from image tokens through the current attention mechanism.
-  </div>
-
-  <!-- Section 11: Findings -->
-  <h2 id="findings">11. Key Findings</h2>
-
-  <ol class="findings-list">
-    <li>
-      <span class="badge badge-finding">FINDING</span>
-      <strong> Object trajectory generalizes perfectly across frames</strong> (16mm train &asymp; 16mm test, +0.5mm gap). Rigid SE(3) is easy to learn from image features.
-    </li>
-    <li>
-      <span class="badge badge-critical">CRITICAL</span>
-      <strong> Hand trajectory memorizes instead of learning from images</strong> (20mm train vs 185mm test, +164mm gap). Even with 72 frames and 2000 steps, hand L2 stays at 190mm. The hand branch ignores image tokens entirely.
-    </li>
-    <li>
-      <span class="badge badge-critical">CRITICAL</span>
-      <strong> No scene losses in training &rarr; scene reconstruction collapses.</strong> Scene std drops from 1.240 (200 steps) to 0.243 (500 steps). Root cause: shared global attention lets DCF optimization corrupt visual tokens without any scene loss to push back.
-    </li>
-    <li>
-      <span class="badge badge-warn">WARNING</span>
-      <strong> GPS encoding causes complete hand collapse</strong> (spread=0) and scene corruption (5x range compression). GPS distillation quality too poor for use.
-    </li>
-    <li>
-      <span class="badge badge-pass">POSITIVE</span>
-      <strong> NLF-style barycentric surface sampling outperforms FPS:</strong> 8mm vs 20mm hand L2 in 4-frame overfit. 2.5x improvement.
-    </li>
-    <li>
-      <span class="badge badge-warn">WARNING</span>
-      <strong> Predicted hand points lose geometric structure</strong> (collapse to curves). GT warp is correct &mdash; the issue is in prediction, not supervision.
-    </li>
-    <li>
-      <span class="badge badge-fix">FIX</span>
-      <strong> Coordinate alignment:</strong> GT must be in camera space (STream3R world W), not DexYCB extrinsic world.
-    </li>
-    <li>
-      <span class="badge badge-fix">FIX</span>
-      <strong> DCFBranch head_input_dim=1024</strong> (extra tokens at embed_dim), not 2048 (only visual tokens get 2x concat).
-    </li>
-  </ol>
-
-  <!-- Section 12: Module State -->
-  <h2 id="modules">12. Training Modules State</h2>
-
-  <table>
-    <tr><th>Module</th><th>Status</th><th>Params</th></tr>
-    <tr><td>STream3R encoder (patch_embed + frame_blocks)</td><td><span class="badge" style="background: #95a5a6;">frozen</span></td><td>~603M</td></tr>
-    <tr><td>STream3R decoder (global_blocks)</td><td><span class="badge badge-pass">optimized</span></td><td>~302M</td></tr>
-    <tr><td>Scene heads (point, camera, depth)</td><td><span class="badge badge-fail">frozen (NO LOSS!)</span></td><td>~281M</td></tr>
-    <tr><td>DCF hand point encoder (Fourier)</td><td><span class="badge badge-pass">optimized</span></td><td>~1M</td></tr>
-    <tr><td>DCF object point encoder (Fourier)</td><td><span class="badge badge-pass">optimized</span></td><td>~1M</td></tr>
-    <tr><td>DCF hand trajectory head (MLP)</td><td><span class="badge badge-pass">optimized</span></td><td>~1M</td></tr>
-    <tr><td>DCF object trajectory head (MLP)</td><td><span class="badge badge-pass">optimized</span></td><td>~1M</td></tr>
-    <tr><td>DCF contact head (cross-attn+MLP)</td><td><span class="badge badge-pass">optimized</span></td><td>~4M</td></tr>
-    <tr><td>Pose readout (Kabsch/Procrustes)</td><td><span class="badge" style="background: #95a5a6;">analytical</span></td><td>0</td></tr>
-  </table>
-
-  <div class="warning">
-    <strong>Loss design gap:</strong> Only trajectory L1 (hand + obj) + contact BCE + pointer CE. <strong>No scene losses</strong> (point cloud, camera, depth). This is the root cause of scene collapse.
-  </div>
-
-  <p><strong>Coordinate space:</strong> Camera space = STream3R world W (first-frame camera)</p>
-
-  <!-- Section 13: Commits -->
-  <h2 id="commits">13. Code Changes (26 Commits)</h2>
-
-  <table>
-    <tr><th>Commit</th><th>Message</th><th>Key Files</th></tr>
-    <tr><td><code>815d285</code></td><td>chore: add DCF third-party repos to gitignore</td><td>.gitignore</td></tr>
-    <tr><td><code>6298edb</code></td><td>feat(dcf): add trajectory prediction head</td><td>dcf_trajectory_head.py</td></tr>
-    <tr><td><code>43988e6</code></td><td>feat(dcf): add canonical point encoder</td><td>dcf_point_encoder.py</td></tr>
-    <tr><td><code>4f5a340</code></td><td>feat(dcf): add data utilities</td><td>dcf_data_utils.py</td></tr>
-    <tr><td><code>04df1a0</code></td><td>feat(dcf): add losses</td><td>dcf_losses.py</td></tr>
-    <tr><td><code>c17118e</code></td><td>feat(dcf): add contact head</td><td>dcf_contact_head.py</td></tr>
-    <tr><td><code>28025eb</code></td><td>feat(dcf): add pose readout</td><td>dcf_pose_readout.py</td></tr>
-    <tr><td><code>8d0413a</code></td><td>feat(dcf): add DCFBranch</td><td>dcf_branch.py</td></tr>
-    <tr><td><code>633f01d</code></td><td>feat(dcf): wire into STream3R</td><td>stream3r.py, hoi_mesh_branch.py</td></tr>
-    <tr><td><code>b066ccb</code></td><td>feat(dcf): wire losses into CausalLoss</td><td>losses.py</td></tr>
-    <tr><td><code>c250169</code></td><td>test(dcf): add E2E smoke test</td><td>test_dcf_smoke.py</td></tr>
-    <tr><td><code>cdde81f</code></td><td>feat(dcf): Hydra configs</td><td>dcf_smoke.yaml, dcf_overfit.yaml</td></tr>
-    <tr><td><code>d867a68</code></td><td>feat(dcf): overfit training script</td><td>dcf_overfit.py</td></tr>
-    <tr><td><code>f87b5ab</code></td><td>feat(dcf): Phase 1 real DexYCB overfit</td><td>dcf_overfit.py</td></tr>
-    <tr><td><code>39c3f04</code></td><td>feat(dcf): Phase 1a coordinate-aligned overfit</td><td>dcf_stream3r_overfit_v2.py</td></tr>
-    <tr><td><code>8ff7ff1</code></td><td>feat(dcf): full STream3R pipeline overfit</td><td>dcf_stream3r_overfit.py</td></tr>
-    <tr><td><code>46025d2</code></td><td>feat(dcf): MANO GPS field encoding</td><td>mano_gps_field.py</td></tr>
-    <tr><td><code>9109e3e</code></td><td>chore: gitignore GPS data files</td><td>.gitignore</td></tr>
-    <tr><td><code>e378fb0</code></td><td>feat(dcf): camera-view RGB visualization</td><td>dcf_render_camera_view.py</td></tr>
-    <tr><td><code>8e80c21</code></td><td>feat(dcf): NLF-style barycentric sampling</td><td>dcf_query_sampling.py, dcf_mano_supervision.py</td></tr>
-    <tr><td><code>440f555</code></td><td>feat(dcf): pose readout losses</td><td>dcf_pose_losses.py</td></tr>
-    <tr><td><code>b1c6f3b</code></td><td>feat(dcf): generalization test script</td><td>dcf_generalization_test.py</td></tr>
-    <tr><td><code>492d437</code></td><td>feat(dcf): contact survey + 2D reproj loss</td><td>find_contact_sequences.py</td></tr>
-    <tr><td><code>486a222</code></td><td>feat(dcf): NLF query sampling overfit script</td><td>dcf_nlf_query_overfit.py</td></tr>
-    <tr><td><code>4916cc2</code></td><td>feat(dcf): full-sequence training script</td><td>dcf_full_sequence_train.py</td></tr>
-  </table>
-
-  <!-- Section 14: Next Steps -->
-  <h2 id="nextsteps">14. Open Issues &amp; Next Steps</h2>
-
-  <table>
-    <tr><th>Priority</th><th>Task</th><th>Details</th></tr>
-    <tr style="background: #fce4ec;">
-      <td><strong>P0</strong></td>
-      <td>Add STream3R scene losses</td>
-      <td>Root cause of scene collapse. Must add point cloud + camera + depth losses alongside DCF losses to prevent shared attention corruption.</td>
-    </tr>
-    <tr style="background: #fce4ec;">
-      <td><strong>P0</strong></td>
-      <td>Fix hand geometry collapse</td>
-      <td>Predicted hand points lose geometric structure. Possible fix: predict displacement from canonical position instead of absolute position.</td>
-    </tr>
-    <tr style="background: #fce4ec;">
-      <td><strong>P0</strong></td>
-      <td>Fix shared attention corruption</td>
-      <td>DCF tokens corrupt visual tokens through shared global attention. Options: freeze global_blocks, detach visual tokens from DCF gradient, or use separate attention streams.</td>
-    </tr>
-    <tr style="background: #fff3e0;">
-      <td><strong>P1</strong></td>
-      <td>GPS encoding fix</td>
-      <td>Reduce eigenvector dim (1024 &rarr; 128), add LayerNorm, or use exact eigenvectors at mesh vertices instead of distilled MLP.</td>
-    </tr>
-    <tr style="background: #fff3e0;">
-      <td><strong>P1</strong></td>
-      <td>Multi-sequence training</td>
-      <td>Currently single-sequence. Need dataset-level training to force image conditioning.</td>
-    </tr>
-    <tr>
-      <td><strong>P2</strong></td>
-      <td>Baseline comparisons</td>
-      <td>Run HaWoR, FoundationPose on same DexYCB test sets for paper.</td>
-    </tr>
-    <tr>
-      <td><strong>P2</strong></td>
-      <td>Paper writing</td>
-      <td>Method section, experiment design for NeurIPS 2026.</td>
-    </tr>
-  </table>
-
-  <div class="info">
-    <strong>Architecture diagnosis summary:</strong> The DCF pipeline fundamentally works for rigid objects (object generalizes perfectly). The hand failure is an <em>attention/conditioning</em> problem, not a representation problem. The hand trajectory head receives image tokens through shared global attention but learns to ignore them because memorization is an easier optimization path for 4-frame overfit. Fixing this requires: (1) scene losses to prevent attention corruption, (2) multi-sequence training to force image dependence, and (3) possibly architectural changes to the hand trajectory head.
-  </div>
-
-  <hr style="margin-top: 40px; border: none; border-top: 1px solid #ddd;">
-  <p style="color: #999; font-size: 0.85em; text-align: center;">
-    Generated on 2026-04-14 &middot; Branch: feat/dcf &middot; 26 commits &middot; 9 experiments
-  </p>
+<h1>Session Summary &mdash; 2026-04-14</h1>
+<p><strong>Goal:</strong> Implement Dynamic Correspondence Fields (DCF) architecture replacing Trellis.2, validate through overfit experiments, identify and fix bugs.</p>
+
+<div class="meta-box">
+<div class="meta-grid">
+<span class="meta-label">Date:</span><span class="meta-value">2026-04-14</span>
+<span class="meta-label">Branch:</span><span class="meta-value">feat/dcf</span>
+<span class="meta-label">Commits:</span><span class="meta-value">30+ commits (815d285 &hellip; e803152)</span>
+<span class="meta-label">Experiments:</span><span class="meta-value">16 experiments run</span>
+<span class="meta-label">ACP Jobs:</span><span class="meta-value">12+ SPOT GPU jobs submitted</span>
+<span class="meta-label">Tests:</span><span class="meta-value">62+ smoke tests, all passing</span>
+</div>
+</div>
+
+<div class="error">
+<strong>CRITICAL BUG FOUND &amp; FIXED:</strong> The original "good" hand result (13mm L2) was an artifact of including frames with zero hand pose (GT at origin). True camera-space hand L2 is ~34mm with frozen global_blocks. MANO FK already outputs camera-space vertices &mdash; do NOT add joint_3d root.
+</div>
+
+<div class="toc">
+<strong>Contents</strong>
+<ul>
+<li><a href="#arch">1. Architecture: DCF Design</a></li>
+<li><a href="#experiments">2. All Experiments</a></li>
+<li><a href="#bugs">3. Critical Bugs Found</a></li>
+<li><a href="#findings">4. Key Findings</a></li>
+<li><a href="#commits">5. Code Changes</a></li>
+<li><a href="#modules">6. Training Modules State</a></li>
+<li><a href="#next">7. Next Steps</a></li>
+</ul>
+</div>
+
+<h2 id="arch">1. Architecture: Dynamic Correspondence Fields</h2>
+
+<p>DCF replaces Trellis.2 Structured Latents. Instead of voxel-based encoding, canonical hand/object surface points are encoded as tokens, injected into STream3R's decoder via global attention, and decoded to 3D trajectories.</p>
+
+<table>
+<tr><th>Component</th><th>Description</th><th>Status</th></tr>
+<tr><td>STream3R encoder</td><td>Patch embed + frame blocks</td><td>Frozen (pretrained)</td></tr>
+<tr><td>STream3R decoder</td><td>Global attention blocks</td><td><strong>Frozen</strong> (best setting)</td></tr>
+<tr><td>Scene heads</td><td>Point cloud, camera, depth</td><td>Frozen</td></tr>
+<tr><td>Hand point encoder</td><td>Fourier positional encoding &rarr; MLP</td><td>Trained (random init)</td></tr>
+<tr><td>Object point encoder</td><td>Fourier positional encoding &rarr; MLP</td><td>Trained (random init)</td></tr>
+<tr><td>Hand trajectory head</td><td>MLP: decoder tokens &rarr; 3D positions</td><td>Trained (random init)</td></tr>
+<tr><td>Object trajectory head</td><td>MLP: decoder tokens &rarr; 3D positions</td><td>Trained (random init)</td></tr>
+<tr><td>Contact head</td><td>Cross-attention + MLP</td><td>Trained (random init)</td></tr>
+</table>
+
+<h2 id="experiments">2. All Experiments</h2>
+
+<table>
+<tr><th>#</th><th>Experiment</th><th>Steps</th><th>Hand L2</th><th>Obj L2</th><th>Finding</th></tr>
+<tr><td>1</td><td>Phase 0: Implementation (62 tests)</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td><span class="badge badge-pass">ALL PASS</span></td></tr>
+<tr><td>2</td><td>Simulated decoder overfit</td><td>200</td><td colspan="2">98.7% loss reduction</td><td>Pipeline works</td></tr>
+<tr><td>3</td><td>Full STream3R + DCF (train global, frames 0-15)</td><td>200</td><td>13mm*</td><td>20mm</td><td><span class="badge badge-fail">ARTIFACT</span> invalid frames</td></tr>
+<tr><td>4</td><td>GPS encoding attempt</td><td>200</td><td>51mm</td><td>31mm</td><td><span class="badge badge-fail">COLLAPSED</span> spread=0</td></tr>
+<tr><td>5</td><td>ACP overfit 500 (train global)</td><td>500</td><td>21mm*</td><td>13mm</td><td>Scene degraded (std 0.62)</td></tr>
+<tr><td>6</td><td>ACP generalization (train/test split)</td><td>500</td><td>185mm test</td><td>16mm</td><td><span class="badge badge-finding">Hand memorizes</span></td></tr>
+<tr><td>7</td><td>ACP contact overfit (bowl)</td><td>500</td><td>32mm</td><td>33mm</td><td>Contact learning works</td></tr>
+<tr><td>8</td><td>NLF barycentric query overfit</td><td>500</td><td>8mm*</td><td>9mm</td><td>Bary &gt; FPS (but old coords)</td></tr>
+<tr><td>9</td><td>Full-sequence 72 frames</td><td>2000</td><td>190mm</td><td>37mm</td><td>Hand doesn't generalize</td></tr>
+<tr><td>10</td><td>Scene distillation loss overfit</td><td>500</td><td>74mm</td><td>36mm</td><td>Scene preserved (std 1.53)</td></tr>
+<tr><td>11</td><td>Scene distillation full-seq</td><td>2000</td><td>207mm</td><td>75mm</td><td>Scene ok, hand still bad</td></tr>
+<tr><td>12</td><td>Frozen global + canonical_dim (old coords)</td><td>500</td><td>10mm*</td><td>12mm</td><td>*Wrong coord space</td></tr>
+<tr><td>13</td><td>Fixed hand root addition (wrong fix)</td><td>500</td><td>32mm</td><td>12mm</td><td><span class="badge badge-fail">Double-counted</span> root</td></tr>
+<tr style="background:#e8f5e9"><td>14</td><td><strong>Frozen global, correct coords, 200 steps</strong></td><td>200</td><td><strong>32mm</strong></td><td>18mm</td><td>Correct baseline</td></tr>
+<tr style="background:#e8f5e9"><td>15</td><td><strong>Frozen global, no canonical_dim, 500 steps</strong></td><td>500</td><td><strong>34mm</strong></td><td>11mm</td><td>Best verified result</td></tr>
+<tr><td>16</td><td>Reproduce original (train global, frames 10+)</td><td>200</td><td>52mm</td><td>23mm</td><td>Original was artifact</td></tr>
+</table>
+<p><em>* Results marked with asterisk were measured before coordinate bugs were fixed and are not reliable.</em></p>
+
+<h2 id="bugs">3. Critical Bugs Found &amp; Fixed</h2>
+
+<div class="panel">
+<h3><span class="badge badge-fail">BUG 1</span> Frames 0,5 have zero hand pose</h3>
+<p>DexYCB frames 0 and 5 in sequence <code>20200709-subject-01/20200709_141754</code> have <code>pose_m</code> all zeros (hand not visible). MANO FK produces T-pose vertices near origin. Including these frames as GT gave artificially low L2 (13mm average = 2mm easy + 24mm real).</p>
+<p><strong>Fix:</strong> Use <code>--start-frame 10</code> to skip frames without valid hand pose.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fail">BUG 2</span> MANO FK already outputs camera-space vertices</h3>
+<p><code>_default_hand_mesh_provider()</code> runs MANO FK with <code>global_orient</code> + <code>transl</code> from DexYCB <code>pose_m</code>. The output vertices ARE in camera space (Z&asymp;0.85m). An incorrect "fix" added <code>joint_3d[0]</code> as root translation, double-counting it (Z went to 1.75m).</p>
+<p><strong>Fix:</strong> <code>hand_verts_ct = hand_mesh.vertices</code> &mdash; no root addition needed.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fix">BUG 3</span> canonical_dim=3 enables shortcut</h3>
+<p>Concatenating canonical 3D coordinates to the trajectory head MLP allows it to learn <code>pred &asymp; R @ canonical + t</code>, bypassing decoder/image features entirely.</p>
+<p><strong>Fix:</strong> Removed <code>canonical_dim=3</code>. MLP uses decoder tokens only.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fix">BUG 4</span> GPS distillation too poor for use</h3>
+<p>GPS encoding (LBO eigenvectors) distillation had val_loss=1978. All canonical points got nearly identical embeddings &rarr; hand predictions collapsed (spread=0), scene corrupted via shared attention.</p>
+<p><strong>Fix:</strong> Deferred GPS, use Fourier encoding as default.</p>
+</div>
+
+<h2 id="findings">4. Key Findings</h2>
+
+<div class="panel">
+<h3><span class="badge badge-finding">FINDING</span> Object generalizes, hand memorizes</h3>
+<p>Generalization test: object 16mm on both train and test frames. Hand: 20mm train vs 185mm test. Rigid SE(3) is easy; articulated hand deformation is hard.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-finding">FINDING</span> Shared attention corruption</h3>
+<p>Training global_blocks with DCF losses corrupts visual tokens. Scene std drops from 1.24 (pretrained) to 0.24 (500 steps). Freezing global_blocks prevents this.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-finding">FINDING</span> Frozen global_blocks is best current approach</h3>
+<p>Hand 34mm, Obj 11mm, Scene preserved (std 0.98). Predictions DO vary across frames (tracking hand motion), confirming image features are being used despite frozen attention.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-finding">FINDING</span> Prediction frame differences match GT</h3>
+<p>Pred diff between frames closely matches GT diff (correlation &gt;0.96). The model IS using image features to track hand motion, not just memorizing.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-pass">FINDING</span> NLF barycentric sampling outperforms FPS</h3>
+<p>Random surface sampling (240 pts + 16 joints per step) gave 8mm vs FPS 20mm in overfit. Better surface coverage and per-step variation helps, though measured before coord fix.</p>
+</div>
+
+<h2 id="commits">5. Code Changes (key commits)</h2>
+
+<table>
+<tr><th>Commit</th><th>Message</th></tr>
+<tr><td><code>815d285</code></td><td>chore: add DCF third-party repos to gitignore</td></tr>
+<tr><td><code>6298edb..cdde81f</code></td><td>feat(dcf): 12 implementation commits (all modules + tests + configs)</td></tr>
+<tr><td><code>f87b5ab</code></td><td>feat(dcf): Phase 1 real DexYCB overfit</td></tr>
+<tr><td><code>39c3f04</code></td><td>feat(dcf): Phase 1a coordinate-aligned overfit</td></tr>
+<tr><td><code>46025d2</code></td><td>feat(dcf): MANO GPS field encoding (deferred)</td></tr>
+<tr><td><code>8e80c21</code></td><td>feat(dcf): NLF-style barycentric surface sampling</td></tr>
+<tr><td><code>440f555</code></td><td>feat(dcf): differentiable pose readout losses</td></tr>
+<tr><td><code>efec67a</code></td><td>fix(dcf): canonical-conditioned trajectory head</td></tr>
+<tr><td><code>483d6ea</code></td><td>fix(dcf): CRITICAL &mdash; hand GT coordinate space (wrong, later reverted)</td></tr>
+<tr><td><code>cdb6795</code></td><td>fix(dcf): revert hand root &mdash; MANO FK already camera-space</td></tr>
+<tr><td><code>e803152</code></td><td>fix(dcf): remove canonical_dim=3 shortcut</td></tr>
+</table>
+
+<h2 id="modules">6. Training Modules State (Final)</h2>
+
+<table>
+<tr><th>Module</th><th>Status</th><th>Notes</th></tr>
+<tr><td>STream3R encoder</td><td>Frozen</td><td>Pretrained, never changed</td></tr>
+<tr><td>STream3R decoder (global_blocks)</td><td><strong>Frozen</strong></td><td>Must freeze to prevent scene corruption</td></tr>
+<tr><td>Scene heads</td><td>Frozen</td><td>No scene loss implemented yet</td></tr>
+<tr><td>DCF point encoders (Fourier)</td><td>Trained</td><td>Random init, lr=1e-3</td></tr>
+<tr><td>DCF trajectory heads (MLP)</td><td>Trained</td><td>No canonical_dim, decoder tokens only</td></tr>
+<tr><td>DCF contact head</td><td>Trained</td><td>Cross-attention + pointer</td></tr>
+</table>
+
+<p><strong>Loss:</strong> L1 trajectory (hand + object) + contact BCE + pointer CE</p>
+<p><strong>Coordinates:</strong> MANO FK output = camera space. No root addition.</p>
+<p><strong>Frames:</strong> Skip frames with zero pose_m (start_frame=10)</p>
+
+<h2 id="next">7. Next Steps</h2>
+
+<table>
+<tr><th>Priority</th><th>Task</th><th>Details</th></tr>
+<tr><td><b>P0</b></td><td>Add real DexYCB scene losses</td><td>Use RGB-D depth + camera GT (not distillation). Follow STream3R dataloader. This allows training global_blocks without corruption.</td></tr>
+<tr><td><b>P0</b></td><td>Train global_blocks WITH scene loss</td><td>The 200-step "good" result showed training decoder helps early. With scene loss to prevent drift, longer training should work.</td></tr>
+<tr><td><b>P0</b></td><td>Generalization test with frozen global</td><td>Does the 34mm overfit generalize to unseen frames?</td></tr>
+<tr><td><b>P1</b></td><td>NLF barycentric + correct coords</td><td>Rerun barycentric sampling with verified coordinates</td></tr>
+<tr><td><b>P1</b></td><td>2D reprojection loss</td><td>Additional supervision from image-plane alignment</td></tr>
+<tr><td><b>P1</b></td><td>Full-sequence with frozen global</td><td>72 frames, random sampling, frozen decoder</td></tr>
+<tr><td><b>P2</b></td><td>Multi-sequence training</td><td>Multiple DexYCB sequences</td></tr>
+<tr><td><b>P2</b></td><td>Baseline comparisons</td><td>HaWoR, FoundationPose</td></tr>
+</table>
+
+<h2>Published Experiment Pages</h2>
+<ul>
+<li><a href="2026-04-11-dcf-phase1-dexycb-overfit.html">Phase 1 overfit (simulated decoder)</a></li>
+<li><a href="2026-04-11-dcf-phase1a-stream3r-overfit.html">Phase 1a full pipeline</a></li>
+<li><a href="2026-04-14-dcf-camera-view-visualization.html">Camera-view RGB visualization</a></li>
+<li><a href="2026-04-14-dcf-experiment-batch.html">Experiment batch (overfit + generalization)</a></li>
+<li><a href="2026-04-14-dcf-comprehensive-comparison.html">Comprehensive comparison (all experiments)</a></li>
+</ul>
 
 </body>
 </html>
