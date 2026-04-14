@@ -48,6 +48,8 @@
   "outputs": {
     "html": "index.html",
     "images_dir": "images",
+    "world_hand_object_video": "images/world_hand_object_hawor_world.mp4",
+    "camera_overlay_video": "images/camera_overlay_hand_object.mp4",
     "summary_json": "summary.json",
     "per_sequence_json": "per_sequence.json",
     "skipped_json": "skipped.json"

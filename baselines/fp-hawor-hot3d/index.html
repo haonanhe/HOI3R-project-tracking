@@ -16,6 +16,7 @@
     .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .card { margin: 0; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; background: rgba(255,255,255,0.02); }
     .card img { display: block; width: 100%; height: auto; }
+    .card video { display: block; width: 100%; height: auto; background: #020617; }
     .card figcaption { padding: 10px 12px 12px; color: #94a3b8; line-height: 1.5; }
     code { color: #fde68a; }
   </style>
@@ -69,6 +70,11 @@
         <thead><tr><th>Sequence</th><th>Object</th><th>Frames</th><th>object_translation_cm</th><th>Interpolated Frames</th></tr></thead>
         <tbody><tr><td>P0001_4bf4e21a</td><td>aria_small</td><td>5</td><td>40.9759</td><td>1</td></tr></tbody>
       </table>
+    </section>
+    <section>
+      <h2>Videos</h2>
+      <p class="muted">Four interaction-selected frames rendered at 1.5 fps. World-space video uses HaWoR canonical world coordinates; overlay video shows hand/object projections in the camera image.</p>
+      <div class="gallery"><figure class='card'><video controls preload='metadata' src='images/world_hand_object_hawor_world.mp4'></video><figcaption><strong>P0001_4bf4e21a</strong><br><span>Video · HaWoR world hand/object · aria_small</span></figcaption></figure><figure class='card'><video controls preload='metadata' src='images/camera_overlay_hand_object.mp4'></video><figcaption><strong>P0001_4bf4e21a</strong><br><span>Video · camera overlay hand/object · aria_small</span></figcaption></figure></div>
     </section>
     <section>
       <h2>Visualization Gallery</h2>
