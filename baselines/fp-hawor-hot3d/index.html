@@ -24,32 +24,32 @@
 <body>
   <main>
     <h1>FoundationPose + HOT3D World-Hand Simple</h1>
-    <p class="muted">Generated 2026-04-14 06:42:50 UTC. This page publishes the fused HOT3D simple lane from the repo-owned runner. World frame: <code>hawor_world</code>. Visualizations are interaction-biased (frames selected by smallest hand↔object distance) and object meshes are downsampled in time to reduce overlap.</p>
+    <p class="muted">Generated 2026-04-14 07:59:09 UTC. This page publishes the fused HOT3D simple lane from the repo-owned runner. World frame: <code>hawor_world</code>. Visualizations are interaction-biased (frames selected by smallest hand↔object distance) and object meshes are downsampled in time to reduce overlap.</p>
     <section>
       <h2>Metrics</h2>
       <table><tbody>
         <tr><th>hand_world_root_err_mm</th><td>0.0000</td></tr>
-        <tr><th>object_translation_cm</th><td>40.9759</td></tr>
-        <tr><th>fused_temporal_position_delta</th><td>0.3469</td></tr>
+        <tr><th>object_translation_cm</th><td>241.8582</td></tr>
+        <tr><th>fused_temporal_position_delta</th><td>0.0104</td></tr>
       </tbody></table>
     </section>
     <section>
       <h2>Benchmark Metrics</h2>
       <table><tbody>
-        <tr><th>mpjpe_mm</th><td>164.2060</td></tr>
-        <tr><th>mpjpe_root_mm</th><td>18.9648</td></tr>
-        <tr><th>mpjpe_pa_mm</th><td>5.9681</td></tr>
-        <tr><th>mpjpe_2d_px</th><td>147.4518</td></tr>
+        <tr><th>mpjpe_mm</th><td>169.0738</td></tr>
+        <tr><th>mpjpe_root_mm</th><td>12.3285</td></tr>
+        <tr><th>mpjpe_pa_mm</th><td>4.7485</td></tr>
+        <tr><th>mpjpe_2d_px</th><td>166.8863</td></tr>
         <tr><th>auc</th><td>0.0000</td></tr>
         <tr><th>detection_rate</th><td>1.0000</td></tr>
         <tr><th>success_rate</th><td>1.0000</td></tr>
         <tr><th>fscore_5mm</th><td>0.0000</td></tr>
-        <tr><th>fscore_15mm</th><td>0.0000</td></tr>
-        <tr><th>OBJ_rot_err_deg</th><td>138.2335</td></tr>
-        <tr><th>OBJ_trans_err</th><td>0.3374</td></tr>
-        <tr><th>OBJ_rot_orth_err</th><td>0.0000</td></tr>
-        <tr><th>OBJ_rot_det_err</th><td>0.0000</td></tr>
-        <tr><th>OBJ_detection_rate</th><td>1.0000</td></tr>
+        <tr><th>fscore_15mm</th><td>0.0007</td></tr>
+        <tr><th>OBJ_rot_err_deg</th><td>133.9505</td></tr>
+        <tr><th>OBJ_trans_err</th><td>0.6969</td></tr>
+        <tr><th>OBJ_rot_orth_err</th><td>0.4727</td></tr>
+        <tr><th>OBJ_rot_det_err</th><td>1.5273</td></tr>
+        <tr><th>OBJ_detection_rate</th><td>0.5273</td></tr>
       </tbody></table>
     </section>
     <section>
@@ -58,23 +58,23 @@
         <tr><th>total_candidates</th><td>1</td></tr>
         <tr><th>evaluated_sequences</th><td>1</td></tr>
         <tr><th>skipped_sequences</th><td>0</td></tr>
-        <tr><th>total_frames</th><td>5</td></tr>
-        <tr><th>gt_frames</th><td>5</td></tr>
-        <tr><th>matched_frames</th><td>5</td></tr>
-        <tr><th>object_interpolated_frames</th><td>1</td></tr>
+        <tr><th>total_frames</th><td>55</td></tr>
+        <tr><th>gt_frames</th><td>55</td></tr>
+        <tr><th>matched_frames</th><td>55</td></tr>
+        <tr><th>object_interpolated_frames</th><td>26</td></tr>
       </tbody></table>
     </section>
     <section>
       <h2>Sequences</h2>
       <table>
         <thead><tr><th>Sequence</th><th>Object</th><th>Frames</th><th>object_translation_cm</th><th>Interpolated Frames</th></tr></thead>
-        <tbody><tr><td>P0001_4bf4e21a</td><td>aria_small</td><td>5</td><td>40.9759</td><td>1</td></tr></tbody>
+        <tbody><tr><td>P0001_4bf4e21a</td><td>aria_small</td><td>55</td><td>241.8582</td><td>26</td></tr></tbody>
       </table>
     </section>
     <section>
       <h2>Videos</h2>
-      <p class="muted">Four interaction-selected frames rendered at 1.5 fps. World-space video uses HaWoR canonical world coordinates; overlay video shows hand/object projections in the camera image.</p>
-      <div class="gallery"><figure class='card'><video controls preload='metadata' src='images/world_hand_object_hawor_world.mp4'></video><figcaption><strong>P0001_4bf4e21a</strong><br><span>Video · HaWoR world hand/object · aria_small</span></figcaption></figure><figure class='card'><video controls preload='metadata' src='images/camera_overlay_hand_object.mp4'></video><figcaption><strong>P0001_4bf4e21a</strong><br><span>Video · camera overlay hand/object · aria_small</span></figcaption></figure></div>
+      <p class="muted">Source clip requested 100 input frames. HaWoR produced 55 hand-valid frames; the videos show the 29 object-known frames from 000051 to 000079 at 5 fps. The HaWoR-world video uses one fixed 3D axis scale across all frames.</p>
+      <div class="gallery"><figure class='card'><video controls preload='metadata' src='images/world_hand_object_hawor_world_100f_fixedscale.mp4'></video><figcaption><strong>P0001_4bf4e21a</strong><br><span>Video · fixed-scale HaWoR world hand/object · aria_small</span></figcaption></figure><figure class='card'><video controls preload='metadata' src='images/camera_overlay_hand_object_100f.mp4'></video><figcaption><strong>P0001_4bf4e21a</strong><br><span>Video · camera overlay hand/object · aria_small</span></figcaption></figure></div>
     </section>
     <section>
       <h2>Visualization Gallery</h2>
