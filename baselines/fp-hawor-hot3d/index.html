@@ -23,29 +23,51 @@
 <body>
   <main>
     <h1>FoundationPose + HOT3D World-Hand Simple</h1>
-    <p class="muted">Generated 2026-04-11 07:09:13 UTC. This page publishes the fused HOT3D simple lane from the repo-owned runner. World frame: <code>hawor_world</code>. Visualizations are interaction-biased (frames selected by smallest hand↔object distance) and object meshes are downsampled in time to reduce overlap.</p>
+    <p class="muted">Generated 2026-04-14 03:05:04 UTC. This page publishes the fused HOT3D simple lane from the repo-owned runner. World frame: <code>hawor_world</code>. Visualizations are interaction-biased (frames selected by smallest hand↔object distance) and object meshes are downsampled in time to reduce overlap.</p>
     <section>
       <h2>Metrics</h2>
       <table><tbody>
         <tr><th>hand_world_root_err_mm</th><td>0.0000</td></tr>
-        <tr><th>object_translation_cm</th><td>2607.4304</td></tr>
-        <tr><th>fused_temporal_position_delta</th><td>0.0771</td></tr>
+        <tr><th>object_translation_cm</th><td>1845.2032</td></tr>
+        <tr><th>fused_temporal_position_delta</th><td>0.0446</td></tr>
+      </tbody></table>
+    </section>
+    <section>
+      <h2>Benchmark Metrics</h2>
+      <table><tbody>
+        <tr><th>mpjpe_mm</th><td>158.0730</td></tr>
+        <tr><th>mpjpe_root_mm</th><td>25.9075</td></tr>
+        <tr><th>mpjpe_pa_mm</th><td>7.5094</td></tr>
+        <tr><th>mpjpe_2d_px</th><td>300.4639</td></tr>
+        <tr><th>auc</th><td>0.0252</td></tr>
+        <tr><th>detection_rate</th><td>1.0000</td></tr>
+        <tr><th>success_rate</th><td>1.0000</td></tr>
+        <tr><th>fscore_5mm</th><td>0.0255</td></tr>
+        <tr><th>fscore_15mm</th><td>0.1031</td></tr>
+        <tr><th>OBJ_rot_err_deg</th><td>126.6609</td></tr>
+        <tr><th>OBJ_trans_err</th><td>0.5357</td></tr>
+        <tr><th>OBJ_rot_orth_err</th><td>0.1768</td></tr>
+        <tr><th>OBJ_rot_det_err</th><td>0.1768</td></tr>
+        <tr><th>OBJ_detection_rate</th><td>0.8232</td></tr>
       </tbody></table>
     </section>
     <section>
       <h2>Counts</h2>
       <table><tbody>
+        <tr><th>total_candidates</th><td>1</td></tr>
         <tr><th>evaluated_sequences</th><td>1</td></tr>
         <tr><th>skipped_sequences</th><td>0</td></tr>
-        <tr><th>total_frames</th><td>41</td></tr>
-        <tr><th>object_interpolated_frames</th><td>27</td></tr>
+        <tr><th>total_frames</th><td>164</td></tr>
+        <tr><th>gt_frames</th><td>164</td></tr>
+        <tr><th>matched_frames</th><td>164</td></tr>
+        <tr><th>object_interpolated_frames</th><td>112</td></tr>
       </tbody></table>
     </section>
     <section>
       <h2>Sequences</h2>
       <table>
         <thead><tr><th>Sequence</th><th>Object</th><th>Frames</th><th>object_translation_cm</th><th>Interpolated Frames</th></tr></thead>
-        <tbody><tr><td>P0001_8d136980</td><td>cellphone</td><td>41</td><td>2607.4304</td><td>27</td></tr></tbody>
+        <tbody><tr><td>P0001_8d136980</td><td>cellphone</td><td>164</td><td>1845.2032</td><td>112</td></tr></tbody>
       </table>
     </section>
     <section>
