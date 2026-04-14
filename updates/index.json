@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-14 · DCF Camera-View Visualization: Scene + Hand + Object",
+    "date": "2026-04-14",
+    "status": "done",
+    "summary": "Camera-view RGB rendering of STream3R scene points with hand/object trajectory overlay. Compares Fourier encoding (hand 16.9mm L2) vs GPS encoding (hand 51.5mm L2). GPS needs more training.",
+    "path": "updates/2026-04-14-dcf-camera-view-visualization.html"
+  },
+  {
     "title": "2026-04-11 · DCF Phase 1a: STream3R + DCF Full Pipeline Overfit",
     "date": "2026-04-11",
     "status": "done",
