@@ -134,5 +134,29 @@ Must add camera-space root from <code>joint_3d[0]</code> to place hand in camera
 <strong>Hand is now in the correct coordinate space.</strong> Previous "good" hand results (10-13mm) were measuring distance in MANO local space (near origin), not actual camera-space accuracy. True camera-space hand L2 is 31-33mm after 500 steps with frozen global_blocks.
 </div>
 
+
+<h2>11. CORRECT Result: MANO FK Already in Camera Space (200 steps)</h2>
+<div class="highlight">
+<strong>MANO FK output IS already in camera space.</strong> The previous "fix" of adding joint_3d[0] DOUBLE-COUNTED the translation.
+Reverted to original: <code>hand_verts_ct = hand_mesh.vertices</code> (no root addition). Frames 0-9 skipped (hand not visible).
+</div>
+
+<div class="panel">
+<img src="assets/dcf-comprehensive/correct_hand_200.png" alt="Correct hand 200 steps">
+<p class="caption">200 steps, frozen global_blocks, correct MANO camera-space vertices. Hand L2=32mm, Obj L2=18mm. GT hand (blue) and pred hand (red) properly aligned with scene.</p>
+</div>
+
+<table>
+<tr><th>Frame</th><th>Hand L2 (mm)</th><th>Obj L2 (mm)</th></tr>
+<tr><td>10</td><td>31.8</td><td>17.6</td></tr>
+<tr><td>15</td><td>32.2</td><td>17.6</td></tr>
+<tr><td>20</td><td>32.3</td><td>17.8</td></tr>
+<tr><td>25</td><td>32.3</td><td>17.9</td></tr>
+</table>
+
+<div class="warning">
+<strong>Lesson learned:</strong> Always verify GT alignment visually before running experiments. The MANO FK includes <code>global_orient</code> + <code>transl</code> from DexYCB <code>pose_m</code>, placing vertices in camera space. No additional transform needed.
+</div>
+
 </body>
 </html>
