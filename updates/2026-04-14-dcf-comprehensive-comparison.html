@@ -106,5 +106,33 @@ table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}th,td{bo
 <tr><td><b>P1</b></td><td>NLF query + frozen global combined</td></tr>
 <tr><td><b>P1</b></td><td>Multi-sequence training</td></tr>
 </table>
+
+<h2>10. BUG FIX: Hand GT Coordinate Space (Critical)</h2>
+<div class="error">
+<strong>BUG FOUND:</strong> All previous hand results trained against WRONG GT. MANO FK returns root-relative vertices near [0,0,0]. 
+Must add camera-space root from <code>joint_3d[0]</code> to place hand in camera space matching scene world_points.
+<br><br>
+<strong>Before:</strong> hand_verts_ct = hand_mesh.vertices (near origin, Z≈0)<br>
+<strong>After:</strong> hand_verts_ct = hand_mesh.vertices + hand_root_ct (at arm's length, Z≈0.9m)
+</div>
+
+<h3>Fixed Result: Frozen global + correct coordinates (500 steps)</h3>
+<div class="panel">
+<img src="assets/dcf-comprehensive/fixed_hand_frame0.png" alt="Fixed hand coordinates">
+<p class="caption">Hand GT (blue) and predictions (red) now correctly positioned in camera space. Scene preserved. Hand L2=32mm, Obj L2=12mm.</p>
+</div>
+
+<table>
+<tr><th>Frame</th><th>Hand L2 (mm)</th><th>Obj L2 (mm)</th></tr>
+<tr><td>10</td><td>32.8</td><td>12.1</td></tr>
+<tr><td>15</td><td>32.5</td><td>11.8</td></tr>
+<tr><td>20</td><td>32.3</td><td>12.3</td></tr>
+<tr><td>25</td><td>30.9</td><td>12.4</td></tr>
+</table>
+
+<div class="highlight">
+<strong>Hand is now in the correct coordinate space.</strong> Previous "good" hand results (10-13mm) were measuring distance in MANO local space (near origin), not actual camera-space accuracy. True camera-space hand L2 is 31-33mm after 500 steps with frozen global_blocks.
+</div>
+
 </body>
 </html>
