@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-14 · DCF Experiment Batch: Overfit + Generalization (Hand Memorizes, Object Generalizes)",
+    "date": "2026-04-14",
+    "status": "done",
+    "summary": "Two-experiment batch validating DCF architecture. Overfit 500 steps: Hand L1 0.369→0.011 (34x), Obj L1 0.350→0.007 (50x). Generalization test reveals a critical asymmetry: object trajectory generalizes perfectly (15.9mm train vs 16.4mm test, +0.5mm), but hand trajectory memorizes (20mm train vs 184mm test, +164mm gap). The hand branch ignores image features and collapses to a constant position. Next step: train on more frames to force image conditioning.",
+    "path": "updates/2026-04-14-dcf-experiment-batch.html"
+  },
+  {
     "title": "2026-04-14 · DCF Camera-View Visualization: Scene + Hand + Object",
     "date": "2026-04-14",
     "status": "done",
