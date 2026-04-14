@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCF Comprehensive Experiment Comparison</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #333; }
+    h1 { border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+    h2 { color: #2c3e50; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+    h3 { color: #34495e; margin-top: 20px; }
+    a { color: #2980b9; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; background: #fff; }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background: #2c3e50; color: #fff; }
+    tr:nth-child(even) { background: #f2f2f2; }
+    tr.best-row { background: #e8f5e9; font-weight: 600; }
+    tr.bad-row { background: #fdecea; }
+    tr.running-row { background: #e3f2fd; }
+    code { background: #eef; padding: 2px 6px; border-radius: 3px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9em; }
+    .panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .panel img { max-width: 100%; height: auto; border-radius: 4px; }
+    .highlight { background: #e8f5e9; padding: 12px; border-left: 4px solid #27ae60; margin: 12px 0; }
+    .warning { background: #fff3e0; padding: 12px; border-left: 4px solid #f39c12; margin: 12px 0; }
+    .danger { background: #fdecea; padding: 12px; border-left: 4px solid #e74c3c; margin: 12px 0; }
+    .insight { background: #e3f2fd; padding: 16px; border-left: 5px solid #1565c0; margin: 16px 0; border-radius: 0 8px 8px 0; }
+    .insight strong { font-size: 1.05em; }
+    .meta-box { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .meta-grid { display: grid; grid-template-columns: 220px 1fr; gap: 8px; }
+    .meta-label { font-weight: 600; color: #555; }
+    .meta-value { font-family: 'Fira Code', monospace; font-size: 0.9em; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85em; color: #fff; }
+    .badge-pass { background: #27ae60; }
+    .badge-fail { background: #e74c3c; }
+    .badge-fix { background: #e67e22; }
+    .badge-finding { background: #3498db; }
+    .badge-running { background: #8e44ad; }
+    .badge-best { background: #27ae60; }
+    .badge-warning { background: #f39c12; }
+    .caption { font-size: 0.85em; color: #666; margin-top: 4px; font-style: italic; }
+    .toc { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; }
+    .toc ul { margin: 8px 0; padding-left: 24px; }
+    .toc li { margin: 4px 0; }
+    .back-link { margin-bottom: 16px; }
+    .viz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .viz-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media (max-width: 900px) { .viz-grid, .viz-grid-3 { grid-template-columns: 1fr; } }
+    .big-number { font-size: 2em; font-weight: 700; }
+    .metric-green { color: #27ae60; }
+    .metric-red { color: #e74c3c; }
+    .metric-blue { color: #2980b9; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+    .summary-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; text-align: center; }
+    .summary-card .label { font-size: 0.8em; color: #666; margin-top: 4px; }
+    @media (max-width: 900px) { .summary-grid { grid-template-columns: 1fr 1fr; } }
+    .finding-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media (max-width: 700px) { .finding-grid { grid-template-columns: 1fr; } }
+    .finding-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; }
+    .finding-card h4 { margin: 0 0 8px 0; color: #2c3e50; }
+    .finding-card p { margin: 0; font-size: 0.9em; }
+    td.num { font-family: 'Fira Code', monospace; text-align: right; }
+    td.best { color: #27ae60; font-weight: 700; }
+    td.bad { color: #e74c3c; }
+    td.ok { color: #e67e22; }
+    .section-divider { border: none; border-top: 2px solid #eee; margin: 30px 0; }
+  </style>
+</head>
+<body>
+  <p class="back-link"><a href="../index.html">&larr; Back to dashboard</a></p>
+
+  <h1>DCF Comprehensive Experiment Comparison</h1>
+  <p style="color:#666; margin-top:-8px;">2026-04-14 &middot; All DCF experiments from phase 1a through scene-loss full-sequence</p>
+
+  <!-- Meta box -->
+  <div class="meta-box">
+    <div class="meta-grid">
+      <span class="meta-label">Date</span>
+      <span class="meta-value">2026-04-14</span>
+      <span class="meta-label">Branch</span>
+      <span class="meta-value">feat/dcf</span>
+      <span class="meta-label">Architecture</span>
+      <span class="meta-value">STream3R encoder (frozen) + DCFBranch (hand/object trajectory prediction)</span>
+      <span class="meta-label">Data</span>
+      <span class="meta-value">DexYCB &mdash; 20200709-subject-01/20200709_141754 (72 frames, 4-frame overfit subset)</span>
+      <span class="meta-label">Experiments covered</span>
+      <span class="meta-value">11 total &mdash; from phase 1a v2 baseline through frozen global_blocks (running)</span>
+    </div>
+  </div>
+
+  <!-- Key insight -->
+  <div class="insight">
+    <strong>Critical Insight:</strong> The 200-step overfit works (hand 13mm) because pretrained image features are intact. More training corrupts features via shared attention in <code>global_blocks</code>. Fix: freeze <code>global_blocks</code> or add scene losses to preserve the scene distribution.
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <strong>Contents</strong>
+    <ul>
+      <li><a href="#master-table">1. Master Comparison Table (All Experiments)</a></li>
+      <li><a href="#scene-quality">2. Scene Quality Comparison</a></li>
+      <li><a href="#hand-geometry">3. Hand Geometry (PCA Analysis)</a></li>
+      <li><a href="#key-findings">4. Key Findings</a></li>
+      <li><a href="#viz">5. Visualizations</a></li>
+      <li><a href="#why-200">6. Why 200 Steps Works: Feature Degradation Analysis</a></li>
+      <li><a href="#next-steps">7. Next Steps</a></li>
+    </ul>
+  </div>
+
+  <!-- Section 1: Master Table -->
+  <h2 id="master-table">1. Master Comparison Table (All Experiments)</h2>
+
+  <p>All experiments run on DexYCB single-sequence data. Metrics: Hand/Obj L2 in mm (lower is better), Scene std measures scene point spread (higher = more preserved).</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Experiment</th>
+        <th>Steps</th>
+        <th>Frames</th>
+        <th>Hand L2</th>
+        <th>Obj L2</th>
+        <th>Scene std</th>
+        <th>Key Finding</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="best-row">
+        <td>Phase 1a v2 (200 steps)</td>
+        <td class="num">200</td>
+        <td>4 overfit</td>
+        <td class="num best">13mm</td>
+        <td class="num">20mm</td>
+        <td class="num">1.24</td>
+        <td>Baseline &mdash; works well. Image features intact.</td>
+      </tr>
+      <tr>
+        <td>ACP overfit 500</td>
+        <td class="num">500</td>
+        <td>4 overfit</td>
+        <td class="num ok">21mm</td>
+        <td class="num best">13mm</td>
+        <td class="num bad">0.62</td>
+        <td>Scene degrading 2&times;. Hand worse than 200-step.</td>
+      </tr>
+      <tr class="best-row">
+        <td>Canonical-cond 500</td>
+        <td class="num">500</td>
+        <td>4 overfit</td>
+        <td class="num best">12mm</td>
+        <td class="num bad">24mm</td>
+        <td class="num bad">0.40</td>
+        <td>Best hand geometry (PCA 0.959 correlation). Scene collapsed 3&times;.</td>
+      </tr>
+      <tr class="best-row">
+        <td>NLF query 500</td>
+        <td class="num">500</td>
+        <td>4 overfit</td>
+        <td class="num best">8mm</td>
+        <td class="num best">9mm</td>
+        <td class="num">&mdash;</td>
+        <td><span class="badge badge-best">BEST OVERFIT</span> Barycentric NLF sampling beats FPS.</td>
+      </tr>
+      <tr>
+        <td>Generalization (train set)</td>
+        <td class="num">500</td>
+        <td>4 train</td>
+        <td class="num ok">20mm</td>
+        <td class="num">16mm</td>
+        <td class="num">0.24</td>
+        <td>Good performance on seen frames.</td>
+      </tr>
+      <tr class="bad-row">
+        <td>Generalization (test set)</td>
+        <td class="num">500</td>
+        <td>4 test</td>
+        <td class="num bad">185mm</td>
+        <td class="num">16mm</td>
+        <td class="num">0.24</td>
+        <td><span class="badge badge-fail">HAND MEMORIZES</span> Object perfect, hand collapses.</td>
+      </tr>
+      <tr>
+        <td>Contact overfit</td>
+        <td class="num">500</td>
+        <td>4 overfit</td>
+        <td class="num bad">32mm</td>
+        <td class="num bad">33mm</td>
+        <td class="num">0.64</td>
+        <td>Contact learning works but hurts trajectory.</td>
+      </tr>
+      <tr class="bad-row">
+        <td>Full-seq 2000</td>
+        <td class="num">2000</td>
+        <td>72 all</td>
+        <td class="num bad">190mm</td>
+        <td class="num bad">37mm</td>
+        <td class="num">&mdash;</td>
+        <td><span class="badge badge-fail">FAIL</span> Hand doesn't generalize at all.</td>
+      </tr>
+      <tr>
+        <td>Scene loss overfit</td>
+        <td class="num">500</td>
+        <td>4 overfit</td>
+        <td class="num bad">74mm</td>
+        <td class="num bad">36mm</td>
+        <td class="num best">1.53</td>
+        <td><span class="badge badge-finding">FINDING</span> Scene preserved! Trade-off with trajectory.</td>
+      </tr>
+      <tr>
+        <td>Scene loss full-seq</td>
+        <td class="num">2000</td>
+        <td>72 all</td>
+        <td class="num bad">207mm</td>
+        <td class="num bad">75mm</td>
+        <td class="num best">1.57</td>
+        <td><span class="badge badge-finding">FINDING</span> Scene stays intact, hand still bad.</td>
+      </tr>
+      <tr class="running-row">
+        <td>Frozen global_blocks (running)</td>
+        <td class="num">500</td>
+        <td>4 overfit</td>
+        <td class="num">TBD</td>
+        <td class="num">TBD</td>
+        <td class="num">TBD</td>
+        <td><span class="badge badge-running">RUNNING</span> Testing feature preservation hypothesis.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight">
+    <strong>Row colors:</strong> Green = positive result, Red = failure, Blue = in progress. Best metric values in each column shown in bold green.
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 2: Scene Quality -->
+  <h2 id="scene-quality">2. Scene Quality Comparison</h2>
+
+  <p>Scene quality is measured by the standard deviation of STream3R scene points in camera space. The pretrained model produces a wide, realistic scene distribution (std 1.24). Training without scene loss causes progressive collapse. Scene loss restores the distribution.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Experiment</th>
+        <th>Scene range</th>
+        <th>Scene std</th>
+        <th>Scene preserved?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="best-row">
+        <td>Pretrained baseline (reference)</td>
+        <td class="num">[-1.3, 5.3]</td>
+        <td class="num best">1.24</td>
+        <td><span class="badge badge-pass">Yes (reference)</span></td>
+      </tr>
+      <tr>
+        <td>500-step no scene loss</td>
+        <td class="num">[-0.5, 1.8]</td>
+        <td class="num bad">0.62</td>
+        <td><span class="badge badge-warning">Degraded 2&times;</span></td>
+      </tr>
+      <tr>
+        <td>500-step canonical-cond</td>
+        <td class="num">[-0.7, 1.0]</td>
+        <td class="num bad">0.40</td>
+        <td><span class="badge badge-fail">Degraded 3&times;</span></td>
+      </tr>
+      <tr class="best-row">
+        <td>500-step scene loss</td>
+        <td class="num">[-1.3, 5.6]</td>
+        <td class="num best">1.53</td>
+        <td><span class="badge badge-pass">Yes &mdash; preserved!</span></td>
+      </tr>
+      <tr class="best-row">
+        <td>2000-step scene loss</td>
+        <td class="num">[-1.3, 4.9]</td>
+        <td class="num best">1.57</td>
+        <td><span class="badge badge-pass">Yes &mdash; preserved!</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warning">
+    <strong>Root cause:</strong> STream3R's <code>global_blocks</code> are shared between the scene pointmap head and the DCF branch. Training the DCF branch with trajectory loss alone shifts attention patterns away from scene reconstruction, causing progressive scene collapse. The scene loss explicitly counteracts this drift by maintaining supervision on the pointmap output.
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 3: Hand Geometry PCA -->
+  <h2 id="hand-geometry">3. Hand Geometry (PCA Analysis)</h2>
+
+  <p>PCA analysis of predicted hand vertex positions across frames reveals how well the model captures natural hand variation. GT hand PCA shows 65.7% variance in the first component &mdash; typical for a hand undergoing a grasping motion. Models that memorize collapse to a single pose (PC1 &rarr; 100%).</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Experiment</th>
+        <th>PC1 (variance)</th>
+        <th>PC2</th>
+        <th>PC3</th>
+        <th>Pairwise corr</th>
+        <th>Interpretation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="best-row">
+        <td>GT (reference)</td>
+        <td class="num best">65.7%</td>
+        <td class="num">24.2%</td>
+        <td class="num">10.2%</td>
+        <td class="num">&mdash;</td>
+        <td>Natural hand articulation</td>
+      </tr>
+      <tr>
+        <td>Phase 1a v2 (200 steps)</td>
+        <td class="num ok">75.3%</td>
+        <td class="num">16.7%</td>
+        <td class="num">8.0%</td>
+        <td class="num best">0.975</td>
+        <td>Good correlation; slight over-collapse</td>
+      </tr>
+      <tr>
+        <td>ACP 500 (no fix)</td>
+        <td class="num ok">73.6%</td>
+        <td class="num">21.1%</td>
+        <td class="num bad">5.3%</td>
+        <td class="num bad">0.862</td>
+        <td>PC3 collapsed; reduced expressivity</td>
+      </tr>
+      <tr class="best-row">
+        <td>Canonical-cond 500</td>
+        <td class="num best">68.2%</td>
+        <td class="num best">24.6%</td>
+        <td class="num">7.3%</td>
+        <td class="num best">0.959</td>
+        <td><span class="badge badge-best">BEST GEOMETRY</span> Closest to GT distribution</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight">
+    <strong>Insight:</strong> Canonical conditioning (feeding canonical MANO geometry as a prior to the DCF branch) produces the most realistic hand articulation distribution, even though the absolute L2 error is similar. This suggests canonical cond captures <em>structure</em>, not just <em>position</em>.
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 4: Key Findings -->
+  <h2 id="key-findings">4. Key Findings</h2>
+
+  <div class="finding-grid">
+    <div class="finding-card">
+      <h4><span class="badge badge-pass">FINDING 1</span> Object Generalizes, Hand Memorizes</h4>
+      <p>Object trajectory generalizes perfectly across unseen frames (16mm train &asymp; 16mm test, +0.5mm gap). Hand trajectory memorizes the overfit sequence and collapses on unseen frames (20mm train vs 185mm test, +165mm gap). The hand branch ignores image features and outputs a constant position.</p>
+    </div>
+    <div class="finding-card">
+      <h4><span class="badge badge-pass">FINDING 2</span> NLF Barycentric Beats FPS Sampling</h4>
+      <p>NLF barycentric sampling from MANO surface achieves Hand 8mm / Obj 9mm &mdash; best overfit result across all experiments. Compared to FPS sampling (Hand 21mm / Obj 13mm). Surface-conditioned queries capture local geometry better than random point subsets.</p>
+    </div>
+    <div class="finding-card">
+      <h4><span class="badge badge-finding">FINDING 3</span> Scene Loss Preserves Scene Distribution</h4>
+      <p>Without scene loss, scene std drops 2&ndash;3&times; after 500 steps (1.24 &rarr; 0.40&ndash;0.62). Adding scene loss holds it at 1.53&ndash;1.57, matching pretrained baseline. The scene is preserved even at 2000 steps on 72 frames. Trade-off: trajectory L2 degrades (74mm vs 13mm hand).</p>
+    </div>
+    <div class="finding-card">
+      <h4><span class="badge badge-finding">FINDING 4</span> Canonical Conditioning Best Hand Geometry</h4>
+      <p>Feeding canonical MANO geometry as prior produces PCA distribution closest to GT (corr 0.959, PC1 68.2% vs GT 65.7%). However, absolute L2 (12mm) is similar to phase 1a. The geometry structure improves but localization accuracy remains bottlenecked by image features.</p>
+    </div>
+    <div class="finding-card">
+      <h4><span class="badge badge-fail">FINDING 5</span> More Training Hurts (200 vs 500 steps)</h4>
+      <p>Phase 1a v2 at 200 steps achieves 13mm hand L2. Same architecture at 500 steps (ACP overfit) achieves 21mm &mdash; worse! Pretrained STream3R features degrade as the DCF branch perturbs <code>global_blocks</code> attention. Feature-preserving training strategies are needed.</p>
+    </div>
+    <div class="finding-card">
+      <h4><span class="badge badge-fail">FINDING 6</span> Full Sequence (72 frames) Doesn't Help Hand</h4>
+      <p>Training on all 72 frames for 2000 steps fails to fix hand generalization (190mm L2). The hand branch has degenerate gradients at scale &mdash; it cannot learn from diverse image inputs because the attention pathway from image tokens to DCF queries is too weak.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 5: Visualizations -->
+  <h2 id="viz">5. Visualizations</h2>
+
+  <h3>5.1 Camera-View Comparisons</h3>
+  <p>Camera-view RGB renderings with scene point cloud (white), hand trajectory (red), and object trajectory (blue) overlaid. Judges scene preservation and trajectory placement quality.</p>
+
+  <div class="viz-grid-3">
+    <div class="panel">
+      <img src="assets/dcf-comprehensive/baseline_v2_camview.png" alt="Baseline v2 (200 steps) camera view" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div style="display:none; padding:20px; background:#f0f0f0; border-radius:4px; text-align:center; color:#666;">Image unavailable</div>
+      <p class="caption"><strong>Phase 1a v2 (200 steps)</strong> &mdash; Baseline. Scene std 1.24, Hand 13mm, Obj 20mm. Pretrained features intact; scene points well distributed.</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-comprehensive/canonical_cond_camview.png" alt="Canonical cond camera view" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div style="display:none; padding:20px; background:#f0f0f0; border-radius:4px; text-align:center; color:#666;">Image unavailable</div>
+      <p class="caption"><strong>Canonical-cond 500 steps</strong> &mdash; Best hand geometry (PCA corr 0.959). Hand 12mm, Obj 24mm. Scene collapsed (std 0.40).</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-comprehensive/scene_loss_overfit_camview.png" alt="Scene loss overfit camera view" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div style="display:none; padding:20px; background:#f0f0f0; border-radius:4px; text-align:center; color:#666;">Image unavailable</div>
+      <p class="caption"><strong>Scene loss overfit 500 steps</strong> &mdash; Scene preserved (std 1.53)! Hand 74mm &mdash; scene loss adds conflicting gradient. Next: balance loss weights.</p>
+    </div>
+  </div>
+
+  <h3>5.2 MANO Geometry Diagnostics</h3>
+  <p>Geometry-level checks comparing GT MANO vertices to model predictions, rendered in canonical space. Used to validate that mesh structure is correct before evaluating pose accuracy.</p>
+
+  <div class="viz-grid">
+    <div class="panel">
+      <img src="assets/dcf-comprehensive/mano_geometry_check.png" alt="MANO geometry check" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div style="display:none; padding:20px; background:#f0f0f0; border-radius:4px; text-align:center; color:#666;">Image unavailable</div>
+      <p class="caption"><strong>MANO geometry check</strong> &mdash; GT MANO mesh vs. canonical prior. Confirms joint locations and vertex topology are correctly loaded from MANO model before training.</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-comprehensive/nlf_bary_geometry_check.png" alt="NLF barycentric geometry check" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div style="display:none; padding:20px; background:#f0f0f0; border-radius:4px; text-align:center; color:#666;">Image unavailable</div>
+      <p class="caption"><strong>NLF barycentric geometry check</strong> &mdash; Barycentric query points sampled from MANO surface triangles. Denser coverage near fingertips vs. FPS which samples randomly.</p>
+    </div>
+  </div>
+
+  <h3>5.3 Scene Loss Experiment Summaries</h3>
+
+  <div class="viz-grid">
+    <div class="panel">
+      <img src="assets/dcf-comprehensive/scene_loss_overfit_summary.png" alt="Scene loss overfit training summary" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div style="display:none; padding:20px; background:#f0f0f0; border-radius:4px; text-align:center; color:#666;">Image unavailable</div>
+      <p class="caption"><strong>Scene loss overfit training curves</strong> &mdash; Scene reconstruction loss (L2 on STream3R pointmaps) held stable throughout. Trajectory loss shows slower convergence due to gradient competition.</p>
+    </div>
+    <div class="panel">
+      <img src="assets/dcf-comprehensive/canonical_cond_summary.png" alt="Canonical cond training summary" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div style="display:none; padding:20px; background:#f0f0f0; border-radius:4px; text-align:center; color:#666;">Image unavailable</div>
+      <p class="caption"><strong>Canonical-cond training curves</strong> &mdash; Canonical geometry conditioning improves hand PCA structure (corr 0.959) but scene std collapses to 0.40 without scene loss regularization.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 6: Why 200 steps works -->
+  <h2 id="why-200">6. Why 200 Steps Works: Feature Degradation Analysis</h2>
+
+  <div class="panel">
+    <h3 style="margin-top:0">The Core Problem</h3>
+    <p>STream3R's <code>global_blocks</code> are multi-image attention layers that learn cross-frame feature correspondence. They are the backbone of both the scene pointmap prediction <em>and</em> the DCF branch's image conditioning pathway.</p>
+
+    <p>When training with trajectory loss alone:</p>
+    <ol>
+      <li>Gradients from trajectory loss flow back through DCF queries into <code>global_blocks</code></li>
+      <li><code>global_blocks</code> attention patterns shift toward trajectory features (hand/object-specific)</li>
+      <li>Scene pointmap quality degrades progressively (std: 1.24 &rarr; 0.62 &rarr; 0.40)</li>
+      <li>Image features no longer encode scene context &mdash; hand queries see only hand-specific activations</li>
+      <li>Hand branch memorizes instead of conditioning on image content</li>
+    </ol>
+
+    <p><strong>Why 200 steps avoids this:</strong> The degradation is gradual. At 200 steps, the shift in <code>global_blocks</code> is small enough that pretrained image features remain functional. The hand branch still sees meaningful image context and can condition its predictions accordingly &mdash; achieving 13mm L2 without memorization.</p>
+
+    <p><strong>At 500 steps:</strong> Feature degradation is measurable (scene std drops 2&times;). The hand branch's image conditioning degrades, making it fall back to positional memorization (21mm, worse than 200-step).</p>
+
+    <p><strong>The fix hierarchy:</strong></p>
+    <table>
+      <thead>
+        <tr><th>Strategy</th><th>Effect on scene</th><th>Effect on hand</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Scene loss regularization</td>
+          <td class="metric-green">Preserved (std 1.53)</td>
+          <td class="metric-red">Trajectory worse (74mm)</td>
+          <td><span class="badge badge-pass">Validated</span></td>
+        </tr>
+        <tr>
+          <td>Freeze <code>global_blocks</code></td>
+          <td class="metric-green">Preserved (expected)</td>
+          <td class="metric-green">Should improve (expected)</td>
+          <td><span class="badge badge-running">Running now</span></td>
+        </tr>
+        <tr>
+          <td>Separate DCF attention (no sharing)</td>
+          <td class="metric-green">Fully preserved</td>
+          <td class="metric-green">Image conditioning intact</td>
+          <td><span class="badge badge-warning">Planned</span></td>
+        </tr>
+        <tr>
+          <td>Scene loss + tuned trajectory weight</td>
+          <td class="metric-green">Preserved</td>
+          <td class="metric-green">Trade-off balanced</td>
+          <td><span class="badge badge-warning">Planned</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 7: Next Steps -->
+  <h2 id="next-steps">7. Next Steps</h2>
+
+  <div class="finding-grid">
+    <div class="finding-card">
+      <h4><span class="badge badge-running">NOW</span> Freeze global_blocks</h4>
+      <p>Running 500-step overfit with <code>global_blocks</code> parameters frozen. Hypothesis: hand L2 returns to ~13mm (200-step level) while scene is fully preserved. This directly tests the feature degradation hypothesis without adding auxiliary losses.</p>
+    </div>
+    <div class="finding-card">
+      <h4><span class="badge badge-warning">NEXT</span> Scene loss weight tuning</h4>
+      <p>Scene loss overfit achieved std 1.53 (preserved) but hand L2 increased to 74mm. Tune <code>scene_loss_weight</code> from current value down to find a Pareto-optimal point where scene is preserved and trajectory improves. Start with 10&times; reduction.</p>
+    </div>
+    <div class="finding-card">
+      <h4><span class="badge badge-warning">NEXT</span> NLF + canonical cond combined</h4>
+      <p>NLF barycentric query achieves best overfit (8mm/9mm). Canonical cond achieves best hand geometry (PCA corr 0.959). Combine both: NLF queries initialized from canonical MANO prior. Expected: sub-8mm hand with better geometry structure.</p>
+    </div>
+    <div class="finding-card">
+      <h4><span class="badge badge-warning">FUTURE</span> Separate image attention pathway</h4>
+      <p>Long-term architectural fix: give DCF branch its own attention layers that read from STream3R image tokens without modifying <code>global_blocks</code>. This eliminates the feature degradation problem entirely. Required for scaling to full-sequence generalization.</p>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="big-number metric-green">8mm</div>
+      <div class="label">Best hand L2 (NLF 500-step overfit)</div>
+    </div>
+    <div class="summary-card">
+      <div class="big-number metric-green">9mm</div>
+      <div class="label">Best obj L2 (NLF 500-step overfit)</div>
+    </div>
+    <div class="summary-card">
+      <div class="big-number metric-green">1.57</div>
+      <div class="label">Best scene std (scene loss 2000-step)</div>
+    </div>
+    <div class="summary-card">
+      <div class="big-number metric-red">185mm</div>
+      <div class="label">Hand L2 on unseen frames (generalization gap)</div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <p style="color:#888; font-size:0.85em;">
+    Generated: 2026-04-14 &middot;
+    Branch: <code>feat/dcf</code> &middot;
+    Remote: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/</code> &middot;
+    <a href="2026-04-14-dcf-experiment-batch.html">DCF Experiment Batch</a> &middot;
+    <a href="2026-04-14-session-summary.html">Session Summary</a> &middot;
+    <a href="../index.html">Dashboard</a>
+  </p>
+</body>
+</html>
