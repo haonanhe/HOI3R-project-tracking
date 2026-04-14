@@ -15,8 +15,7 @@
     th, td { text-align: left; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); vertical-align: top; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .card { margin: 0; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; background: rgba(255,255,255,0.02); }
-    .card img { display: block; width: 100%; height: auto; }
-    .card video { display: block; width: 100%; height: auto; background: #020617; }
+    .card img, .card video { display: block; width: 100%; height: auto; }
     .card figcaption { padding: 10px 12px 12px; color: #94a3b8; line-height: 1.5; }
     code { color: #fde68a; }
   </style>
@@ -24,32 +23,32 @@
 <body>
   <main>
     <h1>FoundationPose + HOT3D World-Hand Simple</h1>
-    <p class="muted">Generated 2026-04-14 07:59:09 UTC. This page publishes the fused HOT3D simple lane from the repo-owned runner. World frame: <code>hawor_world</code>. Visualizations are interaction-biased (frames selected by smallest hand↔object distance) and object meshes are downsampled in time to reduce overlap.</p>
+    <p class="muted">Generated 2026-04-14 09:46:13 UTC. This page publishes the fused HOT3D simple lane from the repo-owned runner. World frame: <code>hawor_world</code>. Visualizations are interaction-biased (frames selected by smallest hand↔object distance) and object meshes are downsampled in time to reduce overlap.</p>
     <section>
       <h2>Metrics</h2>
       <table><tbody>
         <tr><th>hand_world_root_err_mm</th><td>0.0000</td></tr>
-        <tr><th>object_translation_cm</th><td>241.8582</td></tr>
-        <tr><th>fused_temporal_position_delta</th><td>0.0104</td></tr>
+        <tr><th>object_translation_cm</th><td>9450.8379</td></tr>
+        <tr><th>fused_temporal_position_delta</th><td>0.0096</td></tr>
       </tbody></table>
     </section>
     <section>
       <h2>Benchmark Metrics</h2>
       <table><tbody>
-        <tr><th>mpjpe_mm</th><td>169.0738</td></tr>
-        <tr><th>mpjpe_root_mm</th><td>12.3285</td></tr>
-        <tr><th>mpjpe_pa_mm</th><td>4.7485</td></tr>
-        <tr><th>mpjpe_2d_px</th><td>166.8863</td></tr>
+        <tr><th>mpjpe_mm</th><td>167.7463</td></tr>
+        <tr><th>mpjpe_root_mm</th><td>23.3831</td></tr>
+        <tr><th>mpjpe_pa_mm</th><td>6.5634</td></tr>
+        <tr><th>mpjpe_2d_px</th><td>231.3937</td></tr>
         <tr><th>auc</th><td>0.0000</td></tr>
         <tr><th>detection_rate</th><td>1.0000</td></tr>
         <tr><th>success_rate</th><td>1.0000</td></tr>
         <tr><th>fscore_5mm</th><td>0.0000</td></tr>
-        <tr><th>fscore_15mm</th><td>0.0007</td></tr>
-        <tr><th>OBJ_rot_err_deg</th><td>133.9505</td></tr>
-        <tr><th>OBJ_trans_err</th><td>0.6969</td></tr>
-        <tr><th>OBJ_rot_orth_err</th><td>0.4727</td></tr>
-        <tr><th>OBJ_rot_det_err</th><td>1.5273</td></tr>
-        <tr><th>OBJ_detection_rate</th><td>0.5273</td></tr>
+        <tr><th>fscore_15mm</th><td>0.0008</td></tr>
+        <tr><th>OBJ_rot_err_deg</th><td>111.8931</td></tr>
+        <tr><th>OBJ_trans_err</th><td>0.5713</td></tr>
+        <tr><th>OBJ_rot_orth_err</th><td>0.0100</td></tr>
+        <tr><th>OBJ_rot_det_err</th><td>0.0100</td></tr>
+        <tr><th>OBJ_detection_rate</th><td>0.9900</td></tr>
       </tbody></table>
     </section>
     <section>
@@ -58,27 +57,27 @@
         <tr><th>total_candidates</th><td>1</td></tr>
         <tr><th>evaluated_sequences</th><td>1</td></tr>
         <tr><th>skipped_sequences</th><td>0</td></tr>
-        <tr><th>total_frames</th><td>55</td></tr>
-        <tr><th>gt_frames</th><td>55</td></tr>
-        <tr><th>matched_frames</th><td>55</td></tr>
-        <tr><th>object_interpolated_frames</th><td>26</td></tr>
+        <tr><th>total_frames</th><td>100</td></tr>
+        <tr><th>gt_frames</th><td>100</td></tr>
+        <tr><th>matched_frames</th><td>100</td></tr>
+        <tr><th>object_interpolated_frames</th><td>90</td></tr>
       </tbody></table>
     </section>
     <section>
       <h2>Sequences</h2>
       <table>
         <thead><tr><th>Sequence</th><th>Object</th><th>Frames</th><th>object_translation_cm</th><th>Interpolated Frames</th></tr></thead>
-        <tbody><tr><td>P0001_4bf4e21a</td><td>aria_small</td><td>55</td><td>241.8582</td><td>26</td></tr></tbody>
+        <tbody><tr><td>P0015_dbe00981</td><td>mug_white</td><td>100</td><td>9450.8379</td><td>90</td></tr></tbody>
       </table>
     </section>
     <section>
       <h2>Videos</h2>
-      <p class="muted">Source clip requested 100 input frames. HaWoR produced 55 hand-valid frames; the videos show the 29 object-known frames from 000051 to 000079 at 5 fps. The HaWoR-world video uses one fixed 3D axis scale across all frames.</p>
-      <div class="gallery"><figure class='card'><video controls preload='metadata' src='images/world_hand_object_hawor_world_100f_fixedscale.mp4'></video><figcaption><strong>P0001_4bf4e21a</strong><br><span>Video · fixed-scale HaWoR world hand/object · aria_small</span></figcaption></figure><figure class='card'><video controls preload='metadata' src='images/camera_overlay_hand_object_100f.mp4'></video><figcaption><strong>P0001_4bf4e21a</strong><br><span>Video · camera overlay hand/object · aria_small</span></figcaption></figure></div>
+      <p class="muted">Source clip requested 100 input frames. HaWoR produced 100 hand-valid frames; the videos render 99 frames from 000000 to 000098 at 10 fps. The HaWoR-world video uses one fixed 3D axis scale across all frames.</p>
+      <div class="gallery"><figure class='card'><video controls preload='metadata' src='images/world_hand_object_hawor_world_100f_mug_fixedscale.mp4'></video><figcaption><strong>P0015_dbe00981</strong><br><span>Video · fixed-scale HaWoR world hand/object · mug_white</span></figcaption></figure><figure class='card'><video controls preload='metadata' src='images/camera_overlay_hand_object_100f_mug.mp4'></video><figcaption><strong>P0015_dbe00981</strong><br><span>Video · camera overlay hand/object · mug_white</span></figcaption></figure></div>
     </section>
     <section>
       <h2>Visualization Gallery</h2>
-      <div class="gallery"><figure class='card'><img src='images/world_view_strip.png' alt='P0001_4bf4e21a Topdown Trajectory'><figcaption><strong>P0001_4bf4e21a</strong><br><span>Topdown Trajectory · aria_small</span></figcaption></figure><figure class='card'><img src='images/world_topdown_mesh.png' alt='P0001_4bf4e21a World Mesh (Topdown)'><figcaption><strong>P0001_4bf4e21a</strong><br><span>World Mesh (Topdown) · aria_small</span></figcaption></figure><figure class='card'><img src='images/world_3d_mesh.png' alt='P0001_4bf4e21a World Mesh (3D)'><figcaption><strong>P0001_4bf4e21a</strong><br><span>World Mesh (3D) · aria_small</span></figcaption></figure><figure class='card'><img src='images/world_topdown_hand_mesh.png' alt='P0001_4bf4e21a World Hand Mesh (Topdown)'><figcaption><strong>P0001_4bf4e21a</strong><br><span>World Hand Mesh (Topdown) · aria_small</span></figcaption></figure><figure class='card'><img src='images/world_3d_hand_mesh.png' alt='P0001_4bf4e21a World Hand Mesh (3D)'><figcaption><strong>P0001_4bf4e21a</strong><br><span>World Hand Mesh (3D) · aria_small</span></figcaption></figure><figure class='card'><img src='images/world_frame_grid.png' alt='P0001_4bf4e21a World Frame Grid (Hand/Object)'><figcaption><strong>P0001_4bf4e21a</strong><br><span>World Frame Grid (Hand/Object) · aria_small</span></figcaption></figure><figure class='card'><img src='images/camera_overlay_grid.png' alt='P0001_4bf4e21a Camera Overlay Grid (Hand/Object)'><figcaption><strong>P0001_4bf4e21a</strong><br><span>Camera Overlay Grid (Hand/Object) · aria_small</span></figcaption></figure><figure class='card'><img src='images/camera_overlay_strip.png' alt='P0001_4bf4e21a Camera Overlay Strip (Hand/Object)'><figcaption><strong>P0001_4bf4e21a</strong><br><span>Camera Overlay Strip (Hand/Object) · aria_small</span></figcaption></figure></div>
+      <div class="gallery"><figure class='card'><img src='images/world_view_strip.png' alt='P0015_dbe00981 Topdown Trajectory'><figcaption><strong>P0015_dbe00981</strong><br><span>Topdown Trajectory · mug_white</span></figcaption></figure><figure class='card'><img src='images/world_topdown_mesh.png' alt='P0015_dbe00981 World Mesh (Topdown)'><figcaption><strong>P0015_dbe00981</strong><br><span>World Mesh (Topdown) · mug_white</span></figcaption></figure><figure class='card'><img src='images/world_3d_mesh.png' alt='P0015_dbe00981 World Mesh (3D)'><figcaption><strong>P0015_dbe00981</strong><br><span>World Mesh (3D) · mug_white</span></figcaption></figure><figure class='card'><img src='images/world_topdown_hand_mesh.png' alt='P0015_dbe00981 World Hand Mesh (Topdown)'><figcaption><strong>P0015_dbe00981</strong><br><span>World Hand Mesh (Topdown) · mug_white</span></figcaption></figure><figure class='card'><img src='images/world_3d_hand_mesh.png' alt='P0015_dbe00981 World Hand Mesh (3D)'><figcaption><strong>P0015_dbe00981</strong><br><span>World Hand Mesh (3D) · mug_white</span></figcaption></figure><figure class='card'><img src='images/world_frame_grid.png' alt='P0015_dbe00981 World Frame Grid (Hand/Object)'><figcaption><strong>P0015_dbe00981</strong><br><span>World Frame Grid (Hand/Object) · mug_white</span></figcaption></figure><figure class='card'><img src='images/camera_overlay_grid.png' alt='P0015_dbe00981 Camera Overlay Grid (Hand/Object)'><figcaption><strong>P0015_dbe00981</strong><br><span>Camera Overlay Grid (Hand/Object) · mug_white</span></figcaption></figure><figure class='card'><img src='images/camera_overlay_strip.png' alt='P0015_dbe00981 Camera Overlay Strip (Hand/Object)'><figcaption><strong>P0015_dbe00981</strong><br><span>Camera Overlay Strip (Hand/Object) · mug_white</span></figcaption></figure></div>
     </section>
     <section>
       <h2>Skipped</h2>
