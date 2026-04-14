@@ -178,5 +178,25 @@ MANO FK already camera-space, start_frame=10, 4 frames, lr=1e-3.
 Hand ~34mm avg, Object ~11mm avg. Scene preserved (frozen decoder).
 </div>
 
+
+<h2>13. Reproduce Original 200-step (train global_blocks, lr_decoder=1e-4)</h2>
+<div class="panel">
+<img src="assets/dcf-comprehensive/reproduce_200.png" alt="Reproduce 200 steps">
+<p class="caption">200 steps, train_global_blocks=true, lr_decoder=1e-4, start_frame=10 (valid frames only), correct MANO coords. Commit e803152.</p>
+</div>
+<table>
+<tr><th>Frame</th><th>Hand L2 (mm)</th><th>Obj L2 (mm)</th></tr>
+<tr><td>10</td><td>51.6</td><td>22.9</td></tr>
+<tr><td>15</td><td>49.7</td><td>23.4</td></tr>
+<tr><td>20</td><td>51.7</td><td>22.7</td></tr>
+<tr><td>25</td><td>54.0</td><td>24.0</td></tr>
+</table>
+<p>Hand L1: 0.371 &rarr; 0.028 | Obj L1: 0.472 &rarr; 0.020</p>
+<div class="error">
+<strong>Worse than frozen global_blocks (34mm)!</strong> Training global_blocks at lr=1e-4 for 200 steps gives hand 52mm vs frozen 34mm.
+The original "good" 13mm result was an artifact of including invalid frames 0,5 (hand at origin). With correct frames, training global_blocks hurts.
+Scene also starts degrading (visible compression in middle panel).
+</div>
+
 </body>
 </html>
