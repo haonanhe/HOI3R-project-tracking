@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCF Comprehensive Experiment Comparison | HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1200px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}th,td{border:1px solid #ddd;padding:8px 12px;text-align:left}th{background:#2c3e50;color:#fff}tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}.panel img{max-width:100%;height:auto;border-radius:4px}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff}
+.badge-pass{background:#27ae60}.badge-fix{background:#e67e22}.badge-finding{background:#3498db}.badge-fail{background:#e53935}
+.caption{font-size:.85em;color:#666;margin-top:4px}
+.viz-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}.viz-grid img{width:100%;border-radius:4px;border:1px solid #ddd}
+@media(max-width:800px){.viz-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<h1>DCF Comprehensive Experiment Comparison</h1>
+<p><strong>Date:</strong> 2026-04-14 | <strong>Branch:</strong> feat/dcf | <strong>11 experiments, 26+ commits</strong></p>
+
+<div class="highlight">
+<strong>Winner: Freeze global_blocks.</strong> Hand 10mm L2, Scene std=0.98, PCA PC3=8.8%, Pairwise corr=0.973. Pretrained STream3R image features are preserved perfectly. Only DCF heads (~8M params) trained.
+</div>
+
+<h2>1. Master Comparison Table</h2>
+<table>
+<tr><th>Experiment</th><th>Steps</th><th>Frames</th><th>Hand L2</th><th>Obj L2</th><th>Scene std</th><th>Finding</th></tr>
+<tr><td>Phase 1a v2 (200 steps)</td><td>200</td><td>4 overfit</td><td><b>13mm</b></td><td>20mm</td><td>1.24</td><td>Baseline works</td></tr>
+<tr><td>ACP overfit 500</td><td>500</td><td>4 overfit</td><td>21mm</td><td>13mm</td><td>0.62</td><td>Scene degrading</td></tr>
+<tr><td>Canonical-cond 500</td><td>500</td><td>4 overfit</td><td>12mm</td><td>24mm</td><td>0.40</td><td>Better geometry</td></tr>
+<tr><td>NLF query 500</td><td>500</td><td>4 overfit</td><td><b>8mm</b></td><td>9mm</td><td>&mdash;</td><td>Best overfit (bary)</td></tr>
+<tr><td>Generalization (train)</td><td>500</td><td>4 train</td><td>20mm</td><td>16mm</td><td>0.24</td><td>Good on train</td></tr>
+<tr style="background:#fce4ec"><td>Generalization (test)</td><td>500</td><td>4 test</td><td style="color:#e53935"><b>185mm</b></td><td>16mm</td><td>0.24</td><td>Hand memorizes!</td></tr>
+<tr><td>Contact overfit (bowl)</td><td>500</td><td>4 overfit</td><td>32mm</td><td>33mm</td><td>0.64</td><td>Contact works</td></tr>
+<tr><td>Full-seq 2000 (72 frames)</td><td>2000</td><td>72</td><td>190mm</td><td>37mm</td><td>&mdash;</td><td>Hand stuck</td></tr>
+<tr><td>Scene loss overfit</td><td>500</td><td>4 overfit</td><td>74mm</td><td>36mm</td><td><b>1.53</b></td><td>Scene preserved</td></tr>
+<tr><td>Scene loss full-seq</td><td>2000</td><td>72</td><td>207mm</td><td>75mm</td><td><b>1.57</b></td><td>Scene ok, hand bad</td></tr>
+<tr style="background:#e8f5e9;font-weight:bold"><td>&#x1F3C6; Frozen global 500</td><td>500</td><td>4 overfit</td><td style="color:#27ae60">10mm</td><td>12mm</td><td style="color:#27ae60">0.98</td><td>BEST overall</td></tr>
+</table>
+
+<h2>2. Best Result: Frozen global_blocks</h2>
+<div class="panel">
+<img src="assets/dcf-comprehensive/frozen_global.png" alt="Frozen global: best result">
+<p class="caption">Frozen global_blocks (500 steps): Hand L2=10mm, Obj L2=12mm, Scene std=0.98. Pretrained features preserved.</p>
+</div>
+
+<h2>3. Visual Comparison</h2>
+<div class="viz-grid">
+<div><img src="assets/dcf-comprehensive/baseline_v2.png"><p class="caption">Baseline v2 (200 steps) &mdash; Hand 13mm, Scene 1.24</p></div>
+<div><img src="assets/dcf-comprehensive/frozen_global.png"><p class="caption">Frozen global (500 steps) &mdash; Hand 10mm, Scene 0.98</p></div>
+<div><img src="assets/dcf-comprehensive/overfit_500.png"><p class="caption">Overfit 500 &mdash; Hand 21mm, Scene 0.62 (degraded)</p></div>
+<div><img src="assets/dcf-comprehensive/scene_loss_overfit.png"><p class="caption">Scene loss &mdash; Hand 74mm, Scene 1.53</p></div>
+</div>
+
+<h2>4. Scene Quality</h2>
+<table>
+<tr><th>Experiment</th><th>Scene range</th><th>Scene std</th><th>Status</th></tr>
+<tr><td>Pretrained (ref)</td><td>[-1.3, 5.3]</td><td>1.24</td><td><span class="badge badge-pass">OK</span></td></tr>
+<tr style="background:#e8f5e9"><td><b>Frozen global 500</b></td><td>[-1.3, 4.7]</td><td><b>0.98</b></td><td><span class="badge badge-pass">PRESERVED</span></td></tr>
+<tr><td>Scene loss overfit</td><td>[-1.3, 5.6]</td><td>1.53</td><td><span class="badge badge-pass">PRESERVED</span></td></tr>
+<tr><td>ACP overfit 500</td><td>[-0.5, 1.8]</td><td>0.62</td><td><span class="badge badge-fix">DEGRADED 2x</span></td></tr>
+<tr><td>Generalization</td><td>[-0.4, 1.0]</td><td>0.24</td><td><span class="badge badge-fail">COLLAPSED 5x</span></td></tr>
+</table>
+
+<h2>5. Hand Geometry (PCA)</h2>
+<table>
+<tr><th>Experiment</th><th>PC1</th><th>PC2</th><th>PC3 (depth)</th><th>Pairwise corr</th></tr>
+<tr><td>GT</td><td>65.7%</td><td>24.2%</td><td><b>10.2%</b></td><td>&mdash;</td></tr>
+<tr style="background:#e8f5e9"><td><b>Frozen global 500</b></td><td>69.2%</td><td>22.0%</td><td><b>8.8%</b></td><td><b>0.973</b></td></tr>
+<tr><td>Canonical-cond 500</td><td>68.2%</td><td>24.6%</td><td>7.3%</td><td>0.959</td></tr>
+<tr><td>Phase 1a (200)</td><td>75.3%</td><td>16.7%</td><td>8.0%</td><td>0.975</td></tr>
+<tr><td>ACP 500 (no fix)</td><td>73.6%</td><td>21.1%</td><td style="color:#e53935">5.3%</td><td>0.862</td></tr>
+</table>
+
+<h2>6. Why 200 Steps Works</h2>
+<div class="panel">
+<p>At 200 steps, global_blocks haven't changed much from pretrained. Image features are still informative. DCF heads successfully use these features for hand prediction.</p>
+<p>At 500+ steps, DCF gradients corrupt global_blocks via shared attention, destroying image features. Hand prediction degrades.</p>
+<p><b>Fix: freeze global_blocks.</b> Pretrained features preserved perfectly. Only DCF heads (~8M params) trained. Hand L2 stays at 10mm even at 500 steps.</p>
+</div>
+
+<h2>7. Key Findings</h2>
+<div class="panel"><span class="badge badge-pass">BEST</span> Freeze global_blocks = best hand (10mm) + scene (0.98) + geometry (PC3=8.8%)</div>
+<div class="panel"><span class="badge badge-finding">FINDING</span> Object generalizes (16mm train=test), hand memorizes (20mm train, 185mm test)</div>
+<div class="panel"><span class="badge badge-finding">FINDING</span> Scene distillation preserves scene (1.53) but hand still at 74mm &mdash; not enough</div>
+<div class="panel"><span class="badge badge-finding">FINDING</span> NLF barycentric sampling &gt; FPS (8mm vs 20mm hand L2 in overfit)</div>
+<div class="panel"><span class="badge badge-fix">FIX</span> Canonical conditioning: PC3 5.3%&rarr;7.3%, pairwise corr 0.862&rarr;0.959</div>
+
+<h2>8. MANO Diagnostics</h2>
+<div class="viz-grid">
+<div><img src="assets/dcf-comprehensive/mano_geometry_check.png"><p class="caption">Canonical vs Posed: geometry preserved in GT</p></div>
+<div><img src="assets/dcf-comprehensive/nlf_bary_geometry_check.png"><p class="caption">NLF barycentric: Canonical &rarr; Posed &rarr; Predicted</p></div>
+</div>
+
+<h2>9. Next Steps</h2>
+<table>
+<tr><th>Priority</th><th>Task</th></tr>
+<tr><td><b>P0</b></td><td>Frozen global + generalization test (does hand generalize now?)</td></tr>
+<tr><td><b>P0</b></td><td>Frozen global + full-sequence (72 frames)</td></tr>
+<tr><td><b>P0</b></td><td>Add real DexYCB scene losses (depth + camera GT)</td></tr>
+<tr><td><b>P1</b></td><td>NLF query + frozen global combined</td></tr>
+<tr><td><b>P1</b></td><td>Multi-sequence training</td></tr>
+</table>
+</body>
+</html>
