@@ -158,5 +158,25 @@ Reverted to original: <code>hand_verts_ct = hand_mesh.vertices</code> (no root a
 <strong>Lesson learned:</strong> Always verify GT alignment visually before running experiments. The MANO FK includes <code>global_orient</code> + <code>transl</code> from DexYCB <code>pose_m</code>, placing vertices in camera space. No additional transform needed.
 </div>
 
+
+<h2>12. No canonical_dim, Frozen Global, Correct Coords (500 steps)</h2>
+<div class="panel">
+<img src="assets/dcf-comprehensive/no_canondim_frame0.png" alt="No canonical_dim 500 steps">
+<p class="caption">500 steps, frozen global_blocks, no canonical_dim shortcut, correct MANO camera-space. Commit e803152.</p>
+</div>
+<table>
+<tr><th>Frame</th><th>Hand L2 (mm)</th><th>Obj L2 (mm)</th></tr>
+<tr><td>10</td><td>31.5</td><td>11.7</td></tr>
+<tr><td>15</td><td>34.5</td><td>11.3</td></tr>
+<tr><td>20</td><td>37.4</td><td>10.6</td></tr>
+<tr><td>25</td><td>33.6</td><td>10.8</td></tr>
+</table>
+<p>Hand L1: 0.469 &rarr; 0.017 | Obj L1: 0.267 &rarr; 0.006</p>
+<div class="warning">
+<strong>Settings:</strong> frozen global_blocks, no canonical_dim (MLP uses decoder tokens only),
+MANO FK already camera-space, start_frame=10, 4 frames, lr=1e-3.
+Hand ~34mm avg, Object ~11mm avg. Scene preserved (frozen decoder).
+</div>
+
 </body>
 </html>
