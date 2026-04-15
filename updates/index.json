@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-15 · DCF Scene-Heads A/B (Frozen vs Unfrozen) on Tracked Frames 65–69",
+    "date": "2026-04-15",
+    "status": "done",
+    "summary": "Follow-up A/B answering 'should we unfreeze camera_head/point_head/depth_head during DCF fine-tuning?'. Runs on tracked frames 65-69 (conv200 page was invalid — untracked sentinel GT). A=frozen heads reaches hand 22.5 mm / obj 20.1 mm; B=unfrozen @ lr 1e-5 reaches only hand 134.3 mm / obj 83.8 mm. Confirms smoke-stage freezing policy in docs/PROJECT_PLAN.md. Commit 754d2b2.",
+    "path": "updates/2026-04-15-dcf-scene-heads-ab-tracked65.html"
+  },
+  {
     "title": "2026-04-15 · DCF Real Scene Loss — 200-step Convergence Check (5 frames)",
     "date": "2026-04-15",
     "status": "done",
