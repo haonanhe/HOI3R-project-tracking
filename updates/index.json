@@ -3,7 +3,14 @@
     "title": "2026-04-15 · Session Summary: TODO Resolution (Scene Loss, Video Render, Gen-Range CLI)",
     "date": "2026-04-15",
     "status": "done",
-    "summary": "Executed three P0 TODOs from 2026-04-14: (A) Wired REAL scene loss via STream3R depth_loss + camera_loss with DexYCB GT depth (+102/-2 lines); (B) Auto camera-view video render on training completion; (C) Contiguous --train-range/--eval-range CLI for generalization tests. 7 ACP jobs submitted, 5 definitive (all SUCCEEDED). Two identical hand_root_ct NameErrors fixed independently.",
+    "summary": "Second session of the day. Executed three P0 TODOs from 2026-04-14: (A) Wired REAL scene loss via STream3R depth_loss + camera_loss with DexYCB GT; (B) Auto camera-view video render on training completion; (C) Contiguous --train-range/--eval-range CLI for generalization tests. 7 ACP jobs submitted, 5 definitive (all SUCCEEDED).",
+    "path": "updates/2026-04-15-todo-resolution-summary.html"
+  },
+  {
+    "title": "2026-04-15 · Session Summary: GPS-Based DCF Point Encoding Fixes Hand Curve Bug",
+    "date": "2026-04-15",
+    "status": "done",
+    "summary": "Session summary of the GPS-based DCF point encoding work that fixed the hand curve collapse bug. Ablations on 5 / 5+72 frames showed scene pseudo-GT + GPS injection via skip connection as the fix. Hand L2 reduced to 12.6mm on full sequence.",
     "path": "updates/2026-04-15-session-summary.html"
   },
   {
