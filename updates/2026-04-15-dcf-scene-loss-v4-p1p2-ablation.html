@@ -146,7 +146,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 </div>
 </section>
 
-<section id="interp">
+<div style="background:#e3f2fd;border:3px solid #2196f3;border-radius:8px;padding:14px;margin:14px 0"><strong>Follow-up 2026-04-15 — root cause identified:</strong> The frozen-vs-unfrozen asymmetry is explained by gradient-magnitude balance. Dropping <code>loss_weight_scene</code> from 1.0 to 0.1 with unfrozen heads recovers hand SVD fully (0.373 vs GT 0.40) while keeping obj L2 at 14 mm. <a href="./2026-04-15-dcf-frozen-vs-unfrozen-rootcause.html"><strong>Full root-cause diagnostic →</strong></a></div><section id="interp">
 <h2>Interpretation &amp; follow-ups</h2>
 
 <h3>What P1 taught us</h3>
