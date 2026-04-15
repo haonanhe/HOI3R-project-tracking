@@ -44,6 +44,15 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 </style>
 </head>
 <body>
+<div style="background:#fce4ec;border:3px solid #e53935;border-radius:8px;padding:18px;margin:16px 0">
+  <h2 style="margin:0 0 8px 0;color:#c62828;border:none">&#x26A0;&#xFE0F; HAND-BRANCH RESULTS ON THIS PAGE ARE INVALID</h2>
+  <p style="margin:6px 0;line-height:1.5"><strong>Root cause:</strong> the 5-frame smoke window (frames 0&ndash;4 of sequence <code>20200709_141754</code>) has <em>no DexYCB hand tracking</em>. <code>joint_3d[0] = [&minus;1, &minus;1, &minus;1]</code> (sentinel) and <code>pose_m</code> translation is zero for all 5 frames. The bridge silently fell back to zero-translation MANO defaults, putting <code>hand_traj_gt</code> in wrist-relative local space (z&nbsp;centroid 0.006&nbsp;m) instead of camera space (object is at 0.866&nbsp;m). Pred and GT both collapsed to the same static default &mdash; the "12.5&nbsp;mm hand L2" below is a constant-vs-constant comparison, not convergence.</p>
+  <p style="margin:6px 0;line-height:1.5"><strong>What is still valid on this page:</strong> scene-loss curve (depth&nbsp;PNG + intrinsics + extrinsics are tracking-independent), object L2 (<code>pose_y</code> is tracked throughout).</p>
+  <p style="margin:6px 0;line-height:1.5"><strong>What is invalid:</strong> all hand metrics (L2, training hand loss), the 3D hand scatter clouds, the hand overlay markers in the camera-view video.</p>
+  <p style="margin:6px 0;line-height:1.5"><strong>Fix landed in commit <code>754d2b2</code></strong> (<code>feat/dcf</code>): bridge now raises <code>HandNotTrackedError</code> on sentinels; training script pre-filters untracked frames and adds <code>--frame-start</code> plus a post-load hand/obj z-centroid sanity check (&lt; 30&nbsp;cm).</p>
+  <p style="margin:6px 0;line-height:1.5"><strong>Replacement results:</strong> see the follow-up A/B page on tracked frames 65&ndash;69 (frozen vs unfrozen scene heads) &mdash; linked from the <a href="./index.json">index</a> under 2026-04-15 once both ACP jobs finish (<code>om-ksr5t6xs</code> frozen, <code>om-bbxf8s1e</code> unfrozen).</p>
+</div>
+
 <header>
   <h1>2026-04-15 · DCF Real Scene Loss — 200-step Convergence Check (5 frames)</h1>
   <div style="margin:8px 0">
