@@ -77,6 +77,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
     <li><a href="#training-curves">Training-loss curves</a></li>
     <li><a href="#eval-curves">Eval L2 curves (hand / object)</a></li>
     <li><a href="#scatter">3D pred-vs-GT scatter plots (all 5 frames)</a></li>
+    <li><a href="#camera-view">Camera-view overlay (video + per-frame)</a></li>
     <li><a href="#interpretation">Interpretation</a></li>
     <li><a href="#repro">Training modules &amp; reproduction</a></li>
   </ul>
@@ -138,6 +139,39 @@ canonical-conditioned trajectory head has no trouble memorising the slowly-varyi
 <p style="color:#555">Subsampled to 128 points/cloud. Blue = Pred Hand, light gray = GT Hand,
 green = Pred Obj, darker gray = GT Obj. Rotate / zoom to inspect alignment.</p>
 <div id="scatter-grid" class="scatter-grid"></div>
+</section>
+
+
+<section id="camera-view">
+<h2>Camera-view overlay (video + per-frame)</h2>
+<p style="color:#555">Predictions projected into the DexYCB camera frame (intrinsics from calibration YAML,
+rescaled to 518×518: fx=499.09, fy=665.05, cx=249.73, cy=268.20). Panels per frame: input image / scene
+point cloud (world_points head) / scene+hand+object overlay. From the matched re-run
+<code>om-p4da8v7x</code> (same args + <code>--render-video</code>; same seed reports hand L2 9.9 mm,
+obj L2 29.8 mm — the small divergence from the headline run reflects non-deterministic kernels, not an
+analysis change).</p>
+
+<div style="text-align:center;margin:16px 0">
+  <video controls width="1000" preload="metadata" style="max-width:100%;border-radius:8px;border:1px solid #ddd">
+    <source src="assets/2026-04-15-conv200/camera_view.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <p style="font-size:.85em;color:#666;margin-top:4px">camera_view.mp4 — 5 frames @ 2 fps</p>
+</div>
+
+<h3>All frames · summary panel</h3>
+<div class="panel" style="text-align:center">
+  <img src="assets/2026-04-15-conv200/summary_all_frames.jpg" alt="Summary all frames" style="max-width:100%;border-radius:4px">
+</div>
+
+<h3>Per-frame renders</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:16px 0">
+  <div><img src="assets/2026-04-15-conv200/frame_0000.jpg" alt="Frame 0" style="width:100%;border-radius:4px;border:1px solid #ddd"><p style="font-size:.85em;color:#666;text-align:center;margin-top:4px">Frame 0</p></div>
+  <div><img src="assets/2026-04-15-conv200/frame_0001.jpg" alt="Frame 1" style="width:100%;border-radius:4px;border:1px solid #ddd"><p style="font-size:.85em;color:#666;text-align:center;margin-top:4px">Frame 1</p></div>
+  <div><img src="assets/2026-04-15-conv200/frame_0002.jpg" alt="Frame 2" style="width:100%;border-radius:4px;border:1px solid #ddd"><p style="font-size:.85em;color:#666;text-align:center;margin-top:4px">Frame 2</p></div>
+  <div><img src="assets/2026-04-15-conv200/frame_0003.jpg" alt="Frame 3" style="width:100%;border-radius:4px;border:1px solid #ddd"><p style="font-size:.85em;color:#666;text-align:center;margin-top:4px">Frame 3</p></div>
+  <div><img src="assets/2026-04-15-conv200/frame_0004.jpg" alt="Frame 4" style="width:100%;border-radius:4px;border:1px solid #ddd"><p style="font-size:.85em;color:#666;text-align:center;margin-top:4px">Frame 4</p></div>
+</div>
 </section>
 
 <section id="interpretation">
