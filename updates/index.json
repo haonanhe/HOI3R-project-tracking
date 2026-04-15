@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-15 · Why Frozen > Unfrozen on Hand Rank — Root Cause Diagnostic",
+    "date": "2026-04-15",
+    "status": "done",
+    "summary": "9-hypothesis enumeration + Phase-2 cheap tests (H5, H8 refuted) + Phase-3 ACP sweep (H3, H4, H6). Root cause: gradient-magnitude balance on shared global_blocks. loss_weight_scene=1.0 pulls backbone toward low-rank attractor; DCF hand tokens inherit low-rank → hand collapses to plane. Fix: loss_weight_scene=0.1 + unfrozen gives hand 20.6 / obj 14.1 / SVD 0.373 (GT 0.40) — best single config across every run tested.",
+    "path": "updates/2026-04-15-dcf-frozen-vs-unfrozen-rootcause.html"
+  },
+  {
     "title": "2026-04-15 · DCF v4 — P1 / P2 Follow-Up Ablation (Unfrozen Scene Heads)",
     "date": "2026-04-15",
     "status": "done",
