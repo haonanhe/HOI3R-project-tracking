@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-15 · DCF Scene-Loss Audit vs STream3R Official (point_loss missing + GT viz)",
+    "date": "2026-04-15",
+    "status": "done",
+    "summary": "Kwarg-by-kwarg audit of our scene-loss call vs stream3r/loss/losses.py:1762. Three deviations found: (1) we skip point_loss on world pts3d (~40% of the scene-loss signal), (2) we don't filter the uint16 65535mm 'no reading' sentinel on DexYCB depth, (3) single-view iteration makes camera_loss degenerate (relative pose to self = identity). Includes visualisation of GT depth + valid mask + unprojected pts3d + pretrained STream3R prediction on tracked frame 67, plus 3D scatter comparing GT vs pretrained preds.",
+    "path": "updates/2026-04-15-dcf-scene-loss-audit-stream3r-official.html"
+  },
+  {
     "title": "2026-04-15 · DCF Scene-Heads A/B (Frozen vs Unfrozen) on Tracked Frames 65–69",
     "date": "2026-04-15",
     "status": "done",
