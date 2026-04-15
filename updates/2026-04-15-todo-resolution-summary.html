@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary 2026-04-15 | HOI3R DCF</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1200px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}h3{color:#34495e}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}th,td{border:1px solid #ddd;padding:8px 12px;text-align:left}th{background:#2c3e50;color:#fff}tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}.panel img{max-width:100%;height:auto;border-radius:4px}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff}
+.badge-pass{background:#27ae60}.badge-fix{background:#e67e22}.badge-finding{background:#3498db}.badge-fail{background:#e53935}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em}
+.caption{font-size:.85em;color:#666;margin-top:4px}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.toc ul{margin:0;padding-left:20px}.toc li{margin:4px 0}.toc a{text-decoration:none;color:#2c3e50}
+</style>
+</head>
+<body>
+
+<h1>Session Summary &mdash; 2026-04-15</h1>
+<p><strong>Goal:</strong> Execute three high-priority TODOs carried over from 2026-04-14 (scene loss wiring, camera-view video auto-render, generalization-range CLI) and validate each via ACP smoke jobs.</p>
+
+<div class="meta-box">
+<div class="meta-grid">
+<span class="meta-label">Date:</span><span class="meta-value">2026-04-15 (UTC)</span>
+<span class="meta-label">Branch:</span><span class="meta-value">feat/dcf</span>
+<span class="meta-label">Worktree:</span><span class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</span>
+<span class="meta-label">Commits:</span><span class="meta-value">5288853, 7c72e77, 40ecaba, cf99711, 18cce3a (base)</span>
+<span class="meta-label">ACP Jobs:</span><span class="meta-value">7 submitted, 5 useful (all SUCCEEDED)</span>
+<span class="meta-label">Experiment Page:</span><span class="meta-value"><a href="2026-04-15-abc-smoke-validation.html">2026-04-15 ABC Smoke Validation</a></span>
+</div>
+</div>
+
+<div class="highlight">
+<strong>ALL THREE TODOs VALIDATED:</strong> (A) Real scene loss via STream3R <code>depth_loss</code> + <code>camera_loss</code> with DexYCB GT depth &mdash; finite losses across all steps. (B) Auto camera-view video render on training completion &mdash; 3.3 MB mp4 produced. (C) Contiguous <code>--train-range</code> / <code>--eval-range</code> CLI &mdash; train/eval splits work with gap of 0.093 m between sets.
+</div>
+
+<div class="toc">
+<strong>Contents</strong>
+<ul>
+<li><a href="#experiments">1. Experiments (ACP Jobs)</a></li>
+<li><a href="#code">2. Code Changes</a></li>
+<li><a href="#bugs">3. Bugs Found &amp; Fixed</a></li>
+<li><a href="#findings">4. Key Discoveries</a></li>
+<li><a href="#modules">5. Training Modules State</a></li>
+<li><a href="#next">6. Open Issues &amp; Next Steps</a></li>
+<li><a href="#links">7. Links</a></li>
+</ul>
+</div>
+
+<h2 id="experiments">1. Experiments (ACP Jobs)</h2>
+
+<p>All jobs: single N6lS.Iu.I10.1 GPU, SPOT priority, 5 frames / 3&ndash;5 steps &mdash; smoke validation only, NOT meaningful training.</p>
+
+<table>
+<tr><th>#</th><th>Job ID</th><th>Name</th><th>Status</th><th>Purpose</th><th>Outcome</th></tr>
+<tr><td>1</td><td><code>om-q9mvpame</code></td><td>hoi3r-dcf-abc-smoke</td><td><span class="badge badge-fail">DELETED</span></td><td>Combined job on full sequence</td><td>User corrected: 5 frames + one job per feature</td></tr>
+<tr><td>2</td><td><code>om-mlxhe0tj</code></td><td>hoi3r-dcf-smoke-a-scene-loss</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>A1: distillation scene loss</td><td><span class="badge badge-fix">WRONG</span> approach (pseudo-GT distillation)</td></tr>
+<tr><td>3</td><td><code>om-7l6jt12u</code></td><td>hoi3r-dcf-smoke-b-render-video</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>B: camera-view video (first run)</td><td>Validated, but artifacts destroyed by worktree removal</td></tr>
+<tr><td>4</td><td><code>om-0tzo4rxt</code></td><td>hoi3r-dcf-smoke-c-gen-range</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>C: generalization range (first run)</td><td>Validated, but artifacts destroyed by worktree removal</td></tr>
+<tr style="background:#e8f5e9"><td>5</td><td><code>om-8hs01ckv</code></td><td>hoi3r-dcf-smoke-a2-real-scene-loss</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>A2: REAL scene loss via depth_loss + camera_loss</td><td>Per-step scene={0.243, 0.475, 0.232, 0.150, 0.257} all finite</td></tr>
+<tr style="background:#e8f5e9"><td>6</td><td><code>om-70ih58ol</code></td><td>hoi3r-dcf-smoke-b2-render-video</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>B2: camera-view video re-run on feat/dcf</td><td>camera_view.mp4 3.3 MB produced correctly</td></tr>
+<tr style="background:#e8f5e9"><td>7</td><td><code>om-kqq4raa2</code></td><td>hoi3r-dcf-smoke-c2-gen-range</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>C2: generalization range re-run on feat/dcf</td><td>Train hand L2 0.486 m / test 0.578 m, gap 0.093 m</td></tr>
+</table>
+
+<p class="caption">Green-highlighted rows (#5, #6, #7) are the definitive results run on the canonical <code>feat/dcf</code> branch.</p>
+
+<h2 id="code">2. Code Changes</h2>
+
+<table>
+<tr><th>File</th><th>Change</th><th>Commit</th></tr>
+<tr>
+<td><code>scripts/dcf_full_sequence_train.py</code></td>
+<td>Wired REAL scene loss: depth loading from <code>aligned_depth_to_color_*.png</code> (mm&rarr;m, resized 640&times;480 &rarr; 518&times;518 nearest), 518-rescaled intrinsics, full DexYCB extrinsics. Calls <code>depth_loss</code> + <code>camera_loss</code> from <code>stream3r/loss/utils.py</code> matching <code>losses.py:1777</code> pattern. <code>--loss-weight-scene</code> gates supervision. +102/&minus;2 lines.</td>
+<td><code>5288853</code></td>
+</tr>
+<tr>
+<td><code>scripts/dcf_full_sequence_train.py</code></td>
+<td>Added <code>--max-frames N</code> flag (default None = load all); caps <code>load_full_sequence_dexycb()</code> for smoke tests.</td>
+<td><code>7c72e77</code></td>
+</tr>
+<tr>
+<td><code>scripts/dcf_generalization_test.py</code></td>
+<td>Added <code>--train-range START-END</code> / <code>--eval-range START-END</code> (supports <code>end</code>); mutually exclusive with explicit <code>--train-frames</code>/<code>--test-frames</code>; overlap validation fails fast; probes <code>color_*.jpg</code> for sequence length.</td>
+<td><code>40ecaba</code></td>
+</tr>
+<tr>
+<td><code>scripts/dcf_full_sequence_train.py</code></td>
+<td>Added <code>--render-video</code> / <code>--video-fps</code> flags; auto-runs <code>render_all_frames()</code> after final eval; <code>capture_world_points=True</code> when rendering.</td>
+<td><code>cf99711</code></td>
+</tr>
+<tr>
+<td><code>scripts/dcf_render_camera_view.py</code></td>
+<td>Refactored: <code>render_all_frames()</code> + <code>make_video_from_frames()</code> now importable; CLI preserved.</td>
+<td><code>cf99711</code></td>
+</tr>
+</table>
+
+<h2 id="bugs">3. Bugs Found &amp; Fixed</h2>
+
+<div class="panel">
+<h3><span class="badge badge-fix">FIX</span> NameError: <code>hand_root_ct</code> in <code>load_full_sequence_dexycb()</code></h3>
+<p>Missing variable assignment in <code>dcf_full_sequence_train.py</code>. Added <code>hand_root_ct = _camera_root_from_frame(frame_record)</code>. Fixed as a side-effect of Task B in commit <code>cf99711</code>.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fix">FIX</span> Same NameError in <code>load_dexycb_clip()</code></h3>
+<p>Identical <code>hand_root_ct</code> bug independently re-discovered in <code>dcf_generalization_test.py</code>. Fixed as side-effect of Task C in commit <code>40ecaba</code>.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fix">FIX</span> Scene loss must use REAL DexYCB GT, not distillation</h3>
+<p>Job #2 (<code>om-mlxhe0tj</code>) used distillation (supervise student to match frozen teacher's own output) &mdash; this is the wrong signal. STream3R already has <code>depth_loss</code> + <code>camera_loss</code> in <code>stream3r/loss/utils.py</code> with a canonical call site at <code>losses.py:1777</code>. DexYCB provides <code>aligned_depth_to_color_*.png</code> depth maps and intrinsics/extrinsics via calibration YAML. Only depth loading needed to be added. Corrected in job #5.</p>
+</div>
+
+<h2 id="findings">4. Key Discoveries</h2>
+
+<div class="panel">
+<h3><span class="badge badge-finding">FINDING</span> STream3R model produces depth/pose even with scene heads frozen</h3>
+<p>Frozen parameters still run forward; gradients can flow through them into the decoder. This enables real scene supervision without unfreezing scene heads.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-finding">FINDING</span> Real scene-loss wiring: +102/&minus;2 lines in one script</h3>
+<p>Minimal surface because <code>stream3r/loss/utils.py</code> and the bridge dataloader already had most of what was needed. The heavy lift was understanding the correct depth format (mm&rarr;m), resolution (518&times;518 nearest), and intrinsics scaling.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fix">FIX</span> All DCF work in one worktree on <code>feat/dcf</code></h3>
+<p>No per-task branches, no integration branches, no sibling worktrees. <code>git worktree remove --force</code> destroys unversioned artifacts (<code>predictions.pt</code>, log dirs) inside &mdash; migrate/preserve first or lose them. Jobs #3 and #4 lost artifacts this way.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fix">FIX</span> Smoke-validation ACP protocol: &le;5 frames, one job per feature</h3>
+<p>Never combine features in one job (if it crashes, can&rsquo;t tell what broke). Never run smokes on the full sequence (wastes GPU and memory for correctness checks).</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fix">FIX</span> Publishing agents must fail loudly on missing artifact dirs</h3>
+<p>Today&rsquo;s first republish attempt silently fell back to 500-step historical runs for B and C scatter data &mdash; produced a misleading page that had to be torn down and redone.</p>
+</div>
+
+<div class="panel">
+<h3><span class="badge badge-fix">FIX</span> 3D scatter plot data shape must match reference verbatim</h3>
+<p>Keys: <code>pred_hand</code>, <code>gt_hand</code>, <code>pred_obj</code>, <code>gt_obj</code> each <code>{x:[],y:[],z:[]}</code>. Colors: Pred Hand <code>#58a6ff</code>, GT Hand <code>#8b949e</code>, Pred Obj <code>#3fb950</code>, GT Obj <code>#6e7681</code>. Improvising key/color names has twice produced swapped/mislabeled plots.</p>
+</div>
+
+<h2 id="modules">5. Training Modules State (End of Session)</h2>
+
+<table>
+<tr><th>Module</th><th>Status</th><th>Notes</th></tr>
+<tr><td>Frame blocks (24 layers)</td><td>Frozen</td><td>Pretrained STream3R weights</td></tr>
+<tr><td>Global blocks</td><td>Trained (default on)</td><td><code>--train-global-blocks</code> / <code>--no-train-global-blocks</code></td></tr>
+<tr><td>GPS buffer (Laplacian eigvecs [778,16])</td><td>Frozen</td><td>Precomputed per MANO surface</td></tr>
+<tr><td>Scene heads (depth, pose, world_points)</td><td>Frozen (default)</td><td><code>--freeze-scene-heads=True</code>; still run forward for loss computation</td></tr>
+<tr><td>Hand/object encoders</td><td>Trained</td><td>GPS for hand, xyz for object</td></tr>
+<tr><td>Trajectory heads</td><td>Trained</td><td>Hand 1024 decoder + 16 GPS skip; obj decoder only</td></tr>
+</table>
+
+<p><strong>Active losses (with default weights):</strong></p>
+<ul>
+<li>Hand trajectory L1 (1.0)</li>
+<li>Object trajectory L1 (1.0)</li>
+<li>Contact BCE (0.1) + contact pointer (0.1)</li>
+<li>Scene: <code>depth_loss["loss_conf"] + depth_loss["loss_grad"] + camera_loss["loss_camera"]</code> &mdash; weighted by <code>--loss-weight-scene</code> (default 0.0 = off; 1.0 in smoke)</li>
+</ul>
+
+<p><strong>Coordinate space:</strong> Camera-space vertices; hand root via <code>_camera_root_from_frame</code>; canonical MANO space for GPS buffer.</p>
+<p><strong>Resolution:</strong> Color 518&times;518 (resized from 640&times;480); depth 518&times;518 (nearest-neighbor from 640&times;480); intrinsics scaled accordingly.</p>
+
+<h2 id="next">6. Open Issues &amp; Next Steps</h2>
+
+<table>
+<tr><th>Priority</th><th>Item</th><th>Details</th></tr>
+<tr><td><strong>P1</strong></td><td>Full-scale scene-loss run</td><td>Wire validated; now run on full sequence with <code>--loss-weight-scene</code> tuned (1.0 at smoke). Confirm hand/obj L2 converges and scene corruption prevented.</td></tr>
+<tr><td><strong>P1</strong></td><td>Real generalization experiment</td><td><code>--train-range 0-50 --eval-range 50-end</code> on full sequence with &ge;2000 steps. Must include chamfer + visualization.</td></tr>
+<tr><td><strong>P2</strong></td><td>Pre-existing NameError audit</td><td>Two identical <code>hand_root_ct</code> NameErrors independently re-discovered. Grep codebase for similar silent bugs before next long run.</td></tr>
+<tr><td><strong>P2</strong></td><td>Object GPS ablation</td><td>Deferred from start of day. Test per-object Laplacian eigvecs for rigid objects (contrast with hand where GPS helped).</td></tr>
+<tr><td><strong>P2</strong></td><td>Smoke-cap visibility</td><td><code>--max-frames</code> currently logs &ldquo;capping to first N&rdquo;; also expose <code>total_available</code> in training_curve.json.</td></tr>
+</table>
+
+<h2 id="links">7. Published Experiment Pages</h2>
+<ul>
+<li><a href="2026-04-15-abc-smoke-validation.html"><strong>2026-04-15 ABC Smoke Validation</strong></a> &mdash; 3D scatter plots, Chart.js loss curves, camera-view video, per-frame metrics for all three TODO validations</li>
+<li><a href="2026-04-14-session-summary.html">2026-04-14 Session Summary</a> &mdash; Previous session: DCF architecture implementation + 16 experiments</li>
+<li><a href="2026-04-14-gps-encoding-experiments.html">2026-04-14 GPS Encoding Experiments</a> &mdash; GPS-based point encoding fixing the hand curve bug</li>
+</ul>
+
+</body>
+</html>
