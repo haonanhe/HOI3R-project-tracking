@@ -50,7 +50,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
   <p style="margin:6px 0;line-height:1.5"><strong>What is still valid on this page:</strong> scene-loss curve (depth&nbsp;PNG + intrinsics + extrinsics are tracking-independent), object L2 (<code>pose_y</code> is tracked throughout).</p>
   <p style="margin:6px 0;line-height:1.5"><strong>What is invalid:</strong> all hand metrics (L2, training hand loss), the 3D hand scatter clouds, the hand overlay markers in the camera-view video.</p>
   <p style="margin:6px 0;line-height:1.5"><strong>Fix landed in commit <code>754d2b2</code></strong> (<code>feat/dcf</code>): bridge now raises <code>HandNotTrackedError</code> on sentinels; training script pre-filters untracked frames and adds <code>--frame-start</code> plus a post-load hand/obj z-centroid sanity check (&lt; 30&nbsp;cm).</p>
-  <p style="margin:6px 0;line-height:1.5"><strong>Replacement results:</strong> see the follow-up A/B page: <a href="./2026-04-15-dcf-scene-heads-ab-tracked65.html"><strong>DCF Scene-Heads A/B on Tracked Frames 65&ndash;69</strong></a> (frozen reached 22.5/20.1 mm; unfrozen @ 1e-5 reached 134.3/83.8 mm; jobs <code>om-ksr5t6xs</code> and <code>om-bbxf8s1e</code>).</p>
+  <p style="margin:6px 0;line-height:1.5"><strong>Replacement results:</strong> see the follow-up A/B page: <a href="./2026-04-15-dcf-scene-heads-ab-tracked65.html"><strong>v1 DCF Scene-Heads A/B</strong></a> (since superseded by the STream3R-aligned v2 rerun: <a href="./2026-04-15-dcf-scene-loss-stream3r-aligned-ab.html"><strong>DCF v2 A/B</strong></a>) (frozen reached 22.5/20.1 mm; unfrozen @ 1e-5 reached 134.3/83.8 mm; jobs <code>om-ksr5t6xs</code> and <code>om-bbxf8s1e</code>).</p>
 </div>
 
 <header>
