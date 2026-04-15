@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-15 · DCF v3 — Coordinate Fix Recovers Scene Points (A/B)",
+    "date": "2026-04-15",
+    "status": "done",
+    "summary": "User flagged v2 scene-points looking degraded. Phase-1 diagnostic found the root cause: gt_pts3d was built in DexYCB-world-frame (1.64 m translation, 156° rotation) but point_loss supervises in first-view-camera-frame. Conf-loss optimiser collapsed pred world_points to a 0.47 m plane (55.7% valid). One-line fix (pass np.eye(4) to depthmap_to_absolute_camera_coordinates) restores 100% valid pixels and z q95=4.55 m. v3 B unfrozen now achieves best object L2 across all runs (12.6 mm). Commit c90bd52.",
+    "path": "updates/2026-04-15-dcf-scene-loss-v3-coordfix-ab.html"
+  },
+  {
     "title": "2026-04-15 · DCF Scene Loss STream3R-Aligned — v2 A/B (Frozen vs Unfrozen)",
     "date": "2026-04-15",
     "status": "done",
