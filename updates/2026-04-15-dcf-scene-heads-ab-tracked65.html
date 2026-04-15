@@ -64,7 +64,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
   <div class="highlight">
     <strong>TL;DR — Freezing wins on this smoke.</strong> On 5 tracked frames × 200 steps, frozen scene heads reach <code>hand 22.5 mm / obj 20.1 mm</code>; unfreezing scene heads at lr 1e-5 reaches only <code>hand 134.3 mm / obj 83.8 mm</code>. 6× worse hand, 4× worse object. Confirms the smoke-stage freezing policy added to <code>docs/PROJECT_PLAN.md</code>. Whether unfreezing helps on <em>full-dataset</em> training remains an open question (expected to flip in favour of B only once the DexYCB domain shift adds up across many frames).</p>
   </div>
-</header>
+<div style="background:#fff3e0;border:2px solid #f39c12;border-radius:8px;padding:12px;margin:12px 0"><strong>Update 2026-04-15:</strong> the v1 conclusion that "freezing wins by 6×/4×" was partially artifactual. An audit revealed the scene loss here used only <code>depth_loss + camera_loss</code>, missing the canonical <code>point_loss</code> (~40% of STream3R's scene-loss signal) and ran with <code>S=1</code> views (making <code>camera_loss</code> degenerate). The <a href="./2026-04-15-dcf-scene-loss-stream3r-aligned-ab.html"><strong>v2 A/B</strong></a> rerun with all 5 fixes shows the gap shrinks to 1.7×/1.2× — unfreezing is no longer destructive.</div></header>
 
 <nav class="toc">
   <strong>Contents</strong>
