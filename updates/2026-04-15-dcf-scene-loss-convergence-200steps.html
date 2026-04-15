@@ -43,7 +43,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 @media (max-width:768px){.chart-grid,.scatter-grid,.grid-4{grid-template-columns:1fr}}
 </style>
 </head>
-<body>
+<body><div style="background:#e8f5e9;border:3px solid #27ae60;border-radius:8px;padding:14px;margin:14px 0"><strong>Update 2026-04-15 — v3 supersedes this page:</strong> Phase-1 diagnostic found the v2 scene-point collapse was caused by gt_pts3d built in DexYCB-world-frame (156° off from the prediction frame). <a href="./2026-04-15-dcf-scene-loss-v3-coordfix-ab.html"><strong>v3 A/B (coord fix)</strong></a> recovers scene points to 100% valid, z q95 = 4.55 m. v3 B unfrozen achieves best object L2 (12.6 mm) across every run to date. Commit <code>c90bd52</code>.</div>
 <div style="background:#fce4ec;border:3px solid #e53935;border-radius:8px;padding:18px;margin:16px 0">
   <h2 style="margin:0 0 8px 0;color:#c62828;border:none">&#x26A0;&#xFE0F; HAND-BRANCH RESULTS ON THIS PAGE ARE INVALID</h2>
   <p style="margin:6px 0;line-height:1.5"><strong>Root cause:</strong> the 5-frame smoke window (frames 0&ndash;4 of sequence <code>20200709_141754</code>) has <em>no DexYCB hand tracking</em>. <code>joint_3d[0] = [&minus;1, &minus;1, &minus;1]</code> (sentinel) and <code>pose_m</code> translation is zero for all 5 frames. The bridge silently fell back to zero-translation MANO defaults, putting <code>hand_traj_gt</code> in wrist-relative local space (z&nbsp;centroid 0.006&nbsp;m) instead of camera space (object is at 0.866&nbsp;m). Pred and GT both collapsed to the same static default &mdash; the "12.5&nbsp;mm hand L2" below is a constant-vs-constant comparison, not convergence.</p>
