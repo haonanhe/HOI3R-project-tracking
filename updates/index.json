@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-15 · DCF Scene Loss STream3R-Aligned — v2 A/B (Frozen vs Unfrozen)",
+    "date": "2026-04-15",
+    "status": "done",
+    "summary": "Rerun of the tracked-frames 65-69 A/B with all five STream3R-alignment fixes applied (+point_loss, 65535 filter, tighter valid mask, --num-views 4 multi-view, PP-crop+Lanczos). Scene-loss scalar now matches CausalLoss.compute_loss byte-for-byte. Unfreezing gap narrowed from v1's 6x/4x to 1.7x/1.2x — the 'unfreezing is catastrophic' conclusion was artifactual. v2 A frozen: 22.9/32.5 mm. v2 B unfrozen: 39.9/38.8 mm. Commit cbc5ba9.",
+    "path": "updates/2026-04-15-dcf-scene-loss-stream3r-aligned-ab.html"
+  },
+  {
     "title": "2026-04-15 · DCF Scene-Loss Audit vs STream3R Official (point_loss missing + GT viz)",
     "date": "2026-04-15",
     "status": "done",
