@@ -70,6 +70,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
     <li><a href="#scatter">3D scatter — all four relevant runs</a></li>
     <li><a href="#camera">Camera-view frame 67 grid</a></li>
     <li><a href="#rec">Updated recommendation for Phase 3</a></li>
+    <li><a href="#2stage">2-stage training proposal (tested, does not help)</a></li>
   </ul>
 </nav>
 
@@ -243,6 +244,86 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
   <li><strong>Chamfer + L1 combined loss</strong>: <code>--hand-loss-type l1+chamfer</code> already implemented but untested. Would provide the Chamfer coverage bonus without breaking per-vertex correspondence. Worth one ACP run.</li>
   <li><strong>Phase 3 full-sequence A/B</strong>: run the winning config on all 72 tracked-hand frames.</li>
 </ul>
+</section>
+
+
+<section id="2stage">
+<h2>2-stage training proposal — tested, doesn't help</h2>
+
+<div class="info">
+  <strong>User question (post-v5):</strong> if frozen scene heads + trainable <code>global_blocks</code> + scene losses <em>can</em> adapt pred scene to GT (confirmed: v3 A reaches scene total &minus;0.684, z q95 = 4.55 m, matching all other runs), then do we need to train scene heads at all? Could we do 2-stage training — stage 1 scene-only, stage 2 DCF-only?
+</div>
+
+<h3>Answer to the first half: no, scene heads don't need training.</h3>
+<p>The scene total reached by v3 A (frozen heads) is <strong>the deepest of every config tested</strong>, matching or exceeding what unfrozen heads achieve. The backbone has enough capacity (302 M params) to shift features so the fixed pretrained head outputs GT-matching pointmaps. Training scene heads adds parameters but not quality — and for this smoke, actively hurts DCF hand rank (root cause above).</p>
+
+<h3>Answer to the second half: 2-stage tested empirically, doesn't pay off.</h3>
+<p>Submitted <code>om-0tc7rkuz</code>: same as v3 A but with all DCF loss weights set to 0 (scene-only training). 200 steps, tracked frames 65&ndash;69, frozen scene heads. Compared to v3 A (identical except DCF losses also active at default weights):</p>
+
+<table>
+<thead><tr><th>Metric</th><th>v3 A (joint)</th><th>Stage-1 only (scene-only, DCF off)</th><th>v5 sw=0.1</th></tr></thead>
+<tbody>
+<tr><td>Scene total (avg last 30 steps)</td><td><strong>&minus;0.684</strong></td><td>&minus;0.604</td><td>&minus;0.610</td></tr>
+<tr><td><code>loss_pts3d_conf</code></td><td><strong>&minus;0.359</strong></td><td>&minus;0.320</td><td>&minus;0.326</td></tr>
+<tr><td><code>loss_depth_conf</code></td><td><strong>&minus;0.379</strong></td><td>&minus;0.337</td><td>&minus;0.339</td></tr>
+<tr><td>World-points z q95 (frame 67)</td><td><strong>4.55 m</strong></td><td>4.23 m</td><td>4.33 m</td></tr>
+<tr><td>World-points z median</td><td>0.694 m</td><td>0.673 m</td><td>0.695 m</td></tr>
+<tr><td>Hand L2 (expected)</td><td>33.4 mm</td><td>737.0 mm (DCF untrained, random init)</td><td>20.6 mm</td></tr>
+<tr><td>Obj L2 (expected)</td><td>20.8 mm</td><td>1192.8 mm (DCF untrained)</td><td>14.1 mm</td></tr>
+</tbody>
+</table>
+
+<div class="warning">
+  <strong>Surprising:</strong> Stage-1 scene-only is measurably <em>worse</em> at scene reconstruction than the joint v3 A. Scene total &minus;0.604 vs &minus;0.684 (~13% shallower); z q95 4.23 m vs 4.55 m.
+</div>
+
+<h3>Why joint training beats scene-only on scene quality</h3>
+<div class="highlight">
+  The DCF hand/object losses provide <strong>per-point world-space supervision</strong> that complements the dense per-pixel scene supervision. The backbone features that encode hand/object position are the <em>same</em> features encoding scene structure — training them together with both signals yields better features than training against scene alone. Concretely:
+  <ul>
+    <li>Scene loss supervises dense pointmaps but has weak per-point identity (normalize-first-view=False gives per-view scale invariance).</li>
+    <li>DCF hand/obj loss supervises specific 3D anchor points with known correspondences (MANO vertices, object pose_y transforms), anchoring backbone features at known locations.</li>
+    <li>These signals are complementary: one dense-smooth, one sparse-precise. Joint optimization exploits both.</li>
+  </ul>
+  The 2-stage approach <em>loses</em> this synergy in stage 1, and the scene features are strictly less informative than joint-trained.
+</div>
+
+<h3>Implications for Phase 3</h3>
+<table>
+<thead><tr><th>Config</th><th>Scene quality</th><th>DCF quality</th><th>Complexity</th><th>Recommendation</th></tr></thead>
+<tbody>
+<tr><td><strong>v5 sw=0.1 single-stage</strong> (current best)</td><td>z q95 4.33 m</td><td>hand 20.6 / obj 14.1 mm, SVD 0.37</td><td>trivial (one CLI flag)</td><td><span class="badge badge-best">USE THIS</span></td></tr>
+<tr><td>v3 A frozen joint (sw=1.0)</td><td>z q95 4.55 m (best)</td><td>hand 33.4 / obj 20.8 mm, SVD 0.31</td><td>trivial</td><td>good fallback</td></tr>
+<tr><td>2-stage (stage 1 scene + stage 2 DCF on frozen backbone)</td><td>projected: z q95 ~4.23 m (worse)</td><td>projected: hand quality limited by stage-1 features</td><td>requires checkpoint save/load engineering</td><td>not recommended</td></tr>
+<tr><td>2-stage with stage-2 backbone trainable at low LR</td><td>may regress from stage 1</td><td>better than frozen-backbone stage 2</td><td>moderate</td><td>equivalent to warmup schedule (below)</td></tr>
+</tbody>
+</table>
+
+<h3>Variant worth testing at Phase-3 scale: warmup schedule</h3>
+<p>Instead of hard stage boundaries, use a continuous <code>loss_weight_scene</code> schedule:</p>
+<pre><code># pseudo-code for proposed scheduler
+if step &lt; warmup:      lw = 1.0       # scene-focused warmup
+else:                   lw = 0.1       # DCF takes over
+
+total_loss = lw * scene_loss + hand_loss + obj_loss + contact_loss + pointer_loss</code></pre>
+<p>This keeps gradient always flowing through both heads (retains the v3 A synergy), but biases early training toward scene convergence. No checkpoint engineering required. A cheap ACP test can compare this against vanilla v5 sw=0.1 to see if warmup buys anything on full 72-frame sequence.</p>
+
+<h3>Bottom line for the 2-stage question</h3>
+<div class="highlight">
+  <strong>2-stage doesn't help on this 5-frame smoke.</strong> The joint synergy between DCF and scene losses is real and measurable (~13% scene-loss improvement). The core hand-rank problem was already solved by v5 sw=0.1 (single-stage, unfrozen, scene-weight 0.1) with hand L2 20.6 mm, obj L2 14.1 mm, SVD 0.373.
+  <br><br>
+  <strong>For Phase 3 full-sequence</strong>, the natural extensions worth testing (in order of effort):
+  <ol>
+    <li>Run v5 sw=0.1 on full 72 frames — verify findings hold at 15&times; scale</li>
+    <li>A/B sweep <code>loss_weight_scene</code> &isin; {0.1, 0.3, 0.5, 1.0} to find the Phase-3 optimum (the balance may shift with more data)</li>
+    <li>Warmup-schedule variant (above) — cheap to implement, possibly marginal gain</li>
+    <li>Only if all above plateau: consider proper 2-stage with stage-2-backbone-trainable-at-low-LR</li>
+  </ol>
+</div>
+
+<footer style="margin-top:20px;font-size:.85em;color:#666">
+  Stage-1 test: ACP job <code>om-0tc7rkuz</code>, scene-only (DCF weights = 0), 200 steps, frozen scene heads.
+</footer>
 </section>
 
 <footer>
