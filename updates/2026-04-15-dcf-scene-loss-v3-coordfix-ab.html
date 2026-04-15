@@ -282,7 +282,7 @@ python scripts/dcf_full_sequence_train.py --frame-start 65 --max-frames 5 \
   <li><strong>Lower <code>--lr-scene-heads</code> (e.g. 1e-6) or add EMA-to-frozen.</strong> Reduces how aggressively the scene-head training pulls backbone features.</li>
 </ol>
 
-<h3>What this means for the v3 headline</h3>
+<div style="background:#e8f5e9;border:2px solid #27ae60;border-radius:6px;padding:10px;margin:10px 0"><strong>Follow-up 2026-04-15:</strong> The two fixes (disable static grad + Chamfer) were tested — see <a href="./2026-04-15-dcf-scene-loss-v4-p1p2-ablation.html"><strong>v4 P1/P2 ablation</strong></a>. Headline: P1 alone is best on L2 (18.2 hand / 15.8 obj) but still has line-hand; P2 (Chamfer) recovers rank (SVD 0.32) but breaks per-vertex correspondence. Recommendation: land P1 as default; test l1+chamfer hand-only before Phase 3.</div><h3>What this means for the v3 headline</h3>
 <div class="warning">
   The earlier v3 claim "unfrozen wins on object L2 (12.6 mm)" remains true on the <em>reported metric</em>, but <strong>the hand predictions for v3 B are geometrically degenerate</strong> despite a reasonable 32.8 mm L2. Before concluding "unfrozen is better", we need either a Chamfer hand loss that penalises rank collapse, or a visual/SVD check in every run. The freezing policy in <code>docs/PROJECT_PLAN.md</code> has been updated to reflect this, with required pre-conditions listed before unfreezing in Phase 3.
 </div>
