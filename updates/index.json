@@ -1,132 +1,139 @@
 [
   {
-    "title": "2026-04-14 \u00b7 DCF Comprehensive Experiment Comparison (All 11 Experiments)",
+    "title": "2026-04-14 · DCF GPS-Based Point Encoding: Fixing the Hand Curve Bug",
+    "date": "2026-04-14",
+    "status": "done",
+    "summary": "Replaced Euclidean xyz with Laplacian eigenvector (GPS) encoding for DCF hand canonical points, with raw 16-dim GPS skip connection to trajectory head. Diagnosed root cause: canonical_dim=0 loses point identity after 24 global attention layers, causing all 256 hand points to collapse to mean trajectory (curve shape). Four ACP experiments: GPS frozen/trained vs no-GPS baseline (500 steps), plus full-sequence 72-frame overfit (2000 steps). Commit: 18cce3a.",
+    "path": "updates/2026-04-14-gps-encoding-experiments.html"
+  },
+  {
+    "title": "2026-04-14 · DCF Comprehensive Experiment Comparison (All 11 Experiments)",
     "date": "2026-04-14",
     "status": "done",
     "summary": "Master comparison of all 11 DCF experiments from phase 1a baseline through frozen global_blocks. Key findings: (1) 200-step baseline (13mm hand) outperforms 500-step (21mm) due to feature degradation in shared global_blocks; (2) NLF barycentric sampling best overfit at 8mm/9mm hand/obj; (3) Scene loss preserves scene std (1.53 vs 0.40 without); (4) Hand memorizes on unseen frames (185mm test vs 20mm train) while object generalizes perfectly (16mm both). Tables include scene quality, hand geometry PCA, and strategy comparison for fixes.",
     "path": "updates/2026-04-14-dcf-comprehensive-comparison.html"
   },
   {
-    "title": "2026-04-14 \u00b7 Session Summary: DCF Architecture Implementation & Validation",
+    "title": "2026-04-14 · Session Summary: DCF Architecture Implementation & Validation",
     "date": "2026-04-14",
     "status": "done",
     "summary": "Full-day session covering 9 experiments across DCF module implementation (62 smoke tests, 26 commits), encoding strategies (Fourier vs GPS), overfit validation, and generalization analysis. Critical findings: object trajectory generalizes perfectly (16mm train/test), but hand trajectory memorizes (20mm train vs 185mm test). Scene reconstruction collapses without scene losses. NLF barycentric sampling achieves best hand L2 (8mm vs 20mm FPS). Full-sequence 72-frame training confirms hand L2 stuck at 190mm.",
     "path": "updates/2026-04-14-session-summary.html"
   },
   {
-    "title": "2026-04-14 \u00b7 DCF Experiment Batch: Overfit + Generalization (Hand Memorizes, Object Generalizes)",
+    "title": "2026-04-14 · DCF Experiment Batch: Overfit + Generalization (Hand Memorizes, Object Generalizes)",
     "date": "2026-04-14",
     "status": "done",
-    "summary": "Two-experiment batch validating DCF architecture. Overfit 500 steps: Hand L1 0.369\u21920.011 (34x), Obj L1 0.350\u21920.007 (50x). Generalization test reveals a critical asymmetry: object trajectory generalizes perfectly (15.9mm train vs 16.4mm test, +0.5mm), but hand trajectory memorizes (20mm train vs 184mm test, +164mm gap). The hand branch ignores image features and collapses to a constant position. Next step: train on more frames to force image conditioning.",
+    "summary": "Two-experiment batch validating DCF architecture. Overfit 500 steps: Hand L1 0.369→0.011 (34x), Obj L1 0.350→0.007 (50x). Generalization test reveals a critical asymmetry: object trajectory generalizes perfectly (15.9mm train vs 16.4mm test, +0.5mm), but hand trajectory memorizes (20mm train vs 184mm test, +164mm gap). The hand branch ignores image features and collapses to a constant position. Next step: train on more frames to force image conditioning.",
     "path": "updates/2026-04-14-dcf-experiment-batch.html"
   },
   {
-    "title": "2026-04-14 \u00b7 DCF Camera-View Visualization: Scene + Hand + Object",
+    "title": "2026-04-14 · DCF Camera-View Visualization: Scene + Hand + Object",
     "date": "2026-04-14",
     "status": "done",
     "summary": "Camera-view RGB rendering of STream3R scene points with hand/object trajectory overlay. Compares Fourier encoding (hand 16.9mm L2) vs GPS encoding (hand 51.5mm L2). GPS needs more training.",
     "path": "updates/2026-04-14-dcf-camera-view-visualization.html"
   },
   {
-    "title": "2026-04-11 \u00b7 DCF Phase 1a: STream3R + DCF Full Pipeline Overfit",
+    "title": "2026-04-11 · DCF Phase 1a: STream3R + DCF Full Pipeline Overfit",
     "date": "2026-04-11",
     "status": "done",
     "summary": "First end-to-end STream3R encoder + DCF decoder overfit with coordinate-aligned supervision. Per-frame predictions in camera space. Hand L1=8.5mm, Object L1=9.1mm after 200 steps on 4-frame DexYCB clip.",
     "path": "updates/2026-04-11-dcf-phase1a-stream3r-overfit.html"
   },
   {
-    "title": "2026-04-11 \u00b7 DCF Phase 1: DexYCB Single-Sequence Overfit",
+    "title": "2026-04-11 · DCF Phase 1: DexYCB Single-Sequence Overfit",
     "date": "2026-04-11",
     "status": "done",
-    "summary": "Dynamic Correspondence Fields (DCF) architecture replaces Trellis.2 SLat pipeline. Phase 1 overfit on 8-frame DexYCB clip achieves 98.7% trajectory L1 reduction (1.258 \u2192 0.016), validating the encode \u2192 predict trajectories \u2192 contact coupling pipeline. Point cloud visualizations confirm GT-prediction alignment across all frames. All outputs in STream3R world space W.",
+    "summary": "Dynamic Correspondence Fields (DCF) architecture replaces Trellis.2 SLat pipeline. Phase 1 overfit on 8-frame DexYCB clip achieves 98.7% trajectory L1 reduction (1.258 → 0.016), validating the encode → predict trajectories → contact coupling pipeline. Point cloud visualizations confirm GT-prediction alignment across all frames. All outputs in STream3R world space W.",
     "path": "updates/2026-04-11-dcf-phase1-dexycb-overfit.html"
   },
   {
-    "title": "2026-04-01 \u00b7 Frame 30 Denorm + Depth-Ordered Overlay Fix",
+    "title": "2026-04-01 · Frame 30 Denorm + Depth-Ordered Overlay Fix",
     "date": "2026-04-01",
     "status": "done",
     "summary": "The native TRELLIS decoder output is now lifted from normalized cube space back into the reference local metric bbox before hand/object pose transforms, and the overlay renderer now draws by camera depth. Frame 000030 no longer fails with non-empty object mesh + zero valid projections; object now produces 9 valid image projections, while a smaller residual object-collapse problem remains.",
     "path": "updates/2026-04-01-frame30-denorm-overlay-fix.html"
   },
   {
-    "title": "2026-04-01 \u00b7 Frame 30 Loss-Gap Repair Experiment",
+    "title": "2026-04-01 · Frame 30 Loss-Gap Repair Experiment",
     "date": "2026-04-01",
     "status": "done",
     "summary": "A minimal loss repair added explicit empty-mesh and sparse-field presence penalties to the native TRELLIS training objective. On frame 000030, the final hand and object predictions remain non-empty and the earlier empty-mesh zero-geometry-loss collapse no longer survives to the end of training.",
     "path": "updates/2026-04-01-frame30-loss-gap-repair.html"
   },
   {
-    "title": "2026-04-01 \u00b7 Frame 30 Transition And Objective-Gap Diagnosis",
+    "title": "2026-04-01 · Frame 30 Transition And Objective-Gap Diagnosis",
     "date": "2026-04-01",
     "status": "done",
     "summary": "A step-wise native TRELLIS diagnosis traced frame 000030 through SDF sign transitions and loss terms. Hand collapses into all-nonnegative empty mesh at step 41, while object reaches empty mesh and zero geometry loss earlier at step 27 before its field becomes globally all-nonnegative at step 37.",
     "path": "updates/2026-04-01-frame30-transition-diagnosis.html"
   },
   {
-    "title": "2026-03-31 \u00b7 Frame 30 Three-Stage Diagnosis",
+    "title": "2026-03-31 · Frame 30 Three-Stage Diagnosis",
     "date": "2026-03-31",
     "status": "done",
     "summary": "A dedicated diagnosis run checked raw mesh extraction, world-to-camera conversion, and camera-to-image projection on frame 000030. Both hand and object fail at raw mesh extraction with zero predicted vertices before any coordinate conversion is applied.",
     "path": "updates/2026-03-31-frame30-diagnosis.html"
   },
   {
-    "title": "2026-03-31 \u00b7 Frame 30 Normalized-Space Native TRELLIS Overfit",
+    "title": "2026-03-31 · Frame 30 Normalized-Space Native TRELLIS Overfit",
     "date": "2026-03-31",
     "status": "done",
     "summary": "A forced single-image overfit on frame 000030 converged numerically under the current normalized-space decoder path, but both predicted meshes collapsed to empty outputs. The node is published as a negative result and a precise failure-mode record.",
     "path": "updates/2026-03-31-native-trellis-frame30-normalized-space-overfit.html"
   },
   {
-    "title": "2026-03-31 \u00b7 Native TRELLIS Single-Frame Overfit On DexYCB",
+    "title": "2026-03-31 · Native TRELLIS Single-Frame Overfit On DexYCB",
     "date": "2026-03-31",
     "status": "done",
     "summary": "The native sparse TRELLIS mesh decoder now runs end to end on a real visible-hand DexYCB frame. After seeding the decoder away from the empty-mesh collapse, an 80-step CUDA overfit reduced total loss from 5.63 to 0.44 and produced non-empty hand and object meshes.",
     "path": "updates/2026-03-31-native-trellis-single-frame-overfit.html"
   },
   {
-    "title": "2026-03-31 \u00b7 Second DexYCB Overfit On Visible-Hand Frame",
+    "title": "2026-03-31 · Second DexYCB Overfit On Visible-Hand Frame",
     "date": "2026-03-31",
     "status": "done",
     "summary": "The real one-sequence overfit now skips empty-hand opening frames and reruns on frame 000009, with separate GT overlay, prediction overlay, and side-by-side comparison images. Hand and object decoding remain on the same shared decoder path.",
     "path": "updates/2026-03-31-dexycb-second-overfit-hand-frame.html"
   },
   {
-    "title": "2026-03-31 \u00b7 DexYCB One-Sequence Overfit Visualization Pack",
+    "title": "2026-03-31 · DexYCB One-Sequence Overfit Visualization Pack",
     "date": "2026-03-31",
     "status": "done",
     "summary": "A fixed-seed visualization rerun now exports loss curves, overlay projections, 3D scatter plots, and PLY point clouds for the first real DexYCB one-sequence overfit. The object aligns substantially better than the hand in the current bootstrap model.",
     "path": "updates/2026-03-31-dexycb-overfit-visualization.html"
   },
   {
-    "title": "2026-03-31 \u00b7 First Real DexYCB Single-Sequence Overfit Result",
+    "title": "2026-03-31 · First Real DexYCB Single-Sequence Overfit Result",
     "date": "2026-03-31",
     "status": "done",
     "summary": "The first real DexYCB Trellis overfit now runs end to end with toolkit-aligned raw loading and explicit Stream3R world transforms. A CUDA run on one concrete sequence/camera reduced total loss from 1.8684 to 0.7956 in 80 steps.",
     "path": "updates/2026-03-31-first-real-dexycb-overfit.html"
   },
   {
-    "title": "2026-03-31 \u00b7 DexYCB Real-Data Readiness Probe",
+    "title": "2026-03-31 · DexYCB Real-Data Readiness Probe",
     "date": "2026-03-31",
     "status": "done",
     "summary": "The Trellis overfit runner now probes real DexYCB data roots through --data-root, reports processed-root readiness, surfaces the processed archive path, and resolves concrete sequence/frame targets once canonical manifest metadata is present.",
     "path": "updates/2026-03-31-dexycb-readiness-probe.html"
   },
   {
-    "title": "2026-03-30 \u00b7 Structured Trellis Decoder Replaced Dense Placeholder",
+    "title": "2026-03-30 · Structured Trellis Decoder Replaced Dense Placeholder",
     "date": "2026-03-30",
     "status": "done",
     "summary": "The mesh codec now emits structured latent grids and the shared hand/object decoder now decodes those grids with 3D residual and upsample blocks. The new path passes 12 smoke tests and re-runs the single-sequence synthetic overfit.",
     "path": "updates/2026-03-30-structured-decoder-replacement.html"
   },
   {
-    "title": "2026-03-30 \u00b7 First Synthetic Single-Sequence Overfit Result",
+    "title": "2026-03-30 · First Synthetic Single-Sequence Overfit Result",
     "date": "2026-03-30",
     "status": "done",
     "summary": "CUDA synthetic overfit completed for one demo sequence. Total loss dropped from 0.4651 to 0.0561 in 80 steps, establishing the first runnable Trellis mesh bootstrap training loop.",
     "path": "updates/2026-03-30-first-synthetic-overfit-result.html"
   },
   {
-    "title": "2026-03-30 \u00b7 Trellis Bootstrap Scaffold + DexYCB Format Alignment",
+    "title": "2026-03-30 · Trellis Bootstrap Scaffold + DexYCB Format Alignment",
     "date": "2026-03-30",
     "status": "done",
     "summary": "Remote feature branch is live with Trellis bootstrap docs, configs, mesh branch modules, a single-sequence synthetic overfit runner, and the DexYCB processed-data contract aligned before dataset extraction completes.",
