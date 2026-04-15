@@ -6,193 +6,223 @@
 <title>Session Summary 2026-04-15 | HOI3R DCF</title>
 <style>
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1200px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
-h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}h3{color:#34495e}
-table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}th,td{border:1px solid #ddd;padding:8px 12px;text-align:left}th{background:#2c3e50;color:#fff}tr:nth-child(even){background:#f2f2f2}
-.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}.panel img{max-width:100%;height:auto;border-radius:4px}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+h4{color:#555;margin-top:16px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
 .highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
 .warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
 .error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#e3f2fd;padding:12px;border-left:4px solid #3498db;margin:12px 0}
 .meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
 .meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
-.meta-label{font-weight:600;color:#555}.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
 .badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff}
-.badge-pass{background:#27ae60}.badge-fix{background:#e67e22}.badge-finding{background:#3498db}.badge-fail{background:#e53935}
-code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#e53935}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+pre{background:#f4f4f4;padding:12px;border-radius:4px;overflow-x:auto;font-size:0.85em;line-height:1.4}
 .caption{font-size:.85em;color:#666;margin-top:4px}
 .toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
-.toc ul{margin:0;padding-left:20px}.toc li{margin:4px 0}.toc a{text-decoration:none;color:#2c3e50}
+.toc ul{margin:0;padding-left:20px}
+.toc li{margin:4px 0}
+.toc a{text-decoration:none;color:#2c3e50}
+.best{color:#27ae60;font-weight:600}
+.worst{color:#e53935}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:768px){.grid-2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <h1>Session Summary &mdash; 2026-04-15</h1>
-<p><strong>Goal:</strong> Execute three high-priority TODOs carried over from 2026-04-14 (scene loss wiring, camera-view video auto-render, generalization-range CLI) and validate each via ACP smoke jobs.</p>
+<p><strong>Goal:</strong> Diagnose and fix the DCF hand "curve" prediction bug; design and implement GPS-based point encoding; run ablation experiments and publish results.</p>
 
 <div class="meta-box">
 <div class="meta-grid">
-<span class="meta-label">Date:</span><span class="meta-value">2026-04-15 (UTC)</span>
+<span class="meta-label">Date:</span><span class="meta-value">2026-04-15 (work on experiments from 2026-04-14)</span>
 <span class="meta-label">Branch:</span><span class="meta-value">feat/dcf</span>
-<span class="meta-label">Worktree:</span><span class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</span>
-<span class="meta-label">Commits:</span><span class="meta-value">5288853, 7c72e77, 40ecaba, cf99711, 18cce3a (base)</span>
-<span class="meta-label">ACP Jobs:</span><span class="meta-value">7 submitted, 5 useful (all SUCCEEDED)</span>
-<span class="meta-label">Experiment Page:</span><span class="meta-value"><a href="2026-04-15-abc-smoke-validation.html">2026-04-15 ABC Smoke Validation</a></span>
+<span class="meta-label">Main commit:</span><span class="meta-value">18cce3a &mdash; feat(dcf): GPS-based point encoding with skip connection</span>
+<span class="meta-label">ACP jobs:</span><span class="meta-value">4 experiment jobs + 3 support jobs, all SUCCEEDED</span>
+<span class="meta-label">Public report:</span><span class="meta-value"><a href="2026-04-14-gps-encoding-experiments.html">2026-04-14-gps-encoding-experiments.html</a></span>
 </div>
 </div>
 
 <div class="highlight">
-<strong>ALL THREE TODOs VALIDATED:</strong> (A) Real scene loss via STream3R <code>depth_loss</code> + <code>camera_loss</code> with DexYCB GT depth &mdash; finite losses across all steps. (B) Auto camera-view video render on training completion &mdash; 3.3 MB mp4 produced. (C) Contiguous <code>--train-range</code> / <code>--eval-range</code> CLI &mdash; train/eval splits work with gap of 0.093 m between sets.
+<strong>Outcome:</strong> Hand "curve" bug fixed. Best config (GPS + trained global_blocks + full 72-frame sequence, 2000 steps) achieves <strong>12.6 mm hand L2</strong> and <strong>8.1 mm object L2</strong>, with hand-point spread ratio <strong>1.01</strong> (vs GT) &mdash; the hand geometry is preserved, not collapsed to a curve.
 </div>
 
 <div class="toc">
 <strong>Contents</strong>
 <ul>
-<li><a href="#experiments">1. Experiments (ACP Jobs)</a></li>
-<li><a href="#code">2. Code Changes</a></li>
-<li><a href="#bugs">3. Bugs Found &amp; Fixed</a></li>
-<li><a href="#findings">4. Key Discoveries</a></li>
-<li><a href="#modules">5. Training Modules State</a></li>
-<li><a href="#next">6. Open Issues &amp; Next Steps</a></li>
-<li><a href="#links">7. Links</a></li>
+<li><a href="#context">1. Context: The Hand "Curve" Bug</a></li>
+<li><a href="#design">2. Design: GPS-Based Encoding + Skip Connection</a></li>
+<li><a href="#code">3. Code Changes</a></li>
+<li><a href="#experiments">4. Experiments &amp; Results</a></li>
+<li><a href="#findings">5. Key Discoveries</a></li>
+<li><a href="#state">6. Training Modules State</a></li>
+<li><a href="#publish">7. Publishing Workflow</a></li>
+<li><a href="#next">8. Open Issues &amp; Next Steps</a></li>
 </ul>
 </div>
 
-<h2 id="experiments">1. Experiments (ACP Jobs)</h2>
+<h2 id="context">1. Context: The Hand "Curve" Bug</h2>
 
-<p>All jobs: single N6lS.Iu.I10.1 GPU, SPOT priority, 5 frames / 3&ndash;5 steps &mdash; smoke validation only, NOT meaningful training.</p>
+<p>Coming into this session, DCF hand predictions were collapsing to a 1D curve instead of a hand shape. The prior session summary diagnosed hand memorization (20&nbsp;mm train / 185&nbsp;mm test) but not the per-point collapse. A fresh investigation traced the root cause:</p>
+
+<div class="error">
+<strong>Diagnosis:</strong> Two compounding causes make hand tokens lose their per-point identity after 24 layers of global attention:
+<ol>
+<li><strong>Point identity is lost after decoder processing.</strong> When <code>canonical_dim=0</code> (the current state after the previous shortcut-revert), the trajectory MLP receives only the 1024D decoded token. After 24 layers of global attention, initial per-point distinctiveness is diluted. Evidence: <code>canonical_dim=3</code> gave 11.8&nbsp;mm hand L2; removing it gave 31&ndash;37&nbsp;mm.</li>
+<li><strong>All DCF tokens share RoPE position (0,0).</strong> In <code>_process_global_attention</code>, <code>extra_pos = torch.zeros((B, extra_token_count, 2))</code>. Attention cannot distinguish DCF tokens by position.</li>
+</ol>
+The MLP predicts a per-frame mean position &rarr; across frames this traces a 1D curve (the wrist path).
+</div>
+
+<h2 id="design">2. Design: GPS-Based Encoding + Skip Connection</h2>
+
+<p>The design choice hinged on a single question: <em>where should geometric identity be injected?</em></p>
+
+<p><strong>RoPE rejected.</strong> RoPE creates relative positional bias between Q/K pairs. If DCF tokens get GPS positions and image tokens get pixel-grid positions, the bias is meaningless (the two coordinate spaces are unrelated). RoPE is only useful when tokens share a coordinate system.</p>
+
+<p><strong>Chosen: GPS as token content + raw GPS skip connection.</strong></p>
 
 <table>
-<tr><th>#</th><th>Job ID</th><th>Name</th><th>Status</th><th>Purpose</th><th>Outcome</th></tr>
-<tr><td>1</td><td><code>om-q9mvpame</code></td><td>hoi3r-dcf-abc-smoke</td><td><span class="badge badge-fail">DELETED</span></td><td>Combined job on full sequence</td><td>User corrected: 5 frames + one job per feature</td></tr>
-<tr><td>2</td><td><code>om-mlxhe0tj</code></td><td>hoi3r-dcf-smoke-a-scene-loss</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>A1: distillation scene loss</td><td><span class="badge badge-fix">WRONG</span> approach (pseudo-GT distillation)</td></tr>
-<tr><td>3</td><td><code>om-7l6jt12u</code></td><td>hoi3r-dcf-smoke-b-render-video</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>B: camera-view video (first run)</td><td>Validated, but artifacts destroyed by worktree removal</td></tr>
-<tr><td>4</td><td><code>om-0tzo4rxt</code></td><td>hoi3r-dcf-smoke-c-gen-range</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>C: generalization range (first run)</td><td>Validated, but artifacts destroyed by worktree removal</td></tr>
-<tr style="background:#e8f5e9"><td>5</td><td><code>om-8hs01ckv</code></td><td>hoi3r-dcf-smoke-a2-real-scene-loss</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>A2: REAL scene loss via depth_loss + camera_loss</td><td>Per-step scene={0.243, 0.475, 0.232, 0.150, 0.257} all finite</td></tr>
-<tr style="background:#e8f5e9"><td>6</td><td><code>om-70ih58ol</code></td><td>hoi3r-dcf-smoke-b2-render-video</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>B2: camera-view video re-run on feat/dcf</td><td>camera_view.mp4 3.3 MB produced correctly</td></tr>
-<tr style="background:#e8f5e9"><td>7</td><td><code>om-kqq4raa2</code></td><td>hoi3r-dcf-smoke-c2-gen-range</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>C2: generalization range re-run on feat/dcf</td><td>Train hand L2 0.486 m / test 0.578 m, gap 0.093 m</td></tr>
+<tr><th>Level</th><th>Mechanism</th><th>Decision</th></tr>
+<tr><td>Encoder input</td><td>Replace xyz with 16-dim Laplacian eigenvectors (GPS)</td><td><span class="badge badge-pass">Chosen</span></td></tr>
+<tr><td>Trajectory head skip</td><td>Concatenate raw 16-dim GPS (detached) to decoder output</td><td><span class="badge badge-pass">Chosen</span></td></tr>
+<tr><td>RoPE position</td><td>Replace (0,0) with GPS-based 2D position</td><td><span class="badge badge-fail">Rejected</span></td></tr>
+<tr><td>Fourier-encoded skip</td><td>128-dim rich features as skip</td><td><span class="badge badge-fail">Rejected (shortcut risk)</span></td></tr>
 </table>
 
-<p class="caption">Green-highlighted rows (#5, #6, #7) are the definitive results run on the canonical <code>feat/dcf</code> branch.</p>
+<p><strong>Why raw GPS, not Fourier-encoded GPS, as skip:</strong> 16 raw eigenvectors give point identity but not enough information for the MLP to predict a 3D posed position by shortcut &mdash; the head is forced to use the decoder's image-integrated features.</p>
 
-<h2 id="code">2. Code Changes</h2>
+<p><strong>Why GPS collapsed in prior attempts:</strong> GPS was tried as a <em>learnable</em> encoding. Gradients pushed all embeddings to the same value. Fix: precompute eigenvectors and store as a frozen <code>register_buffer</code>.</p>
+
+<h2 id="code">3. Code Changes</h2>
 
 <table>
-<tr><th>File</th><th>Change</th><th>Commit</th></tr>
-<tr>
-<td><code>scripts/dcf_full_sequence_train.py</code></td>
-<td>Wired REAL scene loss: depth loading from <code>aligned_depth_to_color_*.png</code> (mm&rarr;m, resized 640&times;480 &rarr; 518&times;518 nearest), 518-rescaled intrinsics, full DexYCB extrinsics. Calls <code>depth_loss</code> + <code>camera_loss</code> from <code>stream3r/loss/utils.py</code> matching <code>losses.py:1777</code> pattern. <code>--loss-weight-scene</code> gates supervision. +102/&minus;2 lines.</td>
-<td><code>5288853</code></td>
-</tr>
-<tr>
-<td><code>scripts/dcf_full_sequence_train.py</code></td>
-<td>Added <code>--max-frames N</code> flag (default None = load all); caps <code>load_full_sequence_dexycb()</code> for smoke tests.</td>
-<td><code>7c72e77</code></td>
-</tr>
-<tr>
-<td><code>scripts/dcf_generalization_test.py</code></td>
-<td>Added <code>--train-range START-END</code> / <code>--eval-range START-END</code> (supports <code>end</code>); mutually exclusive with explicit <code>--train-frames</code>/<code>--test-frames</code>; overlap validation fails fast; probes <code>color_*.jpg</code> for sequence length.</td>
-<td><code>40ecaba</code></td>
-</tr>
-<tr>
-<td><code>scripts/dcf_full_sequence_train.py</code></td>
-<td>Added <code>--render-video</code> / <code>--video-fps</code> flags; auto-runs <code>render_all_frames()</code> after final eval; <code>capture_world_points=True</code> when rendering.</td>
-<td><code>cf99711</code></td>
-</tr>
-<tr>
-<td><code>scripts/dcf_render_camera_view.py</code></td>
-<td>Refactored: <code>render_all_frames()</code> + <code>make_video_from_frames()</code> now importable; CLI preserved.</td>
-<td><code>cf99711</code></td>
-</tr>
+<tr><th>File</th><th>Change</th><th>Status</th></tr>
+<tr><td><code>scripts/extract_mano_surface_gps.py</code></td><td><strong>New.</strong> Extract GPS for 778 MANO surface vertices from tet-mesh LBO eigvecs. Fix sign convention, normalize. Output: <code>stream3r/data/mano_gps/mano_surface_gps_k16.npy</code> [778,16].</td><td><span class="badge badge-pass">DONE</span></td></tr>
+<tr><td><code>stream3r/models/dcf_point_encoder.py</code></td><td><code>input_dim</code> now configurable (3 for xyz, 16 for GPS). Fourier matrix <code>B</code> shape adapts.</td><td><span class="badge badge-pass">DONE</span></td></tr>
+<tr><td><code>stream3r/models/dcf_trajectory_head.py</code></td><td>New <code>gps_dim</code> param. Raw GPS (<code>.detach()</code>-ed) concatenated to decoded tokens before the 3-layer MLP.</td><td><span class="badge badge-pass">DONE</span></td></tr>
+<tr><td><code>stream3r/models/dcf_branch.py</code></td><td>Loads GPS as non-persistent buffer. Wires GPS through <code>prepare_extra_global_tokens</code> and <code>decode_outputs</code>. <code>use_gps</code>, <code>gps_dim</code>, <code>gps_data_path</code> constructor args.</td><td><span class="badge badge-pass">DONE</span></td></tr>
+<tr><td><code>stream3r/models/stream3r.py</code></td><td>Passes <code>hand_gps</code> from state to <code>decode_outputs</code>.</td><td><span class="badge badge-pass">DONE</span></td></tr>
+<tr><td><code>scripts/dcf_stream3r_overfit_v2.py</code></td><td>New CLI flags: <code>--use-gps</code>, <code>--gps-dim</code>, <code>--gps-data-path</code>.</td><td><span class="badge badge-pass">DONE</span></td></tr>
+<tr><td><code>scripts/acp_jobs/dcf_gps_*.sh</code></td><td>Four new job scripts covering the ablation matrix.</td><td><span class="badge badge-pass">DONE</span></td></tr>
 </table>
 
-<h2 id="bugs">3. Bugs Found &amp; Fixed</h2>
+<p><strong>Commit:</strong> <code>18cce3a</code> &mdash; "feat(dcf): GPS-based point encoding with skip connection" (10 files, +321/-136 lines).</p>
 
-<div class="panel">
-<h3><span class="badge badge-fix">FIX</span> NameError: <code>hand_root_ct</code> in <code>load_full_sequence_dexycb()</code></h3>
-<p>Missing variable assignment in <code>dcf_full_sequence_train.py</code>. Added <code>hand_root_ct = _camera_root_from_frame(frame_record)</code>. Fixed as a side-effect of Task B in commit <code>cf99711</code>.</p>
+<h2 id="experiments">4. Experiments &amp; Results</h2>
+
+<div class="info">
+All 4 experiments ran on ACP (job scripts committed). Results (hand/obj L2 averaged over frames, lower is better):
 </div>
-
-<div class="panel">
-<h3><span class="badge badge-fix">FIX</span> Same NameError in <code>load_dexycb_clip()</code></h3>
-<p>Identical <code>hand_root_ct</code> bug independently re-discovered in <code>dcf_generalization_test.py</code>. Fixed as side-effect of Task C in commit <code>40ecaba</code>.</p>
-</div>
-
-<div class="panel">
-<h3><span class="badge badge-fix">FIX</span> Scene loss must use REAL DexYCB GT, not distillation</h3>
-<p>Job #2 (<code>om-mlxhe0tj</code>) used distillation (supervise student to match frozen teacher's own output) &mdash; this is the wrong signal. STream3R already has <code>depth_loss</code> + <code>camera_loss</code> in <code>stream3r/loss/utils.py</code> with a canonical call site at <code>losses.py:1777</code>. DexYCB provides <code>aligned_depth_to_color_*.png</code> depth maps and intrinsics/extrinsics via calibration YAML. Only depth loading needed to be added. Corrected in job #5.</p>
-</div>
-
-<h2 id="findings">4. Key Discoveries</h2>
-
-<div class="panel">
-<h3><span class="badge badge-finding">FINDING</span> STream3R model produces depth/pose even with scene heads frozen</h3>
-<p>Frozen parameters still run forward; gradients can flow through them into the decoder. This enables real scene supervision without unfreezing scene heads.</p>
-</div>
-
-<div class="panel">
-<h3><span class="badge badge-finding">FINDING</span> Real scene-loss wiring: +102/&minus;2 lines in one script</h3>
-<p>Minimal surface because <code>stream3r/loss/utils.py</code> and the bridge dataloader already had most of what was needed. The heavy lift was understanding the correct depth format (mm&rarr;m), resolution (518&times;518 nearest), and intrinsics scaling.</p>
-</div>
-
-<div class="panel">
-<h3><span class="badge badge-fix">FIX</span> All DCF work in one worktree on <code>feat/dcf</code></h3>
-<p>No per-task branches, no integration branches, no sibling worktrees. <code>git worktree remove --force</code> destroys unversioned artifacts (<code>predictions.pt</code>, log dirs) inside &mdash; migrate/preserve first or lose them. Jobs #3 and #4 lost artifacts this way.</p>
-</div>
-
-<div class="panel">
-<h3><span class="badge badge-fix">FIX</span> Smoke-validation ACP protocol: &le;5 frames, one job per feature</h3>
-<p>Never combine features in one job (if it crashes, can&rsquo;t tell what broke). Never run smokes on the full sequence (wastes GPU and memory for correctness checks).</p>
-</div>
-
-<div class="panel">
-<h3><span class="badge badge-fix">FIX</span> Publishing agents must fail loudly on missing artifact dirs</h3>
-<p>Today&rsquo;s first republish attempt silently fell back to 500-step historical runs for B and C scatter data &mdash; produced a misleading page that had to be torn down and redone.</p>
-</div>
-
-<div class="panel">
-<h3><span class="badge badge-fix">FIX</span> 3D scatter plot data shape must match reference verbatim</h3>
-<p>Keys: <code>pred_hand</code>, <code>gt_hand</code>, <code>pred_obj</code>, <code>gt_obj</code> each <code>{x:[],y:[],z:[]}</code>. Colors: Pred Hand <code>#58a6ff</code>, GT Hand <code>#8b949e</code>, Pred Obj <code>#3fb950</code>, GT Obj <code>#6e7681</code>. Improvising key/color names has twice produced swapped/mislabeled plots.</p>
-</div>
-
-<h2 id="modules">5. Training Modules State (End of Session)</h2>
 
 <table>
-<tr><th>Module</th><th>Status</th><th>Notes</th></tr>
-<tr><td>Frame blocks (24 layers)</td><td>Frozen</td><td>Pretrained STream3R weights</td></tr>
-<tr><td>Global blocks</td><td>Trained (default on)</td><td><code>--train-global-blocks</code> / <code>--no-train-global-blocks</code></td></tr>
-<tr><td>GPS buffer (Laplacian eigvecs [778,16])</td><td>Frozen</td><td>Precomputed per MANO surface</td></tr>
-<tr><td>Scene heads (depth, pose, world_points)</td><td>Frozen (default)</td><td><code>--freeze-scene-heads=True</code>; still run forward for loss computation</td></tr>
-<tr><td>Hand/object encoders</td><td>Trained</td><td>GPS for hand, xyz for object</td></tr>
-<tr><td>Trajectory heads</td><td>Trained</td><td>Hand 1024 decoder + 16 GPS skip; obj decoder only</td></tr>
+<tr><th>#</th><th>Experiment</th><th>ACP ID</th><th>Steps</th><th>Frames</th><th>Global blocks</th><th>GPS</th><th>Hand L2</th><th>Obj L2</th><th>Spread ratio</th><th>Final loss</th></tr>
+<tr><td>1</td><td>No-GPS baseline (xyz Fourier)</td><td><code>om-pue0ire6</code></td><td>500</td><td>4</td><td>Frozen</td><td>&mdash;</td><td>23.9&nbsp;mm</td><td>25.5&nbsp;mm</td><td>1.09</td><td>0.0371</td></tr>
+<tr><td>2</td><td>GPS + GlobalFrozen</td><td><code>om-zuj6z8mo</code></td><td>500</td><td>4</td><td>Frozen</td><td>16-dim</td><td>26.7&nbsp;mm</td><td>21.0&nbsp;mm</td><td>0.98</td><td>0.0181</td></tr>
+<tr><td>3</td><td>GPS + GlobalTrained</td><td><code>om-4dgl9m8j</code></td><td>500</td><td>4</td><td>Trained</td><td>16-dim</td><td><span class="best">16.0&nbsp;mm</span></td><td>14.3&nbsp;mm</td><td>0.97</td><td>0.0123</td></tr>
+<tr><td>4</td><td>GPS + GlobalTrained + FullSeq</td><td><code>om-s9yjaikb</code></td><td>2000</td><td>72</td><td>Trained</td><td>16-dim</td><td><span class="best">12.6&nbsp;mm</span></td><td><span class="best">8.1&nbsp;mm</span></td><td>1.01</td><td>0.0100</td></tr>
 </table>
 
-<p><strong>Active losses (with default weights):</strong></p>
+<p class="caption">Spread ratio = mean(pred std) / mean(GT std) over the 256 hand points, averaged across frames. Values near 1.0 indicate preserved hand geometry; values near 0 would indicate curve collapse.</p>
+
+<div class="highlight">
+<strong>Interpretation:</strong>
 <ul>
-<li>Hand trajectory L1 (1.0)</li>
-<li>Object trajectory L1 (1.0)</li>
-<li>Contact BCE (0.1) + contact pointer (0.1)</li>
-<li>Scene: <code>depth_loss["loss_conf"] + depth_loss["loss_grad"] + camera_loss["loss_camera"]</code> &mdash; weighted by <code>--loss-weight-scene</code> (default 0.0 = off; 1.0 in smoke)</li>
+<li><strong>Best single-seq (GlobalTrained, 4 frames)</strong>: GPS reduces hand L2 from 23.9 &rarr; 16.0&nbsp;mm (33% better) vs no-GPS baseline.</li>
+<li><strong>Best overall (fullseq 72 frames, 2000 steps)</strong>: hand L2 <strong>12.6&nbsp;mm</strong>, obj L2 <strong>8.1&nbsp;mm</strong>. This beats every prior 4-frame result.</li>
+<li><strong>Spread ratio &asymp; 1.0 across all GPS runs</strong> &mdash; hand geometry is preserved. The curve bug is fixed.</li>
+<li><strong>Frozen global_blocks worse than trained on 4 frames</strong> (26.7 vs 16.0 mm) &mdash; on this overfit regime, decoder fine-tuning helps materially. Whether it hurts scene quality long-term is still open.</li>
 </ul>
+</div>
 
-<p><strong>Coordinate space:</strong> Camera-space vertices; hand root via <code>_camera_root_from_frame</code>; canonical MANO space for GPS buffer.</p>
-<p><strong>Resolution:</strong> Color 518&times;518 (resized from 640&times;480); depth 518&times;518 (nearest-neighbor from 640&times;480); intrinsics scaled accordingly.</p>
+<h2 id="findings">5. Key Discoveries</h2>
 
-<h2 id="next">6. Open Issues &amp; Next Steps</h2>
+<h3>5.1 RoPE and content serve different purposes <span class="badge badge-finding">FINDING</span></h3>
+<p>The choice of <em>where</em> to inject geometric identity matters. RoPE biases attention based on relative positions in a shared coordinate space; giving DCF tokens positions from a disjoint space (mesh topology) produces meaningless bias against image pixels. Content-level injection (through the Q/K projection) preserves the model's ability to <em>learn</em> appropriate routing rather than hard-coding spatial relationships that don't exist.</p>
+
+<h3>5.2 Raw vs Fourier-encoded skip <span class="badge badge-finding">FINDING</span></h3>
+<p>A too-rich skip enables the MLP to memorize canonical&rarr;posed mappings during overfit, bypassing the decoder. A too-poor skip (e.g. none) loses point identity. Raw 16-dim GPS is a Goldilocks: enough to disambiguate 778 vertices, not enough to predict posed 3D positions alone.</p>
+
+<h3>5.3 Why prior GPS attempts collapsed <span class="badge badge-fix">FIX</span></h3>
+<p>Learnable GPS encodings are vulnerable to gradient collapse (all points &rarr; zero embedding). Freezing the GPS buffer eliminates this failure mode entirely. Additionally: fix sign convention per eigenvector column once at precompute time to avoid sign flips across runs/batches.</p>
+
+<h3>5.4 Object encoding not yet upgraded <span class="badge badge-finding">FINDING</span></h3>
+<p>Objects still use raw xyz Fourier encoding with no skip to the trajectory head. Object L2 is already excellent (8.1&nbsp;mm on fullseq) partly because objects are rigid (single SE(3) transform for all points). Per-object GPS could be an ablation, though the payoff is lower than on the articulated hand.</p>
+
+<h3>5.5 HTML generation gotcha <span class="badge badge-fix">FIX</span></h3>
+<p>When generating HTML programmatically, <code>json.dumps</code> escapes <code>/</code> to <code>\/</code>. If that string is written as raw HTML inside a <code>&lt;script&gt;</code> closing tag, browsers don't recognize <code>&lt;\/script&gt;</code> as a terminator. The script block is never closed, the generator JS never runs, and all data-driven sections render blank. Always write literal <code>&lt;/script&gt;</code> in HTML bodies.</p>
+
+<h3>5.6 GitHub Pages publishing via Contents API <span class="badge badge-finding">FINDING</span></h3>
+<p>The project-tracking repo's <code>.git</code> history is ~250&nbsp;MB &mdash; cloning takes 5+&nbsp;minutes. Using GitHub's Contents API (<code>PUT /repos/:owner/:repo/contents/:path</code>) with the GitHub token from macOS Keychain bypasses the clone entirely and publishes in seconds. See <code>reference_publish_html.md</code> memory.</p>
+
+<h2 id="state">6. Training Modules State (feat/dcf @ 18cce3a)</h2>
 
 <table>
-<tr><th>Priority</th><th>Item</th><th>Details</th></tr>
-<tr><td><strong>P1</strong></td><td>Full-scale scene-loss run</td><td>Wire validated; now run on full sequence with <code>--loss-weight-scene</code> tuned (1.0 at smoke). Confirm hand/obj L2 converges and scene corruption prevented.</td></tr>
-<tr><td><strong>P1</strong></td><td>Real generalization experiment</td><td><code>--train-range 0-50 --eval-range 50-end</code> on full sequence with &ge;2000 steps. Must include chamfer + visualization.</td></tr>
-<tr><td><strong>P2</strong></td><td>Pre-existing NameError audit</td><td>Two identical <code>hand_root_ct</code> NameErrors independently re-discovered. Grep codebase for similar silent bugs before next long run.</td></tr>
-<tr><td><strong>P2</strong></td><td>Object GPS ablation</td><td>Deferred from start of day. Test per-object Laplacian eigvecs for rigid objects (contrast with hand where GPS helped).</td></tr>
-<tr><td><strong>P2</strong></td><td>Smoke-cap visibility</td><td><code>--max-frames</code> currently logs &ldquo;capping to first N&rdquo;; also expose <code>total_available</code> in training_curve.json.</td></tr>
+<tr><th>Module</th><th>State</th><th>Notes</th></tr>
+<tr><td>STream3R encoder (frame_blocks)</td><td><span class="badge badge-pass">FROZEN</span></td><td>Pretrained, always frozen.</td></tr>
+<tr><td>STream3R global_blocks (24 attn layers)</td><td><span class="badge badge-fix">Configurable</span></td><td><code>--train-global-blocks</code> controls. Best-performing experiments have it <strong>trained</strong>.</td></tr>
+<tr><td>Scene heads (point/depth/camera)</td><td><span class="badge badge-pass">FROZEN</span></td><td>Not fine-tuned. No scene losses wired &mdash; see Open Issues.</td></tr>
+<tr><td>GPS data buffer</td><td><span class="badge badge-pass">FROZEN</span></td><td>Precomputed [778,16], <code>register_buffer</code>, detached on skip.</td></tr>
+<tr><td>DCF hand point encoder (Fourier+MLP)</td><td><span class="badge badge-finding">TRAINED</span></td><td>Input dim = 16 (GPS) or 3 (xyz).</td></tr>
+<tr><td>DCF object point encoder (Fourier+MLP)</td><td><span class="badge badge-finding">TRAINED</span></td><td>Always xyz input, no GPS.</td></tr>
+<tr><td>DCF hand trajectory head (MLP)</td><td><span class="badge badge-finding">TRAINED</span></td><td>Input: 1024 decoder + 16 GPS = 1040 dim.</td></tr>
+<tr><td>DCF object trajectory head (MLP)</td><td><span class="badge badge-finding">TRAINED</span></td><td>Input: 1024 decoder only.</td></tr>
+<tr><td>DCF contact head</td><td><span class="badge badge-finding">TRAINED</span></td><td>Cross-attention + MLP.</td></tr>
 </table>
 
-<h2 id="links">7. Published Experiment Pages</h2>
-<ul>
-<li><a href="2026-04-15-abc-smoke-validation.html"><strong>2026-04-15 ABC Smoke Validation</strong></a> &mdash; 3D scatter plots, Chart.js loss curves, camera-view video, per-frame metrics for all three TODO validations</li>
-<li><a href="2026-04-14-session-summary.html">2026-04-14 Session Summary</a> &mdash; Previous session: DCF architecture implementation + 16 experiments</li>
-<li><a href="2026-04-14-gps-encoding-experiments.html">2026-04-14 GPS Encoding Experiments</a> &mdash; GPS-based point encoding fixing the hand curve bug</li>
-</ul>
+<h3>Active losses (overfit config)</h3>
+<table>
+<tr><th>Loss</th><th>Weight</th><th>Active?</th></tr>
+<tr><td>hand trajectory L1</td><td>1.0</td><td>Yes</td></tr>
+<tr><td>object trajectory L1</td><td>1.0</td><td>Yes</td></tr>
+<tr><td>contact BCE</td><td>0.1</td><td>Yes</td></tr>
+<tr><td>contact pointer CE</td><td>0.1</td><td>Yes</td></tr>
+<tr><td>2D reprojection L1</td><td>0.0</td><td>Disabled</td></tr>
+<tr><td>Kabsch pose losses</td><td>0.0</td><td>Disabled</td></tr>
+<tr><td><strong>Scene losses (depth/pointmap/camera)</strong></td><td>&mdash;</td><td><strong>Not wired</strong></td></tr>
+</table>
+
+<p><strong>Coordinate space:</strong> camera space (= STream3R first-frame world space for static DexYCB camera). Hand verts from MANO FK (already in camera space, no root re-add). Object verts via <code>pose_y</code> (camera-from-object).</p>
+
+<h2 id="publish">7. Publishing Workflow</h2>
+
+<p>The experiment report was published at <a href="2026-04-14-gps-encoding-experiments.html">updates/2026-04-14-gps-encoding-experiments.html</a> via GitHub Contents API (no clone). An initial bug where all <code>&lt;script&gt;</code> tags were JSON-escaped to <code>&lt;\/script&gt;</code> caused the page to render blank; fixed in commit <code>aa7cb01c</code>.</p>
+
+<p>Publishing script: <code>/tmp/pub_workspace/publish_to_github.py</code> (regeneratable from memory reference <code>reference_publish_html.md</code>).</p>
+
+<h2 id="next">8. Open Issues &amp; Next Steps</h2>
+
+<table>
+<tr><th>Priority</th><th>Task</th><th>Why</th><th>Notes</th></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>Wire real DexYCB scene losses (depth, point map, camera)</td><td>Training global_blocks without scene anchor risks scene feature corruption. All losses are already implemented in <code>CausalLoss.compute_loss()</code>; the dataloader already produces <code>depthmap</code>, <code>pts3d</code>, <code>camera_pose</code>, <code>camera_intrinsics</code>, <code>valid_mask</code>. The task is wiring them into <code>dcf_stream3r_overfit_v2.py</code> and adding weights to the CLI.</td><td>Expected: preserves scene std while maintaining hand/obj accuracy.</td></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>Camera-view video visualization (scene + hand + object overlay on images)</td><td>User feedback: 3D scatter plots don't show whether predictions land on actual image content. Need to project pred points into pixel plane per frame, overlay on input RGB, and render as video. An earlier page (<code>2026-04-14-dcf-camera-view-visualization.html</code>) has a reference implementation.</td><td>Saved as memory <code>feedback_camera_view_video.md</code>.</td></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>Generalization test on unseen frames</td><td>All four GPS experiments are overfit on seen frames. Need to train on <code>start_frame=0</code> and evaluate on <code>start_frame=50</code> to verify GPS fix generalizes.</td><td>Uses existing <code>scripts/acp_jobs/dcf_generalization_test.sh</code> pattern.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>Object GPS ablation</td><td>Objects still use xyz. Per-object LBO eigvectors would test whether the "identity" argument applies to rigid objects too.</td><td>One pre-compute per YCB object id; cache on AFS.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>2D reprojection loss enable</td><td>Currently 0.0 weight. Should help depth disambiguation once scene losses are active.</td><td>CLI flag already present.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>NLF barycentric sampling with GPS</td><td>Combine random surface sampling (better coverage) with GPS (per-point identity). Interpolate GPS via barycentric weights on sampled triangles.</td><td>Requires GPS interpolation across faces.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>Multi-sequence training</td><td>Move beyond single-sequence overfit to validate on multiple DexYCB clips.</td><td>Standard Hydra training path.</td></tr>
+</table>
+
+<footer style="margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em">
+HOI3R Project &mdash; Session Summary &mdash; 2026-04-15 &mdash; Branch: feat/dcf &mdash; Main commit: 18cce3a
+</footer>
 
 </body>
 </html>
