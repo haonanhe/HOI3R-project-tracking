@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-15 · DCF smoke validation (final) — A/B/C all pass",
+    "date": "2026-04-15",
+    "status": "pass",
+    "summary": "Three correctness smokes on feat/dcf: (A) REAL scene loss via stream3r depth_loss + camera_loss with DexYCB GT; (B) auto camera-view video render; (C) contiguous train/eval range CLI. All ACP jobs SUCCEEDED.",
+    "path": "updates/2026-04-15-abc-smoke-validation.html"
+  },
+  {
     "title": "2026-04-15 · Session Summary: GPS-Based DCF Point Encoding Fixes Hand Curve Bug",
     "date": "2026-04-15",
     "status": "done",
