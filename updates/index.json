@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-15 · DCF v4 — P1 / P2 Follow-Up Ablation (Unfrozen Scene Heads)",
+    "date": "2026-04-15",
+    "status": "done",
+    "summary": "Two follow-up bugs from v3 page: P1 static loss_pts3d_grad/loss_depth_grad (disable via --scene-grad-mode none), P2 rank-blind hand L1 loss (Chamfer via --hand-loss-type). Three unfrozen ablation runs on tracked frames 65-69. P1 alone: best L2 (hand 18.2, obj 15.8 mm) but hand still line (SVD 0.07). P2 alone (Chamfer): best rank (SVD 0.32 near GT 0.40) but L2 regresses. P12 combined: mixed. Finding: Chamfer not a drop-in for L1 — breaks per-vertex correspondence (MANO) and breaks rigid-body pose on objects. Recommendation: land P1 as default; test l1+chamfer hand-only before Phase 3. Commit 44446b7.",
+    "path": "updates/2026-04-15-dcf-scene-loss-v4-p1p2-ablation.html"
+  },
+  {
     "title": "2026-04-15 · DCF v3 — Coordinate Fix Recovers Scene Points (A/B)",
     "date": "2026-04-15",
     "status": "done",
