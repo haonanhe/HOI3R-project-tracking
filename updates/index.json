@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-15 · DCF Real Scene Loss — 200-step Convergence Check (5 frames)",
+    "date": "2026-04-15",
+    "status": "done",
+    "summary": "200-step convergence rerun of the real DexYCB depth+camera scene loss wired in commit 5288853. Hand L2 257→12.5 mm, object L2 596→22.8 mm, scene loss decreases monotonically. The 'scene loss does not converge' concern from the 5-step A2 smoke was a false alarm. ACP job om-mpgfphqc.",
+    "path": "updates/2026-04-15-dcf-scene-loss-convergence-200steps.html"
+  },
+  {
     "title": "2026-04-15 · Session Summary: TODO Resolution (Scene Loss, Video Render, Gen-Range CLI)",
     "date": "2026-04-15",
     "status": "done",
