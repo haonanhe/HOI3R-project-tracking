@@ -89,6 +89,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
     <li><a href="#eval">Eval L2 curves</a></li>
     <li><a href="#scatter">3D pred-vs-GT scatter on frame 67 (v3)</a></li>
     <li><a href="#camera">Camera-view overlays (v3 side-by-side)</a></li>
+    <li><a href="#hand-collapse">Hand-shape collapse under unfrozen scene heads (new)</a></li>
     <li><a href="#residual">Residual bug: static <code>loss_pts3d_grad</code> / <code>loss_depth_grad</code></a></li>
     <li><a href="#interp">Interpretation &amp; policy update</a></li>
   </ul>
@@ -234,6 +235,57 @@ python scripts/dcf_full_sequence_train.py --frame-start 65 --max-frames 5 \
     # or:
     --no-freeze-scene-heads --lr-scene-heads 1e-5 \
                                      --output-dir logs/acp_v3_B_unfrozen</code></pre>
+</section>
+
+
+<section id="hand-collapse">
+<h2>Hand-shape collapse under unfrozen scene heads — new diagnostic finding</h2>
+
+<div class="error">
+  <strong>Follow-up observation (post-v3 publish):</strong> while v3 object L2 is the best across every run (12.6 mm unfrozen), the <strong>hand</strong> predicted by the unfrozen runs collapses to a near-planar configuration. Pred-hand L2 is similar to frozen runs, but the pred-hand <em>geometry</em> has lost its 3D rank.
+</div>
+
+<h3>Evidence — singular value decomposition of pred_hand (128 points, frame 67)</h3>
+<p style="color:#555">After centering the 256 predicted hand points, the three SVD singular values reveal the spatial rank. Ratio s3/s1 ≈ 1 means isotropic 3D blob; s3/s1 → 0 means degenerate line/plane. GT hand has s3/s1 = 0.40 (healthy 3D).</p>
+
+<table>
+<thead><tr><th>Run</th><th>s1 (mm)</th><th>s2 (mm)</th><th>s3 (mm)</th><th>s2/s1</th><th>s3/s1</th><th>Shape verdict</th></tr></thead>
+<tbody>
+<tr><td>GT hand (reference)</td><td>757</td><td>442</td><td>301</td><td>0.58</td><td>0.40</td><td>healthy 3D cluster</td></tr>
+<tr><td><span class="badge badge-v1">v1 A</span> frozen</td><td>716</td><td>452</td><td>251</td><td>0.63</td><td>0.35</td><td>3D, matches GT</td></tr>
+<tr><td><span class="badge badge-v1">v1 B</span> unfrozen</td><td>1059</td><td>190</td><td>71</td><td>0.18</td><td><strong>0.067</strong></td><td><strong>near-line (missed earlier — L2 already 134 mm)</strong></td></tr>
+<tr><td><span class="badge badge-v2">v2 A</span> frozen</td><td>803</td><td>460</td><td>158</td><td>0.57</td><td>0.20</td><td>mildly flat</td></tr>
+<tr><td><span class="badge badge-v2">v2 B</span> unfrozen</td><td>786</td><td>229</td><td>11</td><td>0.29</td><td><strong>0.014</strong></td><td><strong>line</strong></td></tr>
+<tr><td><span class="badge badge-v3">v3 A</span> frozen</td><td>810</td><td>425</td><td>247</td><td>0.53</td><td>0.31</td><td>3D, matches GT</td></tr>
+<tr><td><span class="badge badge-v3">v3 B</span> unfrozen</td><td>850</td><td>225</td><td><strong>30</strong></td><td>0.27</td><td><strong>0.035</strong></td><td><strong>line (visible as red line in camera overlay)</strong></td></tr>
+</tbody>
+</table>
+
+<p style="color:#555">Pattern is stark and <strong>version-independent</strong>: every <em>frozen</em> run keeps s3/s1 ≥ 0.20; every <em>unfrozen</em> run collapses to s3/s1 ≤ 0.07. The coordinate fix (v3) doesn't touch this — it's purely a function of whether scene heads are trained.</p>
+
+<h3>Root cause</h3>
+<div class="panel">
+  <p>The shared <code>aggregator.global_blocks</code> feeds both the scene heads (<code>point_head</code>, <code>depth_head</code>) and the DCF branch (via <code>aggregator_extra_output_list[-1]</code> → per-point hand tokens). Two dynamics:</p>
+  <ol>
+    <li><strong>Scene loss prefers low-rank features.</strong> With a static camera + 5 frames, the "best" scene representation is a single consistent pointmap — smooth, low-rank, per-pixel-coherent.</li>
+    <li><strong>Unfrozen heads amplify the scene pull.</strong> With heads frozen, scene gradient flows <code>scene_loss → head(x).jacobian → features → global_blocks</code> — constrained by the fixed head. Unfreezing adds a second path: <code>scene_loss → head.weights</code> + <code>scene_loss → features</code>, and the head can adapt to make current features produce better predictions. The combined system drifts into scene-loss-optimal feature subspaces more aggressively.</li>
+    <li><strong>DCF hand tokens lose per-point identity.</strong> The 256 hand-point tokens are sliced from the same aggregator output. When aggregator features are low-rank, the 256 tokens also become low-rank → DCF MLP's 3D output is low-rank → hand is a plane/line.</li>
+    <li><strong><code>trajectory_3d_loss = F.l1_loss</code> doesn't penalise rank loss.</strong> A line through the hand's centroid has nearly the same mean-L1 as a proper cluster when the cluster is ~30 mm wide.</li>
+  </ol>
+</div>
+
+<h3>Mitigations (ordered)</h3>
+<ol>
+  <li><strong>Keep scene heads frozen for smoke stages.</strong> Already the default. Smoke-stage freezing policy in <code>docs/PROJECT_PLAN.md</code> retained.</li>
+  <li><strong>Switch hand loss to Chamfer or add a rank regulariser.</strong> Bidirectional Chamfer forces each pred point to match some GT point and vice versa — a line can't achieve low Chamfer because GT has 3D spread.</li>
+  <li><strong>Log SVD(pred_hand) per step.</strong> Cheap addition; catches rank collapse live instead of only post-hoc.</li>
+  <li><strong>Lower <code>--lr-scene-heads</code> (e.g. 1e-6) or add EMA-to-frozen.</strong> Reduces how aggressively the scene-head training pulls backbone features.</li>
+</ol>
+
+<h3>What this means for the v3 headline</h3>
+<div class="warning">
+  The earlier v3 claim "unfrozen wins on object L2 (12.6 mm)" remains true on the <em>reported metric</em>, but <strong>the hand predictions for v3 B are geometrically degenerate</strong> despite a reasonable 32.8 mm L2. Before concluding "unfrozen is better", we need either a Chamfer hand loss that penalises rank collapse, or a visual/SVD check in every run. The freezing policy in <code>docs/PROJECT_PLAN.md</code> has been updated to reflect this, with required pre-conditions listed before unfreezing in Phase 3.
+</div>
 </section>
 
 <footer>
