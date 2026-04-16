@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-16 \u00b7 DataLoader Overfit Verification (Canonical Fix)",
+    "date": "2026-04-16",
+    "status": "complete",
+    "summary": "Fixed hand canonical mesh bug (was pose-dependent, now GPS-consistent rest-pose). SVD recovered: 0.034\u21920.587 peak. Confirmed DataLoader code path works.",
+    "path": "updates/2026-04-16-dcf-dataloader-overfit-canonical-fix.html"
+  },
+  {
     "title": "2026-04-16 \u00b7 DCF DataLoader Multi-Sequence Training (Subject-01)",
     "date": "2026-04-16",
     "status": "complete",
