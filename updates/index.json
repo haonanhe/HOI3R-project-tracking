@@ -66,7 +66,7 @@
     "title": "2026-04-15 · Session Summary: GPS-Based DCF Point Encoding Fixes Hand Curve Bug",
     "date": "2026-04-15",
     "status": "done",
-    "summary": "Session summary of the GPS-based DCF point encoding work that fixed the hand curve collapse bug. Ablations on 5 / 5+72 frames showed scene pseudo-GT + GPS injection via skip connection as the fix. Hand L2 reduced to 12.6mm on full sequence.",
+    "summary": "Diagnosed and fixed the DCF hand 'curve' prediction bug. Root cause: DCF tokens lose per-point identity after 24 global attention layers (all share RoPE pos (0,0), and canonical_dim=0 removes the skip). Solution: frozen 16-dim Laplacian eigenvector (GPS) encoding as DCFPointEncoder input + raw GPS skip to trajectory head. Four ACP experiments: best config (GPS + GlobalTrained + 72 frames, 2000 steps) achieves 12.6mm hand L2 / 8.1mm obj L2 with spread ratio ≈1.0 (hand geometry preserved). Published via GitHub Contents API. Main commit: 18cce3a on feat/dcf.",
     "path": "updates/2026-04-15-session-summary.html"
   },
   {
