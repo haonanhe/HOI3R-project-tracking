@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v6 1000-Step Overfit Comparison — HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1200px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:10px 14px;text-align:left}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.highlight{background:#e8f5e9;padding:14px;border-left:4px solid #27ae60;margin:14px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff}
+.badge-best{background:#2c7a7b}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.img-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px}
+.img-card img{width:100%;border-radius:4px}
+.img-card .caption{font-size:.85em;color:#666;margin-top:6px;text-align:center}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>2026-04-16 &middot; v6 1000-Step Overfit: sw=0.1 Wins Decisively</h1>
+  <p>Head-to-head comparison of the two leading configs on the same single DexYCB sequence
+  (20200709-subject-01/20200709_141754, tracked frames 65&ndash;69), but at 5&times; the training
+  length (1000 steps vs our earlier 200-step smokes). Both use 4-view batching, PP-crop, and the
+  v3 coordinate fix. The only difference: <code>--freeze-scene-heads</code> (frozen) vs
+  <code>--loss-weight-scene 0.1 --no-freeze-scene-heads</code> (sw=0.1).</p>
+</header>
+
+<div class="highlight">
+  <strong>Result: sw=0.1 wins on all three dimensions by a wide margin.</strong> At 1000 steps the
+  gap amplifies vs our 200-step results: hand L2 improves from 20.6 &rarr; <strong>8.5 mm</strong>,
+  obj from 14.1 &rarr; <strong>9.0 mm</strong>, and SVD stays at GT-level <strong>0.400</strong>.
+  Meanwhile the frozen run&rsquo;s SVD <em>degrades</em> from 0.305 (at 200 steps) to 0.180 (at 1000)
+  &mdash; more training actually <em>hurts</em> frozen hand shape on this small sample.
+</div>
+
+<h2>Headline</h2>
+<table>
+<thead><tr><th>Config</th><th>Hand L2</th><th>Obj L2</th><th>SVD s3/s1</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr>
+  <td><strong>v6 sw=0.1</strong> (unfrozen @1e-5, scene=0.1)</td>
+  <td><strong>8.5 mm</strong> <span class="badge badge-best">BEST</span></td>
+  <td><strong>9.0 mm</strong> <span class="badge badge-best">BEST</span></td>
+  <td><strong>0.400</strong> <span class="badge badge-best">= GT</span></td>
+  <td>Wins all</td>
+</tr>
+<tr>
+  <td>v6 frozen (scene=1.0)</td>
+  <td>27.6 mm (3.2&times; worse)</td>
+  <td>35.7 mm (4.0&times; worse)</td>
+  <td>0.180 (below 0.20 threshold)</td>
+  <td>Hand shape degrades with more training</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Camera-view overlay &mdash; frame 67 (dataset idx 67)</h2>
+<div class="grid-2">
+  <div class="img-card">
+    <img src="assets/2026-04-16-v6/frozen_f67.jpg" alt="v6 frozen">
+    <div class="caption">v6 frozen &mdash; hand 27.6 mm, obj 35.7 mm, SVD 0.180</div>
+  </div>
+  <div class="img-card">
+    <img src="assets/2026-04-16-v6/sw01_f67.jpg" alt="v6 sw=0.1">
+    <div class="caption">v6 sw=0.1 &mdash; hand 8.5 mm, obj 9.0 mm, SVD 0.400</div>
+  </div>
+</div>
+
+<h2>Implication</h2>
+<p>The <code>loss_weight_scene=0.1</code> + unfrozen heads config is now confirmed as the best
+single config across every experiment in this exploration (v1 through v6). It outperforms frozen heads
+at both short (200 steps) and long (1000 steps) training. The gradient-magnitude balance diagnosed in the
+<a href="./2026-04-15-dcf-frozen-vs-unfrozen-rootcause.html">root-cause page</a> holds at scale.</p>
+<p><strong>Next:</strong> a full multi-sequence DDP training run on all 1000 DexYCB sequences is in
+flight: <code>om-li2obdxu</code> (8 GPU, 400 outer &times; 20 inner = 64k effective steps).</p>
+
+<footer>
+  HOI3R &middot; v6 1000-step overfit comparison &middot; Generated 2026-04-16 &middot;
+  ACP jobs <code>om-a9h7hd8w</code> (frozen), <code>om-kj3v8xn4</code> (sw=0.1) &middot;
+  Commit <code>44446b7</code> on <code>feat/dcf</code>
+</footer>
+</body>
+</html>
