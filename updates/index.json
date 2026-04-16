@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-16 · v6 1000-Step Overfit: sw=0.1 Wins Decisively (hand 8.5 / obj 9.0 / SVD 0.400)",
+    "date": "2026-04-16",
+    "status": "done",
+    "summary": "Head-to-head 1000-step single-sequence overfit: frozen scene heads (hand 27.6 / obj 35.7 / SVD 0.180) vs loss-weight-scene=0.1 unfrozen (hand 8.5 / obj 9.0 / SVD 0.400 = GT). sw=0.1 wins 3x on hand, 4x on object, with perfect hand rank. Frozen SVD degraded from 0.305 at 200 steps to 0.180 at 1000 — more training hurts frozen hand shape. Commit 44446b7.",
+    "path": "updates/2026-04-16-dcf-v6-overfit-1000step-comparison.html"
+  },
+  {
     "title": "2026-04-15 · Why Frozen > Unfrozen on Hand Rank — Root Cause Diagnostic",
     "date": "2026-04-15",
     "status": "done",
