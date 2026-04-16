@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary: Scene-Loss Investigation &amp; Multi-Sequence Training — HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff;font-size:.9em}
+th,td{border:1px solid #ddd;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f6f7f8}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#e3f2fd;padding:12px;border-left:4px solid #2196f3;margin:12px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.82em;color:#fff}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-best{background:#2c7a7b}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.88em;color:#c7254e}
+pre{background:#f4f4f4;padding:12px;border-radius:6px;overflow-x:auto;font-size:.85em}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.toc ul{margin:0;padding-left:20px}
+.toc a{text-decoration:none;color:#2c3e50}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.4em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.82em;color:#666;margin-top:4px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>2026-04-15/16 &middot; Session Summary: Scene-Loss Investigation &amp; Multi-Sequence Training</h1>
+  <div style="margin:8px 0">
+    <span style="color:#555">Branch: <code>feat/dcf</code></span>
+    <span style="margin-left:16px;color:#555">Commits: <code>754d2b2</code> &rarr; <code>eb54884</code> (12 commits)</span>
+    <span style="margin-left:16px;color:#555">ACP jobs: 18 submitted</span>
+  </div>
+  <p><strong>Goal:</strong> Diagnose why scene loss appeared not to converge &rarr; align DCF scene-loss pipeline with STream3R official &rarr; identify root cause of frozen &gt; unfrozen on hand quality &rarr; first multi-sequence training on DexYCB.</p>
+</header>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#headline">Headline results</a></li>
+    <li><a href="#bugs">Bugs found &amp; fixed (5)</a></li>
+    <li><a href="#experiments">Experiment timeline (18 runs)</a></li>
+    <li><a href="#rootcause">Root cause: frozen &gt; unfrozen</a></li>
+    <li><a href="#multiseq">Multi-sequence training</a></li>
+    <li><a href="#commits">Code commits (12)</a></li>
+    <li><a href="#modules">Training module state</a></li>
+    <li><a href="#pages">Published pages (8)</a></li>
+    <li><a href="#open">Open issues &amp; next steps</a></li>
+  </ul>
+</nav>
+
+<!-- ======== HEADLINE ======== -->
+<section id="headline">
+<h2>Headline results</h2>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0">
+  <div class="stat-card"><div class="value">8.5 mm</div><div class="label">Best hand L2 (v6 sw=0.1, 1000 steps)</div></div>
+  <div class="stat-card"><div class="value">9.0 mm</div><div class="label">Best obj L2 (v6 sw=0.1, 1000 steps)</div></div>
+  <div class="stat-card"><div class="value">0.400</div><div class="label">Hand SVD s3/s1 (= GT, perfect rank)</div></div>
+  <div class="stat-card"><div class="value">27 seqs</div><div class="label">Multi-seq training (subject-01)</div></div>
+</div>
+<div class="highlight">
+  <strong>Winning single-sequence config:</strong> <code>--loss-weight-scene 0.1 --no-freeze-scene-heads --lr-scene-heads 1e-5 --scene-grad-mode none --num-views 4</code>. Beats frozen heads by 3&times; on hand, 4&times; on object, with GT-matching hand shape. Commit <code>44446b7</code>.
+</div>
+</section>
+
+<!-- ======== BUGS ======== -->
+<section id="bugs">
+<h2>Bugs found &amp; fixed</h2>
+<table>
+<thead><tr><th>#</th><th>Bug</th><th>Impact</th><th>Fix</th><th>Commit</th></tr></thead>
+<tbody>
+<tr>
+  <td><span class="badge badge-fail">B1</span></td>
+  <td><strong>Untracked hand frames (sentinel)</strong>: DexYCB frames 0&ndash;4 of sequence 20200709_141754 had <code>joint_3d=[&minus;1,&minus;1,&minus;1]</code>, <code>pose_m</code> translation = 0</td>
+  <td>Hand GT collapsed to wrist-centered local space (z&asymp;0 vs object z&asymp;0.87m). &ldquo;12.5mm hand L2&rdquo; was constant-vs-constant comparison. <strong>Entire conv200 page invalidated.</strong></td>
+  <td><code>HandNotTrackedError</code> + <code>is_hand_tracked()</code> pre-filter + z-centroid sanity check</td>
+  <td><code>754d2b2</code></td>
+</tr>
+<tr>
+  <td><span class="badge badge-fail">B2</span></td>
+  <td><strong>GT pts3d in wrong coordinate frame</strong>: <code>depthmap_to_absolute_camera_coordinates</code> called with real DexYCB <code>cam2world</code> (1.64m translation, 156&deg; rotation)</td>
+  <td>pred world_points (first-view-camera-frame) vs GT (DexYCB-world-frame) &rarr; 156&deg; rotational mismatch &rarr; <code>conf_loss</code> collapsed pred to a 0.47m plane (55.7% valid)</td>
+  <td>Pass <code>np.eye(4)</code> instead of real cam2world for GT pts3d (single static camera &rArr; identity = correct)</td>
+  <td><code>c90bd52</code></td>
+</tr>
+<tr>
+  <td><span class="badge badge-fix">B3</span></td>
+  <td><strong>Missing <code>point_loss</code></strong>: only <code>depth_loss + camera_loss</code> (2 of 5 STream3R components)</td>
+  <td>~40% of scene-loss signal missing; pred <code>world_points</code> unsupervised</td>
+  <td>Added <code>point_loss</code> call on <code>preds["world_points"]</code> + GT pts3d. Also added <code>--num-views 4</code> multi-view, PP-crop+Lanczos, 65535 sentinel filter, tighter valid mask.</td>
+  <td><code>cbc5ba9</code></td>
+</tr>
+<tr>
+  <td><span class="badge badge-fix">B4</span></td>
+  <td><strong>Static <code>loss_pts3d_grad</code> / <code>loss_depth_grad</code></strong>: pinned at 0.0130 / 0.0389 every step</td>
+  <td><code>gradient_loss_multi_scale</code> returns same value for wildly different pred shapes. ~40% of scene-loss gradient is dead weight.</td>
+  <td><code>--scene-grad-mode none</code> disables the phantom. Improves hand L2 by ~45%.</td>
+  <td><code>7829043</code></td>
+</tr>
+<tr>
+  <td><span class="badge badge-fix">B5</span></td>
+  <td><strong>Z-centroid rejection of approach-phase frames</strong>: <code>|hand_z &minus; obj_z| &gt; 30cm &rarr; raise</code> rejected DexYCB approach phase (hand reaching, not yet grasping)</td>
+  <td>95% skip rate on multi-sequence training. Lost negative-contact supervision.</td>
+  <td>Z-centroid check &rarr; warning-only. Only reject if <code>hand_z &lt; 0.05m</code> (true sentinel). Approach frames provide valuable negative contact examples.</td>
+  <td><code>afc616e</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<!-- ======== EXPERIMENTS ======== -->
+<section id="experiments">
+<h2>Experiment timeline (18 ACP runs)</h2>
+<table>
+<thead><tr><th>Run</th><th>Config</th><th>Hand L2</th><th>Obj L2</th><th>SVD s3/s1</th><th>Scene valid</th><th>Finding</th></tr></thead>
+<tbody>
+<tr><td>conv200</td><td>5 steps &rarr; 200 steps, frames 0&ndash;4</td><td>12.5 mm</td><td>22.8 mm</td><td>&mdash;</td><td>n/a</td><td><span class="badge badge-fail">INVALID</span> — untracked sentinel GT (B1)</td></tr>
+<tr><td>v1 A frozen</td><td>frozen heads, tracked 65&ndash;69</td><td>22.5</td><td>20.1</td><td>0.35</td><td>100%</td><td>Baseline</td></tr>
+<tr><td>v1 B unfrozen</td><td>unfrozen @1e-5</td><td>134.3</td><td>83.8</td><td>0.067</td><td>100%</td><td><span class="badge badge-finding">Hand collapse to line</span></td></tr>
+<tr><td>v2 A frozen</td><td>+point_loss +multi-view +PP-crop</td><td>22.9</td><td>32.5</td><td>0.20</td><td><strong>55.7%</strong></td><td><span class="badge badge-fail">Scene collapsed</span> (B2)</td></tr>
+<tr><td>v2 B unfrozen</td><td>same, unfrozen</td><td>39.9</td><td>38.8</td><td>0.035</td><td>57.2%</td><td>Scene + hand both collapsed</td></tr>
+<tr><td>v3 A frozen</td><td>coord fix (B2 fixed)</td><td>33.4</td><td>20.8</td><td>0.31</td><td>100%</td><td><span class="badge badge-pass">Scene recovered</span></td></tr>
+<tr><td>v3 B unfrozen</td><td>coord fix, unfrozen</td><td>32.8</td><td><strong>12.6</strong></td><td>0.035</td><td>100%</td><td>Best obj but hand collapsed</td></tr>
+<tr><td>v4 P1</td><td>grad=none (B4 fix)</td><td><strong>18.2</strong></td><td><strong>15.8</strong></td><td>0.071</td><td>100%</td><td><span class="badge badge-pass">Best L2</span> but hand still line</td></tr>
+<tr><td>v4 P2</td><td>chamfer hand loss</td><td>68.1</td><td>89.4</td><td><strong>0.323</strong></td><td>100%</td><td>Best SVD but L2 regresses</td></tr>
+<tr><td>v5 sw=0.1</td><td>unfrozen, scene=0.1</td><td>20.6</td><td>14.1</td><td><strong>0.373</strong></td><td>100%</td><td><span class="badge badge-best">Root cause fix</span></td></tr>
+<tr><td>v5 lr=1e-7</td><td>unfrozen @1e-7</td><td>20.0</td><td>54.8</td><td>0.093</td><td>100%</td><td>Partial — LR magnitude helps but not enough</td></tr>
+<tr><td><strong>v6 sw=0.1</strong></td><td>unfrozen, scene=0.1, <strong>1000 steps</strong></td><td><strong>8.5</strong></td><td><strong>9.0</strong></td><td><strong>0.400</strong></td><td>100%</td><td><span class="badge badge-best">DECISIVE WINNER</span></td></tr>
+<tr><td>v6 frozen</td><td>frozen, 1000 steps</td><td>27.6</td><td>35.7</td><td>0.180</td><td>100%</td><td>SVD degrades with more training</td></tr>
+<tr><td>Stage-1 only</td><td>scene-only (DCF off)</td><td>737</td><td>1193</td><td>&mdash;</td><td>100%</td><td>Worse scene than joint — DCF helps scene</td></tr>
+<tr><td>Multi-seq smoke</td><td>10 outer &times; 10 inner, 20 seqs</td><td>&mdash;</td><td>&mdash;</td><td>0.283</td><td>&mdash;</td><td><span class="badge badge-pass">Smoke passed</span></td></tr>
+<tr><td>Multi-seq DDP</td><td>4/8 GPU, 1000 seqs</td><td colspan="4">&mdash;</td><td><span class="badge badge-fail">DDP crash</span> — different object mesh sizes</td></tr>
+<tr><td>Multi-seq s01-v2</td><td>1 GPU, 100 seqs, 700 steps</td><td>&mdash;</td><td>&mdash;</td><td>0.05&ndash;0.22</td><td>&mdash;</td><td>SVD oscillates; hand collapse recurs</td></tr>
+<tr><td>Multi-seq full-v3</td><td>1 GPU, 1000 seqs</td><td colspan="4">&mdash;</td><td>GPU poisoned at outer 69; 60 actual steps</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ======== ROOT CAUSE ======== -->
+<section id="rootcause">
+<h2>Root cause: frozen &gt; unfrozen on hand rank</h2>
+<div class="info">
+  <strong>Mechanism: gradient-magnitude balance on shared <code>aggregator.global_blocks</code>.</strong>
+</div>
+<p>Scene loss (~268k pixels/view &times; 4 views &times; 5 components) dominates DCF hand loss (256 points) by ~20,000:1 in gradient contributions. When scene heads are unfrozen, the heads adapt to absorb scene errors, freeing the backbone to drift into scene-optimal low-rank features. DCF hand tokens inherit this low-rank &rarr; hand collapses along its naturally-thin axis (palm normal).</p>
+
+<h3>Evidence from v5 diagnostic sweep</h3>
+<table>
+<thead><tr><th>Hypothesis</th><th>Test</th><th>Result</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>H3: scene weight dominates</td><td><code>--loss-weight-scene 0.1</code></td><td>SVD 0.035 &rarr; <strong>0.373</strong> (full recovery)</td><td><span class="badge badge-pass">CONFIRMED</span></td></tr>
+<tr><td>H4: LR magnitude matters</td><td><code>--lr-scene-heads 1e-7</code></td><td>SVD 0.035 &rarr; 0.093 (partial)</td><td><span class="badge badge-fix">PARTIAL</span></td></tr>
+<tr><td>H5: BN stats drift</td><td>grep for BatchNorm</td><td>No BN (only LayerNorm)</td><td><span class="badge badge-fail">REFUTED</span></td></tr>
+<tr><td>H8: collapse along camera Z</td><td>PCA of pred_hand</td><td>Collapse along palm normal (|&middot;Z|&asymp;0.08)</td><td><span class="badge badge-fail">REFUTED</span></td></tr>
+</tbody>
+</table>
+<p><strong>Fix:</strong> <code>loss_weight_scene=0.1</code> (not 1.0). Keeps scene loss active but 10&times; lower gradient magnitude on backbone. DCF hand tokens retain per-point diversity.</p>
+<p><strong>Why frozen &ldquo;works&rdquo;:</strong> frozen heads constrain the scene-loss gradient to the pretrained Jacobian&rsquo;s rank — an implicit low-rank regulariser. Unfreezing removes that constraint. Lowering the loss weight is the precise lever; freezing is the coarse lever.</p>
+</section>
+
+<!-- ======== MULTI-SEQ ======== -->
+<section id="multiseq">
+<h2>Multi-sequence training</h2>
+<p>New <code>scripts/dcf_multi_sequence_train.py</code> with optional DDP. Outer loop samples sequences from manifest; inner loop trains N steps per sequence.</p>
+
+<h3>Status</h3>
+<table>
+<thead><tr><th>Aspect</th><th>Status</th><th>Detail</th></tr></thead>
+<tbody>
+<tr><td>Manifest</td><td><span class="badge badge-pass">DONE</span></td><td>1000 sequences, mean 63 tracked frames. Subject-01-only subset (100 seqs) also available.</td></tr>
+<tr><td>Single-GPU training</td><td><span class="badge badge-pass">WORKS</span></td><td>Subject-01 v2: 700 steps across 27 unique sequences, losses converging.</td></tr>
+<tr><td>DDP multi-GPU</td><td><span class="badge badge-fail">BLOCKED</span></td><td>Different objects have different canonical mesh sizes &rArr; DDP gradient sync crashes.</td></tr>
+<tr><td>Cross-subject</td><td><span class="badge badge-fix">PARTIAL</span></td><td>Some sequences trigger CUDA index-OOB, poisoning the GPU context. Needs <code>CUDA_LAUNCH_BLOCKING=1</code> debugging.</td></tr>
+<tr><td>Hand SVD in multi-seq</td><td><span class="badge badge-fix">REGRESSES</span></td><td>SVD oscillates 0.05&ndash;0.22 (vs 0.40 on single-seq). Scene weight may need 0.01&ndash;0.03 or more steps_per_sequence.</td></tr>
+<tr><td>Approach-phase frames</td><td><span class="badge badge-pass">RESOLVED</span></td><td>Z-centroid check &rarr; warning-only. Approach frames give negative contact supervision.</td></tr>
+</tbody>
+</table>
+
+<h3>2-stage training proposal — tested, doesn&rsquo;t help</h3>
+<p>Stage-1-only (scene-only, DCF losses off) reached scene total &minus;0.604, <em>worse</em> than joint training&rsquo;s &minus;0.684. DCF hand/obj losses provide per-point world-space anchors that <em>complement</em> the dense scene loss. Joint training is better.</p>
+</section>
+
+<!-- ======== COMMITS ======== -->
+<section id="commits">
+<h2>Code commits on <code>feat/dcf</code> (12)</h2>
+<table>
+<thead><tr><th>SHA</th><th>Description</th><th>Files</th></tr></thead>
+<tbody>
+<tr><td><code>754d2b2</code></td><td>Fail fast on untracked hand frames + <code>--frame-start</code> / <code>--no-freeze-scene-heads</code></td><td>bridge + trainer</td></tr>
+<tr><td><code>cbc5ba9</code></td><td>Align scene loss with STream3R official: +point_loss, +multi-view, +PP-crop (fixes #1&ndash;5)</td><td>trainer</td></tr>
+<tr><td><code>c90bd52</code></td><td>GT pts3d must be in first-view-camera frame, not DexYCB world frame</td><td>trainer</td></tr>
+<tr><td><code>7829043</code></td><td>P1/P2 follow-up: Chamfer hand loss + <code>--scene-grad-mode</code> + SVD logging</td><td>dcf_losses + trainer</td></tr>
+<tr><td><code>44446b7</code></td><td>Fix int return from <code>reg_loss</code> when <code>gradient_loss=None</code></td><td>trainer</td></tr>
+<tr><td><code>87f84bf</code></td><td>Multi-sequence trainer with optional DDP</td><td>new: multi_seq_train</td></tr>
+<tr><td><code>6428c99</code></td><td>Multi-seq must build DCFBranch and pass to STream3R</td><td>multi_seq_train</td></tr>
+<tr><td><code>c9baf90</code></td><td>try/except + <code>empty_cache</code> around per-sequence training</td><td>multi_seq_train</td></tr>
+<tr><td><code>666c39d</code></td><td>Subject-01-only manifest + robust CUDA error handling</td><td>multi_seq_train + manifest</td></tr>
+<tr><td><code>21b7c88</code></td><td>END of tracked range + periodic checkpoints + protected save</td><td>multi_seq_train</td></tr>
+<tr><td><code>afc616e</code></td><td>Keep approach-phase frames &mdash; z-centroid is warning-only</td><td>trainer (loader)</td></tr>
+<tr><td><code>eb54884</code></td><td>Random <code>frame_start</code> within tracked range (both phases)</td><td>multi_seq_train</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ======== MODULES ======== -->
+<section id="modules">
+<h2>Training module state (recommended config)</h2>
+<table>
+<thead><tr><th>Module</th><th>Params</th><th>Status</th><th>LR</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td><code>aggregator.global_blocks</code></td><td>302 M</td><td><span class="badge badge-fix">optimized</span></td><td>1e-4</td><td>pretrained (STream3R)</td></tr>
+<tr><td><code>hoi_mesh_branch</code> (DCF)</td><td>8 M</td><td><span class="badge badge-fix">optimized</span></td><td>1e-3</td><td>random init</td></tr>
+<tr><td><code>camera_head</code></td><td>216 M</td><td><span class="badge badge-fix">optimized</span></td><td>1e-5</td><td>pretrained</td></tr>
+<tr><td><code>point_head</code></td><td>33 M</td><td><span class="badge badge-fix">optimized</span></td><td>1e-5</td><td>pretrained</td></tr>
+<tr><td><code>depth_head</code></td><td>33 M</td><td><span class="badge badge-fix">optimized</span></td><td>1e-5</td><td>pretrained</td></tr>
+</tbody>
+</table>
+
+<h3>Loss composition (matching <code>stream3r/loss/losses.py:1762</code>)</h3>
+<pre><code>total = 1.0 * loss_hand + 1.0 * loss_obj + 0.1 * loss_contact + 0.1 * loss_pointer
+      + 0.1 * (loss_pts3d_conf + loss_depth_conf + loss_camera)
+# loss_pts3d_grad + loss_depth_grad disabled via --scene-grad-mode none</code></pre>
+
+<h3>Data preprocessing (STream3R-aligned)</h3>
+<ul>
+  <li>Image: PP-centered crop (618&times;462) + Lanczos resize to 518&times;518</li>
+  <li>Depth: same crop + NEAREST resize; uint16 65535 sentinel filtered before /1000</li>
+  <li>Intrinsics: crop-adjusted + rescaled (<code>fx=516.9, fy=691.0</code>)</li>
+  <li>GT pts3d: first-view-camera-frame via <code>np.eye(4)</code> cam2world</li>
+  <li>Valid mask: <code>(depth &gt; 0) &amp; isfinite(pts3d)</code></li>
+</ul>
+</section>
+
+<!-- ======== PAGES ======== -->
+<section id="pages">
+<h2>Published experiment pages (8)</h2>
+<table>
+<thead><tr><th>Page</th><th>Content</th></tr></thead>
+<tbody>
+<tr><td><a href="2026-04-15-dcf-scene-loss-convergence-200steps.html">conv200</a></td><td>Initial convergence check &mdash; <span class="badge badge-fail">INVALIDATED</span> (sentinel GT)</td></tr>
+<tr><td><a href="2026-04-15-dcf-scene-heads-ab-tracked65.html">v1 A/B</a></td><td>Frozen vs unfrozen (pre-audit, incomplete scene loss)</td></tr>
+<tr><td><a href="2026-04-15-dcf-scene-loss-audit-stream3r-official.html">Audit</a></td><td>Kwarg-by-kwarg diff vs STream3R official + GT visualization</td></tr>
+<tr><td><a href="2026-04-15-dcf-scene-loss-stream3r-aligned-ab.html">v2 A/B</a></td><td>STream3R-aligned (scene collapsed due to B2)</td></tr>
+<tr><td><a href="2026-04-15-dcf-scene-loss-v3-coordfix-ab.html">v3 A/B</a></td><td>Coordinate fix verified + hand-collapse SVD analysis</td></tr>
+<tr><td><a href="2026-04-15-dcf-scene-loss-v4-p1p2-ablation.html">v4 P1/P2</a></td><td>Disable static grad + Chamfer ablation</td></tr>
+<tr><td><a href="2026-04-15-dcf-frozen-vs-unfrozen-rootcause.html">v5 root cause</a></td><td>9-hypothesis diagnostic + gradient-balance finding</td></tr>
+<tr><td><a href="2026-04-16-dcf-v6-overfit-1000step-comparison.html">v6 comparison</a></td><td>1000-step overfit: sw=0.1 wins decisively</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ======== OPEN ISSUES ======== -->
+<section id="open">
+<h2>Open issues &amp; next steps</h2>
+<table>
+<thead><tr><th>Priority</th><th>Issue</th><th>Detail</th><th>Proposed fix</th></tr></thead>
+<tbody>
+<tr>
+  <td><span class="badge badge-fail">P0</span></td>
+  <td>CUDA index-OOB on cross-subject sequences</td>
+  <td>Some DexYCB sequences trigger <code>IndexKernel.cu assertion</code> in model forward, poisoning GPU context. Makes full-manifest &amp; multi-GPU training unviable.</td>
+  <td>Run with <code>CUDA_LAUNCH_BLOCKING=1</code> to get exact Python traceback. Fix the indexing bug or filter the triggering sequences.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-fail">P0</span></td>
+  <td>Hand SVD collapse in multi-sequence</td>
+  <td><code>loss_weight_scene=0.1</code> works for single-seq (SVD 0.40) but multi-seq oscillates 0.05&ndash;0.22. Each new sequence resets gradient landscape before DCF settles.</td>
+  <td>Try <code>loss_weight_scene=0.01&ndash;0.03</code>; or increase <code>steps_per_sequence</code> to 50&ndash;100; or warmup schedule (scene_weight decays over training).</td>
+</tr>
+<tr>
+  <td><span class="badge badge-fix">P1</span></td>
+  <td>DDP crashes on multi-subject</td>
+  <td>Different YCB objects have different canonical mesh vertex counts. DDP requires identical forward graph across ranks.</td>
+  <td>Pad canonical meshes to common max size (8192 vertices + mask). Or restrict to same-object runs.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-fix">P1</span></td>
+  <td>Static <code>loss_pts3d_grad</code> / <code>loss_depth_grad</code></td>
+  <td><code>gradient_loss_multi_scale</code> returns same value regardless of pred. Currently disabled via <code>--scene-grad-mode none</code>.</td>
+  <td>Investigate multi-scale averaging + NEAREST-downsampled pointmap interaction. Low priority since <code>conf</code> terms carry useful signal.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-finding">P2</span></td>
+  <td><code>trajectory_3d_loss</code> blind to rank collapse</td>
+  <td><code>F.l1_loss</code> doesn&rsquo;t penalize distributional collapse. A line through GT centroid has similar L1 to a 3D cluster.</td>
+  <td>Chamfer recovers rank but breaks per-vertex correspondence. Need <code>l1+chamfer</code> combined (implemented, untested) or separate <code>--hand-loss-type</code> / <code>--obj-loss-type</code>.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-finding">P2</span></td>
+  <td>Phase-3 full-sequence evaluation</td>
+  <td>All experiments so far are 5-frame smokes or small multi-seq. Need held-out sequence evaluation for generalization metrics.</td>
+  <td>Once multi-seq training is stable, evaluate on DexYCB test split.</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<footer>
+  HOI3R &middot; Session summary 2026-04-15/16 &middot; Scene-loss investigation + multi-sequence training &middot;
+  Branch <code>feat/dcf</code> &middot; 12 commits (<code>754d2b2</code> &rarr; <code>eb54884</code>) &middot; 18 ACP jobs &middot; 8 published pages
+</footer>
+
+</body>
+</html>
