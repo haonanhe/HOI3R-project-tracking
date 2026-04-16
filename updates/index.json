@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-16 · Session Summary: Scene-Loss Investigation & Multi-Sequence Training",
+    "date": "2026-04-16",
+    "status": "done",
+    "summary": "Two-day session: scene-loss alignment, root-cause (gradient-magnitude balance), multi-seq training. Winning config: sw=0.1, unfrozen → hand 8.5mm, obj 9.0mm, SVD 0.400=GT. 12 commits, 18 ACP runs, 5 bugs fixed.",
+    "path": "updates/2026-04-16-scene-loss-investigation-session-summary.html"
+  },
+  {
     "title": "2026-04-16 · v6 1000-Step Overfit: sw=0.1 Wins Decisively (hand 8.5 / obj 9.0 / SVD 0.400)",
     "date": "2026-04-16",
     "status": "done",
