@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-17 \u00b7 DataLoader Ablation Study (5 Hypotheses)",
+    "date": "2026-04-17",
+    "status": "complete",
+    "summary": "ALL 5 configs show SVD collapse. Even DCF-only (no scene loss) collapses. Scene gradient dominance and canonical representation ruled out. Problem is in DataLoader frame resampling or training dynamics.",
+    "path": "updates/2026-04-17-dcf-dataloader-ablation-study.html"
+  },
+  {
     "title": "2026-04-16 \u00b7 DataLoader Overfit Verification (Canonical Fix)",
     "date": "2026-04-16",
     "status": "complete",
