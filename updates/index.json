@@ -1,9 +1,9 @@
 [
   {
-    "title": "2026-04-17 \u00b7 Per-View DCF Overfit",
+    "title": "2026-04-17 \u00b7 GPS + Frames 30-34 DCF Overfit",
     "date": "2026-04-17",
     "status": "converged",
-    "summary": "Per-view DCF refactor (aggregator broadcasts extras along S; DCFBranch emits [B, S, N, 3] aligned with the main branch). 500-step overfit converges with stable hand SVD 0.355 vs the 0.077 rank-collapse of the 2026-04-16 DataLoader run.",
+    "summary": "Four-fix follow-up to the per-view overfit: enable GPS skip at head, use matching rest-pose canonical at eval, restrict overfit to frames 30-34, and sliding S=4 causal eval. Mean hand L2 drops from 124 mm to 8.7 mm (v6 regime); shape preserved.",
     "path": "updates/2026-04-17-dcf-gps-f30-34.html"
   },
   {
