@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary: Benchmark Data-Validation Bring-Up &mdash; HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff;font-size:.9em}
+th,td{border:1px solid #ddd;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f6f7f8}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#e3f2fd;padding:12px;border-left:4px solid #2196f3;margin:12px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.82em;color:#fff}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-wip{background:#7f8c8d}
+.badge-p0{background:#e53935}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.88em;color:#c7254e}
+pre{background:#f4f4f4;padding:12px;border-radius:6px;overflow-x:auto;font-size:.85em}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.toc ul{margin:0;padding-left:20px}
+.toc a{text-decoration:none;color:#2c3e50}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.4em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.82em;color:#666;margin-top:4px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.frame-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.frame-grid img{width:100%;height:auto;display:block;border:1px solid #ddd;border-radius:4px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:900px){.grid-4{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}.frame-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>2026-04-17 &middot; Session Summary: Benchmark Data-Validation Bring-Up</h1>
+  <div style="margin:8px 0">
+    <span style="color:#555">Branch: <code>feat/benchmark</code> (worktree)</span>
+    <span style="margin-left:16px;color:#555">Files touched: <code>benchmark/configs/benchmark_paths.yaml</code>, <code>benchmark/data/dexycb_loader.py</code>, <code>benchmark/preprocessing/render_mano_overlay.py</code> (new)</span>
+    <span style="margin-left:16px;color:#555">Commits: none yet (awaiting commit decision)</span>
+  </div>
+  <p><strong>Goal:</strong> Take the benchmark from "17/17 implementation tasks, 209 tests pass" to "real data validates end-to-end" &mdash; Phase 2 of the bring-up plan. Fix the dataset-path assumption, run the MANO validation gate, and visually verify GT loaders against the source RGB so bugs can't hide behind a numeric-only pass.</p>
+</header>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#headline">Headline</a></li>
+    <li><a href="#actions">Actions taken (in order)</a></li>
+    <li><a href="#mano-gate">MANO validation gate results</a></li>
+    <li><a href="#dexycb-fix">Bug fix: DexYCB <code>pose_y</code> schema</a></li>
+    <li><a href="#overlay">Visual overlay check</a></li>
+    <li><a href="#joint-order">The joint-order rabbit hole</a></li>
+    <li><a href="#hot3d">HOT3D extraction status</a></li>
+    <li><a href="#code">Code changes</a></li>
+    <li><a href="#memory">Memory additions</a></li>
+    <li><a href="#open">Open issues &amp; next steps</a></li>
+  </ul>
+</nav>
+
+<section id="headline">
+<h2>Headline</h2>
+<div class="grid-4">
+  <div class="stat-card"><div class="value">2/3</div><div class="label">MANO gate PASS (HO3D, DexYCB)</div></div>
+  <div class="stat-card"><div class="value">1</div><div class="label">Loader bug fixed (DexYCB pose_y)</div></div>
+  <div class="stat-card"><div class="value">18</div><div class="label">Overlay PNGs published</div></div>
+  <div class="stat-card"><div class="value">~60 GB</div><div class="label">HOT3D extracted / 152 GB</div></div>
+</div>
+<div class="info">
+  Phase 2 plan step 1 (paths) &amp; step 2 (MANO gate) are done for HO3D and DexYCB. HOT3D gate blocked on extraction. Step 3 (first real predictions) is ready to start once HOT3D finishes and the DexYCB overlay joint-order is confirmed. <strong>Open loop:</strong> DexYCB overlay still shows a skeleton topology the user flagged as wrong even after three iterations &mdash; labeled debug frames are live for inspection.
+</div>
+</section>
+
+<section id="actions">
+<h2>Actions taken (in order)</h2>
+<table>
+  <thead><tr><th>#</th><th>Action</th><th>Result</th><th>Tag</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>SSH to debug container, probe ports 46681 / 46682</td><td>Both live, DIFFERENT containers sharing <code>/mnt/afs</code>. 46681 = <code>qrqq9</code>, 46682 = <code>28dq5</code>. 46682 dropped mid-session; fell back to 46681.</td><td><span class="badge badge-finding">FINDING</span></td></tr>
+    <tr><td>2</td><td>Fix benchmark paths in <code>benchmark_paths.yaml</code></td><td>Remapped 3 datasets from fictitious <code>/mnt/hdd_volume/...</code> to actual <code>/mnt/afs/haonan/datasets/haonan/datasets/{HO3D,dexycb,hot3d}</code>. Added <code>ho3d.ycb_models_dir</code> pointing at shared <code>dexycb/models</code>.</td><td><span class="badge badge-fix">FIX</span></td></tr>
+    <tr><td>3</td><td>Launch HOT3D extraction in background sub-agent</td><td>152 GB tar, nohup'd via PID 1635 on 46681; ~1.5 GB/min on network FS; ETA ~4-5h; extracts to <code>hot3d/processed/</code> subdir.</td><td><span class="badge badge-wip">WIP</span></td></tr>
+    <tr><td>4</td><td>Run MANO validation gate on HO3D</td><td>3/3 test sequences PASS, 30/30 valid frames each.</td><td><span class="badge badge-pass">PASS</span></td></tr>
+    <tr><td>5</td><td>Run MANO validation gate on DexYCB</td><td>FAIL on all 3 sequences with <code>ValueError: (3,3,3) cannot broadcast into (3,3)</code>.</td><td><span class="badge badge-fail">FAIL</span></td></tr>
+    <tr><td>6</td><td>Delegate DexYCB fix to Codex</td><td>5-line patch to <code>dexycb_loader.py</code>: <code>pose_y</code> schema was wrongly assumed <code>(N,7)</code> quat+trans but is actually <code>(N,3,4)</code> per-object <code>[R|t]</code>. All 209 existing tests still pass.</td><td><span class="badge badge-fix">FIX</span></td></tr>
+    <tr><td>7</td><td>Re-run MANO validation gate on DexYCB</td><td>3/3 sequences PASS with 57-73/74 valid frames each.</td><td><span class="badge badge-pass">PASS</span></td></tr>
+    <tr><td>8</td><td>Write <code>render_mano_overlay.py</code> and produce 18 overlay PNGs</td><td>3 HO3D seqs &times; 3 frames + 3 DexYCB seqs &times; 3 frames = 18 PNGs; hand verts (blue), joints+skeleton (yellow), object verts (orange) projected via per-frame K. Codex sandbox couldn't SSH out &mdash; wrote script directly.</td><td><span class="badge badge-pass">PASS</span></td></tr>
+    <tr><td>9</td><td>Publish overlay page to GitHub Pages</td><td>Uploaded via Contents API (no clone). First iteration had a path bug (img srcs omitted the page-slug subdir); fixed. Cache-busted img URLs to defeat browser cache.</td><td><span class="badge badge-fix">FIX</span></td></tr>
+    <tr><td>10</td><td>Iterate on skeleton joint-order (3 attempts)</td><td>Three wrong skeletons, each diagnosed by a different mistake in interpreting smplx+tip conventions. HO3D finally shows correct topology; DexYCB still flagged wrong by user.</td><td><span class="badge badge-finding">FINDING</span></td></tr>
+    <tr><td>11</td><td>Publish labeled-joint debug frames</td><td>One HO3D + one DexYCB frame with numbered dots per joint, colored by smplx finger group; awaiting user confirmation of which number is which finger in DexYCB.</td><td><span class="badge badge-wip">WIP</span></td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="mano-gate">
+<h2>MANO validation gate results</h2>
+<table>
+  <thead><tr><th>Dataset</th><th>Sequences validated</th><th>Valid frames</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td>HO3D</td><td>ABF12.180, ABF14.180, GPMF12.90</td><td>30/30 each</td><td><span class="badge badge-pass">PASS</span></td></tr>
+    <tr><td>DexYCB (pre-fix)</td><td>subject-07 &times; 3 sessions</td><td>n/a</td><td><span class="badge badge-fail">FAIL</span> broadcast error</td></tr>
+    <tr><td>DexYCB (post-fix)</td><td>subject-07 &times; 3 sessions</td><td>63/74, 61/74, 57/74</td><td><span class="badge badge-pass">PASS</span></td></tr>
+    <tr><td>HOT3D</td><td>blocked on extraction</td><td>&mdash;</td><td><span class="badge badge-wip">PENDING</span></td></tr>
+  </tbody>
+</table>
+<p>Gate criteria: no NaN in valid frames; exactly 21 joints &amp; 778 verts per hand; all joints within 500&nbsp;mm of wrist; coords &lt; 5000&nbsp;mm from origin. These are value-range checks only &mdash; geometric correctness needs the visual overlay (next section).</p>
+</section>
+
+<section id="dexycb-fix">
+<h2>Bug fix: DexYCB <code>pose_y</code> schema &nbsp;<span class="badge badge-fix">FIX</span></h2>
+<p><strong>Observed:</strong> <code>ValueError: could not broadcast input array from shape (3,3,3) into shape (3,3)</code> at <code>benchmark/data/dexycb_loader.py:428</code>.</p>
+<p><strong>Root cause:</strong> The loader assumed per-frame <code>pose_y</code> is <code>(N_objects, 7)</code> = quaternion (xyzw) + translation, then called <code>_quat_xyzw_to_rotmat</code> on a slice that was actually shape <code>(3, 4)</code>. scipy treated that as a batch of 3 quaternions and returned a <code>(3,3,3)</code> array.</p>
+<p><strong>Reality:</strong> The DexYCB v1.0 labels NPZ on disk has <code>pose_y: (N_objects, 3, 4) float32</code> &mdash; a per-object 3&times;4 transform <code>[R | t]</code> in meters. Verified by directly loading <code>labels_000000.npz</code>.</p>
+<p><strong>Patch:</strong> 5-line change extracting <code>R = Rt[:, :3]</code> and <code>trans = Rt[:, 3]</code> directly; module docstring corrected too. <code>_quat_xyzw_to_rotmat</code> left in place (no other call sites, harmless). All 209 pre-existing tests continue to pass.</p>
+<div class="panel">
+<pre>- if pose_y.ndim == 1:
+-     pose_y = pose_y.reshape(-1, 7)
++ if pose_y.ndim == 2:
++     pose_y = pose_y.reshape(-1, 3, 4)
+  if ycb_grasp_ind &lt; pose_y.shape[0]:
+-     obj_p = pose_y[ycb_grasp_ind]
+-     if not np.allclose(obj_p, 0.0):
+-         quat_xyzw = obj_p[:4]
+-         trans = obj_p[4:]  # meters
+-         R = _quat_xyzw_to_rotmat(quat_xyzw)
++     Rt = pose_y[ycb_grasp_ind]   # (3, 4) [R | t] in meters
++     if not np.allclose(Rt, 0.0):
++         R = Rt[:, :3].astype(np.float32)
++         trans = Rt[:, 3].astype(np.float32)</pre>
+</div>
+</section>
+
+<section id="overlay">
+<h2>Visual overlay check &nbsp;<span class="badge badge-pass">PAGE LIVE</span></h2>
+<p>Standalone page: <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-17-mano-overlay-check.html">2026-04-17-mano-overlay-check.html</a>. 18 frames total (3 seqs &times; 3 frames &times; 2 datasets). Colors: hand verts (blue, 778 pts), joints + skeleton (yellow, 21 joints), object verts (orange, subsampled to 5k).</p>
+<div class="panel">
+<h3>HO3D (sample &mdash; all 9 on the standalone page)</h3>
+<div class="frame-grid">
+  <img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000180.png" alt="ho3d ABF12.180 f180">
+  <img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000194.png" alt="ho3d ABF14.180 f194">
+  <img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000104.png" alt="ho3d GPMF12.90 f104">
+</div>
+<h3>DexYCB (sample &mdash; all 9 on the standalone page)</h3>
+<div class="frame-grid">
+  <img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000042.png" alt="dexycb 154547 f42">
+  <img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000043.png" alt="dexycb 155814 f43">
+  <img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000045.png" alt="dexycb 155913 f45">
+</div>
+</div>
+<p>The orange cloud sitting on the grasped YCB object was the visual confirmation that the <code>pose_y (3,4)</code> fix is geometrically correct.</p>
+</section>
+
+<section id="joint-order">
+<h2>The joint-order rabbit hole &nbsp;<span class="badge badge-finding">FINDING</span></h2>
+<p>Three consecutive wrong skeletons, each from a different mistaken assumption. Saved to memory (<code>reference_mano_joint_order.md</code>).</p>
+<table>
+  <thead><tr><th>Attempt</th><th>Assumption</th><th>Symptom</th><th>Verdict</th></tr></thead>
+  <tbody>
+    <tr><td>v1</td><td>OpenPose-style parents <code>[0, 0,1,2,3, 0,5,6,7, 0,9,10,11, 0,13,14,15, 0,17,18,19]</code> on raw smplx output</td><td>Bones jumped between fingers. OpenPose and MANO disagree on finger-index assignment.</td><td><span class="badge badge-fail">WRONG</span></td></tr>
+    <tr><td>v2</td><td>MANO parents with tips assigned in joint-order (tip 16 = idx tip, 17 = mid tip, ...)</td><td>Fingers looked right but each tip connected to the <em>next</em> finger's distal &mdash; systematic off-by-one on tips.</td><td><span class="badge badge-fail">WRONG</span></td></tr>
+    <tr><td>v3</td><td>MANO&rarr;OpenPose remap but with the same wrong tip order embedded</td><td>Same off-by-one now visible in OpenPose space &mdash; tip of thumb attached to pinky distal, etc.</td><td><span class="badge badge-fail">WRONG</span></td></tr>
+    <tr><td>v4</td><td>Tips are in <em>vertex-index order</em> (thumb, index, middle, ring, pinky) because <code>MANO_FINGERTIP_VERT_INDICES = [744, 320, 443, 554, 671]</code> is sorted by vertex number, not finger.</td><td>HO3D overlay matches anatomy; DexYCB still flagged wrong by user.</td><td><span class="badge badge-pass">HO3D OK</span> &middot; <span class="badge badge-fail">DexYCB WRONG</span></td></tr>
+  </tbody>
+</table>
+<p><strong>Empirical truth (HO3D frame 0, ABF12.180):</strong></p>
+<table>
+  <thead><tr><th>Tip</th><th>Nearest distal</th><th>Distance</th></tr></thead>
+  <tbody>
+    <tr><td>16</td><td>thumb (15)</td><td>38.1&nbsp;mm</td></tr>
+    <tr><td>17</td><td>index (3)</td><td>28.2&nbsp;mm</td></tr>
+    <tr><td>18</td><td>middle (6)</td><td>28.7&nbsp;mm</td></tr>
+    <tr><td>19</td><td>ring (12)</td><td>29.0&nbsp;mm</td></tr>
+    <tr><td>20</td><td>pinky (9)</td><td>22.7&nbsp;mm</td></tr>
+  </tbody>
+</table>
+<p><strong>Correct arrays:</strong></p>
+<pre># raw MANO 21-joint order: wrist | idx(1-3) | mid(4-6) | pky(7-9) | rng(10-12) | thb(13-15) | tips: thb(16), idx(17), mid(18), rng(19), pky(20)
+MANO_PARENTS     = [0, 0, 1, 2, 0, 4, 5, 0, 7, 8, 0, 10, 11, 0, 13, 14, 15, 3, 6, 12, 9]
+MANO_TO_OPENPOSE = [0, 13, 14, 15, 16, 1, 2, 3, 17, 4, 5, 6, 18, 10, 11, 12, 19, 7, 8, 9, 20]
+OPENPOSE_PARENTS = [0, 0, 1, 2, 3, 0, 5, 6, 7, 0, 9, 10, 11, 0, 13, 14, 15, 0, 17, 18, 19]</pre>
+<div class="warning">
+  <strong>Outstanding:</strong> DexYCB still shows a wrong skeleton. Both loaders use identical <code>_mano_forward</code> patterns, identical <code>MANO_FINGERTIP_VERT_INDICES</code>, identical smplx <code>is_rhand</code> wiring, so the raw joint order should be identical. Labeled debug frames published at <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-17-mano-overlay-check/debug/ho3d_labeled.png">ho3d_labeled.png</a> and <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-17-mano-overlay-check/debug/dexycb_labeled.png">dexycb_labeled.png</a>; awaiting user observation of which numbered dot sits on which anatomical finger.
+</div>
+<div class="panel">
+<h3>Labeled debug frames</h3>
+<div class="grid-2">
+  <div><img src="2026-04-17-mano-overlay-check/debug/ho3d_labeled.png" alt="ho3d labeled" style="width:100%;border:1px solid #ddd;border-radius:4px"><div style="font-size:.82em;color:#555;margin-top:4px">HO3D &mdash; user-confirmed correct</div></div>
+  <div><img src="2026-04-17-mano-overlay-check/debug/dexycb_labeled.png" alt="dexycb labeled" style="width:100%;border:1px solid #ddd;border-radius:4px"><div style="font-size:.82em;color:#555;margin-top:4px">DexYCB &mdash; user says skeleton is wrong</div></div>
+</div>
+</div>
+</section>
+
+<section id="hot3d">
+<h2>HOT3D extraction status &nbsp;<span class="badge badge-wip">IN PROGRESS</span></h2>
+<table>
+  <thead><tr><th>Fact</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>Source tarball</td><td><code>/mnt/afs/haonan/datasets/haonan/datasets/hot3d/processed-20260403T080057Z.tar.gz</code></td></tr>
+    <tr><td>Total size (gzipped)</td><td>152 GB</td></tr>
+    <tr><td>Extracts into</td><td><code>hot3d/processed/</code> (need to update <code>benchmark_paths.yaml</code> once done)</td></tr>
+    <tr><td>Host container</td><td>46681 only (PID 1635, nohup'd)</td></tr>
+    <tr><td>Progress at session end</td><td>~57&ndash;60 GB extracted (~38%)</td></tr>
+    <tr><td>Rate</td><td>~1.5 GB/min &mdash; gated by network FS metadata ops, not decompression</td></tr>
+    <tr><td>Monitoring files</td><td><code>hot3d/extract.{log,progress,pid,start,end}</code></td></tr>
+  </tbody>
+</table>
+<div class="info">
+  <strong>On completion:</strong> update <code>hot3d.processed_root</code> / <code>raw_root</code> to <code>.../hot3d/processed</code>, then run the MANO gate and overlay renderer for HOT3D.
+</div>
+</section>
+
+<section id="code">
+<h2>Code changes</h2>
+<h3>Files modified / created</h3>
+<table>
+  <thead><tr><th>File</th><th>Change</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>benchmark/configs/benchmark_paths.yaml</code></td><td>Modified (~10 lines)</td><td>Remap 3 dataset roots to <code>/mnt/afs/haonan/datasets/haonan/datasets/...</code></td></tr>
+    <tr><td><code>benchmark/data/dexycb_loader.py</code></td><td>Modified (5 lines + docstring)</td><td>Correct <code>pose_y</code> schema from <code>(N,7)</code> quat+trans to <code>(N,3,4)</code> <code>[R|t]</code></td></tr>
+    <tr><td><code>benchmark/preprocessing/render_mano_overlay.py</code></td><td>New (~180 lines)</td><td>Project hand verts + 21-joint skeleton + object verts onto RGB for visual QA</td></tr>
+  </tbody>
+</table>
+<div class="warning">
+  <strong>Uncommitted.</strong> User asked during the session whether to commit the DexYCB fix immediately or bundle it with the HOT3D path fix. Not yet answered &mdash; the three files above are live in the worktree but not on the branch.
+</div>
+</section>
+
+<section id="memory">
+<h2>Memory additions</h2>
+<table>
+  <thead><tr><th>File</th><th>Content</th></tr></thead>
+  <tbody>
+    <tr><td><code>reference_dataset_paths.md</code></td><td>Canonical per-dataset paths under <code>/mnt/afs/haonan/datasets/haonan/datasets/</code>; HOT3D is in lowercase <code>hot3d/</code>.</td></tr>
+    <tr><td><code>reference_mano_joint_order.md</code></td><td>Full 21-joint index-to-name table; empirical tip-to-distal distance test as the canonical joint-order check; correct <code>MANO_PARENTS</code> and <code>MANO_TO_OPENPOSE</code> arrays.</td></tr>
+    <tr><td><code>feedback_ssh_debug.md</code> (updated)</td><td>46681 and 46682 are DIFFERENT containers sharing <code>/mnt/afs</code>. Processes started on one are not visible via <code>ps</code> from the other, but file-system artifacts are.</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="open">
+<h2>Open issues &amp; next steps</h2>
+<table>
+  <thead><tr><th>Pri</th><th>Item</th><th>Action</th></tr></thead>
+  <tbody>
+    <tr><td><span class="badge badge-p0">P0</span></td><td>DexYCB overlay skeleton flagged wrong by user even after the v4 joint-order fix that made HO3D correct</td><td>Wait for user to identify which numbered dot on the DexYCB labeled debug frame sits on which anatomical finger; if smplx output truly differs between the two loaders, add a per-dataset remap in the renderer.</td></tr>
+    <tr><td><span class="badge badge-p0">P0</span></td><td>HOT3D extraction in progress</td><td>Let PID 1635 on 46681 finish (~2-3h more). On completion, bump <code>hot3d.processed_root</code> to <code>.../hot3d/processed</code>, run MANO gate, render overlays.</td></tr>
+    <tr><td><span class="badge badge-p1">P1</span></td><td>Three uncommitted changes on <code>feat/benchmark</code> worktree</td><td>Ask user: commit DexYCB <code>pose_y</code> fix alone now, or bundle with HOT3D path fix. Suggested message: <code>fix(benchmark): correct DexYCB pose_y schema (3x4 transform, not quat+trans)</code>.</td></tr>
+    <tr><td><span class="badge badge-p1">P1</span></td><td>Phase 2 step 3: first real predictions on 1&ndash;2 test sequences</td><td>Unblocks once joint-order is resolved for DexYCB and HOT3D gate runs. Start with DCF adapter on HO3D (no extra preprocessing needed) for a low-risk first run.</td></tr>
+    <tr><td><span class="badge badge-p2">P2</span></td><td>Checkpoint paths still empty in <code>benchmark_paths.yaml</code></td><td>Fill <code>checkpoints.{dcf,hawor,hawor_infiller,foundationpose}</code> when each becomes available.</td></tr>
+    <tr><td><span class="badge badge-p2">P2</span></td><td>MagicHOI end-to-end needs COLMAP + HaMeR preprocessing</td><td>Budget ~1 day of wall-clock; independent of the current joint-order loop.</td></tr>
+    <tr><td><span class="badge badge-p2">P2</span></td><td>SAM 3D GPU-cost dry-run for template-free variants</td><td>Independent; can run anytime a GPU is free.</td></tr>
+  </tbody>
+</table>
+</section>
+
+<footer>
+Generated 2026-04-17 &middot; Session covering Phase 2 kick-off of the HOI3R benchmark bring-up &middot; Worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-benchmark</code>
+</footer>
+
+</body>
+</html>
