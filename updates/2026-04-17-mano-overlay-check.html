@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MANO Gate Visual Check (v2) &mdash; HOI3R</title>
+<title>MANO Gate Visual Check (v3 — manopth fix) &mdash; HOI3R</title>
 <style>
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
 h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
@@ -46,16 +46,19 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <body>
 
 <header>
-  <h1>2026-04-17 &middot; MANO Gate Visual Check v2 &mdash; Skeleton Topology Fix</h1>
+  <h1>2026-04-17 &middot; MANO Gate Visual Check v3 &mdash; manopth fix (matches dex-ycb-toolkit)</h1>
   <div style="margin:8px 0">
     <span style="color:#555">Branch: <code>feat/benchmark</code></span>
     <span style="margin-left:16px;color:#555">Renderer: <code>benchmark/preprocessing/render_mano_overlay.py</code></span>
     <span style="margin-left:16px;color:#555">Source: <code>/mnt/afs/haonan/datasets/haonan/datasets/{HO3D,dexycb}</code></span>
   </div>
   <p><strong>Goal:</strong> The numeric MANO validation gate passed for HO3D and DexYCB, but a numeric pass only proves NaN-freeness, joint count, and value ranges. This page projects the loader's GT (hand vertices, hand 21-joint skeleton, object vertices) onto the source RGB to verify <em>geometric</em> alignment.</p>
+  <div class="error">
+    <strong>v2 diagnosis &mdash; smplx and manopth disagree materially on DexYCB inputs.</strong>
+    Running both MANO libraries on the same DexYCB <code>pose_m</code> + <code>betas</code> gave identical wrist and all five MCP joints (they're driven only by shape+translation), but up to <strong>53 mm</strong> divergence at PIP / DIP / TIP joints &mdash; the libraries interpret the PCA pose basis or <code>flat_hand_mean</code> convention differently. v2 (smplx-based) looked "off" on DexYCB not because of bone topology, but because the 3D joints themselves were wrong. Verification script: <code>/tmp/compare_smplx_vs_manopth.py</code> on the debug container.
+  </div>
   <div class="highlight">
-    <strong>v2 update &mdash; bone topology rebuilt against the <code>original_mano_reference</code> bundle.</strong>
-    The v1 rendering went through an intermediate <code>MANO_TO_OPENPOSE</code> permutation whose tip-vertex convention disagreed with what the smplx-MANO loader actually emits, leaving the thumb/pinky wiring visibly off on DexYCB. v2 drops the permutation and draws bones directly on the smplx-MANO 21-joint layout with tips <strong>16..20 = <code>[thb, idx, mid, rng, pky]</code></strong> (verts <code>744, 320, 443, 554, 671</code>), matching the fingertip convention the reference adapter uses in manopth. Empirical check: tip→nearest-DIP distance on a flat hand; log at <code>/tmp/verify_mano_tips.log</code> on the debug container.
+    <strong>v3 fix &mdash; port GT loaders to manopth.</strong> <code>benchmark/data/dexycb_loader.py</code> and <code>benchmark/data/ho3d_loader.py</code> now use <code>manopth.manolayer.ManoLayer</code> (not smplx) with the exact configs the official <code>dex-ycb-toolkit/examples/visualize_pose.py</code> and the HO3D reference adapter use. Manopth returns 21 joints directly in the toolkit canonical order &mdash; no fingertip-vertex trickery, no remap. The renderer's bone topology is now <code>dex_ycb_toolkit._MANO_JOINT_CONNECT</code> verbatim (five contiguous finger chains 0-1-2-3-4, &hellip;, 0-17-18-19-20). DexYCB overlays below should now pixel-match the <code>dex-ycb-toolkit</code> section further down the page.
   </div>
 </header>
 
@@ -95,12 +98,12 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
   </p>
   <p>Projection: <code>(u, v) = (K @ (X / 1000) / Z)[:2]</code> with X in mm camera-space, K in pixel units (per-frame, shape <code>(T, 3, 3)</code>). Points with <code>Z &le; 0</code> or off-image are filtered.</p>
   <p>Datasets share the per-frame intrinsics returned by the GT loader (HO3D: 30 frames, DexYCB: 74 frames per chosen test sequence).</p>
-  <p><strong>Skeleton bones (v2, no remap):</strong> five chains rooted at the wrist, using the smplx-MANO 21-joint layout directly.</p>
-<pre>thumb  : (0,13)(13,14)(14,15)(15,16)   # 16 = thb_tip   vert 744
-index  : (0, 1)( 1, 2)( 2, 3)( 3,17)   # 17 = idx_tip   vert 320
-middle : (0, 4)( 4, 5)( 5, 6)( 6,18)   # 18 = mid_tip   vert 443
-ring   : (0,10)(10,11)(11,12)(12,19)   # 19 = rng_tip   vert 554
-pinky  : (0, 7)( 7, 8)( 8, 9)( 9,20)   # 20 = pky_tip   vert 671</pre>
+  <p><strong>Skeleton bones (v3):</strong> <code>dex_ycb_toolkit._MANO_JOINT_CONNECT</code> &mdash; five contiguous finger chains on the toolkit canonical 21-joint layout (0=wrist, 1-4=thumb, 5-8=index, 9-12=middle, 13-16=ring, 17-20=pinky).</p>
+<pre>thumb  : (0, 1)( 1, 2)( 2, 3)( 3, 4)
+index  : (0, 5)( 5, 6)( 6, 7)( 7, 8)
+middle : (0, 9)( 9,10)(10,11)(11,12)
+ring   : (0,13)(13,14)(14,15)(15,16)
+pinky  : (0,17)(17,18)(18,19)(19,20)</pre>
 </div>
 </section>
 
@@ -110,51 +113,51 @@ pinky  : (0, 7)( 7, 8)( 8, 9)( 9,20)   # 20 = pky_tip   vert 671</pre>
 
 <div class="seq-label">ABF12.180 &mdash; object: 021_bleach_cleanser</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000180.png?v=5" alt="ABF12.180 frame 180"><div class="cap">frame 0180</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000194.png?v=5" alt="ABF12.180 frame 194"><div class="cap">frame 0194</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000209.png?v=5" alt="ABF12.180 frame 209"><div class="cap">frame 0209</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000180.png?v=8" alt="ABF12.180 frame 180"><div class="cap">frame 0180</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000194.png?v=8" alt="ABF12.180 frame 194"><div class="cap">frame 0194</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000209.png?v=8" alt="ABF12.180 frame 209"><div class="cap">frame 0209</div></div>
 </div>
 
 <div class="seq-label">ABF14.180 &mdash; object: 021_bleach_cleanser</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000180.png?v=5" alt="ABF14.180 frame 180"><div class="cap">frame 0180</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000194.png?v=5" alt="ABF14.180 frame 194"><div class="cap">frame 0194</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000209.png?v=5" alt="ABF14.180 frame 209"><div class="cap">frame 0209</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000180.png?v=8" alt="ABF14.180 frame 180"><div class="cap">frame 0180</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000194.png?v=8" alt="ABF14.180 frame 194"><div class="cap">frame 0194</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000209.png?v=8" alt="ABF14.180 frame 209"><div class="cap">frame 0209</div></div>
 </div>
 
 <div class="seq-label">GPMF12.90 &mdash; object: 010_potted_meat_can</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000090.png?v=5" alt="GPMF12.90 frame 90"><div class="cap">frame 0090</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000104.png?v=5" alt="GPMF12.90 frame 104"><div class="cap">frame 0104</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000119.png?v=5" alt="GPMF12.90 frame 119"><div class="cap">frame 0119</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000090.png?v=8" alt="GPMF12.90 frame 90"><div class="cap">frame 0090</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000104.png?v=8" alt="GPMF12.90 frame 104"><div class="cap">frame 0104</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000119.png?v=8" alt="GPMF12.90 frame 119"><div class="cap">frame 0119</div></div>
 </div>
 </section>
 
 <section id="dexycb">
-<h2>DexYCB <span class="badge badge-pass">numeric PASS (post pose_y fix)</span> <span class="badge badge-fix">v2 skeleton</span></h2>
+<h2>DexYCB <span class="badge badge-pass">numeric PASS</span> <span class="badge badge-fix">v3 manopth</span></h2>
 <p>6 sequences across 4 subjects, single-camera (serial <code>836212060125</code> throughout). Each sequence's grasped YCB object is called out in the section label. The earlier numeric failure (<code>could not broadcast (3,3,3) into (3,3)</code>) came from the loader assuming <code>pose_y</code> was <code>(N,7)</code> quaternion+translation; the on-disk schema is <code>(N,3,4)</code> per-object <code>[R|t]</code> in meters, fixed in <code>benchmark/data/dexycb_loader.py</code>. The orange object dots are that fix's visual test &mdash; they must sit on the grasped object.</p>
 
-<h3>Subject 07 &mdash; three sequences (original frames, skeleton rewired in v2)</h3>
+<h3>Subject 07 &mdash; three sequences (v3: manopth-based GT)</h3>
 
 <div class="seq-label">20200928-subject-07 / 20200928_154547 / 836212060125 &mdash; object: 025_mug</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000011.png?v=5" alt="dexycb 154547 frame 11"><div class="cap">frame 000011</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000042.png?v=5" alt="dexycb 154547 frame 42"><div class="cap">frame 000042</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000073.png?v=5" alt="dexycb 154547 frame 73"><div class="cap">frame 000073</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000011.png?v=8" alt="dexycb 154547 frame 11"><div class="cap">frame 000011</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000042.png?v=8" alt="dexycb 154547 frame 42"><div class="cap">frame 000042</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000073.png?v=8" alt="dexycb 154547 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
 <div class="seq-label">20200928-subject-07 / 20200928_155814 / 836212060125 &mdash; object: 052_extra_large_clamp</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000013.png?v=5" alt="dexycb 155814 frame 13"><div class="cap">frame 000013</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000043.png?v=5" alt="dexycb 155814 frame 43"><div class="cap">frame 000043</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000073.png?v=5" alt="dexycb 155814 frame 73"><div class="cap">frame 000073</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000013.png?v=8" alt="dexycb 155814 frame 13"><div class="cap">frame 000013</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000043.png?v=8" alt="dexycb 155814 frame 43"><div class="cap">frame 000043</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000073.png?v=8" alt="dexycb 155814 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
 <div class="seq-label">20200928-subject-07 / 20200928_155913 / 836212060125 &mdash; object: 061_foam_brick</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000017.png?v=5" alt="dexycb 155913 frame 17"><div class="cap">frame 000017</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000045.png?v=5" alt="dexycb 155913 frame 45"><div class="cap">frame 000045</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000073.png?v=5" alt="dexycb 155913 frame 73"><div class="cap">frame 000073</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000017.png?v=8" alt="dexycb 155913 frame 17"><div class="cap">frame 000017</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000045.png?v=8" alt="dexycb 155913 frame 45"><div class="cap">frame 000045</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000073.png?v=8" alt="dexycb 155913 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
 <h3>Cross-subject check &mdash; different subject, different object, different grasp</h3>
@@ -162,23 +165,23 @@ pinky  : (0, 7)( 7, 8)( 8, 9)( 9,20)   # 20 = pky_tip   vert 671</pre>
 
 <div class="seq-label">20200709-subject-01 / 20200709_150243 / 836212060125 &mdash; object: 021_bleach_cleanser</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000005.png?v=6" alt="subject-01 frame 5"><div class="cap">frame 000005</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000038.png?v=6" alt="subject-01 frame 38"><div class="cap">frame 000038</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000071.png?v=6" alt="subject-01 frame 71"><div class="cap">frame 000071</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000005.png?v=8" alt="subject-01 frame 5"><div class="cap">frame 000005</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000038.png?v=8" alt="subject-01 frame 38"><div class="cap">frame 000038</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000071.png?v=8" alt="subject-01 frame 71"><div class="cap">frame 000071</div></div>
 </div>
 
 <div class="seq-label">20200903-subject-04 / 20200903_112655 / 836212060125 &mdash; object: 035_power_drill</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000013.png?v=6" alt="subject-04 frame 13"><div class="cap">frame 000013</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000042.png?v=6" alt="subject-04 frame 42"><div class="cap">frame 000042</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000071.png?v=6" alt="subject-04 frame 71"><div class="cap">frame 000071</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000013.png?v=8" alt="subject-04 frame 13"><div class="cap">frame 000013</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000042.png?v=8" alt="subject-04 frame 42"><div class="cap">frame 000042</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000071.png?v=8" alt="subject-04 frame 71"><div class="cap">frame 000071</div></div>
 </div>
 
 <div class="seq-label">20201022-subject-10 / 20201022_113530 / 836212060125 &mdash; object: 025_mug</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000021.png?v=6" alt="subject-10 frame 21"><div class="cap">frame 000021</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000046.png?v=6" alt="subject-10 frame 46"><div class="cap">frame 000046</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000071.png?v=6" alt="subject-10 frame 71"><div class="cap">frame 000071</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000021.png?v=8" alt="subject-10 frame 21"><div class="cap">frame 000021</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000046.png?v=8" alt="subject-10 frame 46"><div class="cap">frame 000046</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000071.png?v=8" alt="subject-10 frame 71"><div class="cap">frame 000071</div></div>
 </div>
 </section>
 
