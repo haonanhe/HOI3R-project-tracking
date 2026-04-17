@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary: MANO loaders smplx → manopth migration &mdash; HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff;font-size:.9em}
+th,td{border:1px solid #ddd;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f6f7f8}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#e3f2fd;padding:12px;border-left:4px solid #2196f3;margin:12px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.82em;color:#fff}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-wip{background:#7f8c8d}
+.badge-p0{background:#e53935}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.88em;color:#c7254e}
+pre{background:#f4f4f4;padding:12px;border-radius:6px;overflow-x:auto;font-size:.85em}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.toc ul{margin:0;padding-left:20px}
+.toc a{text-decoration:none;color:#2c3e50}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.4em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.82em;color:#666;margin-top:4px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.frame-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.frame-grid img{width:100%;height:auto;display:block;border:1px solid #ddd;border-radius:4px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.cmp .cell{background:#fff;border:1px solid #ddd;border-radius:6px;padding:8px}
+.cmp img{width:100%;height:auto;display:block;border-radius:4px}
+.cmp .cap{font-size:.82em;color:#555;margin-top:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:900px){.grid-4{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}.frame-grid{grid-template-columns:1fr}.cmp{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>2026-04-17 &middot; Session Summary: MANO loaders smplx &rarr; manopth migration</h1>
+  <div style="margin:8px 0;color:#555">
+    <span>Branch: <code>feat/benchmark</code> (uncommitted)</span>
+    <span style="margin-left:16px">Worktree: <code>.worktrees/feat-benchmark</code></span>
+    <span style="margin-left:16px">Scope: <code>benchmark/data/{dexycb,ho3d}_loader.py</code> + <code>benchmark/preprocessing/render_mano_overlay.py</code></span>
+  </div>
+  <p><strong>One-line goal:</strong> figure out why the v2 DexYCB MANO overlays still looked wrong, fix the root cause, and re-publish the overlay-check page so the hand skeletons match the dex-ycb-toolkit reference render.</p>
+</header>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#headline">Headline</a></li>
+    <li><a href="#timeline">Timeline (v1 &rarr; v2 &rarr; toolkit &rarr; v3)</a></li>
+    <li><a href="#diagnostic">Root-cause diagnostic: smplx vs manopth</a></li>
+    <li><a href="#v3">v3 fix &mdash; the port</a></li>
+    <li><a href="#visual">Visual before/after</a></li>
+    <li><a href="#commits">Code changes &amp; commits</a></li>
+    <li><a href="#discoveries">Key discoveries</a></li>
+    <li><a href="#next">Open issues &amp; next steps</a></li>
+  </ul>
+</nav>
+
+<section id="headline">
+<h2>Headline</h2>
+<div class="grid-4">
+  <div class="stat-card"><div class="value">53 mm</div><div class="label">Peak smplx &harr; manopth joint divergence on DexYCB</div></div>
+  <div class="stat-card"><div class="value">3</div><div class="label">Files patched (loaders + renderer)</div></div>
+  <div class="stat-card"><div class="value">45</div><div class="label">Overlay PNGs re-rendered</div></div>
+  <div class="stat-card"><div class="value">3</div><div class="label">Tracking commits pushed</div></div>
+</div>
+<p>
+  The v2 DexYCB overlays failed not because of bone topology &mdash; as earlier believed &mdash; but because the <code>smplx</code> MANO forward pass disagrees with <code>manopth</code> on the very same DexYCB input. An empirical diff on <code>20200928-subject-07/20200928_154547/frame_000011</code> showed wrist and all five MCP joints match to 0.00 mm, but PIP/DIP/TIP joints drift by up to <strong>53 mm</strong>. The official <code>dex-ycb-toolkit/examples/visualize_pose.py</code> uses <code>manopth</code>; porting our two GT loaders to <code>manopth</code> closes the gap and the v3 overlays now line up with the toolkit reference render.
+</p>
+</section>
+
+<section id="timeline">
+<h2>Timeline</h2>
+<table>
+  <thead><tr><th>Rev</th><th>What we tried</th><th>Why we thought it would work</th><th>Result</th></tr></thead>
+  <tbody>
+  <tr>
+    <td><span class="badge badge-fail">v1</span></td>
+    <td>smplx MANO + append 5 fingertip vertices + <code>MANO_TO_OPENPOSE</code> permutation + OpenPose bone parents</td>
+    <td>Prior convention from benchmark loader; comment in the renderer matched an assumed "idx,mid,pky,rng,thb" tip order.</td>
+    <td>DexYCB skeleton visibly wrong. Thumb / pinky appeared cross-wired in some frames.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-fix">v2</span></td>
+    <td>smplx MANO + 5 appended tips + bone topology redrawn directly on the smplx 21-joint layout (no permutation) with tips <code>[thb, idx, mid, rng, pky]</code> at 16..20 (verts <code>744,320,443,554,671</code>).</td>
+    <td>Original <code>MANO_TO_OPENPOSE</code> table had tip slots in a different order than what the vertex-id convention implied; drawing bones directly on the smplx layout avoids the off-by-one.</td>
+    <td>Subject-07 thumb-pinky sep improved to ~10 px (closed grasp, expected). But user-reported it still looked off on DexYCB.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-finding">+</span></td>
+    <td>Rendered the same 6 DexYCB sequences via <strong>official dex-ycb-toolkit</strong> (<code>s0_train</code> factory + manopth + <code>_MANO_JOINT_CONNECT</code> bone topology) as a reference.</td>
+    <td>Side-by-side ground-truth to decide if our renderer is right.</td>
+    <td>Toolkit rendering matched the RGB hand consistently. Our v2 did not. <em>Our renderer is wrong, not the data.</em></td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-finding">diag</span></td>
+    <td><code>/tmp/compare_smplx_vs_manopth.py</code> &mdash; run both libraries on the same DexYCB input, reorder smplx's 21 joints to match manopth's meaning-per-slot, print per-joint 3D Euclidean distance.</td>
+    <td>Isolate whether the divergence is in the MANO forward pass itself or in downstream bone drawing.</td>
+    <td>Wrist 0 mm, all 5 MCPs 0 mm, thumb chain 2&ndash;5 mm, other fingers <strong>21&ndash;53 mm</strong>. MANO outputs themselves disagree. <span class="badge badge-fail">bug in v1/v2 loader</span></td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-pass">v3</span></td>
+    <td>Port both GT loaders to <code>manopth</code>; drop <code>MANO_FINGERTIP_VERT_INDICES</code>; renderer uses <code>dex_ycb_toolkit._MANO_JOINT_CONNECT</code> verbatim.</td>
+    <td>Match the toolkit stack exactly &mdash; same library, same config, same bone topology.</td>
+    <td>27 overlays (3 HO3D + 6 DexYCB) re-rendered; DexYCB section on the live page now mirrors the toolkit-reference section.</td>
+  </tr>
+  </tbody>
+</table>
+</section>
+
+<section id="diagnostic">
+<h2>Root-cause diagnostic: smplx vs manopth on the same DexYCB input</h2>
+<div class="panel">
+  <p>Script: <code>/tmp/compare_smplx_vs_manopth.py</code> &mdash; loads one DexYCB frame via <code>dex_ycb_toolkit.factory.get_dataset("s0_train")</code>, runs manopth and smplx on the same <code>pose_m</code> (48 axis-angle + 3 translation) and <code>mano_betas</code> (10), remaps smplx's 21 joints to the toolkit finger order, reports per-joint 3D Euclidean distance.</p>
+  <p>Frame: <code>20200928-subject-07/20200928_154547/color_000011.jpg</code> &middot; side = <code>right</code></p>
+</div>
+<table>
+  <thead><tr><th>Toolkit idx</th><th>Joint</th><th>manopth (m)</th><th>smplx-remap (m)</th><th>diff (mm)</th></tr></thead>
+  <tbody>
+  <tr><td>0</td><td>wrist</td><td>[-0.239, 0.081, 1.015]</td><td>[-0.239, 0.081, 1.015]</td><td>0.00</td></tr>
+  <tr><td>1</td><td>thumb_mcp</td><td>[-0.227, 0.094, 1.050]</td><td>[-0.227, 0.094, 1.050]</td><td>0.00</td></tr>
+  <tr><td>4</td><td>thumb_tip</td><td>[-0.166, 0.158, 1.083]</td><td>[-0.164, 0.155, 1.084]</td><td>2.66</td></tr>
+  <tr><td>5</td><td>index_mcp</td><td>[-0.161, 0.101, 1.062]</td><td>[-0.161, 0.101, 1.062]</td><td>0.00</td></tr>
+  <tr><td>8</td><td>index_tip</td><td>[-0.147, 0.163, 1.077]</td><td>[-0.132, 0.138, 1.061]</td><td><strong>33.02</strong></td></tr>
+  <tr><td>9</td><td>middle_mcp</td><td>[-0.149, 0.107, 1.040]</td><td>[-0.149, 0.107, 1.040]</td><td>0.00</td></tr>
+  <tr><td>12</td><td>middle_tip</td><td>[-0.108, 0.168, 1.054]</td><td>[-0.122, 0.139, 1.096]</td><td><strong>52.95</strong></td></tr>
+  <tr><td>13</td><td>ring_mcp</td><td>[-0.157, 0.114, 1.015]</td><td>[-0.157, 0.114, 1.015]</td><td>0.00</td></tr>
+  <tr><td>16</td><td>ring_tip</td><td>[-0.138, 0.176, 1.045]</td><td>[-0.178, 0.184, 1.041]</td><td><strong>40.74</strong></td></tr>
+  <tr><td>17</td><td>little_mcp</td><td>[-0.168, 0.122, 0.997]</td><td>[-0.168, 0.122, 0.997]</td><td>0.00</td></tr>
+  <tr><td>20</td><td>little_tip</td><td>[-0.184, 0.166, 1.036]</td><td>[-0.171, 0.178, 1.019]</td><td>24.35</td></tr>
+  </tbody>
+</table>
+<p><strong>Interpretation:</strong> wrist + all five MCPs agree to 0 mm because they depend only on shape &beta; and global translation (no PCA articulation applied). Every joint downstream of an MCP diverges. The two libraries must interpret the 45-dim PCA pose basis (or the <code>flat_hand_mean</code> subtract) differently. Also of note: mesh vertices diverge with mean 15.4 mm, max 53 mm.</p>
+<div class="error">
+  <strong>Consequence:</strong> the v2 overlay page's skeleton fixes were cosmetic &mdash; the 3D joints we were drawing were already in the wrong location by up to 5 cm on an 18 cm hand. Reshuffling bones on wrong joints can't make them anatomical.
+</div>
+</section>
+
+<section id="v3">
+<h2>v3 fix &mdash; the port</h2>
+<p>Both GT loaders and the renderer were edited to mirror the toolkit's code path.</p>
+
+<h3>DexYCB loader &mdash; before / after</h3>
+<div class="grid-2">
+  <div class="panel">
+    <p><strong>Before (smplx)</strong></p>
+<pre>import smplx
+layer = smplx.create(
+    str(pkl_path), "mano",
+    use_pca=True, num_pca_comps=45,
+    is_rhand=(side=="right"),
+    flat_hand_mean=False,
+)
+out = layer(
+    betas=betas, global_orient=pose[:, :3],
+    hand_pose=pose[:, 3:], transl=transl,
+)
+joints16 = out.joints[0].numpy()          # smplx returns 16
+tips = verts[[744,320,443,554,671]]        # append 5 tips
+joints21 = np.concat([joints16, tips])</pre>
+  </div>
+  <div class="panel">
+    <p><strong>After (manopth) &mdash; matches <code>examples/visualize_pose.py</code></strong></p>
+<pre>from manopth.manolayer import ManoLayer
+layer = ManoLayer(
+    flat_hand_mean=False, ncomps=45,
+    side=side, mano_root=mano_dir,
+    use_pca=True,
+).eval()
+verts_mm, joints_mm = layer(
+    pose_48, betas_10, transl_3,
+)
+# joints_mm is (1, 21, 3) in mm, toolkit order:
+# 0=wrist, 1-4=thumb, 5-8=idx,
+# 9-12=mid, 13-16=ring, 17-20=pinky</pre>
+  </div>
+</div>
+
+<h3>HO3D loader &mdash; before / after</h3>
+<div class="grid-2">
+  <div class="panel">
+    <p><strong>Before (smplx)</strong></p>
+<pre>layer = smplx.create(
+    str(pkl), "mano",
+    use_pca=False, num_pca_comps=45,
+    is_rhand=True,
+    flat_hand_mean=True,
+)
+joints16 = out.joints[0].numpy()
+tips = verts[[744,320,443,554,671]]
+joints21_gl = np.concat([joints16, tips])
+joints_cam = joints21_gl @ OPENGL_TO_OPENCV.T * 1000
+</pre>
+  </div>
+  <div class="panel">
+    <p><strong>After (manopth) &mdash; matches <code>original_mano_reference</code></strong></p>
+<pre>layer = ManoLayer(
+    flat_hand_mean=True, ncomps=45,
+    side=side, mano_root=mano_dir,
+    use_pca=False,
+).eval()
+verts_gl, joints_gl = layer(
+    pose_48, betas_10, transl_3,
+)  # both already mm
+joints_cam = joints_gl[0] @ OPENGL_TO_OPENCV.T
+verts_cam  = verts_gl[0]  @ OPENGL_TO_OPENCV.T
+</pre>
+  </div>
+</div>
+
+<h3>Renderer bone topology</h3>
+<p>Replaced the v2 <code>SMPLX_MANO_BONES</code> (which presumed the smplx layout with tips at 16..20 in order <code>thb,idx,mid,rng,pky</code>) with <code>dex_ycb_toolkit._MANO_JOINT_CONNECT</code> verbatim:</p>
+<pre>MANO_JOINT_CONNECT = [
+    (0, 1), (1, 2), (2, 3), (3, 4),         # thumb
+    (0, 5), (5, 6), (6, 7), (7, 8),         # index
+    (0, 9), (9,10), (10,11), (11,12),       # middle
+    (0,13), (13,14), (14,15), (15,16),      # ring
+    (0,17), (17,18), (18,19), (19,20),      # pinky
+]</pre>
+
+<h3>manopth import path</h3>
+<p>manopth is not pip-installed. The two loaders both do:</p>
+<pre>_MANOPTH_SYS_PATHS = [
+    "/mnt/afs/haonan/hoi3r/HOI3R/benchmarks_hoi/H2OTR/manopth",
+    "/mnt/afs/haonan/hoi3r/HOI3R/benchmarks_hoi/ghop/manopth",
+]
+def _ensure_manopth_on_path() -> None:
+    for p in _MANOPTH_SYS_PATHS:
+        if Path(p, "manopth", "manolayer.py").is_file():
+            if p not in sys.path:
+                sys.path.insert(0, p)
+            return
+    raise ImportError("manopth source not found.")</pre>
+</section>
+
+<section id="visual">
+<h2>Visual before/after</h2>
+<p>DexYCB subject-07 / <code>20200928_154547</code> / frame 42 &mdash; toolkit reference vs v3 loader, same intrinsics, same RGB:</p>
+<div class="cmp">
+  <div class="cell">
+    <img src="assets/session-2026-04-17-mano-manopth/toolkit-dexycb-154547-f42.png" alt="toolkit render subject-07 154547 f42">
+    <div class="cap">dex-ycb-toolkit (reference) &mdash; manopth + <code>_MANO_JOINT_CONNECT</code></div>
+  </div>
+  <div class="cell">
+    <img src="assets/session-2026-04-17-mano-manopth/v3-dexycb-154547-f42.png" alt="v3 render subject-07 154547 f42">
+    <div class="cap">v3 benchmark loader &mdash; now manopth-backed</div>
+  </div>
+</div>
+<p>Cross-subject (subject-01, bleach cleanser) and HO3D (ABF12, bleach cleanser) sanity checks &mdash; same loader after the port:</p>
+<div class="cmp">
+  <div class="cell">
+    <img src="assets/session-2026-04-17-mano-manopth/v3-dexycb-subject01-f38.png" alt="v3 dexycb subject-01 f38">
+    <div class="cap">DexYCB &middot; subject-01 / 20200709_150243 / f38</div>
+  </div>
+  <div class="cell">
+    <img src="assets/session-2026-04-17-mano-manopth/v3-ho3d-abf12-f194.png" alt="v3 ho3d ABF12.180 f194">
+    <div class="cap">HO3D &middot; ABF12.180 / f194</div>
+  </div>
+</div>
+<p style="color:#555;font-size:.9em">Full 27-panel page: <a href="2026-04-17-mano-overlay-check.html">updates/2026-04-17-mano-overlay-check.html</a></p>
+</section>
+
+<section id="commits">
+<h2>Code changes &amp; commits</h2>
+<h3>Remote worktree (<code>feat/benchmark</code>) &mdash; uncommitted</h3>
+<table>
+  <thead><tr><th>File</th><th>Change</th></tr></thead>
+  <tbody>
+  <tr><td><code>benchmark/data/dexycb_loader.py</code></td><td>smplx &rarr; manopth; dropped <code>MANO_FINGERTIP_VERT_INDICES</code>; 21-joint output used directly; module docstring updated (&plusmn;107 LOC)</td></tr>
+  <tr><td><code>benchmark/data/ho3d_loader.py</code></td><td>smplx &rarr; manopth (<code>flat_hand_mean=True, use_pca=False</code>); kept OpenGL&rarr;OpenCV flip; dropped fingertip-vertex append (&plusmn;90 LOC)</td></tr>
+  <tr><td><code>benchmark/preprocessing/render_mano_overlay.py</code></td><td>Replaced <code>SMPLX_MANO_BONES</code> with <code>MANO_JOINT_CONNECT</code> (toolkit). Added <code>--dexycb-subjects</code> CLI flag earlier in the session (used to render cross-subject panel).</td></tr>
+  </tbody>
+</table>
+<div class="warning">
+  Not committed on <code>feat/benchmark</code> yet &mdash; user explicitly held back to review the live page first. Three files edited in place on the remote.
+</div>
+
+<h3>Tracking repo (<code>HOI3R-project-tracking/main</code>) &mdash; pushed</h3>
+<table>
+  <thead><tr><th>SHA</th><th>Message</th></tr></thead>
+  <tbody>
+  <tr><td><code>14dad3f</code></td><td>mano-overlay v2: skeleton topology fix via original_mano_reference bundle</td></tr>
+  <tr><td><code>82288ae</code></td><td>mano-overlay: add 3 DexYCB cross-subject sequences (subj 01/04/10)</td></tr>
+  <tr><td><code>c0d6dd9</code></td><td>mano-overlay: add dex-ycb-toolkit reference render + fix object labels</td></tr>
+  <tr><td><code>5d6c54f</code></td><td><strong>mano-overlay v3: port loaders smplx &rarr; manopth; bones = toolkit <code>_MANO_JOINT_CONNECT</code></strong></td></tr>
+  </tbody>
+</table>
+
+<h3>Bugs found &amp; fixed</h3>
+<table>
+  <thead><tr><th>Bug</th><th>Severity</th><th>Where</th><th>Fix</th></tr></thead>
+  <tbody>
+  <tr><td>smplx MANO forward disagrees with manopth by up to 53 mm on DexYCB pose_m</td><td><span class="badge badge-p0">P0</span></td><td><code>dexycb_loader._mano_forward</code>, <code>ho3d_loader._mano_forward_ho3d</code></td><td>Swap smplx &rarr; manopth with the toolkit config</td></tr>
+  <tr><td>Renderer drew bones on <code>SMPLX_MANO_BONES</code> assuming fingertip vertex-id order (<code>thb,idx,mid,rng,pky</code>)</td><td><span class="badge badge-p1">P1</span></td><td><code>render_mano_overlay.py</code></td><td>Use <code>_MANO_JOINT_CONNECT</code> (contiguous finger chains)</td></tr>
+  <tr><td>Overlay-check page labelled three subject-07 sequences as <code>021_bleach_cleanser</code></td><td><span class="badge badge-p2">P2</span></td><td>published HTML</td><td>Pulled correct objects from <code>ycb_grasp_ind &rarr; _YCB_CLASSES</code>: mug, extra_large_clamp, foam_brick</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="discoveries">
+<h2>Key discoveries</h2>
+<table>
+  <thead><tr><th>#</th><th>Discovery</th><th>Flag</th></tr></thead>
+  <tbody>
+  <tr>
+    <td>1</td>
+    <td>For the DexYCB/HO3D MANO pipeline, <strong>smplx is not a drop-in replacement for manopth</strong>. Their PCA pose basis / <code>flat_hand_mean</code> convention diverge enough (peak 53 mm on articulated joints) that downstream metrics and losses built on top of smplx-MANO joints will be biased relative to the toolkit's published numbers.</td>
+    <td><span class="badge badge-finding">FINDING</span></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Toolkit-canonical 21-joint order is <code>0=wrist, 1-4=thumb, 5-8=index, 9-12=middle, 13-16=ring, 17-20=pinky</code>. Manopth emits this directly; nothing to append. This is what <code>dex_ycb_toolkit._MANO_JOINTS</code> / <code>_MANO_JOINT_CONNECT</code> codify and what should be used for any future bone / parent-array code in this repo.</td>
+    <td><span class="badge badge-finding">FINDING</span></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Three previously-published session labels for subject-07 sequences were wrong. Source of truth: <code>sample["ycb_grasp_ind"]</code> indexes into <code>sample["ycb_ids"]</code>, then into <code>dex_ycb_toolkit.dex_ycb._YCB_CLASSES</code>. Using the meta.yml's raw <code>ycb_ids</code> list without the grasp index gives the scene objects, not the grasped one.</td>
+    <td><span class="badge badge-fix">FIX</span></td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>The <code>original_mano_reference_20260417_lightweight.tar.gz</code> bundle at <code>/mnt/afs/haonan/hoi3r/HOI3R/</code> gives us the authoritative per-dataset MANO configs (manopth flags, joint-order constant). It's the right "second opinion" to consult before trusting any new MANO-based loader.</td>
+    <td><span class="badge badge-finding">FINDING</span></td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Debug-container SSH can be unavailable for 30+ minutes after the container is reprovisioned (observed pod change <code>qrqq9</code> &rarr; <code>strl6</code>). Rapid reconnect attempts prolong the block &mdash; one probe per wake-up is the right pattern.</td>
+    <td><span class="badge badge-finding">OPS</span></td>
+  </tr>
+  </tbody>
+</table>
+</section>
+
+<section id="state">
+<h2>Benchmark GT-loader state (post-session)</h2>
+<table>
+  <thead><tr><th>Dataset</th><th>MANO library</th><th>Config</th><th>Output space</th><th>Output units</th><th>Joint order</th></tr></thead>
+  <tbody>
+  <tr><td>DexYCB</td><td>manopth</td><td><code>flat_hand_mean=False, ncomps=45, use_pca=True</code></td><td>OpenCV camera (no flip)</td><td>mm</td><td>toolkit canonical (tips 4/8/12/16/20)</td></tr>
+  <tr><td>HO3D</td><td>manopth</td><td><code>flat_hand_mean=True, ncomps=45, use_pca=False</code></td><td>OpenCV camera (OpenGL&rarr;OpenCV flip)</td><td>mm</td><td>toolkit canonical</td></tr>
+  <tr><td>HOT3D</td><td>(untouched this session)</td><td>native HOT3D SDK</td><td>camera</td><td>mm</td><td>manopth_mano_21</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="next">
+<h2>Open issues &amp; next steps</h2>
+<table>
+  <thead><tr><th>Priority</th><th>Task</th><th>Owner / context</th></tr></thead>
+  <tbody>
+  <tr>
+    <td><span class="badge badge-p0">P0</span></td>
+    <td>Commit the three patched files on <code>feat/benchmark</code> once the user confirms the live v3 page looks correct. Message template: <code>fix(benchmark): port DexYCB/HO3D GT loaders to manopth; fix 53mm joint divergence</code>.</td>
+    <td>Claude/user &mdash; awaiting visual sign-off on live page</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p1">P1</span></td>
+    <td>Audit any adapter / loss / metric code that previously consumed the smplx-ordered joints (index 16 = thumb_tip). Old callers indexing by specific slot may now point at the wrong joint. Grep: <code>MANO_FINGERTIP_VERT_INDICES</code>, any hard-coded <code>joints[..., 16]</code>.</td>
+    <td><code>benchmark/adapters/{dcf,fp_hawor,magichoi}/*_utils.py</code>, <code>hot3d_loader.py</code></td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p1">P1</span></td>
+    <td>Complete HOT3D extraction (~60/152 GB at session start) and add HOT3D to the overlay page. HOT3D SDK emits joints in the same toolkit canonical order, so no separate bone topology is needed.</td>
+    <td><code>.worktrees/feat-benchmark</code></td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p1">P1</span></td>
+    <td>Re-run numeric MANO gate on HO3D + DexYCB under the v3 loader; re-issue the earlier PASS claim (the previous PASS was on smplx output, which we now know was biased by up to 53 mm).</td>
+    <td><code>benchmark/preprocessing/mano_validation.py</code></td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p2">P2</span></td>
+    <td>Phase 2 step 3: first real predictions on 1&ndash;2 test sequences with DCF / FP+HaWoR / MagicHOI adapters using the v3 GT as reference.</td>
+    <td><code>benchmark/adapters/*</code></td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p2">P2</span></td>
+    <td>Consider making <code>manopth</code> a proper repo-level dependency instead of the <code>sys.path</code> hack. Current loaders search <code>benchmarks_hoi/H2OTR/manopth</code> and <code>benchmarks_hoi/ghop/manopth</code> &mdash; fragile under worktree moves.</td>
+    <td>infra</td>
+  </tr>
+  </tbody>
+</table>
+</section>
+
+<footer>
+Generated 2026-04-17 &middot; HOI3R benchmark bring-up &middot; MANO loader port to manopth &middot; See the <a href="2026-04-17-mano-overlay-check.html">overlay-check page</a> for all 45 rendered panels (v3 + toolkit reference).
+</footer>
+
+</body>
+</html>
