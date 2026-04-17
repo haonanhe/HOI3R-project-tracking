@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark Bring-Up &mdash; HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff;font-size:.9em}
+th,td{border:1px solid #ddd;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f6f7f8}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#e3f2fd;padding:12px;border-left:4px solid #2196f3;margin:12px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.82em;color:#fff}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-best{background:#2c7a7b}
+.badge-p0{background:#e53935}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.88em;color:#c7254e}
+pre{background:#f4f4f4;padding:12px;border-radius:6px;overflow-x:auto;font-size:.85em}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.toc ul{margin:0;padding-left:20px}
+.toc a{text-decoration:none;color:#2c3e50}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.4em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.82em;color:#666;margin-top:4px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>2026-04-17 &middot; Benchmark Bring-Up: Design, Plan, Full Implementation</h1>
+  <div style="margin:8px 0">
+    <span style="color:#555">Branch: <code>feat/benchmark</code> (new worktree)</span>
+    <span style="margin-left:16px;color:#555">Commits: <code>2953483</code> &rarr; <code>8c2290d</code> (14 commits)</span>
+    <span style="margin-left:16px;color:#555">Spec &amp; plan: <code>docs/superpowers/{specs,plans}/2026-04-16-benchmark-*.md</code></span>
+  </div>
+  <p><strong>Goal:</strong> Design a NeurIPS-ready benchmark comparing DCF (ours) vs MagicHOI vs FP+HaWoR across HO3D / DexYCB / HOT3D, then implement the full evaluation framework (adapters, metrics, evaluator, aggregation, LaTeX export) in an isolated worktree.</p>
+</header>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#headline">Headline</a></li>
+    <li><a href="#design">Brainstorm &rarr; Design spec</a></li>
+    <li><a href="#arch">Architecture (Approach C)</a></li>
+    <li><a href="#matrix">Method &times; Dataset &times; Variant matrix</a></li>
+    <li><a href="#metrics">Unified metric suite</a></li>
+    <li><a href="#protocols">Experiment protocols</a></li>
+    <li><a href="#commits">Implementation commits (14)</a></li>
+    <li><a href="#tests">Test results (209 tests)</a></li>
+    <li><a href="#bugs">Bugs found during implementation</a></li>
+    <li><a href="#workflow">Workflow change: Codex delegation</a></li>
+    <li><a href="#open">Open issues &amp; next steps</a></li>
+  </ul>
+</nav>
+
+<!-- HEADLINE -->
+<section id="headline">
+<h2>Headline</h2>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0">
+  <div class="stat-card"><div class="value">17 / 17</div><div class="label">Plan tasks completed</div></div>
+  <div class="stat-card"><div class="value">209</div><div class="label">Smoke tests, all PASS</div></div>
+  <div class="stat-card"><div class="value">13.7k LOC</div><div class="label">Python across <code>benchmark/</code></div></div>
+  <div class="stat-card"><div class="value">14 configs</div><div class="label">method &times; dataset &times; variant</div></div>
+</div>
+<div class="highlight">
+  <strong>Status:</strong> All framework code landed on branch <code>feat/benchmark</code>. Metric library, unified evaluator, aggregation + LaTeX export are tested end-to-end with synthetic data. Adapters (MagicHOI, FP+HaWoR, DCF) are scaffolded with real integration logic but pending real-data runs (datasets not mounted on the current debug container).
+</div>
+</section>
+
+<!-- DESIGN -->
+<section id="design">
+<h2>Brainstorm &rarr; Design spec</h2>
+<p>The session started from the user's raw request to "create a worktree for benchmark" with baseline methods (MagicHOI, FP+HaWoR), datasets (HO3D, DexYCB test, HOT3D test), a metric suite, and ideas from four reference papers. A 7-question brainstorming loop locked down:</p>
+<table>
+<thead><tr><th>Question</th><th>Decision</th></tr></thead>
+<tbody>
+<tr><td>Run FP+HaWoR on HO3D/DexYCB too?</td><td>Yes &mdash; full pipeline on all three datasets.</td></tr>
+<tr><td>DCF evaluation source?</td><td>Inference from checkpoint &rarr; same metric code as baselines.</td></tr>
+<tr><td>W-MPJPE / camera-space MPJPE coverage?</td><td>Both, on all datasets (static &rArr; trivially equivalent).</td></tr>
+<tr><td>Template-free object handling?</td><td>SAM 3D Objects reconstructs the mesh; FP+HaWoR and DCF both get template-free variants on all three datasets.</td></tr>
+<tr><td>Interaction metrics beyond Contact?</td><td>Add HOI ADD, HOI ADD-S (WHOLE paper) and CD_h (MagicHOI paper).</td></tr>
+<tr><td>Worktree placement?</td><td>Dedicated <code>.worktrees/feat-benchmark</code> &mdash; benchmark code is structurally independent from DCF.</td></tr>
+<tr><td>Extra experiments from papers?</td><td>(1) Occlusion-stratified DexYCB, (3) Zero-shot generalization on HOT3D, (4) Temporal smoothness, (5) Template-based vs template-free.</td></tr>
+</tbody>
+</table>
+<p>Spec saved to <code>docs/superpowers/specs/2026-04-16-benchmark-design.md</code>, implementation plan to <code>docs/superpowers/plans/2026-04-16-benchmark.md</code>.</p>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="arch">
+<h2>Architecture (Approach C)</h2>
+<p>Two-stage pipeline with registry dispatch + unified metric backend:</p>
+<pre>CLI (benchmark.py)
+   &darr; --method --dataset --variant --stage {run,eval,all}
+Registry (registry.json) &mdash;&mdash; Adapters &mdash;&mdash;&rarr; predictions.npz / gt.npz / metadata.json
+                                                      &darr;
+                                              Unified Evaluator
+                                        hand / object / hoi / temporal
+                                                      &darr;
+                                           summary.json + per_sequence.json
+                                                      &darr;
+                                        aggregate.py + latex_export.py
+                                                      &darr;
+                                           NeurIPS-ready tables</pre>
+<p>Key property: every method produces identical standardized output, so the evaluator is method-agnostic. All three methods (MagicHOI, FP+HaWoR, DCF) are scored with the exact same metric code &mdash; essential for reviewer-defensible fair comparison.</p>
+</section>
+
+<!-- MATRIX -->
+<section id="matrix">
+<h2>Method &times; Dataset &times; Variant matrix (14 configs)</h2>
+<table>
+<thead><tr><th>Method</th><th>Dataset</th><th>Variant</th><th>Conda env</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>MagicHOI</td><td>HO3D</td><td>&mdash;</td><td><code>MagicHOI</code></td><td>14 sequences per HOLD protocol</td></tr>
+<tr><td>MagicHOI</td><td>DexYCB test</td><td>&mdash;</td><td><code>MagicHOI</code></td><td>Left-hand flip for left-handed sequences</td></tr>
+<tr><td>FP+HaWoR</td><td>HO3D</td><td>template_based</td><td><code>human3r</code></td><td>GT YCB CAD &rarr; FoundationPose</td></tr>
+<tr><td>FP+HaWoR</td><td>HO3D</td><td>template_free</td><td><code>human3r</code></td><td>SAM 3D mesh &rarr; FoundationPose</td></tr>
+<tr><td>FP+HaWoR</td><td>DexYCB test</td><td>template_based</td><td><code>human3r</code></td><td>Same sequences as MagicHOI</td></tr>
+<tr><td>FP+HaWoR</td><td>DexYCB test</td><td>template_free</td><td><code>human3r</code></td><td>SAM 3D variant</td></tr>
+<tr><td>FP+HaWoR</td><td>HOT3D test</td><td>template_based</td><td><code>human3r</code></td><td>Extends existing HOT3D adapter</td></tr>
+<tr><td>FP+HaWoR</td><td>HOT3D test</td><td>template_free</td><td><code>human3r</code></td><td>SAM 3D variant</td></tr>
+<tr><td><strong>DCF (ours)</strong></td><td>HO3D</td><td>template_based</td><td><code>human3r</code></td><td>Inference from checkpoint</td></tr>
+<tr><td><strong>DCF (ours)</strong></td><td>HO3D</td><td>template_free</td><td><code>human3r</code></td><td>SAM 3D mesh as canonical</td></tr>
+<tr><td><strong>DCF (ours)</strong></td><td>DexYCB test</td><td>template_based</td><td><code>human3r</code></td><td>&mdash;</td></tr>
+<tr><td><strong>DCF (ours)</strong></td><td>DexYCB test</td><td>template_free</td><td><code>human3r</code></td><td>&mdash;</td></tr>
+<tr><td><strong>DCF (ours)</strong></td><td>HOT3D test</td><td>template_based</td><td><code>human3r</code></td><td><strong>Zero-shot</strong> (not in training set)</td></tr>
+<tr><td><strong>DCF (ours)</strong></td><td>HOT3D test</td><td>template_free</td><td><code>human3r</code></td><td>Zero-shot + SAM 3D</td></tr>
+</tbody>
+</table>
+<p>DCF training set (from memory): DexYCB + HO3D + H2O3D + H2O + TACO-egocentric. HOT3D is held out &rArr; provides a clean zero-shot generalization test.</p>
+</section>
+
+<!-- METRICS -->
+<section id="metrics">
+<h2>Unified metric suite</h2>
+<div class="grid-2">
+  <div class="panel">
+    <h3>Hand metrics <small>(benchmark/metrics/hand_metrics.py &mdash; 336 LOC)</small></h3>
+    <ul>
+      <li><strong>MPJPE</strong> &mdash; root-relative</li>
+      <li><strong>PA-MPJPE</strong> &mdash; per-frame Procrustes alignment (SVD)</li>
+      <li><strong>W-MPJPE</strong> &mdash; world, aligned using first 2 frames</li>
+      <li><strong>WA-MPJPE</strong> &mdash; world, aligned using all frames</li>
+      <li><strong>AUC</strong> &mdash; 0&ndash;50mm integrated</li>
+      <li><strong>CD</strong> &mdash; bidirectional Chamfer on hand mesh</li>
+      <li><strong>Accel</strong> &mdash; mm/frame&sup2;</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>Object metrics <small>(object_metrics.py &mdash; 254 LOC)</small></h3>
+    <ul>
+      <li><strong>ADD</strong> &mdash; corresponding points after pose transform</li>
+      <li><strong>ADD-S</strong> &mdash; symmetric (nearest-neighbor via cKDTree)</li>
+      <li><strong>CD, F5, F10</strong> &mdash; on vertex clouds</li>
+      <li><strong>ACC</strong> &mdash; object centroid acceleration</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>Interaction metrics <small>(hoi_metrics.py &mdash; 323 LOC)</small></h3>
+    <ul>
+      <li><strong>Contact F1 / Precision / Recall</strong> &mdash; per-hand-vertex binary contact</li>
+      <li><strong>CD_h</strong> &mdash; hand-root-relative Chamfer (MagicHOI)</li>
+      <li><strong>HOI ADD / HOI ADD-S</strong> &mdash; object ADD after aligning via predicted hand trajectory (WHOLE)</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>Temporal metrics <small>(temporal_metrics.py &mdash; 58 LOC)</small></h3>
+    <ul>
+      <li><strong>jitter_ratio</strong> &mdash; std(accel) / mean(accel)</li>
+      <li><strong>per_frame_acceleration</strong> &mdash; for smoothness curves</li>
+    </ul>
+  </div>
+</div>
+<div class="info"><strong>Applicability rules</strong> are enforced by the evaluator: ADD / ADD-S / HOI ADD only apply when <code>metadata["object_model_source"] == "gt_cad"</code>; Contact metrics only when <code>contact_prob</code> is present; non-applicable metrics return <code>null</code> in the JSON (never a dummy number).</div>
+</section>
+
+<!-- PROTOCOLS -->
+<section id="protocols">
+<h2>Experiment protocols</h2>
+<table>
+<thead><tr><th>Protocol</th><th>Datasets</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><strong>Main comparison</strong></td><td>HO3D, DexYCB, HOT3D</td><td>All methods &times; all datasets &times; all metrics &mdash; the headline NeurIPS table.</td></tr>
+<tr><td><strong>Occlusion-stratified eval</strong> <small>(HaWoR / UniHand)</small></td><td>DexYCB only</td><td>Bin per-frame hand occlusion ratio into 0&ndash;25, 25&ndash;50, 50&ndash;75, 75&ndash;100%. Report hand metrics per bin.</td></tr>
+<tr><td><strong>Zero-shot generalization</strong> <small>(WHOLE / UniHand)</small></td><td>HOT3D</td><td>DCF trains on DexYCB+HO3D+H2O3D+H2O+TACO-ego, never sees HOT3D. Measures domain transfer.</td></tr>
+<tr><td><strong>Temporal smoothness</strong></td><td>All</td><td>Accel-hand, Accel-obj, jitter ratio. Shows DCF's temporal modeling advantage.</td></tr>
+<tr><td><strong>Template-based vs template-free</strong></td><td>All (FP+HaWoR, DCF)</td><td>Direct comparison of GT CAD vs SAM 3D reconstructed mesh &mdash; quantifies the "price" of not having GT object models.</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- COMMITS -->
+<section id="commits">
+<h2>Implementation commits (14)</h2>
+<table>
+<thead><tr><th>SHA</th><th>Task</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>2953483</code></td><td>T1</td><td>Scaffold: <code>benchmark/</code> tree + <code>.gitignore</code></td></tr>
+<tr><td><em>(no commit)</em></td><td>T2</td><td>Cloned 6 third-party repos into <code>third_party/</code> (gitignored): dex-ycb-toolkit, ho3d, hot3d, MagicHOI, FoundationPose, HaWoR</td></tr>
+<tr><td><code>4851c4c</code></td><td>T3</td><td>Config loader (<code>benchmark_paths.yaml</code>) + common utilities (coord converters, format helpers, left-hand flip utils). 11 tests PASS.</td></tr>
+<tr><td><code>3f91f43</code></td><td>T4</td><td>Hand metrics module. 32 tests PASS.</td></tr>
+<tr><td><code>2185f87</code></td><td>T5</td><td>Object metrics module. 25 tests PASS.</td></tr>
+<tr><td><code>b359aa2</code></td><td>T6</td><td>HOI interaction + temporal metrics. 22 tests PASS.</td></tr>
+<tr><td><code>219c380</code></td><td>T7</td><td>Unified evaluator (<code>evaluate_sequence</code>, <code>evaluate_method_dataset</code>, weighted aggregation, JSON serialization). 19 tests PASS.</td></tr>
+<tr><td><code>c0df75f</code></td><td>T12</td><td>Registry (<code>registry.json</code>, 14 configs) + CLI (<code>benchmark.py</code>) with two-stage pipeline. 17 tests PASS.</td></tr>
+<tr><td><code>a55fab2</code></td><td>T16</td><td>Result aggregation (<code>aggregate.py</code>) + NeurIPS LaTeX export (<code>latex_export.py</code>, booktabs with best-value bolding). 26 tests PASS.</td></tr>
+<tr><td><code>7fe5bb4</code></td><td>T8</td><td>GT data loaders for HO3D / DexYCB / HOT3D using official toolkits' MANO conventions (<code>smplx</code> with dataset-specific <code>use_pca</code>, <code>flat_hand_mean</code>).</td></tr>
+<tr><td><code>ca78ec3</code></td><td>T9/10/11</td><td>Preprocessing: MANO validation gate, SAM 3D mesh reconstruction, DexYCB occlusion ratio.</td></tr>
+<tr><td><code>dd9f3b1</code></td><td>T13</td><td>MagicHOI adapters (HO3D + DexYCB). Implements 7-stage MagicHOI pipeline invocation, left-hand image/MANO flip, checkpoint &rarr; standardized output parsing.</td></tr>
+<tr><td><code>c90a752</code></td><td>T14</td><td>FP+HaWoR adapters (HO3D + DexYCB + HOT3D) with shared <code>fp_hawor_fusion.py</code>: camera&harr;world transforms, SLERP pose interpolation, static vs dynamic camera handling.</td></tr>
+<tr><td><code>f88f4d2</code></td><td>T15</td><td>DCF evaluation adapter. Loads feat-dcf model + checkpoint, per-frame inference, Kabsch readout &rarr; standardized output.</td></tr>
+<tr><td><code>8c2290d</code></td><td>T17</td><td>Integration tests (prediction format + end-to-end pipeline). 57 tests PASS.</td></tr>
+</tbody>
+</table>
+<h3>LOC breakdown</h3>
+<table>
+<thead><tr><th>Module</th><th>Lines</th><th>Responsibility</th></tr></thead>
+<tbody>
+<tr><td><code>benchmark/adapters/</code></td><td>5,031</td><td>MagicHOI / FP+HaWoR / DCF integration</td></tr>
+<tr><td><code>benchmark/tests/smoke/</code></td><td>2,999</td><td>10 test files, 209 tests</td></tr>
+<tr><td><code>benchmark/data/</code></td><td>1,916</td><td>GT loaders + common utilities</td></tr>
+<tr><td><code>benchmark/preprocessing/</code></td><td>1,444</td><td>MANO validation, SAM 3D, occlusion</td></tr>
+<tr><td><code>benchmark/metrics/</code></td><td>1,100</td><td>Hand / object / hoi / temporal</td></tr>
+<tr><td><code>benchmark/eval/</code></td><td>860</td><td>Evaluator + aggregator + LaTeX</td></tr>
+<tr><td><code>benchmark/configs/</code> + <code>registry.json</code></td><td>40 + ~50</td><td>Paths + method registry</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>~13,700</strong></td><td>&mdash;</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- TESTS -->
+<section id="tests">
+<h2>Test results: 209 / 209 PASS</h2>
+<div class="highlight">
+<strong>All smoke tests pass</strong> across all 10 test modules. Zero regressions throughout the 14 incremental commits.
+</div>
+<table>
+<thead><tr><th>Test file</th><th>Tests</th><th>Coverage</th></tr></thead>
+<tbody>
+<tr><td><code>test_common.py</code></td><td>11</td><td>Config load, coord converters, format helpers, MANO flip utils</td></tr>
+<tr><td><code>test_hand_metrics.py</code></td><td>32</td><td>All 7 hand metrics, matching by hand side, NaN skipping</td></tr>
+<tr><td><code>test_object_metrics.py</code></td><td>25</td><td>ADD / ADD-S / CD / F5 / F10 / ACC, applicability gating</td></tr>
+<tr><td><code>test_hoi_metrics.py</code></td><td>22</td><td>Contact F1, CD_h, HOI ADD / ADD-S, jitter_ratio</td></tr>
+<tr><td><code>test_evaluator.py</code></td><td>19</td><td>Single-sequence eval, method-dataset aggregation, weighted avg, JSON serialization</td></tr>
+<tr><td><code>test_benchmark_cli.py</code></td><td>17</td><td>Registry load, run resolution, <code>--all</code> gives 14 configs</td></tr>
+<tr><td><code>test_aggregate.py</code></td><td>26</td><td>Result collection, table flattening, CSV + LaTeX export, best-value bolding</td></tr>
+<tr><td><code>test_prediction_format.py</code></td><td>20</td><td>Schema validation: valid predictions, missing keys, wrong dtype, NaN handling</td></tr>
+<tr><td><code>test_end_to_end.py</code></td><td>37</td><td>Full synthetic pipeline: save &rarr; evaluate &rarr; aggregate &rarr; LaTeX</td></tr>
+<tr><td colspan="2" style="text-align:right"><strong>Total</strong></td><td><strong>209 PASS</strong></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- BUGS -->
+<section id="bugs">
+<h2>Bugs found &amp; fixed during implementation</h2>
+<table>
+<thead><tr><th>#</th><th>Bug</th><th>Caught by</th><th>Fix</th></tr></thead>
+<tbody>
+<tr>
+  <td><span class="badge badge-fix">B1</span></td>
+  <td><strong>Wrong coord convention multiplication</strong>: plan's <code>opengl_to_opencv</code> used right-multiply (<code>pose @ flip</code>) &mdash; does not negate translation Y/Z.</td>
+  <td>Implementer subagent during Task 3</td>
+  <td>Changed to left-multiply (<code>flip @ pose</code>), the correct convention for camera extrinsics conversion.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-fix">B2</span></td>
+  <td><strong>Chamfer test assumption wrong</strong>: <code>test_offset_verts</code> assumed translating random points by uniform vector yields CD = vector magnitude. Fails because dense random points allow non-corresponding NN matches closer than the offset.</td>
+  <td>Implementer subagent during Task 5</td>
+  <td>Rebuilt test with well-separated 10&times;10&times;10 grid (spacing 111mm &gt;&gt; offset 7mm).</td>
+</tr>
+<tr>
+  <td><span class="badge badge-fix">B3</span></td>
+  <td><strong>Directory parsing breaks on method names with underscores</strong>: <code>split("_", 2)</code> on <code>fp_hawor_ho3d_template_based</code> gave method=<code>fp</code>, losing the rest.</td>
+  <td>Implementer subagent during Task 16</td>
+  <td>Changed to <code>rsplit("_", 2)</code> &rarr; method=<code>fp_hawor</code>, dataset=<code>ho3d</code>, variant=<code>template_based</code>.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-finding">F1</span></td>
+  <td><strong>manopth not installed in <code>human3r</code> env</strong>, but <code>smplx</code> is. Both implement MANO but smplx outputs meters (vs manopth mm).</td>
+  <td>Implementer subagent during Task 8</td>
+  <td>All loaders use <code>smplx.create</code> and multiply by 1000 to match the mm convention. Dataset-specific <code>use_pca</code> / <code>flat_hand_mean</code> flags match each toolkit's official MANO usage.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-finding">F2</span></td>
+  <td><strong>MagicHOI is not ready-to-run</strong>: user flagged that the previous "MagicHOI HO3D results" in the baseline bundle were never actually produced. MagicHOI's <code>sequence_config.py</code> has hardcoded entries and its pipeline needs COLMAP + HaMeR + inpainting preparation.</td>
+  <td>User flag + reading <code>third_party/MagicHOI/</code></td>
+  <td>Adapter documents the 7-stage pipeline and the <code>--parse-only</code> mode for when outputs already exist. Full end-to-end run is deferred to benchmark execution time.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-fix">B4</span></td>
+  <td><strong>Wrong SSH ports in CLAUDE.md</strong>: memory and project instructions listed ports 46672 / 46677, but only 46681 / 46682 are active on the current debug container.</td>
+  <td>Manual test during session</td>
+  <td>Updated <code>CLAUDE.md</code> (Build &amp; Dev Commands block) and <code>memory/feedback_ssh_debug.md</code> to 46681 primary / 46682 fallback.</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow">
+<h2>Workflow change: Codex delegation</h2>
+<div class="info">
+<p>Established a new collaboration pattern for this project going forward:</p>
+<ul>
+  <li><strong>Code writing / debugging</strong> &rarr; delegated to <code>codex:codex-rescue</code> subagent</li>
+  <li><strong>Everything else</strong> (planning, research, reads, tests, git, docs, config, coordination) &rarr; handled by Claude directly</li>
+  <li><strong>After Codex returns</strong>: Claude reads the diff and reviews for spec compliance + quality</li>
+  <li><strong>Codex unreachable</strong>: Claude falls back to writing the code itself</li>
+  <li><strong>Follow-up turns</strong>: use <code>--resume</code> flag (routes to <code>--resume-last</code>) to continue the same Codex thread cheaply</li>
+</ul>
+<p><strong>Rationale:</strong> Codex handles code-writing cheaper under the ChatGPT usage budget; Claude's tokens are best spent on review, coordination, and non-coding work.</p>
+<p>Persisted to: <code>CLAUDE.md</code> (new <em>Collaboration Workflow</em> section), <code>memory/feedback_codex_workflow.md</code>, and the <code>MEMORY.md</code> index.</p>
+</div>
+</section>
+
+<!-- OPEN -->
+<section id="open">
+<h2>Open issues &amp; next steps</h2>
+<table>
+<thead><tr><th>Priority</th><th>Item</th><th>Details</th></tr></thead>
+<tbody>
+<tr>
+  <td><span class="badge badge-p0">P0</span></td>
+  <td>Mount datasets on the debug container</td>
+  <td><code>/mnt/hdd_volume/datasets/{dexycb,HO3D,HOT3D_haonan_processed}</code> is not accessible from port 46681 / 46682. MANO validation gate cannot run, adapters cannot execute. Required before any real-data runs.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-p0">P0</span></td>
+  <td>Run MANO validation gate per dataset</td>
+  <td><code>python -m benchmark.preprocessing.mano_validation --dataset {ho3d,dexycb,hot3d}</code>. Must pass before running any method adapter &mdash; enforces that our GT loaders produce correct joints/verts via each toolkit's official MANO convention.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-p1">P1</span></td>
+  <td>Produce first real predictions</td>
+  <td>Run each adapter on 1&ndash;2 test sequences to validate the full pipeline end-to-end with real data before committing to the full 14-config sweep.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-p1">P1</span></td>
+  <td>Fill in checkpoint paths in <code>benchmark_paths.yaml</code></td>
+  <td><code>checkpoints.dcf</code>, <code>checkpoints.hawor</code>, <code>checkpoints.foundationpose</code> are currently empty strings. DCF checkpoint is the most critical one &mdash; likely needs a converged multi-sequence training run.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-p1">P1</span></td>
+  <td>SAM 3D preprocessing dry-run</td>
+  <td><code>sam3d_reconstruct.py --dry-run</code> per dataset to verify frame selection + mask extraction before paying GPU cost on full SAM 3D inference.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-p2">P2</span></td>
+  <td>MagicHOI pipeline debugging</td>
+  <td>MagicHOI is not ready-to-run. Needs a dedicated session to prepare COLMAP+HaMeR+inpainting data for the 14 HO3D sequences, then debug the 7-stage pipeline. May take &gt;1 day of GPU time per sequence.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-p2">P2</span></td>
+  <td>Head_input_dim ambiguity in DCF adapter</td>
+  <td>DCF training uses either <code>embed_dim</code> (1024) or <code>2*embed_dim</code> (2048) depending on experiment. Adapter defaults to 2048; will need to match whichever checkpoint we actually ship.</td>
+</tr>
+<tr>
+  <td><span class="badge badge-p2">P2</span></td>
+  <td>Hand-joint approximation in DCF output conversion</td>
+  <td>DCF predicts dense point trajectories, not MANO joints. Current conversion uses Kabsch-aligned fingertip vertex indices. For publication-quality MPJPE, consider adding a post-hoc MANO FK pass (fit MANO params to predicted hand verts).</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<footer>
+<p>Generated 2026-04-17 by <code>/conclude-session</code>. Branch: <code>feat/benchmark</code>. Latest commit: <code>8c2290d</code>. Spec: <code>docs/superpowers/specs/2026-04-16-benchmark-design.md</code>. Plan: <code>docs/superpowers/plans/2026-04-16-benchmark.md</code>.</p>
+</footer>
+
+</body>
+</html>
