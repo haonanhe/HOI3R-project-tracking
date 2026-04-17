@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-17 \u00b7 DataLoader Ablation Study (6 Hypotheses, ALL Failed)",
+    "date": "2026-04-17",
+    "status": "complete",
+    "summary": "All 6 ablations (scene loss, scene weight, gradient clip, frozen heads, canonical mesh, frame locality) collapse to SVD <0.12 vs v6's 0.400. Bug is elsewhere \u2014 only remaining difference is v6 pre-loads frames vs DataLoader reloads from disk.",
+    "path": "updates/2026-04-17-dcf-dataloader-ablation-study-final.html"
+  },
+  {
     "title": "2026-04-17 \u00b7 DataLoader Ablation Study (5 Hypotheses)",
     "date": "2026-04-17",
     "status": "complete",
