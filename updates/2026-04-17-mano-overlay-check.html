@@ -65,7 +65,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
     <li><a href="#headline">Headline</a></li>
     <li><a href="#legend">Legend &amp; method</a></li>
     <li><a href="#ho3d">HO3D &mdash; 3 sequences &times; 3 frames</a></li>
-    <li><a href="#dexycb">DexYCB &mdash; 3 sequences &times; 3 frames (post pose_y fix)</a></li>
+    <li><a href="#dexycb">DexYCB &mdash; 6 sequences &times; 3 frames (subject-07 + cross-subject check)</a></li>
     <li><a href="#what-to-check">What you're checking</a></li>
     <li><a href="#next">Next step</a></li>
   </ul>
@@ -74,10 +74,10 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <section id="headline">
 <h2>Headline</h2>
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0">
-  <div class="stat-card"><div class="value">18 / 18</div><div class="label">Frames rendered</div></div>
-  <div class="stat-card"><div class="value">2</div><div class="label">Datasets validated</div></div>
-  <div class="stat-card"><div class="value">6</div><div class="label">Sequences</div></div>
-  <div class="stat-card"><div class="value">3</div><div class="label">Frames per sequence</div></div>
+  <div class="stat-card"><div class="value">27 / 27</div><div class="label">Frames rendered</div></div>
+  <div class="stat-card"><div class="value">9</div><div class="label">Sequences (3 HO3D + 6 DexYCB)</div></div>
+  <div class="stat-card"><div class="value">4</div><div class="label">DexYCB subjects</div></div>
+  <div class="stat-card"><div class="value">5</div><div class="label">Distinct YCB objects</div></div>
 </div>
 <div class="info">
   Same 3 sequences per dataset as the numeric MANO gate. 3 evenly-spaced <em>valid</em> frames per sequence (skipping invalid <code>valid_mask=False</code> frames). Output of <code>load_sequence_gt(...)</code> is projected directly &mdash; no manual post-processing.
@@ -130,28 +130,54 @@ pinky  : (0, 7)( 7, 8)( 8, 9)( 9,20)   # 20 = pky_tip   vert 671</pre>
 </section>
 
 <section id="dexycb">
-<h2>DexYCB <span class="badge badge-pass">numeric PASS (post pose_y fix)</span></h2>
-<p>Subject 07, single-camera (serial <code>836212060125</code>). The earlier numeric run failed with <code>ValueError: could not broadcast (3,3,3) into (3,3)</code> &mdash; the loader assumed <code>pose_y</code> was a <code>(N,7)</code> quaternion+translation, but the on-disk schema is actually <code>(N,3,4)</code> per-object <code>[R|t]</code> in meters. Fixed in <code>benchmark/data/dexycb_loader.py</code> (5-line patch). The orange object dots below are the test of that fix &mdash; they should sit on the grasped object.</p>
+<h2>DexYCB <span class="badge badge-pass">numeric PASS (post pose_y fix)</span> <span class="badge badge-fix">v2 skeleton</span></h2>
+<p>6 sequences across 4 subjects, single-camera (serial <code>836212060125</code> throughout). Each sequence's grasped YCB object is called out in the section label. The earlier numeric failure (<code>could not broadcast (3,3,3) into (3,3)</code>) came from the loader assuming <code>pose_y</code> was <code>(N,7)</code> quaternion+translation; the on-disk schema is <code>(N,3,4)</code> per-object <code>[R|t]</code> in meters, fixed in <code>benchmark/data/dexycb_loader.py</code>. The orange object dots are that fix's visual test &mdash; they must sit on the grasped object.</p>
 
-<div class="seq-label">20200928-subject-07 / 20200928_154547 / 836212060125</div>
+<h3>Subject 07 &mdash; three sequences (original frames, skeleton rewired in v2)</h3>
+
+<div class="seq-label">20200928-subject-07 / 20200928_154547 / 836212060125 &mdash; object: 021_bleach_cleanser</div>
 <div class="frame-grid">
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000011.png?v=5" alt="dexycb 154547 frame 11"><div class="cap">frame 000011</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000042.png?v=5" alt="dexycb 154547 frame 42"><div class="cap">frame 000042</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000073.png?v=5" alt="dexycb 154547 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
-<div class="seq-label">20200928-subject-07 / 20200928_155814 / 836212060125</div>
+<div class="seq-label">20200928-subject-07 / 20200928_155814 / 836212060125 &mdash; object: 021_bleach_cleanser</div>
 <div class="frame-grid">
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000013.png?v=5" alt="dexycb 155814 frame 13"><div class="cap">frame 000013</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000043.png?v=5" alt="dexycb 155814 frame 43"><div class="cap">frame 000043</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000073.png?v=5" alt="dexycb 155814 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
-<div class="seq-label">20200928-subject-07 / 20200928_155913 / 836212060125</div>
+<div class="seq-label">20200928-subject-07 / 20200928_155913 / 836212060125 &mdash; object: 021_bleach_cleanser</div>
 <div class="frame-grid">
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000017.png?v=5" alt="dexycb 155913 frame 17"><div class="cap">frame 000017</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000045.png?v=5" alt="dexycb 155913 frame 45"><div class="cap">frame 000045</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000073.png?v=5" alt="dexycb 155913 frame 73"><div class="cap">frame 000073</div></div>
+</div>
+
+<h3>Cross-subject check &mdash; different subject, different object, different grasp</h3>
+<p>The same v2 renderer run on the first test sequence (<code>grasp_ind = 4</code>) from three subjects we hadn't touched yet. Confirms the pipeline isn't overfit to subject-07 poses or lighting, and exercises three different YCB objects.</p>
+
+<div class="seq-label">20200709-subject-01 / 20200709_150243 / 836212060125 &mdash; object: 021_bleach_cleanser</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000005.png?v=6" alt="subject-01 frame 5"><div class="cap">frame 000005</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000038.png?v=6" alt="subject-01 frame 38"><div class="cap">frame 000038</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200709-subject-01__20200709_150243__836212060125/frame_000071.png?v=6" alt="subject-01 frame 71"><div class="cap">frame 000071</div></div>
+</div>
+
+<div class="seq-label">20200903-subject-04 / 20200903_112655 / 836212060125 &mdash; object: 035_power_drill</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000013.png?v=6" alt="subject-04 frame 13"><div class="cap">frame 000013</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000042.png?v=6" alt="subject-04 frame 42"><div class="cap">frame 000042</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200903-subject-04__20200903_112655__836212060125/frame_000071.png?v=6" alt="subject-04 frame 71"><div class="cap">frame 000071</div></div>
+</div>
+
+<div class="seq-label">20201022-subject-10 / 20201022_113530 / 836212060125 &mdash; object: 025_mug</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000021.png?v=6" alt="subject-10 frame 21"><div class="cap">frame 000021</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000046.png?v=6" alt="subject-10 frame 46"><div class="cap">frame 000046</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000071.png?v=6" alt="subject-10 frame 71"><div class="cap">frame 000071</div></div>
 </div>
 </section>
 
