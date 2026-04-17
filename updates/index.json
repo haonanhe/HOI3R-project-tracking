@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-17 \u00b7 Session Summary: DCF DataLoader Investigation",
+    "date": "2026-04-17",
+    "status": "complete",
+    "summary": "DataLoader migration completed but SVD collapse unresolved. 4 commits, 8 ACP jobs, 6 ablations all failed. Bugs fixed: CUDA OOB, GT/model FPS mismatch, frame-dependent canonical. Remaining: per-epoch PIL reload as last untested difference vs v6.",
+    "path": "updates/2026-04-17-session-summary.html"
+  },
+  {
     "title": "2026-04-17 \u00b7 DataLoader Ablation Study (6 Hypotheses, ALL Failed)",
     "date": "2026-04-17",
     "status": "complete",
