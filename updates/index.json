@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-17 · MANO Gate Visual Check (HO3D + DexYCB)",
+    "date": "2026-04-17",
+    "status": "complete",
+    "summary": "Projected loader GT (hand verts + 21-joint skeleton + object verts) onto RGB images for the same 3 HO3D and 3 DexYCB sequences the numeric MANO gate validates. 18 frames total; visual confirmation that yesterday's pose_y (3,4) fix in dexycb_loader is geometrically correct.",
+    "path": "updates/2026-04-17-mano-overlay-check.html"
+  },
+  {
     "title": "2026-04-17 · Benchmark Bring-Up: Design, Plan, Full Implementation (17/17 tasks, 209 tests pass)",
     "date": "2026-04-17",
     "status": "milestone",
