@@ -66,6 +66,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
     <li><a href="#legend">Legend &amp; method</a></li>
     <li><a href="#ho3d">HO3D &mdash; 3 sequences &times; 3 frames</a></li>
     <li><a href="#dexycb">DexYCB &mdash; 6 sequences &times; 3 frames (subject-07 + cross-subject check)</a></li>
+    <li><a href="#dexycb-toolkit">DexYCB &mdash; same 6 sequences rendered via <code>dex-ycb-toolkit</code></a></li>
     <li><a href="#what-to-check">What you're checking</a></li>
     <li><a href="#next">Next step</a></li>
   </ul>
@@ -135,21 +136,21 @@ pinky  : (0, 7)( 7, 8)( 8, 9)( 9,20)   # 20 = pky_tip   vert 671</pre>
 
 <h3>Subject 07 &mdash; three sequences (original frames, skeleton rewired in v2)</h3>
 
-<div class="seq-label">20200928-subject-07 / 20200928_154547 / 836212060125 &mdash; object: 021_bleach_cleanser</div>
+<div class="seq-label">20200928-subject-07 / 20200928_154547 / 836212060125 &mdash; object: 025_mug</div>
 <div class="frame-grid">
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000011.png?v=5" alt="dexycb 154547 frame 11"><div class="cap">frame 000011</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000042.png?v=5" alt="dexycb 154547 frame 42"><div class="cap">frame 000042</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000073.png?v=5" alt="dexycb 154547 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
-<div class="seq-label">20200928-subject-07 / 20200928_155814 / 836212060125 &mdash; object: 021_bleach_cleanser</div>
+<div class="seq-label">20200928-subject-07 / 20200928_155814 / 836212060125 &mdash; object: 052_extra_large_clamp</div>
 <div class="frame-grid">
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000013.png?v=5" alt="dexycb 155814 frame 13"><div class="cap">frame 000013</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000043.png?v=5" alt="dexycb 155814 frame 43"><div class="cap">frame 000043</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000073.png?v=5" alt="dexycb 155814 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
-<div class="seq-label">20200928-subject-07 / 20200928_155913 / 836212060125 &mdash; object: 021_bleach_cleanser</div>
+<div class="seq-label">20200928-subject-07 / 20200928_155913 / 836212060125 &mdash; object: 061_foam_brick</div>
 <div class="frame-grid">
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000017.png?v=5" alt="dexycb 155913 frame 17"><div class="cap">frame 000017</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000045.png?v=5" alt="dexycb 155913 frame 45"><div class="cap">frame 000045</div></div>
@@ -179,6 +180,57 @@ pinky  : (0, 7)( 7, 8)( 8, 9)( 9,20)   # 20 = pky_tip   vert 671</pre>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000046.png?v=6" alt="subject-10 frame 46"><div class="cap">frame 000046</div></div>
   <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20201022-subject-10__20201022_113530__836212060125/frame_000071.png?v=6" alt="subject-10 frame 71"><div class="cap">frame 000071</div></div>
 </div>
+</section>
+
+<section id="dexycb-toolkit">
+<h2>DexYCB via <code>dex-ycb-toolkit</code> <span class="badge badge-finding">reference</span></h2>
+<p>Sanity check: the same 6 sequences rendered using the OFFICIAL toolkit's code path &mdash; <code>dex_ycb_toolkit.factory.get_dataset("s0_train")</code>, <code>manopth.ManoLayer(flat_hand_mean=False, ncomps=45, use_pca=True)</code> (not smplx), and the toolkit's canonical bone topology <code>_MANO_JOINT_CONNECT</code> where joint order is <strong>0=wrist, 1-4=thumb, 5-8=index, 9-12=middle, 13-16=ring, 17-20=pinky</strong>. Identical frames, intrinsics, and RGB images to the v2 panel above &mdash; only the MANO library and bone topology differ. If the toolkit skeleton and the v2 skeleton agree on every frame, the v2 renderer is correct by construction.</p>
+<div class="info">
+  Object labels in this section are pulled from <code>ycb_grasp_ind → _YCB_CLASSES</code> (toolkit API) rather than the older page's free-text annotations &mdash; that's why three subject-07 labels above changed (154547: mug, 155814: extra_large_clamp, 155913: foam_brick).
+</div>
+
+<div class="seq-label">toolkit &middot; 20200928-subject-07 / 20200928_154547 / 836212060125 &mdash; 025_mug</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_154547__836212060125/frame_000011.png?v=7" alt="toolkit 154547 frame 11"><div class="cap">frame 000011</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_154547__836212060125/frame_000042.png?v=7" alt="toolkit 154547 frame 42"><div class="cap">frame 000042</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_154547__836212060125/frame_000073.png?v=7" alt="toolkit 154547 frame 73"><div class="cap">frame 000073</div></div>
+</div>
+
+<div class="seq-label">toolkit &middot; 20200928-subject-07 / 20200928_155814 / 836212060125 &mdash; 052_extra_large_clamp</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_155814__836212060125/frame_000013.png?v=7" alt="toolkit 155814 frame 13"><div class="cap">frame 000013</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_155814__836212060125/frame_000043.png?v=7" alt="toolkit 155814 frame 43"><div class="cap">frame 000043</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_155814__836212060125/frame_000073.png?v=7" alt="toolkit 155814 frame 73"><div class="cap">frame 000073</div></div>
+</div>
+
+<div class="seq-label">toolkit &middot; 20200928-subject-07 / 20200928_155913 / 836212060125 &mdash; 061_foam_brick</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_155913__836212060125/frame_000017.png?v=7" alt="toolkit 155913 frame 17"><div class="cap">frame 000017</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_155913__836212060125/frame_000045.png?v=7" alt="toolkit 155913 frame 45"><div class="cap">frame 000045</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200928-subject-07__20200928_155913__836212060125/frame_000073.png?v=7" alt="toolkit 155913 frame 73"><div class="cap">frame 000073</div></div>
+</div>
+
+<div class="seq-label">toolkit &middot; 20200709-subject-01 / 20200709_150243 / 836212060125 &mdash; 021_bleach_cleanser</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200709-subject-01__20200709_150243__836212060125/frame_000005.png?v=7" alt="toolkit subject-01 frame 5"><div class="cap">frame 000005</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200709-subject-01__20200709_150243__836212060125/frame_000038.png?v=7" alt="toolkit subject-01 frame 38"><div class="cap">frame 000038</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200709-subject-01__20200709_150243__836212060125/frame_000071.png?v=7" alt="toolkit subject-01 frame 71"><div class="cap">frame 000071</div></div>
+</div>
+
+<div class="seq-label">toolkit &middot; 20200903-subject-04 / 20200903_112655 / 836212060125 &mdash; 035_power_drill</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200903-subject-04__20200903_112655__836212060125/frame_000013.png?v=7" alt="toolkit subject-04 frame 13"><div class="cap">frame 000013</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200903-subject-04__20200903_112655__836212060125/frame_000042.png?v=7" alt="toolkit subject-04 frame 42"><div class="cap">frame 000042</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20200903-subject-04__20200903_112655__836212060125/frame_000071.png?v=7" alt="toolkit subject-04 frame 71"><div class="cap">frame 000071</div></div>
+</div>
+
+<div class="seq-label">toolkit &middot; 20201022-subject-10 / 20201022_113530 / 836212060125 &mdash; 025_mug</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20201022-subject-10__20201022_113530__836212060125/frame_000021.png?v=7" alt="toolkit subject-10 frame 21"><div class="cap">frame 000021</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20201022-subject-10__20201022_113530__836212060125/frame_000046.png?v=7" alt="toolkit subject-10 frame 46"><div class="cap">frame 000046</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb-toolkit/20201022-subject-10__20201022_113530__836212060125/frame_000071.png?v=7" alt="toolkit subject-10 frame 71"><div class="cap">frame 000071</div></div>
+</div>
+<p style="margin-top:10px;font-size:.9em;color:#555">Renderer: <code>/tmp/dexycb_toolkit_render.py</code> on the debug container. MANO dir: <code>/mnt/afs/haonan/hoi3r/HOI3R/third_party/HaWoR/_DATA/mano_v1_2/models</code>. Toolkit root: <code>.worktrees/feat-benchmark/third_party/dex-ycb-toolkit</code>. 18 PNGs regenerated from scratch.</p>
 </section>
 
 <section id="what-to-check">

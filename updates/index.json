@@ -21,10 +21,10 @@
     "path": "updates/2026-04-17-dcf-gps-f30-34.html"
   },
   {
-    "title": "2026-04-17 · MANO Overlay Check v2 (skeleton fix + cross-subject)",
+    "title": "2026-04-17 · MANO Overlay Check — dex-ycb-toolkit cross-check",
     "date": "2026-04-17",
     "status": "complete",
-    "summary": "v2 rebuild using the original_mano_reference methodology bundle. Skeleton bones drawn directly on smplx-MANO 21-joint layout (tips 16..20 = thb,idx,mid,rng,pky via verts 744,320,443,554,671). 3 HO3D + 6 DexYCB sequences = 27 overlays; DexYCB expanded to 4 subjects (01, 04, 07, 10) and 3 distinct YCB objects (bleach_cleanser, power_drill, mug) to confirm the v2 renderer is not subject-specific.",
+    "summary": "Side-by-side MANO overlays: our smplx-based v2 renderer vs dex-ycb-toolkit official code path (s0_train + manopth + _MANO_JOINT_CONNECT). 6 DexYCB sequences, 4 subjects, 5 distinct YCB objects (labels corrected from ycb_grasp_ind). If the two rendering stacks agree per frame, the v2 renderer is correct by construction.",
     "path": "updates/2026-04-17-mano-overlay-check.html"
   },
   {
