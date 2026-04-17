@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MANO Gate Visual Check &mdash; HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff;font-size:.9em}
+th,td{border:1px solid #ddd;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f6f7f8}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#e3f2fd;padding:12px;border-left:4px solid #2196f3;margin:12px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.82em;color:#fff}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.88em;color:#c7254e}
+pre{background:#f4f4f4;padding:12px;border-radius:6px;overflow-x:auto;font-size:.85em}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.toc ul{margin:0;padding-left:20px}
+.toc a{text-decoration:none;color:#2c3e50}
+.legend{display:inline-flex;align-items:center;gap:6px;margin-right:16px;font-size:.9em}
+.swatch{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #888}
+.frame-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}
+.frame-card{background:#fff;border:1px solid #ddd;border-radius:6px;padding:8px}
+.frame-card img{width:100%;height:auto;display:block;border-radius:4px}
+.frame-card .cap{font-size:.78em;color:#555;margin-top:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.seq-label{background:#eef2f7;padding:6px 12px;border-left:4px solid #2c3e50;margin:18px 0 6px;font-weight:600;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.4em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.82em;color:#666;margin-top:4px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:900px){.frame-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>2026-04-17 &middot; MANO Gate Visual Check (HO3D + DexYCB)</h1>
+  <div style="margin:8px 0">
+    <span style="color:#555">Branch: <code>feat/benchmark</code></span>
+    <span style="margin-left:16px;color:#555">Renderer: <code>benchmark/preprocessing/render_mano_overlay.py</code></span>
+    <span style="margin-left:16px;color:#555">Source: <code>/mnt/afs/haonan/datasets/haonan/datasets/{HO3D,dexycb}</code></span>
+  </div>
+  <p><strong>Goal:</strong> The numeric MANO validation gate passed for HO3D and DexYCB, but a numeric pass only proves NaN-freeness, joint count, and value ranges. This page projects the loader's GT (hand vertices, hand 21-joint skeleton, object vertices) onto the source RGB to verify <em>geometric</em> alignment.</p>
+</header>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#headline">Headline</a></li>
+    <li><a href="#legend">Legend &amp; method</a></li>
+    <li><a href="#ho3d">HO3D &mdash; 3 sequences &times; 3 frames</a></li>
+    <li><a href="#dexycb">DexYCB &mdash; 3 sequences &times; 3 frames (post pose_y fix)</a></li>
+    <li><a href="#what-to-check">What you're checking</a></li>
+    <li><a href="#next">Next step</a></li>
+  </ul>
+</nav>
+
+<section id="headline">
+<h2>Headline</h2>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0">
+  <div class="stat-card"><div class="value">18 / 18</div><div class="label">Frames rendered</div></div>
+  <div class="stat-card"><div class="value">2</div><div class="label">Datasets validated</div></div>
+  <div class="stat-card"><div class="value">6</div><div class="label">Sequences</div></div>
+  <div class="stat-card"><div class="value">3</div><div class="label">Frames per sequence</div></div>
+</div>
+<div class="info">
+  Same 3 sequences per dataset as the numeric MANO gate. 3 evenly-spaced <em>valid</em> frames per sequence (skipping invalid <code>valid_mask=False</code> frames). Output of <code>load_sequence_gt(...)</code> is projected directly &mdash; no manual post-processing.
+</div>
+</section>
+
+<section id="legend">
+<h2>Legend &amp; method</h2>
+<div class="panel">
+  <p>
+    <span class="legend"><span class="swatch" style="background:deepskyblue"></span> Hand vertices (778 verts) &mdash; semi-transparent</span>
+    <span class="legend"><span class="swatch" style="background:yellow"></span> Hand joints (21) + skeleton bones</span>
+    <span class="legend"><span class="swatch" style="background:orange"></span> Object vertices &mdash; subsampled to 5k for legibility</span>
+  </p>
+  <p>Projection: <code>(u, v) = (K @ (X / 1000) / Z)[:2]</code> with X in mm camera-space, K in pixel units (per-frame, shape <code>(T, 3, 3)</code>). Points with <code>Z &le; 0</code> or off-image are filtered.</p>
+  <p>Datasets share the per-frame intrinsics returned by the GT loader (HO3D: 30 frames, DexYCB: 74 frames per chosen test sequence).</p>
+</div>
+</section>
+
+<section id="ho3d">
+<h2>HO3D <span class="badge badge-pass">numeric PASS</span></h2>
+<p>Static-camera, single-hand HO3D test sequences from the HOLD protocol. Each sequence is a 30-frame window. Frames shown: first / middle / last valid frame of the window.</p>
+
+<div class="seq-label">ABF12.180 &mdash; object: 021_bleach_cleanser</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="ho3d/ABF12.180/frame_000180.png" alt="ABF12.180 frame 180"><div class="cap">frame 0180</div></div>
+  <div class="frame-card"><img src="ho3d/ABF12.180/frame_000194.png" alt="ABF12.180 frame 194"><div class="cap">frame 0194</div></div>
+  <div class="frame-card"><img src="ho3d/ABF12.180/frame_000209.png" alt="ABF12.180 frame 209"><div class="cap">frame 0209</div></div>
+</div>
+
+<div class="seq-label">ABF14.180 &mdash; object: 021_bleach_cleanser</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="ho3d/ABF14.180/frame_000180.png" alt="ABF14.180 frame 180"><div class="cap">frame 0180</div></div>
+  <div class="frame-card"><img src="ho3d/ABF14.180/frame_000194.png" alt="ABF14.180 frame 194"><div class="cap">frame 0194</div></div>
+  <div class="frame-card"><img src="ho3d/ABF14.180/frame_000209.png" alt="ABF14.180 frame 209"><div class="cap">frame 0209</div></div>
+</div>
+
+<div class="seq-label">GPMF12.90 &mdash; object: 010_potted_meat_can</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="ho3d/GPMF12.90/frame_000090.png" alt="GPMF12.90 frame 90"><div class="cap">frame 0090</div></div>
+  <div class="frame-card"><img src="ho3d/GPMF12.90/frame_000104.png" alt="GPMF12.90 frame 104"><div class="cap">frame 0104</div></div>
+  <div class="frame-card"><img src="ho3d/GPMF12.90/frame_000119.png" alt="GPMF12.90 frame 119"><div class="cap">frame 0119</div></div>
+</div>
+</section>
+
+<section id="dexycb">
+<h2>DexYCB <span class="badge badge-pass">numeric PASS (post pose_y fix)</span></h2>
+<p>Subject 07, single-camera (serial <code>836212060125</code>). The earlier numeric run failed with <code>ValueError: could not broadcast (3,3,3) into (3,3)</code> &mdash; the loader assumed <code>pose_y</code> was a <code>(N,7)</code> quaternion+translation, but the on-disk schema is actually <code>(N,3,4)</code> per-object <code>[R|t]</code> in meters. Fixed in <code>benchmark/data/dexycb_loader.py</code> (5-line patch). The orange object dots below are the test of that fix &mdash; they should sit on the grasped object.</p>
+
+<div class="seq-label">20200928-subject-07 / 20200928_154547 / 836212060125</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000011.png" alt="dexycb 154547 frame 11"><div class="cap">frame 000011</div></div>
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000042.png" alt="dexycb 154547 frame 42"><div class="cap">frame 000042</div></div>
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000073.png" alt="dexycb 154547 frame 73"><div class="cap">frame 000073</div></div>
+</div>
+
+<div class="seq-label">20200928-subject-07 / 20200928_155814 / 836212060125</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000013.png" alt="dexycb 155814 frame 13"><div class="cap">frame 000013</div></div>
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000043.png" alt="dexycb 155814 frame 43"><div class="cap">frame 000043</div></div>
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000073.png" alt="dexycb 155814 frame 73"><div class="cap">frame 000073</div></div>
+</div>
+
+<div class="seq-label">20200928-subject-07 / 20200928_155913 / 836212060125</div>
+<div class="frame-grid">
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000017.png" alt="dexycb 155913 frame 17"><div class="cap">frame 000017</div></div>
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000045.png" alt="dexycb 155913 frame 45"><div class="cap">frame 000045</div></div>
+  <div class="frame-card"><img src="dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000073.png" alt="dexycb 155913 frame 73"><div class="cap">frame 000073</div></div>
+</div>
+</section>
+
+<section id="what-to-check">
+<h2>What you&rsquo;re checking</h2>
+<table>
+  <thead><tr><th>Check</th><th>Pass condition</th><th>Fail mode</th></tr></thead>
+  <tbody>
+    <tr><td>Hand mesh sits on the visible hand</td><td>Blue dot cloud envelopes the visible skin</td><td>Cloud is shifted, scaled wrong, or in empty space &rarr; wrong intrinsics / mm-vs-m / wrong extrinsics</td></tr>
+    <tr><td>Hand skeleton matches finger anatomy</td><td>Yellow bones run wrist&rarr;tip along each visible finger</td><td>Skeleton mirrored, scrambled, or pointing the wrong direction &rarr; left/right confusion or joint reordering</td></tr>
+    <tr><td>Object vertices land on the grasped object</td><td>Orange cloud overlaps the YCB object the hand is holding</td><td>Cloud floats in space &rarr; pose_y schema still wrong; or wrong canonical mesh</td></tr>
+    <tr><td>Alignment holds across the 3 frames per sequence</td><td>Quality is consistent at frame 0 / mid / last of the window</td><td>Drift across frames &rarr; missing per-frame intrinsics or extrinsics</td></tr>
+  </tbody>
+</table>
+<div class="warning">
+  HO3D test windows are 30 frames at 1&times; sampling, so the &ldquo;last&rdquo; frame is only ~1 second after the first &mdash; expect very similar poses across the three frames.
+</div>
+</section>
+
+<section id="next">
+<h2>Next step</h2>
+<div class="highlight">
+  Once HO3D and DexYCB overlays look correct: <strong>Phase 2 step 3</strong> &mdash; produce first real predictions on 1&ndash;2 test sequences with the DCF / FP+HaWoR / MagicHOI adapters. HOT3D extraction is still in progress (~57 GB of ~152 GB at the time of writing); MANO gate + visual check for HOT3D will run once that completes.
+</div>
+</section>
+
+<footer>
+Generated 2026-04-17 &middot; HOI3R benchmark bring-up &middot; renderer: <code>benchmark/preprocessing/render_mano_overlay.py</code>
+</footer>
+
+</body>
+</html>
