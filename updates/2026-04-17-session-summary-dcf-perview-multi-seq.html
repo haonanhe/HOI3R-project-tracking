@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary · DCF Per-View Fix + Multi-Seq Grouped DDP — 2026-04-17 · HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+h4{color:#555;margin-top:16px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.caption{font-size:.85em;color:#666;margin-top:4px;text-align:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2,.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>DCF Per-View Refactor, Memorization Diagnosis, Multi-Seq DDP Grouped Batching <span style="font-weight:400;color:#555">— Session Summary</span></h1>
+  <div class="meta-box">
+    <div class="meta-grid">
+      <div class="meta-label">Date</div><div class="meta-value">2026-04-17</div>
+      <div class="meta-label">Branch</div><div class="meta-value">feat/dcf (worktree .worktrees/feat-dcf)</div>
+      <div class="meta-label">Commit range</div><div class="meta-value">b6a5682 → 073b7be (5 commits)</div>
+      <div class="meta-label">ACP jobs</div><div class="meta-value">om-h6c7mha7, om-dwgvbdvi, pt-2dq2rmdj, pt-uvtqnopu (baseline — still running), pt-n19ooth8</div>
+      <div class="meta-label">Goal</div><div class="meta-value">Fix the DCF hand-shape collapse reported in the 2026-04-17 morning session (SVD 0.669 → 0.077); understand whether the model is reading images or memorizing the sequence.</div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2>TL;DR</h2>
+  <div class="highlight">
+    Shape collapse in the failed DCF DataLoader overfit was a chain of four independent bugs; fixing all four got the <a href="2026-04-17-dcf-gps-f30-34.html">tight 5-frame overfit</a> to 8.7 mm hand L2 — in the v6 baseline regime. The same recipe scaled to the full 63-frame sequence gave 64.1 mm but with a mode-collapse signature in approach frames (chamfer/L2 = 1.20). A targeted black-image ablation confirmed the model DOES use images (pred shifts 80–190 mm when the image is blanked) but is dominated by a memorized grasp-pose prior. Multi-seq DDP + chamfer + object-grouped batching pushed approach chamfer/L2 to 1.06 in ~32× the wall-time throughput of the single-GPU trainer — but the comparison is confounded because chamfer was also added to the loss on that run.
+  </div>
+  <div class="grid-4" style="margin-top:16px">
+    <div class="stat-card"><div class="value">5</div><div class="label">commits shipped</div></div>
+    <div class="stat-card"><div class="value">5</div><div class="label">ACP jobs submitted</div></div>
+    <div class="stat-card"><div class="value">4</div><div class="label">experiment pages published</div></div>
+    <div class="stat-card"><div class="value">8.7 mm</div><div class="label">best hand L2 (tight overfit)</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Experiments &amp; Results</h2>
+
+  <h3>E1 — <a href="2026-04-17-dcf-per-view-overfit.html">primary = 0 fix + per-view DCF refactor</a></h3>
+  <p><span class="badge badge-fix">FIX</span> <span class="badge badge-finding">PARTIAL</span> ACP <code>om-h6c7mha7</code> · SPOT · 500 steps · subject-01 full seq</p>
+  <p><b>Change:</b> <code>primary = int(rng.integers(0, V))</code> → <code>primary = 0</code> (commit <code>96e385d</code>), then aggregator / DCFBranch refactor so the DCF head emits <code>[B, S, N, 3]</code> per-view outputs aligned with the main branch's <code>[B, S, H, W, 3]</code> scene outputs (commit <code>7634342</code>).</p>
+  <table><thead><tr><th>Metric</th><th>Pre-fix</th><th>Post-fix (S=1 eval)</th></tr></thead><tbody>
+    <tr><td>Hand SVD s₃/s₁</td><td>0.077 (collapsed)</td><td><b>0.355</b> (stable)</td></tr>
+    <tr><td>Training hand L1 /coord</td><td>—</td><td>16 mm</td></tr>
+    <tr><td>Hand L2 mean (inference)</td><td>~200 mm (earlier observation)</td><td>124.2 mm</td></tr>
+  </tbody></table>
+  <p><b>Conclusion:</b> rank collapse eliminated; absolute error still bad because the inference script was feeding the wrong canonical mesh (see E3).</p>
+
+  <h3>E2 — <a href="2026-04-17-dcf-full-seq-gps.html">full-sequence overfit with the four-fix recipe</a></h3>
+  <p><span class="badge badge-finding">FINDING</span> ACP <code>pt-2dq2rmdj</code> · RESERVED · 1000 steps · subject-01 full seq</p>
+  <p><b>Changes bundled (commit <code>16839a2</code>):</b> <code>--use-gps</code> default <code>True</code> → Laplacian-eigenvector skip at the trajectory head; rest-pose MANO canonical at inference (matches training); <code>--frame-start</code>/<code>--max-frames</code> clip; sliding S=4 causal eval.</p>
+  <table><thead><tr><th>Sequence third</th><th>Hand L2</th><th>Hand chamfer</th><th>Chamfer/L2</th><th>Obj L2</th></tr></thead><tbody>
+    <tr><td>Early (approach)</td><td>129.0 mm</td><td>155.0 mm</td><td><b>1.20</b></td><td>47.0</td></tr>
+    <tr><td>Middle</td><td>30.3</td><td>25.2</td><td>0.83</td><td>43.7</td></tr>
+    <tr><td>Late (grasp+lift)</td><td>33.0</td><td>27.7</td><td>0.84</td><td>32.3</td></tr>
+  </tbody></table>
+  <p><b>Conclusion:</b> chamfer > L2 in approach = pred cloud sits in the wrong region (not misarticulated near GT). Rank/shape OK in grasp, collapsed in approach.</p>
+
+  <h3>E3 — <a href="2026-04-17-dcf-gps-f30-34.html">5-frame tight overfit (frames 30–34)</a></h3>
+  <p><span class="badge badge-pass">PASS</span> ACP <code>om-dwgvbdvi</code> · RESERVED · 500 steps</p>
+  <p>Same four-fix recipe on a 5-frame window where the hand is essentially static.</p>
+  <table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+    <tr><td>Hand L2 mean</td><td><b>8.68 mm</b> (v6 regime)</td></tr>
+    <tr><td>Obj L2 mean</td><td>16.98 mm</td></tr>
+    <tr><td>Hand chamfer</td><td>13.86 mm</td></tr>
+    <tr><td>Obj chamfer</td><td>21.34 mm</td></tr>
+  </tbody></table>
+  <p><b>Conclusion:</b> the four-fix recipe is correct — it overfits as tightly as v6 on a static window. Gap to full-sequence is ~7× and attributable to per-frame supervision budget (400 updates/frame on 5-frame vs ~63 on full-seq).</p>
+
+  <h3>E4 — Black-image ablation (memorization hypothesis)</h3>
+  <p><span class="badge badge-finding">FINDING</span> <code>scripts/black_image_ablation.py</code> (commit <code>073b7be</code>). On the 2026-04-17 full-sequence overfit checkpoint, feed the model three variants per frame: real, all-zero, Gaussian noise.</p>
+  <table><thead><tr><th>Frame</th><th>GT hand centroid</th><th>Real L2</th><th>Black L2</th><th>‖pred<sub>real</sub> − pred<sub>black</sub>‖</th></tr></thead><tbody>
+    <tr><td>5 (approach)</td><td>1018 mm</td><td>218</td><td>306</td><td><b>186 mm</b></td></tr>
+    <tr><td>32 (middle)</td><td>873 mm</td><td>29</td><td>124</td><td>103 mm</td></tr>
+    <tr><td>55 (grasp)</td><td>878 mm</td><td>35</td><td>75</td><td>80 mm</td></tr>
+  </tbody></table>
+  <p><b>Conclusion:</b> pure "image is decorative" memorization is ruled OUT — blanking the image shifts predictions by 80–190 mm and degrades them, so the image is being read. But black/noise predictions are almost identical (306 ≈ 305) → the model has a specific memorized default pose near the grasp-pose cluster, and in approach frames the image signal is insufficient to override that prior. The user's framing ("model is reading images but the memorized prior dominates") is the right description.</p>
+
+  <h3>E5 — <a href="2026-04-17-dcf-grouped-4gpu.html">multi-seq DDP grouped batching (100 seq, 4 GPU)</a></h3>
+  <p><span class="badge badge-pass">PASS (infra)</span> <span class="badge badge-finding">CONFOUNDED</span> ACP <code>pt-n19ooth8</code> · RESERVED 4× 80 GB · 200 steps · subject-01 manifest (100 seq, 20 YCB objects × 5 each)</p>
+  <p><b>New infrastructure (commit <code>073b7be</code>):</b> <code>ObjectGroupedBatchSampler</code> so every batch has one <code>V_o</code>; collate promotes object tensors to stackable; <code>compute_sample_loss</code> → <code>compute_batch_loss</code> with real batched forward (single <code>backward()</code> per batch instead of <code>for b in range(B): (loss/B).backward()</code>); DDP via <code>torchrun --nproc_per_node=4</code>.</p>
+  <table><thead><tr><th>Metric</th><th>Pre (E2 single-seq, l1)</th><th>This run (multi-seq, l1+chamfer)</th></tr></thead><tbody>
+    <tr><td>Approach chamfer/L2</td><td>1.20</td><td><b>1.06</b></td></tr>
+    <tr><td>Hand L2 mean (same eval seq)</td><td>64.1 mm</td><td>131.5 mm (undertrained)</td></tr>
+    <tr><td>Wall time</td><td>40 min, 1 GPU, 1000 steps</td><td>21 min, 4 GPU, 200 grouped steps</td></tr>
+    <tr><td>View-forwards / wall-min</td><td>1×</td><td><b>~32×</b></td></tr>
+  </tbody></table>
+  <div class="warning">
+    <b>Confound (flagged by user):</b> chamfer loss was added to training on this run, so the chamfer-metric improvement can't be cleanly attributed to multi-seq alone. The black-image ablation (E4, unconfounded) is the stronger piece of evidence for "model does use image, prior dominates in low-density regions". A 2×2 ablation (single-seq/multi-seq × l1/l1+chamfer) is outstanding to disambiguate.
+  </div>
+</section>
+
+<section>
+  <h2>Code Changes</h2>
+  <table><thead><tr><th>SHA</th><th>Subject</th><th>Scope</th></tr></thead><tbody>
+  <tr><td><code>96e385d</code></td><td>fix(dcf): supervise DCF head on view-0 to match v6 convention</td><td><code>scripts/dcf_dataloader_train.py</code> (1-line fix + rationale)</td></tr>
+  <tr><td><code>7634342</code></td><td>feat(dcf): per-view DCF outputs aligned with main branch</td><td><code>stream3r/models/components/aggregator/streamaggregator.py</code> (per-view extras broadcast + causal mask), <code>stream3r/models/dcf_branch.py</code> (<code>decode_outputs</code> accepts <code>[B, S, N, D]</code>), <code>stream3r/models/stream3r.py</code> (passes <code>per_view_extras</code> flag), both training scripts (loss folded over <code>V</code>), eval uses last-view</td></tr>
+  <tr><td><code>16839a2</code></td><td>feat(dcf): enable GPS + frame-range overfit + matched canonical inference</td><td><code>dcf_dataloader_train.py</code> + <code>dcf_full_sequence_train.py</code> (<code>--use-gps</code> default <code>True</code>, <code>--frame-start</code>/<code>--max-frames</code>), <code>scripts/infer_per_view_overfit.py</code> (new — rest-pose canonical, sliding S=4)</td></tr>
+  <tr><td><code>2d593c0</code></td><td>feat(dcf): per-view + GPS + rest-pose canonical in multi-seq DDP; chamfer default</td><td><code>scripts/dcf_multi_sequence_train.py</code> updates + <code>scripts/black_image_ablation.py</code> (new)</td></tr>
+  <tr><td><code>073b7be</code></td><td>feat(dcf): object-grouped batching + DDP in dcf_dataloader_train</td><td><code>stream3r/data/dexycb_dcf_dataset.py</code> (+ <code>ObjectGroupedBatchSampler</code>, collate promotes object tensors), <code>scripts/dcf_dataloader_train.py</code> (batched forward + DDP), <code>scripts/infer_per_view_overfit.py</code> (obj dim() branch fix)</td></tr>
+  </tbody></table>
+
+  <h3>Bugs found &amp; fixed during the session</h3>
+  <ol>
+    <li><span class="badge badge-fix">FIX</span> <b>Canonical-mesh mismatch train vs eval</b>: <code>load_full_sequence_dexycb</code> returned a posed-frame-0-minus-wrist canonical, but the DataLoader training path used the rest-pose MANO from <code>mano_gps/canonical_vertices.npy</code>. Inference was feeding out-of-distribution tokens to the encoder. Fixed in commit <code>16839a2</code> by loading <code>mano_gps/canonical_vertices.npy</code> directly in the inference script.</li>
+    <li><span class="badge badge-fix">FIX</span> <b><code>object_canonical</code> double-unsqueeze</b>: v6's loader returns <code>hand_vertices_canonical</code> as <code>[1, 778, 3]</code> but <code>object_vertices_canonical</code> as <code>[V_o, 3]</code> (no batch dim). My original inference script did <code>.unsqueeze(0)</code> on both, producing a 4-D tensor that the encoder rejected. Fixed with a <code>.dim()</code> branch.</li>
+    <li><span class="badge badge-fix">FIX</span> <b>ACP <code>fault_tolerance.backoff_limit=1</code> silently re-ran Phase 1</b>: the eval script crash cascaded into a 20-min re-train because <code>set -euo pipefail</code> propagated the non-zero exit. New policy: <code>backoff_limit: 0</code> + <code>|| true</code> on every post-train phase. Memory + CLAUDE.md updated.</li>
+    <li><span class="badge badge-fix">FIX</span> <b>share-space-01e quota exhausted</b> during the first submission; fell back to SPOT. Memory now authoritatively directs all submissions to <code>p1-video-world-model-for-robot-learning</code> with <code>quota_type=RESERVED</code>; the older memory claiming a different mount id was wrong — both workspaces share mount id <code>019b308b-…</code> at <code>/mnt/afs</code>.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Key Discoveries</h2>
+
+  <h3>D1 — The DCF head has no view dimension by design</h3>
+  <p><span class="badge badge-finding">FINDING</span> The aggregator concatenates the canonical extra tokens ONCE with the flattened <code>[B, S*P, C]</code> visual sequence and returns the refined extras as <code>[B, N_e, C]</code> (no S). That's why the original per-view supervision bug was so destructive: the head emits one set of DCF predictions per batch element, not per view, so supervising it against a randomly-chosen view's GT (the broken <code>primary=rng.integers(0,V)</code>) trained the head toward the per-point mean across views — a smeared, rank-collapsed hand blob.</p>
+  <p>Fix (commit <code>7634342</code>): broadcast extras to <code>[B, S, N_e, C]</code> before global attention, interleave with each view's visual patches so the causal mask applies uniformly over <code>S*(P+N_e)</code> tokens. The DCF head now emits <code>[B, S, N_h, 3]</code> per-view predictions symmetric with the main branch's per-view <code>pose_enc</code>/<code>depth</code>/<code>world_points</code>.</p>
+
+  <h3>D2 — GPS skip at the trajectory head is required for shape preservation</h3>
+  <p><span class="badge badge-finding">FINDING</span> The encoder applies Fourier PE on canonical xyz so per-point input identity is strong; but the trajectory head (<code>DCFTrajectoryHead</code>, a 3-layer MLP) has no skip connection without <code>use_gps=True</code>. Under attention mixing the decoded tokens lose per-point identity. GPS gives the head a fixed 16-dim "name tag" per FPS-selected vertex. The <code>2026-04-14-gps-encoding-experiments</code> page documented this already; neither training script set it to True. Default flipped in commit <code>16839a2</code>.</p>
+
+  <h3>D3 — Single-sequence overfit permits memorization shortcut even with per-view supervision</h3>
+  <p><span class="badge badge-finding">FINDING</span> Per-view supervision eliminates the averaging-over-views collapse, but on a single sequence the <code>(temporal position in window, hand location)</code> mapping is deterministic and memorizable. The black-image ablation (E4) shows the model does read the image, but the memorized grasp-pose prior dominates in approach frames where image signal is weak (hand small/occluded). This is the structural reason multi-seq training is needed, regardless of loss choice.</p>
+
+  <h3>D4 — Object-grouped batching unlocks real batched forward</h3>
+  <p><span class="badge badge-pass">PASS</span> The per-sample grad-accum loop existed because samples from different YCB objects have different <code>V_o</code> (6k–18k vertices). <code>ObjectGroupedBatchSampler</code> buckets the manifest by grasp-YCB-id; every batch is homogeneous in <code>V_o</code> so <code>dcf_collate_fn</code> produces real <code>[B, V_o, 3]</code> tensors and the DCF forward runs once per batch. With DDP, wall-time throughput on subject-01 rose ~32×.</p>
+</section>
+
+<section>
+  <h2>Training Modules State</h2>
+  <table><thead><tr><th>Module</th><th>Status at session end</th></tr></thead><tbody>
+  <tr><td>STream3R encoder (patch_embed + frame blocks)</td><td>frozen (<code>freeze_stream3r_encoder=True</code>)</td></tr>
+  <tr><td>Aggregator global_blocks</td><td>trainable at <code>lr_decoder=1e-4</code></td></tr>
+  <tr><td>camera_head / point_head / depth_head</td><td>trainable at <code>lr_scene_heads=1e-5</code> (<code>--no-freeze-scene-heads</code>)</td></tr>
+  <tr><td>DCFBranch (point encoders + trajectory heads + contact head)</td><td>trainable at <code>lr=1e-3</code> · <code>use_gps=True</code> · <code>gps_dim=16</code></td></tr>
+  <tr><td>Hand canonical input</td><td>rest-pose MANO from <code>stream3r/data/mano_gps/canonical_vertices.npy</code> (frame/subject-invariant)</td></tr>
+  <tr><td>Loss stack</td><td><code>1.0·hand + 1.0·obj + 0.1·contact + 0.1·pointer + 0.1·scene</code>; <code>hand_loss_type=l1+chamfer</code> default post-session</td></tr>
+  <tr><td>Coordinate frame</td><td>first-view camera space (identical to all-view camera space on static DexYCB cameras); <code>gt_frame=I</code></td></tr>
+  <tr><td>Resolution</td><td>518×518 crop+Lanczos from 640×480 DexYCB color (STream3R convention)</td></tr>
+  </tbody></table>
+</section>
+
+<section>
+  <h2>Open Issues &amp; Next Steps</h2>
+  <table><thead><tr><th>Priority</th><th>Item</th><th>Details</th></tr></thead><tbody>
+  <tr>
+    <td><span class="badge badge-p0">P0</span></td>
+    <td>Disambiguate chamfer-loss confound</td>
+    <td>Run <b>single-seq full + <code>l1+chamfer</code></b> (≈20 min, 1 GPU). If approach chamfer/L2 drops to ~1.06, chamfer-in-loss alone explains E5's improvement and the "multi-seq breaks memorization" claim is unsupported. If it stays ~1.20, multi-seq is contributing.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p1">P1</span></td>
+    <td>Multi-seq longer run</td>
+    <td>Same E5 config, 2000 optimizer steps (≈ 3.5 h on 4 GPU) so each object gets ~100 updates, closer to the single-seq saturation regime. Expected: absolute L2 drops while shape preservation stays.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p1">P1</span></td>
+    <td>Pull pt-uvtqnopu baseline</td>
+    <td>The no-grouping multi-seq DDP baseline is still running. Once done, compare to E5 for apples-to-apples (both multi-seq, different batch sampler).</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p1">P1</span></td>
+    <td>Warm-start from tight-overfit checkpoint</td>
+    <td>Load <code>logs/dcf_dl_gps_f30-34_overfit/dcf_dataloader_final.run1.pt</code> as init, fine-tune multi-seq 1000 steps. The tight ckpt already has the hand-shape prior baked in; should converge faster than from-scratch.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p2">P2</span></td>
+    <td><code>dcf_full_sequence_train.py</code> (v6) GPS flag</td>
+    <td>v6 script has the <code>--use-gps</code> flag in commit <code>16839a2</code> but was not re-run this session. Low priority; the DataLoader trainer is the canonical path.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p2">P2</span></td>
+    <td>Moving-camera coordinate frame</td>
+    <td>DexYCB is static-camera so "first-view camera space = world" is trivially satisfied. For HOT3D / any moving-camera dataset we need explicit <code>T_view0_from_viewS</code> transforms on GT and consistent interpretation of the DCF output frame. Flagged for future.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p2">P2</span></td>
+    <td>Articulation under-expression</td>
+    <td>Grasp/middle chamfer/L2 ≈ 0.84 means pred cloud near GT but per-point correspondence is off — the 3-layer 512-wide trajectory-head MLP under-expresses MANO articulation on longer motions. Consider widening to <code>hidden_dim=1024</code>, 4 layers if the P1 longer-training doesn't close the gap.</td>
+  </tr>
+  </tbody></table>
+</section>
+
+<section>
+  <h2>Published pages in this session</h2>
+  <ul>
+    <li><a href="2026-04-17-dcf-per-view-overfit.html">2026-04-17 · Per-View DCF Overfit</a> — E1</li>
+    <li><a href="2026-04-17-dcf-gps-f30-34.html">2026-04-17 · GPS + Frames 30-34 DCF Overfit</a> — E3</li>
+    <li><a href="2026-04-17-dcf-full-seq-gps.html">2026-04-17 · Full-Sequence GPS DCF Overfit (63 frames)</a> — E2</li>
+    <li><a href="2026-04-17-dcf-grouped-4gpu.html">2026-04-17 · Multi-Seq DDP Grouped Overfit (100 seq, 4 GPU)</a> — E5</li>
+  </ul>
+</section>
+
+<footer>HOI3R Project · Session summary · DCF per-view fix + memorization diagnosis + multi-seq DDP grouped batching · 2026-04-17 · feat/dcf b6a5682..073b7be</footer>
+
+</body>
+</html>
