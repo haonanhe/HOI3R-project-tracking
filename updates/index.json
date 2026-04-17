@@ -14,10 +14,10 @@
     "path": "updates/2026-04-17-dcf-gps-f30-34.html"
   },
   {
-    "title": "2026-04-17 · MANO Gate Visual Check (HO3D + DexYCB)",
+    "title": "2026-04-17 · MANO Overlay Check v2 (skeleton fix)",
     "date": "2026-04-17",
     "status": "complete",
-    "summary": "Projected loader GT (hand verts + 21-joint skeleton + object verts) onto RGB images for the same 3 HO3D and 3 DexYCB sequences the numeric MANO gate validates. 18 frames total; visual confirmation that yesterday's pose_y (3,4) fix in dexycb_loader is geometrically correct.",
+    "summary": "v2 rebuild using the original_mano_reference methodology bundle. Bone topology now drawn directly on smplx-MANO 21-joint layout (tips 16..20 = thb, idx, mid, rng, pky via verts 744,320,443,554,671). v1 used an intermediate MANO→OpenPose permutation whose tip-vertex convention mis-wired thumb/pinky on DexYCB. 18 overlays regenerated; 14 of them visibly change.",
     "path": "updates/2026-04-17-mano-overlay-check.html"
   },
   {

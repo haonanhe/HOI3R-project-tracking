@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MANO Gate Visual Check &mdash; HOI3R</title>
+<title>MANO Gate Visual Check (v2) &mdash; HOI3R</title>
 <style>
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
 h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
@@ -46,13 +46,17 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <body>
 
 <header>
-  <h1>2026-04-17 &middot; MANO Gate Visual Check (HO3D + DexYCB)</h1>
+  <h1>2026-04-17 &middot; MANO Gate Visual Check v2 &mdash; Skeleton Topology Fix</h1>
   <div style="margin:8px 0">
     <span style="color:#555">Branch: <code>feat/benchmark</code></span>
     <span style="margin-left:16px;color:#555">Renderer: <code>benchmark/preprocessing/render_mano_overlay.py</code></span>
     <span style="margin-left:16px;color:#555">Source: <code>/mnt/afs/haonan/datasets/haonan/datasets/{HO3D,dexycb}</code></span>
   </div>
   <p><strong>Goal:</strong> The numeric MANO validation gate passed for HO3D and DexYCB, but a numeric pass only proves NaN-freeness, joint count, and value ranges. This page projects the loader's GT (hand vertices, hand 21-joint skeleton, object vertices) onto the source RGB to verify <em>geometric</em> alignment.</p>
+  <div class="highlight">
+    <strong>v2 update &mdash; bone topology rebuilt against the <code>original_mano_reference</code> bundle.</strong>
+    The v1 rendering went through an intermediate <code>MANO_TO_OPENPOSE</code> permutation whose tip-vertex convention disagreed with what the smplx-MANO loader actually emits, leaving the thumb/pinky wiring visibly off on DexYCB. v2 drops the permutation and draws bones directly on the smplx-MANO 21-joint layout with tips <strong>16..20 = <code>[thb, idx, mid, rng, pky]</code></strong> (verts <code>744, 320, 443, 554, 671</code>), matching the fingertip convention the reference adapter uses in manopth. Empirical check: tip→nearest-DIP distance on a flat hand; log at <code>/tmp/verify_mano_tips.log</code> on the debug container.
+  </div>
 </header>
 
 <nav class="toc">
@@ -90,6 +94,12 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
   </p>
   <p>Projection: <code>(u, v) = (K @ (X / 1000) / Z)[:2]</code> with X in mm camera-space, K in pixel units (per-frame, shape <code>(T, 3, 3)</code>). Points with <code>Z &le; 0</code> or off-image are filtered.</p>
   <p>Datasets share the per-frame intrinsics returned by the GT loader (HO3D: 30 frames, DexYCB: 74 frames per chosen test sequence).</p>
+  <p><strong>Skeleton bones (v2, no remap):</strong> five chains rooted at the wrist, using the smplx-MANO 21-joint layout directly.</p>
+<pre>thumb  : (0,13)(13,14)(14,15)(15,16)   # 16 = thb_tip   vert 744
+index  : (0, 1)( 1, 2)( 2, 3)( 3,17)   # 17 = idx_tip   vert 320
+middle : (0, 4)( 4, 5)( 5, 6)( 6,18)   # 18 = mid_tip   vert 443
+ring   : (0,10)(10,11)(11,12)(12,19)   # 19 = rng_tip   vert 554
+pinky  : (0, 7)( 7, 8)( 8, 9)( 9,20)   # 20 = pky_tip   vert 671</pre>
 </div>
 </section>
 
@@ -99,23 +109,23 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 
 <div class="seq-label">ABF12.180 &mdash; object: 021_bleach_cleanser</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000180.png?v=4" alt="ABF12.180 frame 180"><div class="cap">frame 0180</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000194.png?v=4" alt="ABF12.180 frame 194"><div class="cap">frame 0194</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000209.png?v=4" alt="ABF12.180 frame 209"><div class="cap">frame 0209</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000180.png?v=5" alt="ABF12.180 frame 180"><div class="cap">frame 0180</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000194.png?v=5" alt="ABF12.180 frame 194"><div class="cap">frame 0194</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF12.180/frame_000209.png?v=5" alt="ABF12.180 frame 209"><div class="cap">frame 0209</div></div>
 </div>
 
 <div class="seq-label">ABF14.180 &mdash; object: 021_bleach_cleanser</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000180.png?v=4" alt="ABF14.180 frame 180"><div class="cap">frame 0180</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000194.png?v=4" alt="ABF14.180 frame 194"><div class="cap">frame 0194</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000209.png?v=4" alt="ABF14.180 frame 209"><div class="cap">frame 0209</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000180.png?v=5" alt="ABF14.180 frame 180"><div class="cap">frame 0180</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000194.png?v=5" alt="ABF14.180 frame 194"><div class="cap">frame 0194</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/ABF14.180/frame_000209.png?v=5" alt="ABF14.180 frame 209"><div class="cap">frame 0209</div></div>
 </div>
 
 <div class="seq-label">GPMF12.90 &mdash; object: 010_potted_meat_can</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000090.png?v=4" alt="GPMF12.90 frame 90"><div class="cap">frame 0090</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000104.png?v=4" alt="GPMF12.90 frame 104"><div class="cap">frame 0104</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000119.png?v=4" alt="GPMF12.90 frame 119"><div class="cap">frame 0119</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000090.png?v=5" alt="GPMF12.90 frame 90"><div class="cap">frame 0090</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000104.png?v=5" alt="GPMF12.90 frame 104"><div class="cap">frame 0104</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/ho3d/GPMF12.90/frame_000119.png?v=5" alt="GPMF12.90 frame 119"><div class="cap">frame 0119</div></div>
 </div>
 </section>
 
@@ -125,23 +135,23 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 
 <div class="seq-label">20200928-subject-07 / 20200928_154547 / 836212060125</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000011.png?v=4" alt="dexycb 154547 frame 11"><div class="cap">frame 000011</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000042.png?v=4" alt="dexycb 154547 frame 42"><div class="cap">frame 000042</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000073.png?v=4" alt="dexycb 154547 frame 73"><div class="cap">frame 000073</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000011.png?v=5" alt="dexycb 154547 frame 11"><div class="cap">frame 000011</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000042.png?v=5" alt="dexycb 154547 frame 42"><div class="cap">frame 000042</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_154547__836212060125/frame_000073.png?v=5" alt="dexycb 154547 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
 <div class="seq-label">20200928-subject-07 / 20200928_155814 / 836212060125</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000013.png?v=4" alt="dexycb 155814 frame 13"><div class="cap">frame 000013</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000043.png?v=4" alt="dexycb 155814 frame 43"><div class="cap">frame 000043</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000073.png?v=4" alt="dexycb 155814 frame 73"><div class="cap">frame 000073</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000013.png?v=5" alt="dexycb 155814 frame 13"><div class="cap">frame 000013</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000043.png?v=5" alt="dexycb 155814 frame 43"><div class="cap">frame 000043</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155814__836212060125/frame_000073.png?v=5" alt="dexycb 155814 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 
 <div class="seq-label">20200928-subject-07 / 20200928_155913 / 836212060125</div>
 <div class="frame-grid">
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000017.png?v=4" alt="dexycb 155913 frame 17"><div class="cap">frame 000017</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000045.png?v=4" alt="dexycb 155913 frame 45"><div class="cap">frame 000045</div></div>
-  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000073.png?v=4" alt="dexycb 155913 frame 73"><div class="cap">frame 000073</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000017.png?v=5" alt="dexycb 155913 frame 17"><div class="cap">frame 000017</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000045.png?v=5" alt="dexycb 155913 frame 45"><div class="cap">frame 000045</div></div>
+  <div class="frame-card"><img src="2026-04-17-mano-overlay-check/dexycb/20200928-subject-07__20200928_155913__836212060125/frame_000073.png?v=5" alt="dexycb 155913 frame 73"><div class="cap">frame 000073</div></div>
 </div>
 </section>
 
@@ -164,12 +174,18 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <section id="next">
 <h2>Next step</h2>
 <div class="highlight">
-  Once HO3D and DexYCB overlays look correct: <strong>Phase 2 step 3</strong> &mdash; produce first real predictions on 1&ndash;2 test sequences with the DCF / FP+HaWoR / MagicHOI adapters. HOT3D extraction is still in progress (~57 GB of ~152 GB at the time of writing); MANO gate + visual check for HOT3D will run once that completes.
+  <ol style="margin:0 0 0 20px">
+    <li>Eyeball the v2 overlays above &mdash; thumb should sit on the anatomical thumb on both datasets; this was the v1 failure on DexYCB.</li>
+    <li>Commit the renderer + loader changes on <code>feat/benchmark</code> (currently uncommitted &mdash; waiting on visual confirmation).</li>
+    <li><strong>Phase 2 step 3</strong>: first real predictions on 1&ndash;2 test sequences with the DCF / FP+HaWoR / MagicHOI adapters.</li>
+    <li>HOT3D overlay + gate once extraction completes (HOT3D uses the <code>manopth_mano_21</code> topology, not smplx-MANO &mdash; different tip wiring; covered by the reference adapter).</li>
+  </ol>
 </div>
+<p style="margin-top:12px;font-size:.9em;color:#555">Reference methodology bundle: <code>original_mano_reference_20260417_lightweight.tar.gz</code> at <code>/mnt/afs/haonan/hoi3r/HOI3R/</code>. Files of interest: <code>overlay_core.py</code>, <code>original_mano_reference_runtime.py</code> (per-dataset joint-order names and MANO layer configs).</p>
 </section>
 
 <footer>
-Generated 2026-04-17 &middot; HOI3R benchmark bring-up &middot; renderer: <code>benchmark/preprocessing/render_mano_overlay.py</code>
+Generated 2026-04-17 (v2) &middot; HOI3R benchmark bring-up &middot; renderer: <code>benchmark/preprocessing/render_mano_overlay.py</code> (direct smplx-MANO bones, no remap)
 </footer>
 
 </body>
