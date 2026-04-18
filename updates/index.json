@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-04-18",
+    "title": "Session Summary: MANO convention finalization (Tasks 1-4/12)",
+    "file": "updates/2026-04-18-session-summary-mano-convention-finalization.html",
+    "summary": "Six-track plan executed through Task 4 on feat/benchmark (HEAD c146fb0). P0 commit of signed-off manopth migration, HOT3D smoke test (TDD), NPZ fallback fix for HOT3D loader with max_frames kwarg, and canonical joint-order remap helper (Convention enum + remap_joints). 210/210 smoke tests passing. Tasks 5-12 remain for next session; memory and progress log set up for clean handoff."
+  },
+  {
     "title": "2026-04-18 · DCF exp_a vs exp_b — pre-FPS refactor, 1 seq vs subject-01",
     "date": "2026-04-18",
     "status": "finding",
