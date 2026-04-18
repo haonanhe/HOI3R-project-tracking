@@ -1,0 +1,78 @@
+{
+  "date": "2026-04-18",
+  "topic": "exp-b-improvements-8x8-rebaseline-launch",
+  "branch": "feat/dcf",
+  "head_sha": "cf53855",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-18-exp-b-improvements-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-18-exp-b-improvements-plan.md",
+  "commits": [
+    {"sha": "1034512", "type": "docs(acp)", "subject": "record exp_b baseline invocation for B.x ablations"},
+    {"sha": "ed3234f", "type": "docs(spec,plan)", "subject": "re-baseline to 8 GPU x bs=8 per user direction"},
+    {"sha": "6873884", "type": "diagnose(dcf)", "subject": "Thread A approach-phase hand spike diagnosis"},
+    {"sha": "96a7dd1", "type": "fix(memprobe)", "subject": "default group_by_object=False to match exp_b baseline"},
+    {"sha": "24b624f", "type": "fix(memprobe)", "subject": "honor group_by_object flag in build_loader (was always grouped)"},
+    {"sha": "438a272", "type": "feat(dcf)", "subject": "B.1 procrustes-aligned object loss + --object-loss-mode flag"},
+    {"sha": "7d18d3b", "type": "feat(memprobe)", "subject": "--num-object-points flag for B.5 capacity ablation"},
+    {"sha": "cf53855", "type": "fix(memprobe)", "subject": "inject object_loss_mode (B.1 compat) into build_args"}
+  ],
+  "acp_jobs": [
+    {"id": "pt-eu315wi5", "role": "T0b memprobe at 8 GPU x bs=[4,8], N_o=256", "state": "SUCCEEDED"},
+    {"id": "pt-6z1krbfg", "role": "B.00 new baseline v1 — cancelled (OOM)", "state": "CANCELLED"},
+    {"id": "pt-8ln2qy21", "role": "B.1 smoke — procrustes_aligned, 1 GPU / 5 frames", "state": "SUCCEEDED"},
+    {"id": "pt-ysan1p05", "role": "B.1 full v1 — cancelled (pre-expandable_segments)", "state": "CANCELLED"},
+    {"id": "pt-05jjn033", "role": "B.00 new baseline v2 — 8 GPU x bs=8 x 2000 epochs (expandable_segments)", "state": "RUNNING"},
+    {"id": "pt-tyan7jjh", "role": "B.1 full v2 — procrustes_aligned at 8x8", "state": "RUNNING"},
+    {"id": "pt-jll8rmym", "role": "B.5 memprobe at N_o=1024, bs=[2,4,6,8]", "state": "SUCCEEDED"},
+    {"id": "pt-2b5xrw2h", "role": "B.5 full — N_o=1024 at 8 GPU x bs=8 x 2000 epochs", "state": "RUNNING"}
+  ],
+  "tasks_completed": [
+    {"id": "T0", "summary": "exp_b historical baseline recorded to scripts/acp_jobs/_exp_b_baseline.sh (commit 1034512)"},
+    {"id": "T0b", "summary": "8x8 memory probe: bs=8/N_o=256 peak 67.65 GiB, step-time 10.83 s (probe pt-eu315wi5)"},
+    {"id": "T1", "summary": "Thread A diagnosis (commit 6873884): approach-phase spike is causal-decoder cold-start (H1); exp_a memorization 8.46 mm mid but 24.69 mm approach — memorization does not fix spike; follow-on = temporal warmup padding"},
+    {"id": "T3-code", "summary": "B.1 procrustes-aligned object loss (commit 438a272): closed-form Kabsch in stream3r/loss/dcf_losses.py with --object-loss-mode flag; 4/4 unit tests pass; smoke ACP pt-8ln2qy21 succeeded with finite loss"}
+  ],
+  "tasks_pending": [
+    {"id": "T0c", "priority": "P0", "summary": "B.00 new-baseline ACP pt-05jjn033 completion (~13 h) — establishes comparison target for B.1 / B.5"},
+    {"id": "T3-full", "priority": "P0", "summary": "B.1 full ACP pt-tyan7jjh completion (~13 h) — does Procrustes-aligned loss beat B.00 obj L2?"},
+    {"id": "T7", "priority": "P0", "summary": "B.5 N_o=1024 ACP pt-2b5xrw2h completion (~16.7 h) — does 4x template resolution help?"},
+    {"id": "T8", "priority": "P0", "summary": "Aggregate: comparison table (obj L2 / hand L2 / chamfer / ratio) vs exp_b and B.00; 3D scatters; camera-view MP4s; update PROGRESS_LOG/EXPERIMENTS/DECISIONS; publish summary HTML. Spec-level exit: >=1 leg < 30 mm obj L2."},
+    {"id": "F1", "priority": "P1", "summary": "LR recalibration fallback (B.00b at 2x LR) if B.00 hand L2 > 1.5x exp_b's 21.46 mm"},
+    {"id": "F2", "priority": "P1", "summary": "Approach-phase fix follow-on spec — temporal warmup padding experiment per Thread A §5"},
+    {"id": "F3", "priority": "P2", "summary": "Make memprobe DDP-aware or document +10 GiB rule (currently under-reports by ~7 GiB)"},
+    {"id": "F4", "priority": "P2", "summary": "Amortize 8x8 epoch-boundary overhead — persistent_workers or oversample_manifest to get >1 step/epoch"}
+  ],
+  "memory_entries_written": [
+    "feedback_pytorch_expandable_segments.md",
+    "feedback_acp_memprobe_underestimates_ddp.md",
+    "feedback_dcf_memprobe_config_drift.md",
+    "project_exp_b_improvements_running.md",
+    "project_thread_a_cold_start_finding.md",
+    "reference_acp_template_jobs_hoi3r.md"
+  ],
+  "caveats": [
+    "B.00 / B.1 / B.5 all RUNNING but not complete; results in ~13-17 h wall. Exit bar (obj L2 < 30 mm) cannot yet be evaluated.",
+    "8x8 at 1 step/epoch pays ~14 s/epoch worker-respawn overhead; actual wall is ~2x the probe-extrapolated estimate.",
+    "B.5 at bs=8 / N_o=1024 has only 6.73 GiB single-GPU headroom; expandable_segments absorbed DDP overhead at epoch 1 but late-training fragmentation is possible.",
+    "LR held unchanged from exp_b (DCF 1e-3 / decoder 1e-4 / scene-heads 1e-5) despite 4x effective batch — if B.00 degrades, sqrt-LR fallback (B.00b at 2x LR) is on the plan.",
+    "Codex sandbox can't SSH to the debug container (feedback_codex_ssh_block.md reconfirmed this session); B.1 was implemented inline by Claude + scp.",
+    "MV-SAM3D object prior deferred; approach-spike fix spawns separate spec. Thread A's cold-start finding is independent of the prior direction."
+  ],
+  "resume_prompt": "Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-session-summary-exp-b-improvements-8x8-rebaseline-launch.json and continue from the first pending task.",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-session-summary-exp-b-improvements-8x8-rebaseline-launch.html",
+  "key_metrics": {
+    "exp_b_historical_hand_l2_mm": 21.46,
+    "exp_b_historical_obj_l2_mm": 50.07,
+    "thread_a_exp_a_approach_mean_mm": 24.69,
+    "thread_a_exp_a_approach_max_mm": 50.04,
+    "thread_a_exp_a_mid_mean_mm": 8.46,
+    "thread_a_exp_b_approach_mean_mm": 27.79,
+    "thread_a_exp_b_mid_mean_mm": 20.81,
+    "probe_bs4_no256_peak_gib": 38.48,
+    "probe_bs8_no256_peak_gib": 67.65,
+    "probe_bs4_no1024_peak_gib": 40.97,
+    "probe_bs8_no1024_peak_gib": 72.45,
+    "b00_v1_oom_at_gib": 75.14,
+    "spec_exit_obj_l2_mm": 30.0
+  }
+}
