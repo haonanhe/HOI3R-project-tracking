@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-18 · DCF exp_a vs exp_b — pre-FPS refactor, 1 seq vs subject-01",
+    "date": "2026-04-18",
+    "status": "finding",
+    "summary": "Pre-FPS object_query_points refactor unblocks mixed-object batches. Apples-to-apples: 1-sequence training (exp_a) beats subject-01 multi-seq (exp_b) 11.8 vs 21.5 mm hand L2 and 9.2 vs 50.1 mm obj L2 at 2000 steps; multi-seq training itself is the regression.",
+    "path": "updates/2026-04-18-dcf-exp-a-vs-exp-b.html"
+  },
+  {
     "title": "2026-04-17 · Session Summary — MANO loaders smplx → manopth migration",
     "date": "2026-04-17",
     "status": "complete",
