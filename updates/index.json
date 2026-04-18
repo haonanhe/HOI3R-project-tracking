@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-18 · Session Summary — Pre-FPS refactor & exp_a vs exp_b",
+    "date": "2026-04-18",
+    "status": "finding",
+    "summary": "Pre-FPS object_query_points refactor + apples-to-apples exp_a vs exp_b: 1-seq beats 100-seq by 1.8× (hand) / 5.4× (obj) at 2000 steps. Multi-seq itself is the regression; object failure is rigid displacement.",
+    "path": "updates/2026-04-18-session-summary-prefps-exp-a-vs-b.html",
+    "file": "updates/2026-04-18-session-summary-prefps-exp-a-vs-b.html",
+    "sidecar": "updates/2026-04-18-session-summary-prefps-exp-a-vs-b.json"
+  },
+  {
     "date": "2026-04-18",
     "title": "Session Summary: MANO convention finalization (Tasks 1-4/12)",
     "file": "updates/2026-04-18-session-summary-mano-convention-finalization.html",
