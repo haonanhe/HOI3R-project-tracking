@@ -1,0 +1,122 @@
+{
+  "date": "2026-04-18",
+  "topic": "mano-convention-finalization",
+  "branch": "feat/benchmark",
+  "head_sha": "c146fb0",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-benchmark",
+  "spec_path": "docs/superpowers/specs/2026-04-17-mano-convention-finalization-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-17-mano-convention-finalization.md",
+  "commits": [
+    {
+      "sha": "e6f9b82",
+      "type": "feat",
+      "subject": "migrate DexYCB+HO3D MANO loaders to manopth"
+    },
+    {
+      "sha": "18ad3c3",
+      "type": "docs",
+      "subject": "MANO convention finalization spec + plan"
+    },
+    {
+      "sha": "4e3df05",
+      "type": "test",
+      "subject": "add HOT3D loader toolkit-match smoke"
+    },
+    {
+      "sha": "1840c43",
+      "type": "style",
+      "subject": "tighten HOT3D smoke per code review"
+    },
+    {
+      "sha": "ccfa0a9",
+      "type": "fix",
+      "subject": "NPZ fallback for HOT3D MANO loader + max_frames cap"
+    },
+    {
+      "sha": "16f92bb",
+      "type": "feat",
+      "subject": "add canonical joint order and remap helper"
+    },
+    {
+      "sha": "c146fb0",
+      "type": "docs",
+      "subject": "progress: MANO convention finalization checkpoint T1-T4"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "T1",
+      "summary": "P0 commit of signed-off DexYCB/HO3D manopth migration",
+      "commit": "e6f9b82"
+    },
+    {
+      "id": "T2",
+      "summary": "HOT3D smoke test (TDD, xfail then tightened)",
+      "commit": "4e3df05+1840c43"
+    },
+    {
+      "id": "T3",
+      "summary": "HOT3D NPZ fallback + max_frames kwarg",
+      "commit": "ccfa0a9"
+    },
+    {
+      "id": "T4",
+      "summary": "Canonical remap helper in benchmark/data/common.py",
+      "commit": "16f92bb"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "T5",
+      "priority": "P0",
+      "summary": "Joint-index audit report at docs/superpowers/specs/2026-04-17-joint-index-audit.md"
+    },
+    {
+      "id": "T6",
+      "priority": "P0",
+      "summary": "Apply remap_joints across adapters (magichoi, fp_hawor, dcf)"
+    },
+    {
+      "id": "T7",
+      "priority": "P0",
+      "summary": "Apply remap_joints across metrics + mano_validation.py"
+    },
+    {
+      "id": "T8",
+      "priority": "P1",
+      "summary": "Formalize manopth as repo dep; drop sys.path hacks"
+    },
+    {
+      "id": "T9",
+      "priority": "P1",
+      "summary": "Three-convention numeric MANO validation tests"
+    },
+    {
+      "id": "T10",
+      "priority": "P2",
+      "summary": "MagicHOI DexYCB 5-frame smoke"
+    },
+    {
+      "id": "T11",
+      "priority": "P2",
+      "summary": "FP+HaWoR DexYCB+HO3D 5-frame smokes (template_based)"
+    },
+    {
+      "id": "T12",
+      "priority": "P2",
+      "summary": "DCF DexYCB 5-frame smoke via feat/dcf checkpoint"
+    }
+  ],
+  "memory_entries_written": [
+    "feedback_codex_ssh_block.md",
+    "reference_hot3d_max_frames.md",
+    "project_mano_convention_finalization.md"
+  ],
+  "caveats": [
+    "Codex sandbox SSH is intermittently blocked; fall back to Claude-direct edits via scp (do not retry codex-rescue on the same task).",
+    "HOT3D sequences are 1392-3726 NPZ frames; smoke runs must pass max_frames=5 (load_sequence_gt accepts it; ~12s vs >2min).",
+    "Minor scope addition vs spec: max_frames kwarg on load_sequence_gt / _load_processed_frame_index (default None, backwards-compatible)."
+  ],
+  "resume_prompt": "Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-session-summary-mano-convention-finalization.json and continue from the first pending task.",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-session-summary-mano-convention-finalization.html"
+}
