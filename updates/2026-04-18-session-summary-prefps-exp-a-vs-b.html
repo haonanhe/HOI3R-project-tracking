@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary · Pre-FPS + exp_a vs exp_b — 2026-04-18 · HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+h4{color:#555;margin-top:16px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.caption{font-size:.85em;color:#666;margin-top:4px;text-align:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2,.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Pre-FPS Refactor + exp_a vs exp_b <span style="font-weight:400;color:#555">— Session Summary</span></h1>
+  <div class="meta-box">
+    <div class="meta-grid">
+      <div class="meta-label">Date</div><div class="meta-value">2026-04-18</div>
+      <div class="meta-label">Branch</div><div class="meta-value">feat/dcf (worktree .worktrees/feat-dcf)</div>
+      <div class="meta-label">HEAD SHA</div><div class="meta-value">8700315</div>
+      <div class="meta-label">Worktree path</div><div class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</div>
+      <div class="meta-label">ACP jobs</div><div class="meta-value">pt-xt073hk1 (probe) · pt-ag5bls6q (exp_a) · pt-9m0owmfc (exp_b)</div>
+      <div class="meta-label">Experiment page</div><div class="meta-value"><a href="2026-04-18-dcf-exp-a-vs-exp-b.html">2026-04-18-dcf-exp-a-vs-exp-b.html</a></div>
+      <div class="meta-label">Goal</div><div class="meta-value">Under an apples-to-apples setup, decide whether the 2026-04-17 "tight overfit beats multi-seq" gap is an artifact (sampler / loss / bs mismatch) or an inherent multi-sequence regression.</div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2>TL;DR</h2>
+  <div class="highlight">
+    The object-grouped-sampler constraint was an implementation artifact. Commit <code>8700315</code> moves object FPS into the dataset so mixed-object batches stack into <code>[B, 256, 3]</code> naturally — sampler, loss, batch size, and GPU count can all be held constant. Under that equalization, <b>exp_a (1 seq × oversample 256) still beats exp_b (full subject-01) 11.8 vs 21.5 mm hand L2 (1.8×) and 9.2 vs 50.1 mm obj L2 (5.4×)</b>. Multi-seq training itself is the regression; the object head's 1.22 chamfer/L2 ratio on exp_b is a rigid-displacement signature — predictions on the right cloud, displaced as a group. User-proposed follow-up: SAM-3D-Objects as an object shape prior at inference, turning the DCF object head into a pose-only estimator.
+  </div>
+  <div class="grid-4" style="margin-top:16px">
+    <div class="stat-card"><div class="value">1</div><div class="label">commit on feat/dcf</div></div>
+    <div class="stat-card"><div class="value">3</div><div class="label">ACP jobs (1 probe + 2 training)</div></div>
+    <div class="stat-card"><div class="value">11.8 mm</div><div class="label">exp_a hand L2 mean</div></div>
+    <div class="stat-card"><div class="value">5.4×</div><div class="label">exp_b / exp_a obj L2 ratio</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Tasks Completed</h2>
+  <table><thead><tr><th style="width:80px">ID</th><th style="width:100px">Status</th><th>Summary</th></tr></thead><tbody><tr><td><code>T1</code></td><td><span class="badge badge-pass">PASS</span></td><td>Memory probe (ACP pt-xt073hk1): per-rank peak [1:16.6, 2:23.9, 4:38.5] GiB; bs=6 StopIteration exposed 5-sample-per-object cap</td></tr>
+<tr><td><code>T2</code></td><td><span class="badge badge-pass">PASS</span></td><td>Pre-FPS refactor — object_query_points [N_o=256,3] produced in dataset; DCFBranch / STream3R.forward accept the new kwarg; --oversample-manifest flag added</td></tr>
+<tr><td><code>T3</code></td><td><span class="badge badge-pass">PASS</span></td><td>exp_a (ACP pt-ag5bls6q): 1 seq × oversample 256, 4 GPU bs=4, L1, 2000 steps — hand L2 11.84 / obj L2 9.19 mm</td></tr>
+<tr><td><code>T4</code></td><td><span class="badge badge-pass">PASS</span></td><td>exp_b (ACP pt-9m0owmfc): full subject-01 (100 seq), 4 GPU bs=4, L1, 2000 steps — hand L2 21.46 / obj L2 50.07 mm</td></tr>
+<tr><td><code>T5</code></td><td><span class="badge badge-pass">PASS</span></td><td>Published experiment page + camera-view overlay MP4s (63 frames / 10 fps) to tracking site</td></tr></tbody></table>
+</section>
+
+<section>
+  <h2>Commits</h2>
+  <table><thead><tr><th style="width:100px">SHA</th><th style="width:80px">Type</th><th>Subject</th></tr></thead><tbody><tr><td><code>8700315</code></td><td><code>feat</code></td><td>feat(dcf): pre-FPS object_query_points for mixed-object batches</td></tr></tbody></table>
+</section>
+
+<section>
+  <h2>Key Discoveries</h2>
+
+  <div class="panel">
+    <h3 style="margin-top:0">Multi-seq training itself is the regression <span class="badge badge-finding">FINDING</span></h3>
+    <p>Identical architecture, bs, L1 loss, scene weights, LR, and step budget. Expanding from 1 sequence to 100 sequences on the same subject / camera / hand shape: hand L2 <b>11.8 → 21.5 mm</b>, obj L2 <b>9.2 → 50.1 mm</b>. The gap cannot be attributed to the sampler, loss, or bs any more — those were all equalized by <code>8700315</code>. Evidence and plots on the <a href="2026-04-18-dcf-exp-a-vs-exp-b.html">experiment page</a>.</p>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-top:0">Object failure mode = rigid displacement, not misarticulation <span class="badge badge-finding">FINDING</span></h3>
+    <p>exp_a chamfer/L2 ≈ 1.56 (hand) and 1.56 (obj) — near-1 means predictions are on the right cloud, mildly displaced. exp_b object chamfer/L2 = <b>1.22</b> — even lower ratio despite far higher absolute error — means the whole predicted object cluster is shifted by ~40 mm as a rigid group. Signature of an under-specified object-pose prior averaged across 20 YCB objects.</p>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-top:0">Pre-FPS dataset refactor lifts the object-homogeneous batch constraint <span class="badge badge-fix">FIX</span></h3>
+    <p><code>DexYCBDCFDataset.__getitem__</code> now emits <code>object_query_points: [N_o=256, 3]</code> per sample alongside the full canonical mesh. Because N_o is constant, <code>dcf_collate_fn</code> stacks mixed-object samples into <code>[B, 256, 3]</code> without needing <code>ObjectGroupedBatchSampler</code>. <code>DCFBranch.prepare_extra_global_tokens</code> and <code>STream3R.forward</code> prefer <code>object_query_points</code> when supplied; the old FPS-on-batch[0] path remains as fallback. Added <code>--oversample-manifest N</code> so single-sequence × bs&gt;1 is feasible via per-call random frame resampling.</p>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-top:0">Memory probe StopIteration exposed sampler cap, not OOM <span class="badge badge-finding">FINDING</span></h3>
+    <p>ACP probe <code>pt-xt073hk1</code> measured per-rank peak memory at bs=[1,2,4] → [16.6, 23.9, 38.5] GiB on H100. bs=6 failed with <code>StopIteration</code> — not OOM. Root cause: subject-01 manifest has 20 objects × 5 samples/object, so <code>ObjectGroupedBatchSampler</code> with <code>drop_last=True</code> caps per-object bs at 5. Extrapolated memory ceiling is ~bs=8 (~68 GiB) but we never get there under the old sampler.</p>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-top:0">Debug container multi-step runs cannot be trusted <span class="badge badge-fail">FAIL</span></h3>
+    <p>Smoke on debug container produced a valid step 1 (<code>loss=1.373, hand=0.355, svd=0.659</code>) then failed every step 2+ with <code>NVML_SUCCESS == r INTERNAL ASSERT FAILED</code>. ACP-dedicated nodes ran the identical code for 2000 steps cleanly. Saved as feedback memory so future sessions don't chase this as a real bug.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Module / Branch State</h2>
+  <table>
+    <thead><tr><th>Aspect</th><th>State after 8700315</th></tr></thead>
+    <tbody>
+      <tr><td>Active branch</td><td><code>feat/dcf</code>, single worktree at <code>.worktrees/feat-dcf</code></td></tr>
+      <tr><td>HEAD</td><td><code>8700315</code> — feat(dcf): pre-FPS object_query_points for mixed-object batches</td></tr>
+      <tr><td>Dataset (<code>stream3r/data/dexycb_dcf_dataset.py</code>)</td><td>Emits <code>object_query_points: [256, 3]</code>; <code>_STACKABLE_KEYS</code> includes it</td></tr>
+      <tr><td>Model (<code>stream3r/models/dcf_branch.py</code>)</td><td><code>prepare_extra_global_tokens</code> accepts <code>object_query_points</code>; prefers it over <code>object_vertices_canonical[0]</code> FPS</td></tr>
+      <tr><td>Model (<code>stream3r/models/stream3r.py</code>)</td><td><code>forward(object_query_points=...)</code> threads through; relaxed requirement: canonical OR query must be supplied, not both</td></tr>
+      <tr><td>Trainer (<code>scripts/dcf_dataloader_train.py</code>)</td><td><code>compute_batch_loss</code> auto-selects <code>object_query_points</code> when batch has it; new <code>--oversample-manifest N</code> flag</td></tr>
+      <tr><td>Sampler</td><td><code>ObjectGroupedBatchSampler</code> still works; no longer a hard requirement — use <code>--no-group-by-object</code> by default going forward</td></tr>
+      <tr><td>Probe tool</td><td>New <code>scripts/dcf_memory_probe.py</code> — single-GPU per-bs peak-memory sweep</td></tr>
+      <tr><td>Artifacts</td><td>exp_a + exp_b under <code>logs/dcf_exp_a_1seq_4gpu_bs4_l1/</code> and <code>logs/dcf_exp_b_subject01_4gpu_bs4_l1/</code>; MP4 overlays under <code>logs/_publish_2026-04-18/</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Open Issues &amp; Next Steps</h2>
+  <table><thead><tr><th style="width:80px">ID</th><th style="width:80px">Priority</th><th>Next action</th></tr></thead><tbody><tr><td><code>N1</code></td><td><span class="badge badge-p0">P0</span></td><td>Re-run exp_b at 8000+ steps (4× current budget) to disambiguate convergence vs. inherent multi-seq regression before committing to architectural fixes</td></tr>
+<tr><td><code>N2</code></td><td><span class="badge badge-p1">P1</span></td><td>Survey /mnt/afs/haonan/hoi3r/sam-3d-objects — mesh output format / interface / cost; sanity-check on one DexYCB frame: can its chamfer beat exp_b's 61 mm?</td></tr>
+<tr><td><code>N3</code></td><td><span class="badge badge-p1">P1</span></td><td>Prototype pose-only object head conditioned on sam-3d-objects mesh (object_query_points supplied from the generator); compare to exp_a/exp_b ceiling</td></tr>
+<tr><td><code>N4</code></td><td><span class="badge badge-p2">P2</span></td><td>Object-frame loss (rigid-align pred→GT in canonical mesh frame before L1) to decouple shape from pose in the current exp_b-style regression</td></tr>
+<tr><td><code>N5</code></td><td><span class="badge badge-p2">P2</span></td><td>Diagnose approach-phase hand degradation — per-frame hand L2 spikes 30–50 mm in the first ~10 frames of 141754 for both exps; no hypothesis yet</td></tr></tbody></table>
+</section>
+
+<section>
+  <h2>Caveats</h2>
+  <ul>
+    <li>exp_a training hand L1 /coord is <0.01 mm — it memorized the 1 sequence; exp_a metrics are a ceiling, not generalization evidence.</li><li>exp_b eval is on the first sequence of subject-01 (trained on), not a held-out sequence — the 21.5 mm hand L2 is still train-set performance, not a test number.</li><li>exp_b at 2000 steps may not have converged (train hand loss still 0.012–0.018 with high variance); before attributing the gap to architecture, run the longer budget.</li><li>Debug container assertions during the smoke (NVML_SUCCESS) are a container-side issue — ACP nodes are clean (recorded as feedback memory).</li><li>L1-only hand loss (no chamfer) differs from the 2026-04-17 multi-seq grouped ref (l1+chamfer). The comparison is with today's exp_a, not that reference.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Memory Entries Written</h2>
+  <ul>
+    <li><code>project_prefps_refactor_results.md</code> — exp_a vs exp_b metrics + root-cause narrative</li>
+    <li><code>feedback_debug_container_nvml_assert.md</code> — NVML assertion quirk, dispatch to ACP instead</li>
+    <li><code>project_sam3d_object_prior_idea.md</code> — user's proposed shape-prior direction for the object head</li>
+  </ul>
+</section>
+
+<section>
+  <h2>How to Resume</h2>
+  <div class="info">
+    <p>To resume, paste into a new Claude Code session:</p>
+    <pre style="background:#fff;border:1px solid #ddd;border-radius:6px;padding:12px;overflow-x:auto">Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-session-summary-prefps-exp-a-vs-b.json
+and continue from the first pending task.</pre>
+  </div>
+</section>
+
+<footer>
+  <p>Experiment page (charts, 3D scatter, MP4 overlays): <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-dcf-exp-a-vs-exp-b.html">https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-dcf-exp-a-vs-exp-b.html</a></p>
+</footer>
+
+</body>
+</html>
