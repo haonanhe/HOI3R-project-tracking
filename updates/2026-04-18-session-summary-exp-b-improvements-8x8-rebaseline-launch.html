@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2026-04-18 · Session Summary — exp_b improvements brainstorm + 8×8 re-baseline launch</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+h4{color:#555;margin-top:16px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.caption{font-size:.85em;color:#666;margin-top:4px;text-align:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2,.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>exp_b Improvements — Brainstorm, Spec, 8×8 Re-baseline Launch <span style="font-weight:400;color:#555">— Session Summary</span></h1>
+  <div class="meta-box">
+    <div class="meta-grid">
+      <div class="meta-label">Date</div><div class="meta-value">2026-04-18 (later session)</div>
+      <div class="meta-label">Branch</div><div class="meta-value">feat/dcf (worktree .worktrees/feat-dcf)</div>
+      <div class="meta-label">HEAD SHA</div><div class="meta-value">cf53855</div>
+      <div class="meta-label">Worktree path</div><div class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</div>
+      <div class="meta-label">Spec</div><div class="meta-value">docs/superpowers/specs/2026-04-18-exp-b-improvements-design.md</div>
+      <div class="meta-label">Plan</div><div class="meta-value">docs/superpowers/plans/2026-04-18-exp-b-improvements-plan.md</div>
+      <div class="meta-label">ACP jobs (live)</div><div class="meta-value">pt-05jjn033 (B.00) · pt-tyan7jjh (B.1) · pt-2b5xrw2h (B.5)</div>
+      <div class="meta-label">Goal</div><div class="meta-value">Brainstorm exp_b fixes, write spec + plan, re-baseline to 8 GPU × bs=8, launch first Thread B legs, file Thread A diagnosis for approach-phase hand spike.</div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2>TL;DR</h2>
+  <div class="highlight">
+    <p><strong>Brainstorm concluded</strong> that MV-SAM3D object prior is deferred; this session scoped exp_b fixes instead (Thread A approach-spike diagnosis + Thread B architectural ablations). Spec + plan landed at <code>ed3234f</code>. User then directed a <strong>re-baseline from 4×4 → 8 GPU × bs=8</strong> (effective batch 64, 4× data exposure per step).</p>
+    <p><strong>Thread A</strong> diagnosis (commit <code>6873884</code>) fingered <em>causal-decoder cold-start</em> as the dominant cause of the approach-phase hand spike — exp_a memorized the mid-sequence (8.5 mm L2) yet still has a 25 mm approach L2, so memorization doesn't fix it. Follow-on experiment: temporal-warmup padding.</p>
+    <p><strong>Thread B</strong>: initial B.00 OOMed at 75 GiB/rank (single-GPU probe underestimated by ~7 GiB vs DDP). Added <code>PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True</code>; resubmitted. B.00, B.1 (Procrustes loss, 4/4 unit tests pass), and B.5 (N_o=1024) are now all RUNNING at 8×8. B.0 / B.2 / B.3 / B.4 were dropped at user's direction.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Headline Stats</h2>
+  <div class="grid-4">
+    <div class="stat-card"><div class="value">8</div><div class="label">Commits on feat/dcf</div></div>
+    <div class="stat-card"><div class="value">3</div><div class="label">ACP jobs RUNNING</div></div>
+    <div class="stat-card"><div class="value">6</div><div class="label">New memory entries</div></div>
+    <div class="stat-card"><div class="value">6</div><div class="label">Auxiliary ACP jobs (probes + retries + smoke)</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Tasks / Experiments</h2>
+  <table>
+    <tr>
+      <th>ID</th><th>Name</th><th>Status</th><th>Commit</th><th>Notes</th>
+    </tr>
+    <tr>
+      <td>T0</td><td>Locate exp_b historical baseline</td><td><span class="badge badge-pass">DONE</span></td><td><code>1034512</code></td>
+      <td>Params recorded to <code>scripts/acp_jobs/_exp_b_baseline.sh</code>: 4 GPU × bs=4, <code>--num-epochs 334</code>, <code>--hand-loss-type l1</code>, <code>--canonical-hand-mode gps</code>, <code>--no-group-by-object</code>.</td>
+    </tr>
+    <tr>
+      <td>T0b</td><td>8×8 memory probe (N_o=256)</td><td><span class="badge badge-pass">DONE</span></td><td><code>96a7dd1</code> <code>24b624f</code></td>
+      <td>Memprobe patched to honor <code>group_by_object=False</code>. Result (<code>pt-eu315wi5</code>): bs=8 / N_o=256 peak 67.65 GiB, step-time 10.83 s.</td>
+    </tr>
+    <tr>
+      <td>T1</td><td>Thread A approach-phase hand spike diagnosis</td><td><span class="badge badge-pass">DONE</span></td><td><code>6873884</code></td>
+      <td>Per-frame hand L2 + covariate plots; ranked-hypothesis note at <code>docs/diagnosis/2026-04-18-approach-phase-hand-spike.md</code>.</td>
+    </tr>
+    <tr>
+      <td>T3</td><td>B.1 Procrustes-aligned object loss</td><td><span class="badge badge-pass">DONE</span> (code)</td><td><code>438a272</code></td>
+      <td>New <code>procrustes_aligned_3d_loss</code> in <code>stream3r/loss/dcf_losses.py</code>; CLI flag <code>--object-loss-mode</code>; 4/4 unit tests pass; smoke ACP <code>pt-8ln2qy21</code> loss=0.484 finite.</td>
+    </tr>
+    <tr>
+      <td>T0c</td><td>B.00 new baseline (8×8 × 2000 epochs)</td><td><span class="badge badge-fix">IN-FLIGHT</span></td><td><code>ed3234f</code>+env</td>
+      <td>v1 <code>pt-6z1krbfg</code> OOMed @ 75 GiB/rank (cancelled). v2 <code>pt-05jjn033</code> RUNNING with <code>expandable_segments:True</code>, epoch 1 = 24 s → ~13 h wall.</td>
+    </tr>
+    <tr>
+      <td>T3 (full)</td><td>B.1 full ACP</td><td><span class="badge badge-fix">IN-FLIGHT</span></td><td><code>438a272</code></td>
+      <td>v1 <code>pt-ysan1p05</code> cancelled with B.00 v1. v2 <code>pt-tyan7jjh</code> RUNNING with expandable_segments.</td>
+    </tr>
+    <tr>
+      <td>T7</td><td>B.5 N_o=1024 (template resolution)</td><td><span class="badge badge-fix">IN-FLIGHT</span></td><td><code>7d18d3b</code> <code>cf53855</code></td>
+      <td>Memprobe <code>pt-jll8rmym</code>: bs=8 / N_o=1024 fits at 72.45 GiB (6.73 GiB headroom). Full <code>pt-2b5xrw2h</code> RUNNING, epoch 1 = 30 s → ~16.7 h wall.</td>
+    </tr>
+    <tr>
+      <td>B.0</td><td>8k convergence leg</td><td><span class="badge badge-fail">DROPPED</span></td><td>—</td>
+      <td>User dropped — B.00 checkpoints every 500 steps provide the convergence curve for free.</td>
+    </tr>
+    <tr>
+      <td>B.2</td><td>Object class embedding</td><td><span class="badge badge-fail">DROPPED</span></td><td>—</td>
+      <td>User directive: not necessary.</td>
+    </tr>
+    <tr>
+      <td>B.3</td><td>Per-sequence pose augmentation</td><td><span class="badge badge-fail">DROPPED</span></td><td>—</td>
+      <td>User directive: not necessary.</td>
+    </tr>
+    <tr>
+      <td>B.4</td><td>Contact-anchored pose loss</td><td><span class="badge badge-fail">DROPPED</span></td><td>—</td>
+      <td>User directive: not running.</td>
+    </tr>
+    <tr>
+      <td>T8</td><td>Aggregate results + closeout HTML</td><td><span class="badge badge-p0">PENDING</span></td><td>—</td>
+      <td>Blocked on B.00 / B.1 / B.5 completion (~13–17 h). Comparison table, 3D scatters, camera-view MP4s, spec/DECISIONS closeout.</td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>Key Discoveries</h2>
+
+  <div class="panel">
+    <h3><span class="badge badge-finding">FINDING</span> Approach-phase hand spike is causal-decoder cold-start</h3>
+    <p>On seq <code>20200709_141754</code>, both exp_a and exp_b show a hand L2 spike in frames 0–9. <strong>exp_a memorized the mid-sequence (8.46 ± 1.39 mm) yet its approach is 24.69 ± 11.63 mm (max 50.04 mm at frame 0).</strong> Memorization doesn't fix it → not a data / convergence issue; it's the model's causal-decoder warming up its temporal context. Motion (27.7 → 9.5 mm/frame), hand-object distance (323 → 86 mm), hand bbox area (3885 → 6143 px²), and visibility (60.5% at frame 0 → 100% by frame 3) all co-vary with the spike, but the exp_a evidence rules out data as the driver.</p>
+    <p><strong>Follow-on experiment (seed for next spec):</strong> prepend K=10 duplicated / jittered copies of frame 0 as a warmup, then evaluate the real sequence. If spike disappears → H1 (cold-start) confirmed. If persists → H3 (motion) or H2 (visibility).</p>
+  </div>
+
+  <div class="panel">
+    <h3><span class="badge badge-fix">FIX</span> 8×8 DDP OOM → expandable_segments env var</h3>
+    <p>Single-GPU memory probe reported 67.65 GiB peak at bs=8 (11.5 GiB headroom on 80 GB H100). First B.00 (<code>pt-6z1krbfg</code>) OOMed at 75.14 GiB — DDP gradient buckets + NCCL buffers + allocator fragmentation added ~7.5 GiB not captured by the single-GPU probe. Fix: <code>PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True</code> in the ACP env — the "reserved but unallocated" 9.37 GiB pool that triggered the OOM was largely fragmentation. B.00-v2 (<code>pt-05jjn033</code>) with same bs=8 config runs cleanly.</p>
+  </div>
+
+  <div class="panel">
+    <h3><span class="badge badge-fix">FIX</span> memprobe build_args drifted from trainer — object_loss_mode missing</h3>
+    <p>After B.1 added <code>--object-loss-mode</code> to <code>scripts/dcf_dataloader_train.py</code>, <code>scripts/dcf_memory_probe.py</code> crashed with <code>AttributeError: 'SimpleNamespace' object has no attribute 'object_loss_mode'</code> because <code>compute_batch_loss</code> reads it. Fixed at <code>cf53855</code> by backfilling the default in probe's <code>build_args()</code>. Lesson: any new CLI flag read in <code>compute_batch_loss</code> must also be added to the probe's hand-maintained SimpleNamespace.</p>
+  </div>
+
+  <div class="panel">
+    <h3><span class="badge badge-finding">FINDING</span> 8×8 pays per-epoch overhead: 1 step/epoch on a 100-seq dataset</h3>
+    <p>At 8 GPU × bs=8 (global batch 64) on a 100-sequence dataset with <code>drop_last=True</code>, there is only <strong>1 optimizer step per epoch</strong>. Workers respawn each epoch (<code>persistent_workers=False</code>) adds ~14 sec of overhead per epoch; net step-time is ~24 s vs the probe's 10.83 s. Projected B.00 wall doubles from ~6 h to ~13 h. No fix attempted this session — accept the wall-time cost. Future improvement: set <code>oversample_manifest</code> to multiply epoch length, or enable persistent workers.</p>
+  </div>
+
+  <div class="panel">
+    <h3><span class="badge badge-finding">FINDING</span> bs=8 at N_o=1024 survives with expandable_segments</h3>
+    <p>Pre-session expectation was that bs=8 / N_o=1024 would OOM even with fragmentation fix. Probe (<code>pt-jll8rmym</code>) measured 72.45 GiB / 6.73 GiB headroom at bs=8, and full run <code>pt-2b5xrw2h</code> passed epoch 1 cleanly at 30 s/step. Keeps B.5 apples-to-apples with B.00 at effective batch 64 rather than de-rating to bs=6 / effective 48.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Commits</h2>
+  <table>
+    <tr><th>SHA</th><th>Type</th><th>Subject</th></tr>
+    <tr><td><code>1034512</code></td><td>docs(acp)</td><td>record exp_b baseline invocation for B.x ablations</td></tr>
+    <tr><td><code>ed3234f</code></td><td>docs(spec,plan)</td><td>re-baseline to 8 GPU × bs=8 per user direction</td></tr>
+    <tr><td><code>6873884</code></td><td>diagnose(dcf)</td><td>Thread A approach-phase hand spike diagnosis</td></tr>
+    <tr><td><code>96a7dd1</code></td><td>fix(memprobe)</td><td>default group_by_object=False to match exp_b baseline</td></tr>
+    <tr><td><code>24b624f</code></td><td>fix(memprobe)</td><td>honor group_by_object flag in build_loader (was always grouped)</td></tr>
+    <tr><td><code>438a272</code></td><td>feat(dcf)</td><td>B.1 procrustes-aligned object loss + --object-loss-mode flag</td></tr>
+    <tr><td><code>7d18d3b</code></td><td>feat(memprobe)</td><td>--num-object-points flag for B.5 capacity ablation</td></tr>
+    <tr><td><code>cf53855</code></td><td>fix(memprobe)</td><td>inject object_loss_mode (B.1 compat) into build_args</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Module / Branch State</h2>
+  <table>
+    <tr><th>Aspect</th><th>State</th></tr>
+    <tr><td>Active branch</td><td><code>feat/dcf</code> on worktree <code>.worktrees/feat-dcf</code></td></tr>
+    <tr><td>HEAD</td><td><code>cf53855</code></td></tr>
+    <tr><td>Operational baseline</td><td><strong>B.00</strong> at 8 GPU × bs=8 × 2000 epochs (in-flight) — replaces exp_b 4×4 as comparison target</td></tr>
+    <tr><td>Historical baseline</td><td>exp_b (pt-9m0owmfc, 4×4): hand L2 21.46 mm / obj L2 50.07 mm — frozen reference</td></tr>
+    <tr><td>Thread B surface (post-pruning)</td><td>B.00 (baseline), B.1 (Procrustes loss), B.5 (N_o=1024); B.0 / B.2 / B.3 / B.4 dropped</td></tr>
+    <tr><td>Exit criterion</td><td>at least one leg brings eval obj L2 &lt; <strong>30 mm</strong> on DexYCB subject-01</td></tr>
+    <tr><td>Env defaults for 8×8 ACP</td><td><code>PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True</code>, workspace p1, RESERVED, backoff_limit=0</td></tr>
+    <tr><td>MV-SAM3D prior</td><td>Deferred. Spec §8 out-of-scope. Thread A's "cold-start" finding is independent of the object-prior direction.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Open Issues &amp; Next Steps</h2>
+  <table>
+    <tr><th>Priority</th><th>Item</th><th>Detail</th></tr>
+    <tr><td><span class="badge badge-p0">P0</span></td><td>Wait for B.00 / B.1 / B.5 to complete</td>
+      <td>All 3 RUNNING at 8×8. ETA ~13 h (B.00 / B.1) and ~16.7 h (B.5). Monitor via <code>GET /trainingJobs/&lt;name&gt;</code> and pull metrics from <code>logs/dcf_B00_new_baseline/</code>, <code>logs/dcf_B1_procrustes_loss/</code>, <code>logs/dcf_B5_n_o_1024/</code>.</td></tr>
+    <tr><td><span class="badge badge-p0">P0</span></td><td>Task 8 aggregate + closeout</td>
+      <td>After all three complete: comparison table (obj L2, hand L2, chamfer, chamfer/L2 ratio) vs exp_b and B.00; 3D scatters; camera-view MP4s; update <code>docs/PROGRESS_LOG.md</code>, <code>docs/EXPERIMENTS.md</code>, <code>docs/DECISIONS.md</code>. Publish summary HTML.</td></tr>
+    <tr><td><span class="badge badge-p1">P1</span></td><td>LR recalibration fallback if B.00 hand L2 &gt;&gt; 21.46 mm</td>
+      <td>Per spec §7 Risks: if B.00 hand L2 &gt; 1.5× exp_b's 21.46 mm, run <strong>B.00b</strong> with 2× LR (sqrt-scaled for 4× effective batch). Adds one ACP job to critical path.</td></tr>
+    <tr><td><span class="badge badge-p1">P1</span></td><td>Approach-phase fix follow-on spec</td>
+      <td>Seed in Thread A note §5: temporal warmup padding experiment. Cheap (eval-only smokes). Converts Thread A's diagnosis into a concrete architecture fix. Decoupled from Thread B outcomes.</td></tr>
+    <tr><td><span class="badge badge-p2">P2</span></td><td>Make memprobe DDP-aware</td>
+      <td>Current probe is single-GPU and under-reports by ~7 GiB. Either run probe under torchrun, or document "add 10 GiB headroom" rule in <code>reference_acp_submission.md</code>. Low-urgency cleanup.</td></tr>
+    <tr><td><span class="badge badge-p2">P2</span></td><td>Amortize 8×8 epoch-boundary overhead</td>
+      <td>B.00 pays ~14 s/epoch worker respawn on top of 10.83 s/step because epochs are 1 step. Options: enable <code>persistent_workers=True</code>, or raise <code>oversample_manifest</code>. Saves ~6 h wall-time at 2000 epochs.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>How to Resume</h2>
+  <div class="info">
+    <p>Memory entries written this session:</p>
+    <ul>
+      <li><code>feedback_pytorch_expandable_segments.md</code></li>
+      <li><code>feedback_acp_memprobe_underestimates_ddp.md</code></li>
+      <li><code>feedback_dcf_memprobe_config_drift.md</code></li>
+      <li><code>project_exp_b_improvements_running.md</code></li>
+      <li><code>project_thread_a_cold_start_finding.md</code></li>
+      <li><code>reference_acp_template_jobs_hoi3r.md</code></li>
+    </ul>
+    <p>To resume, paste into a new Claude Code session:</p>
+    <pre><code>Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-session-summary-exp-b-improvements-8x8-rebaseline-launch.json
+and continue from the first pending task.</code></pre>
+  </div>
+</section>
+
+<footer>
+  <p>Generated 2026-04-18 via /conclude-session. HEAD <code>cf53855</code> on <code>feat/dcf</code> @ <code>.worktrees/feat-dcf</code>.</p>
+</footer>
+
+</body>
+</html>
