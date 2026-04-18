@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary: MANO convention finalization (Tasks 1-4/12) &mdash; HOI3R</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff;font-size:.9em}
+th,td{border:1px solid #ddd;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f6f7f8}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#e3f2fd;padding:12px;border-left:4px solid #2196f3;margin:12px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.82em;color:#fff}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-wip{background:#7f8c8d}
+.badge-p0{background:#e53935}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.88em;color:#c7254e}
+pre{background:#f4f4f4;padding:12px;border-radius:6px;overflow-x:auto;font-size:.85em}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.toc ul{margin:0;padding-left:20px}
+.toc a{text-decoration:none;color:#2c3e50}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.4em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.82em;color:#666;margin-top:4px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:900px){.grid-4{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>2026-04-18 &middot; Session Summary: MANO convention finalization (Tasks 1&ndash;4/12)</h1>
+  <div style="margin:8px 0;color:#555">
+    <span>Branch: <code>feat/benchmark</code></span>
+    <span style="margin-left:16px">Worktree: <code>.worktrees/feat-benchmark</code></span>
+    <span style="margin-left:16px">HEAD: <code>c146fb0</code></span>
+  </div>
+  <p><strong>One-line goal:</strong> start the six-track rollout of MANO convention invariants across the HOI3R benchmark &mdash; land the signed-off P0 patches, verify HOT3D stays on its official smplx path, add a canonical joint-order remap helper, and leave a durable handoff so tasks 5&ndash;12 can resume in a fresh session.</p>
+</header>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <ul>
+    <li><a href="#headline">Headline</a></li>
+    <li><a href="#plan">Plan &amp; invariant</a></li>
+    <li><a href="#tasks">Tasks 1&ndash;4 &mdash; what landed</a></li>
+    <li><a href="#discoveries">Key discoveries</a></li>
+    <li><a href="#commits">Commits</a></li>
+    <li><a href="#state">Module / branch state</a></li>
+    <li><a href="#next">Open issues &amp; next steps</a></li>
+    <li><a href="#resume">How to resume in a new session</a></li>
+  </ul>
+</nav>
+
+<section id="headline">
+<h2>Headline</h2>
+<div class="grid-4">
+  <div class="stat-card"><div class="value">4 / 12</div><div class="label">Tasks complete</div></div>
+  <div class="stat-card"><div class="value">8</div><div class="label">Commits on feat/benchmark</div></div>
+  <div class="stat-card"><div class="value">210 / 210</div><div class="label">Smoke tests passing</div></div>
+  <div class="stat-card"><div class="value">13.5 s</div><div class="label">HOT3D smoke runtime (max_frames=5)</div></div>
+</div>
+<p>
+  Executed the P0 commit of the 2026-04-17 manopth migration, wrote a toolkit-matched HOT3D smoke test (TDD, initially <code>xfail(strict=True)</code>), discovered the HOT3D loader was silently producing all-NaN on this container (no JSONL trajectories &mdash; MANO params actually live on the per-frame NPZs), added an NPZ fallback so the test flips green with the wrist matching the HOT3D toolkit to within 1&nbsp;mm (bit-exact <code>[209.96158, &minus;196.66623, &minus;460.14180]</code> mm), and shipped the canonical joint-order remap helper (<code>Convention</code> enum, <code>CANONICAL_JOINT_ORDER</code>, <code>remap_joints</code>) that the remaining tracks will consume.
+</p>
+</section>
+
+<section id="plan">
+<h2>Plan &amp; invariant</h2>
+<p>
+  Spec: <code>docs/superpowers/specs/2026-04-17-mano-convention-finalization-design.md</code><br>
+  Plan: <code>docs/superpowers/plans/2026-04-17-mano-convention-finalization.md</code> (12 tasks, 6 tracks)
+</p>
+<div class="highlight">
+  <strong>Invariant (load-bearing):</strong> each GT loader emits joints/vertices in the convention its dataset's <em>official evaluation toolkit</em> publishes metrics against. Not "everything uses manopth." Concretely: DexYCB&nbsp;&rarr;&nbsp;manopth (matches dex-ycb-toolkit), HO3D&nbsp;&rarr;&nbsp;manopth, HOT3D&nbsp;&rarr;&nbsp;smplx with <code>use_pca=True, num_pca_comps=15</code>. Adapters and metrics consume a single canonical 21-joint layout (dex-ycb-toolkit / OpenPose-style: <code>0=wrist, 1&ndash;4=thumb, 5&ndash;8=index, 9&ndash;12=middle, 13&ndash;16=ring, 17&ndash;20=pinky</code>), converted at the loader boundary.
+</div>
+<h3>Track DAG</h3>
+<pre>A (T1, P0 commit) ──► B′ (T2 test, T3 verify/fix)  ──┐
+                      C  (T4 remap, T5 audit, T6 adapters, T7 metrics) ──┬─► D (T9 numeric val)
+                      F  (T8 manopth as dep)                             ┘   └─► E (T10/11/12 smoke × 3 adapters)</pre>
+</section>
+
+<section id="tasks">
+<h2>Tasks 1&ndash;4 &mdash; what landed</h2>
+<table>
+  <thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>Summary</th></tr></thead>
+  <tbody>
+  <tr>
+    <td><strong>T1</strong> &mdash; P0 commit</td>
+    <td><span class="badge badge-pass">done</span></td>
+    <td><code>e6f9b82</code></td>
+    <td>Committed the signed-off v3 migration: <code>dexycb_loader.py</code>, <code>ho3d_loader.py</code>, <code>benchmark_paths.yaml</code>, new <code>render_mano_overlay.py</code>. 4 files, +328/&minus;97. Message cross-links yesterday's session summary.</td>
+  </tr>
+  <tr>
+    <td><strong>T2</strong> &mdash; HOT3D smoke test (TDD)</td>
+    <td><span class="badge badge-pass">done</span></td>
+    <td><code>4e3df05</code><br><code>1840c43</code></td>
+    <td>New <code>benchmark/tests/smoke/test_hot3d_loader.py</code>: loads one known sequence, asserts shape <code>(N, H, 21, 3)</code>, mm range, wrist within 1&nbsp;mm of toolkit reference. Reference computed directly from NPZ MANO params, not faked. Code-review follow-up tightened the test: YAML-driven paths, removed tautological dtype check, converted to <code>@pytest.mark.xfail(strict=True)</code> so the fix in T3 flips it to green automatically.</td>
+  </tr>
+  <tr>
+    <td><strong>T3</strong> &mdash; HOT3D loader fix</td>
+    <td><span class="badge badge-pass">done</span></td>
+    <td><code>ccfa0a9</code></td>
+    <td>Root cause: <code>load_sequence_gt</code> only read MANO from <code>mano_hand_pose_trajectory.jsonl</code>, which is absent on this container. Per-frame NPZs carry the params directly. Added an NPZ fallback branch: when JSONL is empty, feed <code>mano_global_orient</code>, <code>mano_hand_pose_pca</code>, <code>mano_transl</code>, <code>mano_shape</code>, <code>mano_is_right</code>, <code>mano_mask</code> through the existing <code>_mano_forward_hot3d</code> + <code>_world_to_cam</code> helpers. Fails fast when neither source is present.<br>Also added a <code>max_frames</code> kwarg propagated through <code>_load_processed_frame_index</code> &mdash; HOT3D sequences are 1392&ndash;3726 NPZ frames; CPU MANO FK on all of them exceeds 2 min. With <code>max_frames=5</code> the smoke runs in ~12&nbsp;s.</td>
+  </tr>
+  <tr>
+    <td><strong>T4</strong> &mdash; Canonical remap helper</td>
+    <td><span class="badge badge-pass">done</span></td>
+    <td><code>16f92bb</code></td>
+    <td>Added to <code>benchmark/data/common.py</code>: <code>Convention</code> enum (<code>CANONICAL</code> / <code>SMPLX</code> / <code>HOT3D</code>), <code>CANONICAL_JOINT_ORDER</code> tuple, <code>CANONICAL_TIP_INDICES = (4, 8, 12, 16, 20)</code>, and <code>remap_joints(joints, src)</code>. HOT3D loader already emits canonical order so its permutation is identity; smplx rewires thumb/index/middle/ring/pinky blocks and appended tips 16..20 into canonical positions. 8 new unit tests green.</td>
+  </tr>
+  </tbody>
+</table>
+</section>
+
+<section id="discoveries">
+<h2>Key discoveries</h2>
+
+<div class="panel">
+  <span class="badge badge-finding">FINDING</span>
+  <strong>HOT3D loader was silently broken on this container.</strong>
+  <p>
+    The JSONL-only hand-trajectory reader produced NaN hand joints for every frame on
+    <code>/mnt/afs/haonan/datasets/haonan/datasets/hot3d/processed/P0001/10a27bf7/214-1/</code>
+    because the JSONL files do not exist &mdash; only per-frame NPZs do. Because the caller
+    never ran downstream checks on the joints, the failure was invisible. The new test flips this into a loud
+    failure mode (and now passes via the NPZ fallback).
+  </p>
+</div>
+
+<div class="panel">
+  <span class="badge badge-finding">FINDING</span>
+  <strong>HOT3D's 21-joint layout is already canonical.</strong>
+  <p>
+    After the HOT3D toolkit's own <code>mano_joint_mapping</code> remap is applied (as the loader does),
+    the output is in the same order as dex-ycb-toolkit / OpenPose canonical. So <code>Convention.HOT3D &rarr; CANONICAL</code>
+    is the identity permutation &mdash; a worthwhile explicit constant for downstream adapters.
+  </p>
+</div>
+
+<div class="panel">
+  <span class="badge badge-fix">FIX</span>
+  <strong>Smoke tests on HOT3D must cap at a handful of frames.</strong>
+  <p>
+    Serial CPU MANO FK on the full sequence took long enough to saturate the debug container with zombie
+    <code>pytest</code> processes from repeated timeouts. <code>max_frames=5</code> on
+    <code>load_sequence_gt</code> and <code>_load_processed_frame_index</code> is now the invariant for any
+    smoke run; Track E smoke scripts (T10&ndash;T12) should plumb a <code>smoke_5frame.yaml</code> config
+    key through to it.
+  </p>
+</div>
+
+<div class="panel">
+  <span class="badge badge-fix">FIX</span>
+  <strong>Codex sandbox SSH is intermittently blocked.</strong>
+  <p>
+    <code>codex:codex-rescue</code> sandboxes returned <code>Operation not permitted</code> on SSH to the debug
+    container after the first successful invocation of the session. Fell back to Claude-direct
+    edits (<code>scp</code> file locally &rarr; <code>Edit</code> tool &rarr; <code>scp</code> back) per CLAUDE.md's
+    "codex unreachable &rarr; Claude writes" rule. Saved as memory <code>feedback_codex_ssh_block.md</code>
+    so future sessions don't burn time retrying.
+  </p>
+</div>
+</section>
+
+<section id="commits">
+<h2>Commits (on <code>feat/benchmark</code>)</h2>
+<table>
+  <thead><tr><th>SHA</th><th>Type</th><th>Message</th></tr></thead>
+  <tbody>
+  <tr><td><code>e6f9b82</code></td><td>feat</td><td>migrate DexYCB+HO3D MANO loaders to manopth</td></tr>
+  <tr><td><code>18ad3c3</code></td><td>docs</td><td>MANO convention finalization spec + plan</td></tr>
+  <tr><td><code>4e3df05</code></td><td>test</td><td>add HOT3D loader toolkit-match smoke</td></tr>
+  <tr><td><code>1840c43</code></td><td>style</td><td>tighten HOT3D smoke per code review</td></tr>
+  <tr><td><code>ccfa0a9</code></td><td>fix</td><td>NPZ fallback for HOT3D MANO loader + max_frames cap</td></tr>
+  <tr><td><code>16f92bb</code></td><td>feat</td><td>add canonical joint order and remap helper</td></tr>
+  <tr><td><code>c146fb0</code></td><td>docs</td><td>progress: MANO convention finalization checkpoint T1&ndash;T4</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="state">
+<h2>Module / branch state</h2>
+<table>
+  <thead><tr><th>Aspect</th><th>State</th></tr></thead>
+  <tbody>
+  <tr><td>Branch</td><td><code>feat/benchmark</code> at <code>c146fb0</code></td></tr>
+  <tr><td>DexYCB loader</td><td>manopth-backed, canonical joint order, committed</td></tr>
+  <tr><td>HO3D loader</td><td>manopth-backed, canonical joint order, committed</td></tr>
+  <tr><td>HOT3D loader</td><td>smplx with <code>num_pca_comps=15</code>; NPZ fallback for JSONL-absent containers; <code>max_frames</code> kwarg</td></tr>
+  <tr><td>Canonical remap</td><td><code>benchmark.data.common.remap_joints</code> + <code>Convention</code> enum; adapters/metrics not yet migrated to consume it</td></tr>
+  <tr><td><code>sys.path</code> hacks for manopth</td><td>still present in 3 loaders + overlay renderer (Task 8)</td></tr>
+  <tr><td>Numeric MANO validation</td><td>not yet written (Task 9); HOT3D smoke asserts wrist within 1 mm as an interim check</td></tr>
+  <tr><td>Adapter Phase-2 predictions</td><td>not yet run (Tasks 10&ndash;12)</td></tr>
+  <tr><td>Smoke suite</td><td>210 passed, 0 failed, 4 warnings</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="next">
+<h2>Open issues &amp; next steps</h2>
+<table>
+  <thead><tr><th>Priority</th><th>Item</th><th>Details</th></tr></thead>
+  <tbody>
+  <tr>
+    <td><span class="badge badge-p0">P0</span></td>
+    <td>Task 5 &mdash; Joint-index audit</td>
+    <td>Grep <code>benchmark/adapters/**</code>, <code>benchmark/metrics/**</code>, <code>benchmark/preprocessing/mano_validation.py</code>; enumerate each hard-coded joint-index assumption and its currently-assumed convention. Commit the table at <code>docs/superpowers/specs/2026-04-17-joint-index-audit.md</code>.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p0">P0</span></td>
+    <td>Tasks 6&ndash;7 &mdash; apply <code>remap_joints</code></td>
+    <td>Adapters (T6) and metrics + validator (T7) should consume canonical-ordered inputs only; remove per-file ordering branches. One commit per adapter family (magichoi, fp_hawor, dcf) for reviewability.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p1">P1</span></td>
+    <td>Task 9 &mdash; three-convention numeric validation</td>
+    <td>New <code>benchmark/tests/numeric/test_mano_conventions.py</code>: per-dataset, assert loader's first-frame canonical 21 joints are within 1 mm of the dataset toolkit's own output on the same sequence. HOT3D part is already half-done (the smoke test assertion).</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p1">P1</span></td>
+    <td>Task 8 &mdash; formalize manopth as a repo dep</td>
+    <td>Vendor under <code>third_party/manopth</code> (likely submodule); pin in <code>requirements.txt</code>; strip the 3 <code>_MANOPTH_SYS_PATHS</code> + <code>_ensure_manopth_on_path</code> blocks. Waits on T3 (done); does not block T5&ndash;T7.</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge-p2">P2</span></td>
+    <td>Tasks 10&ndash;12 &mdash; Phase-2 adapter smokes (5 frames)</td>
+    <td>MagicHOI (DexYCB), FP+HaWoR (DexYCB + HO3D, template_based), DCF (DexYCB via <code>feat/dcf</code> checkpoint). Each must produce <code>predictions.npz</code> validated by <code>test_end_to_end.py</code> + chamfer distance + camera-view video overlay. Parallel-safe once T3/T7 land.</td>
+  </tr>
+  </tbody>
+</table>
+</section>
+
+<section id="resume">
+<h2>How to resume in a new session</h2>
+<div class="info">
+  <p>A new Claude Code session will auto-load these three memory entries (all written this session):</p>
+  <ul>
+    <li><code>project_mano_convention_finalization.md</code> &mdash; Tasks 1&ndash;4 done status + pointer to plan</li>
+    <li><code>reference_hot3d_max_frames.md</code> &mdash; HOT3D <code>max_frames=5</code> requirement for smokes</li>
+    <li><code>feedback_codex_ssh_block.md</code> &mdash; codex sandbox SSH block; fall back to Claude-direct edits</li>
+  </ul>
+  <p>
+    To resume: <em>"read <code>docs/superpowers/plans/2026-04-17-mano-convention-finalization.md</code>, start at Task 5"</em>.
+    The plan's per-task Steps blocks are self-contained &mdash; each task owns its own file list, test code,
+    and acceptance criteria.
+  </p>
+</div>
+</section>
+
+<footer>
+  <p>
+    Generated 2026-04-18 &middot; <code>feat/benchmark</code> @ <code>c146fb0</code> &middot;
+    Prior session: <a href="2026-04-17-session-summary-mano-manopth-migration.html">2026-04-17 &mdash; MANO loaders smplx &rarr; manopth migration</a>
+  </p>
+</footer>
+
+</body>
+</html>
