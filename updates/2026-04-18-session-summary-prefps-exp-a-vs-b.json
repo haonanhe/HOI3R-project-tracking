@@ -1,0 +1,104 @@
+{
+  "date": "2026-04-18",
+  "topic": "prefps-exp-a-vs-b",
+  "branch": "feat/dcf",
+  "head_sha": "8700315",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": null,
+  "plan_path": null,
+  "commits": [
+    {
+      "sha": "8700315",
+      "type": "feat",
+      "subject": "feat(dcf): pre-FPS object_query_points for mixed-object batches"
+    }
+  ],
+  "acp_jobs": [
+    {
+      "id": "pt-xt073hk1",
+      "role": "memory probe (1 GPU, subject01, l1+chamfer)"
+    },
+    {
+      "id": "pt-ag5bls6q",
+      "role": "exp_a — 1 seq × oversample 256, 4 GPU bs=4, L1, 2000 steps"
+    },
+    {
+      "id": "pt-9m0owmfc",
+      "role": "exp_b — full subject-01 (100 seq), 4 GPU bs=4, L1, 2000 steps"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "T1",
+      "summary": "Memory probe (ACP pt-xt073hk1): per-rank peak [1:16.6, 2:23.9, 4:38.5] GiB; bs=6 StopIteration exposed 5-sample-per-object cap"
+    },
+    {
+      "id": "T2",
+      "summary": "Pre-FPS refactor — object_query_points [N_o=256,3] produced in dataset; DCFBranch / STream3R.forward accept the new kwarg; --oversample-manifest flag added"
+    },
+    {
+      "id": "T3",
+      "summary": "exp_a (ACP pt-ag5bls6q): 1 seq × oversample 256, 4 GPU bs=4, L1, 2000 steps — hand L2 11.84 / obj L2 9.19 mm"
+    },
+    {
+      "id": "T4",
+      "summary": "exp_b (ACP pt-9m0owmfc): full subject-01 (100 seq), 4 GPU bs=4, L1, 2000 steps — hand L2 21.46 / obj L2 50.07 mm"
+    },
+    {
+      "id": "T5",
+      "summary": "Published experiment page + camera-view overlay MP4s (63 frames / 10 fps) to tracking site"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "N1",
+      "priority": "P0",
+      "summary": "Re-run exp_b at 8000+ steps (4× current budget) to disambiguate convergence vs. inherent multi-seq regression before committing to architectural fixes"
+    },
+    {
+      "id": "N2",
+      "priority": "P1",
+      "summary": "Survey /mnt/afs/haonan/hoi3r/sam-3d-objects — mesh output format / interface / cost; sanity-check on one DexYCB frame: can its chamfer beat exp_b's 61 mm?"
+    },
+    {
+      "id": "N3",
+      "priority": "P1",
+      "summary": "Prototype pose-only object head conditioned on sam-3d-objects mesh (object_query_points supplied from the generator); compare to exp_a/exp_b ceiling"
+    },
+    {
+      "id": "N4",
+      "priority": "P2",
+      "summary": "Object-frame loss (rigid-align pred→GT in canonical mesh frame before L1) to decouple shape from pose in the current exp_b-style regression"
+    },
+    {
+      "id": "N5",
+      "priority": "P2",
+      "summary": "Diagnose approach-phase hand degradation — per-frame hand L2 spikes 30–50 mm in the first ~10 frames of 141754 for both exps; no hypothesis yet"
+    }
+  ],
+  "memory_entries_written": [
+    "project_prefps_refactor_results.md",
+    "feedback_debug_container_nvml_assert.md",
+    "project_sam3d_object_prior_idea.md"
+  ],
+  "caveats": [
+    "exp_a training hand L1 /coord is <0.01 mm — it memorized the 1 sequence; exp_a metrics are a ceiling, not generalization evidence.",
+    "exp_b eval is on the first sequence of subject-01 (trained on), not a held-out sequence — the 21.5 mm hand L2 is still train-set performance, not a test number.",
+    "exp_b at 2000 steps may not have converged (train hand loss still 0.012–0.018 with high variance); before attributing the gap to architecture, run the longer budget.",
+    "Debug container assertions during the smoke (NVML_SUCCESS) are a container-side issue — ACP nodes are clean (recorded as feedback memory).",
+    "L1-only hand loss (no chamfer) differs from the 2026-04-17 multi-seq grouped ref (l1+chamfer). The comparison is with today's exp_a, not that reference."
+  ],
+  "resume_prompt": "Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-session-summary-prefps-exp-a-vs-b.json and continue from the first pending task.",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-session-summary-prefps-exp-a-vs-b.html",
+  "experiment_page_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-18-dcf-exp-a-vs-exp-b.html",
+  "key_metrics": {
+    "exp_a_hand_l2_mm_mean": 11.84,
+    "exp_a_obj_l2_mm_mean": 9.19,
+    "exp_a_hand_chamfer_mm_mean": 14.72,
+    "exp_a_obj_chamfer_mm_mean": 14.37,
+    "exp_b_hand_l2_mm_mean": 21.46,
+    "exp_b_obj_l2_mm_mean": 50.07,
+    "exp_b_hand_chamfer_mm_mean": 21.8,
+    "exp_b_obj_chamfer_mm_mean": 61.32
+  }
+}
