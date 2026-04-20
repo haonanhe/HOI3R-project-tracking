@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2026-04-20 · Session Summary — MANO T5–T9 + adapter envs</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+h4{color:#555;margin-top:16px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.caption{font-size:.85em;color:#666;margin-top:4px;text-align:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2,.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>2026-04-20 · Session Summary — MANO T5–T9 complete, adapter envs provisioned</h1>
+<div class="meta-box">
+<div class="meta-grid">
+<div class="meta-label">Date</div><div class="meta-value">2026-04-18 → 2026-04-20 (multi-day)</div>
+<div class="meta-label">Branch</div><div class="meta-value">feat/benchmark</div>
+<div class="meta-label">HEAD SHA</div><div class="meta-value">a78c7bc</div>
+<div class="meta-label">Worktree</div><div class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-benchmark</div>
+<div class="meta-label">Plan</div><div class="meta-value">docs/superpowers/plans/2026-04-17-mano-convention-finalization.md</div>
+<div class="meta-label">Spec</div><div class="meta-value">docs/superpowers/specs/2026-04-17-mano-convention-finalization-design.md</div>
+<div class="meta-label">Goal</div><div class="meta-value">Finish MANO convention rollout T5–T12 on feat/benchmark. Outcome: T5–T9 committed; T10–T12 scaffolded + adapter conda envs installed; runtime smokes blocked on weights/data/checkpoints.</div>
+</div>
+</div>
+</header>
+
+<section>
+<h2>Headline stats</h2>
+<div class="grid-4">
+<div class="stat-card"><div class="value">9</div><div class="label">new commits on feat/benchmark</div></div>
+<div class="stat-card"><div class="value">5 / 8</div><div class="label">plan tasks done (T5–T9); T10–T12 scaffolded</div></div>
+<div class="stat-card"><div class="value">3</div><div class="label">conda envs installed (18.0 GB total)</div></div>
+<div class="stat-card"><div class="value">218 / 218</div><div class="label">smoke tests passing</div></div>
+</div>
+</section>
+
+<section>
+<h2>Tasks landed this session</h2>
+<table>
+<thead><tr><th>ID</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead>
+<tbody>
+<tr><td>T5</td><td><span class="badge badge-pass">DONE</span></td><td><code>cc9fced</code></td><td>Joint-index audit: enumerates 14 files, flags 4 convention-bearing sites (dcf_utils tip layout, fp_hawor ingress ×3 datasets, magichoi post-concat), confirms metrics + validator only index joint 0 (universal wrist).</td></tr>
+<tr><td>T6 magichoi</td><td><span class="badge badge-pass">DONE</span></td><td><code>a17f75d</code></td><td><code>magichoi_utils.py</code>: after the 16-joint + 5-fingertip concat, remap with <code>Convention.SMPLX</code> to canonical.</td></tr>
+<tr><td>T6 fp_hawor</td><td><span class="badge badge-pass">DONE</span></td><td><code>d8cda60</code></td><td>Remap HaWoR joints at ingress in dexycb/ho3d/hot3d adapters.</td></tr>
+<tr><td>T6 dcf</td><td><span class="badge badge-pass">DONE</span></td><td><code>64ec92c</code></td><td><code>dcf_utils.py</code> tip placement: <code>16+i</code> → <code>CANONICAL_TIP_INDICES[i]</code> (4, 8, 12, 16, 20).</td></tr>
+<tr><td>T7</td><td><span class="badge badge-pass">DONE</span></td><td><code>3e526ae</code></td><td>Metrics + MANO validator declare canonical joint input via module docstring; added <code>TIP_INDICES_CANONICAL</code>. No numeric change (joint 0 invariant).</td></tr>
+<tr><td>T8</td><td><span class="badge badge-pass">DONE</span></td><td><code>0b11472</code></td><td>Dropped <code>_MANOPTH_SYS_PATHS</code> + <code>_ensure_manopth_on_path</code> from DexYCB/HO3D loaders. <code>manopth</code> now installed as <code>pip install -e /mnt/afs/haonan/hoi3r/HOI3R/benchmarks_hoi/H2OTR/manopth</code> in <code>human3r</code>.</td></tr>
+<tr><td>T9</td><td><span class="badge badge-pass">DONE</span></td><td><code>ccca6f3</code></td><td><code>benchmark/tests/numeric/test_mano_conventions.py</code> scaffold; 3 tests skipped pending toolkit reference values; <code>summarize_dataset_vs_toolkit</code> helper added to <code>mano_validation.py</code>.</td></tr>
+<tr><td>infra</td><td><span class="badge badge-pass">DONE</span></td><td><code>3b1fc7a</code></td><td><code>benchmark/configs/smoke_5frame.yaml</code> override config.</td></tr>
+<tr><td>infra</td><td><span class="badge badge-pass">DONE</span></td><td><code>a78c7bc</code></td><td>Three <code>smoke_run.sh</code> wrappers: <code>magichoi/</code>, <code>fp_hawor/</code>, <code>dcf/</code>.</td></tr>
+<tr><td>T10 runtime</td><td><span class="badge badge-fail">BLOCKED</span></td><td>—</td><td>Script ready; needs MagicHOI-preprocessed DexYCB + MagicHOI checkpoints.</td></tr>
+<tr><td>T11 runtime</td><td><span class="badge badge-fail">BLOCKED</span></td><td>—</td><td>Script ready; needs FP weights (Google Drive) + mycuda compile.</td></tr>
+<tr><td>T12 runtime</td><td><span class="badge badge-fail">BLOCKED</span></td><td>—</td><td>Script ready; needs DCF checkpoint from <code>feat/dcf</code> training.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Key discoveries</h2>
+
+<div class="panel">
+<p><span class="badge badge-finding">FINDING</span> <strong>Default PyPI from the debug container is ~1000× slower than Tuna.</strong></p>
+<p>Observed PyPI wheel downloads at 10–20 KB/s (scipy 38 MB → 52 min). <code>pypi.tuna.tsinghua.edu.cn/simple</code> serves the same wheels at 91 MB/s. Set globally with <code>pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple</code>. PyTorch CUDA variants: use phased install — pytorch index only for torch, tuna for the rest. Persisted in <code>reference_pypi_tuna_mirror.md</code>.</p>
+</div>
+
+<div class="panel">
+<p><span class="badge badge-fix">FIX</span> <strong>SSH to the debug container drops on long-running commands.</strong></p>
+<p>Foreground SSH wrappers on 30–60 min pip installs dropped multiple times despite <code>ServerAliveInterval=10</code>. Pattern that works: <code>ssh -p 46682 root@... "nohup bash -c '&lt;cmd&gt;' &gt; /tmp/x.log 2&gt;&amp;1 &amp; echo PID=\$!"</code> — install survives the SSH drop, poll via short sessions. Persisted in <code>feedback_ssh_long_commands_drop.md</code>.</p>
+</div>
+
+<div class="panel">
+<p><span class="badge badge-fix">FIX</span> <strong>HaWoR env needs multiple workarounds.</strong></p>
+<p>GitHub clones for <code>pytorch3d@stable</code> and <code>chumpy</code> fail on GnuTLS from this container; use the PyTorch3D <code>py310_cu117_pyt1131</code> prebuilt wheel and the PyPI <code>chumpy</code> release. <code>chumpy 0.70</code> still hits <code>ImportError: cannot import name 'bool' from 'numpy'</code>; patch <code>chumpy/__init__.py:11</code> to import only <code>nan, inf</code>. Lightning 2.2.4 needs <code>setuptools&lt;70</code> for <code>pkg_resources.declare_namespace</code>. <code>mmcv==1.3.9</code> and <code>torch-scatter</code> only serve DROID-SLAM/Metric3D (egocentric) — skip. Persisted in <code>reference_hawor_env_quirks.md</code>.</p>
+</div>
+
+<div class="panel">
+<p><span class="badge badge-fix">FIX</span> <strong>MagicHOI's kaolin needs numpy&lt;2.</strong></p>
+<p><code>kaolin 0.15.0</code> was built against numpy 1.x; any upgrade to numpy 2.x trips <code>ValueError: numpy.dtype size changed (expected 96, got 88)</code> in <code>triangle_hash.pyx</code>. <code>opencv-python-headless 4.13</code> declares <code>numpy&gt;=2</code> but works fine against 1.26.4 at runtime — ignore the pip warning, re-pin <code>numpy&lt;2</code> after any sweep. Persisted in <code>reference_magichoi_numpy_pin.md</code>.</p>
+</div>
+
+<div class="panel">
+<p><span class="badge badge-fail">FAIL</span> <strong>FoundationPose weights on Google Drive — not auto-downloadable.</strong></p>
+<p>FP refiner (<code>2023-10-28-18-33-37</code>) and scorer (<code>2024-01-11-20-02-45</code>) checkpoints live in a public Google Drive folder. <code>wget</code>/<code>curl</code> from the container do not get an authenticated session, and the Drive CLI isn't installed. Workflow: manually download on a Drive-authed machine, <code>scp -r</code> to <code>third_party/FoundationPose/weights/</code>, then run <code>build_all_conda.sh</code>. Persisted in <code>reference_fp_weights_gdrive.md</code>.</p>
+</div>
+
+<div class="panel">
+<p><span class="badge badge-finding">FINDING</span> <strong>Existing <code>third_party/</code> is gitignored on this project.</strong></p>
+<p>Adding <code>manopth</code> as a submodule would break pattern. Instead: keep the existing <code>benchmarks_hoi/H2OTR/manopth</code> source and add it to <code>human3r</code> via <code>pip install -e</code>. Removes all <code>sys.path.insert</code> hacks from loaders without altering the repo-tracking convention. T8 commit <code>0b11472</code> encodes this choice.</p>
+</div>
+
+<div class="panel">
+<p><span class="badge badge-finding">FINDING</span> <strong>Dead requirements.txt entries — HaWoR <code>hawor.models</code> does not exist.</strong></p>
+<p>The HaWoR repo's top-level <code>hawor/</code> has <code>configs/</code> + <code>utils/</code> but no <code>models/</code>. Correct public API is <code>from hawor.utils.process import run_mano, run_mano_left, get_mano_faces</code> (already how <code>demo.py</code> imports). Test smokes in <code>smoke_run.sh</code> use that path.</p>
+</div>
+</section>
+
+<section>
+<h2>Commits</h2>
+<table>
+<thead><tr><th>SHA</th><th>Type</th><th>Message</th></tr></thead>
+<tbody>
+<tr><td><code>cc9fced</code></td><td>docs</td><td>add joint-index audit report</td></tr>
+<tr><td><code>a17f75d</code></td><td>fix</td><td>magichoi adapter emits canonical joints</td></tr>
+<tr><td><code>d8cda60</code></td><td>fix</td><td>fp_hawor adapters remap HaWoR joints to canonical</td></tr>
+<tr><td><code>64ec92c</code></td><td>fix</td><td>dcf adapter emits canonical joints</td></tr>
+<tr><td><code>3e526ae</code></td><td>fix</td><td>metrics and MANO validator declare canonical joint input</td></tr>
+<tr><td><code>0b11472</code></td><td>build</td><td>drop manopth sys.path hacks in loaders</td></tr>
+<tr><td><code>ccca6f3</code></td><td>test</td><td>numeric MANO validation scaffolding for 3 datasets</td></tr>
+<tr><td><code>3b1fc7a</code></td><td>feat</td><td>add smoke_5frame.yaml override config</td></tr>
+<tr><td><code>a78c7bc</code></td><td>feat</td><td>add 5-frame smoke_run.sh scripts for 3 adapters</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Module / branch state</h2>
+<table>
+<thead><tr><th>Aspect</th><th>Current state</th></tr></thead>
+<tbody>
+<tr><td>Active branch</td><td><code>feat/benchmark</code> @ <code>a78c7bc</code> (9 commits ahead of <code>c146fb0</code>)</td></tr>
+<tr><td>Canonical joint order</td><td><code>benchmark/data/common.py</code>: <code>CANONICAL_JOINT_ORDER</code> (wrist → thumb → index → middle → ring → pinky, tips at (4,8,12,16,20)); <code>Convention.{CANONICAL, SMPLX, HOT3D}</code>; <code>remap_joints(joints, src)</code></td></tr>
+<tr><td>Adapter outputs</td><td>All three adapter families (magichoi, fp_hawor, dcf) emit canonical-ordered joints at the write boundary</td></tr>
+<tr><td>Metrics contract</td><td>All 21-joint inputs to <code>hand_metrics.py</code>, <code>hoi_metrics.py</code>, <code>temporal_metrics.py</code>, <code>mano_validation.py</code> are canonical (documented); joint 0 = wrist (universal)</td></tr>
+<tr><td>manopth dependency</td><td>Installed as <code>pip install -e /mnt/afs/haonan/hoi3r/HOI3R/benchmarks_hoi/H2OTR/manopth</code> in <code>human3r</code>. Loaders import <code>from manopth.manolayer import ManoLayer</code> at module top.</td></tr>
+<tr><td>Numeric MANO tests</td><td><code>benchmark/tests/numeric/test_mano_conventions.py</code> — 3 skipped (pending toolkit refs). Flip <code>&lt;DATASET&gt;_REF["refs_pasted"]=True</code> after pasting toolkit output.</td></tr>
+<tr><td>Adapter conda envs</td><td><code>hawor</code> (5.0 GB), <code>MagicHOI</code> (5.3 GB), <code>foundationpose</code> (7.7 GB) at <code>/mnt/afs/haonan/miniconda3/envs/</code></td></tr>
+<tr><td>System apt deps</td><td>Installed: <code>libgl1 libglx-mesa0 libopengl0 libglu1-mesa</code> (for pyrender/opencv)</td></tr>
+<tr><td>HaWoR weights</td><td>Present: <code>hawor.ckpt</code> (3.3 GB), <code>infiller.pt</code> (419 MB), <code>detector.pt</code> (53 MB) under <code>third_party/HaWoR/weights/</code></td></tr>
+<tr><td>FP weights</td><td>MISSING — Google Drive, manual download required</td></tr>
+<tr><td>DCF checkpoint</td><td>MISSING — <code>.worktrees/feat-dcf/logs/train/runs/</code> empty</td></tr>
+<tr><td>Smoke tests</td><td>218 passing (unchanged from T4 baseline)</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Open issues &amp; next steps</h2>
+<table>
+<thead><tr><th>Priority</th><th>Item</th><th>What's needed</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-p0">P0</span></td><td>T10 MagicHOI 5-frame smoke</td><td>(1) preprocessed DexYCB subject-07 data per <code>third_party/MagicHOI/docs/custom.md</code>; (2) MagicHOI checkpoints per <code>docs/download.md</code>; (3) adapter <code>num_smoke_frames</code> slicing in <code>magichoi_dexycb.py</code> entry; run <code>bash benchmark/adapters/magichoi/smoke_run.sh</code>.</td></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>T11 FP+HaWoR 5-frame smoke on DexYCB + HO3D</td><td>(1) download FP refiner + scorer from Google Drive to <code>third_party/FoundationPose/weights/</code>; (2) <code>bash third_party/FoundationPose/build_all_conda.sh</code> (needs <code>CUDA_HOME=/usr/local/cuda PATH=/usr/local/cuda/bin:$PATH</code>); (3) adapter <code>num_smoke_frames</code> slicing in <code>fp_hawor_{dexycb,ho3d}.py</code>; run <code>bash benchmark/adapters/fp_hawor/smoke_run.sh</code>.</td></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>T12 DCF 5-frame smoke on DexYCB</td><td>Requires a trained DCF checkpoint from <code>feat/dcf</code> training (per memory <code>project_scene_loss_findings.md</code>: sw=0.1 unfrozen multi-seq). Set <code>DCF_CHECKPOINT=/absolute/path/last.ckpt</code>, run <code>bash benchmark/adapters/dcf/smoke_run.sh</code>.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>T9 numeric MANO tests — paste toolkit refs</td><td>Run each dataset's official toolkit (dex-ycb-toolkit / HO3D toolkit / HOT3D <code>Hot3dDataProvider</code>) on the sequence + frame 0 in <code>DEXYCB_REF</code> / <code>HO3D_REF</code> / <code>HOT3D_REF</code>, apply <code>remap_joints</code> to canonical, paste the 21×3 mm array into <code>joints_mm_frame0_hand0</code>, flip <code>refs_pasted=True</code>. ≤ 1 mm tolerance.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>Adapter <code>num_smoke_frames</code> plumbing</td><td>Plan Task 10/11/12 Step 2 specifies: read the key from <code>--config</code> yaml at adapter entry, slice the input sequence before inference. Three files touched: <code>magichoi_dexycb.py</code>, <code>fp_hawor_{dexycb,ho3d}.py</code>, <code>dcf_eval.py</code>. Intentionally deferred: can't test without the runtime prerequisites above.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>HOT3D data extraction</td><td>HOT3D <code>processed_root</code> had no test sequences (<code>get_test_sequences(...)</code> returned <code>[]</code>) as of 2026-04-19 — extraction of <code>processed-20260403T080057Z.tar.gz</code> was still pending per <code>benchmark_paths.yaml</code>. Blocks the T9 HOT3D reference + any HOT3D smoke.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Memory entries written</h2>
+<ul>
+<li><code>reference_pypi_tuna_mirror.md</code> — PyPI via default index is 10–20 KB/s; Tuna gives 91 MB/s.</li>
+<li><code>reference_adapter_envs_installed.md</code> — locations + versions + skipped deps for hawor / MagicHOI / foundationpose.</li>
+<li><code>feedback_ssh_long_commands_drop.md</code> — use nohup for 30+ min remote installs.</li>
+<li><code>reference_hawor_env_quirks.md</code> — pytorch3d/chumpy via PyPI, chumpy numpy-alias patch, setuptools&lt;70, skip mmcv+torch-scatter.</li>
+<li><code>reference_magichoi_numpy_pin.md</code> — kaolin 0.15 requires numpy&lt;2; re-pin 1.26.4 after any upgrade sweep.</li>
+<li><code>reference_fp_weights_gdrive.md</code> — FP refiner/scorer are on Google Drive; need manual scp from an auth'd machine.</li>
+<li><code>project_mano_convention_finalization.md</code> (updated) — T5–T9 done; T10–T12 scaffolded, runtime blocked.</li>
+</ul>
+</section>
+
+<section>
+<h2>How to resume</h2>
+<div class="info">
+<p>To resume, paste into a new Claude Code session:</p>
+<pre><code>Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-20-session-summary-mano-t5-t9-and-adapter-envs.json
+and continue from the first pending task.</code></pre>
+</div>
+</section>
+
+<footer>
+<p>Generated 2026-04-20. Commits on <code>feat/benchmark</code> ahead of <code>c146fb0</code> baseline: <code>cc9fced</code> · <code>a17f75d</code> · <code>d8cda60</code> · <code>64ec92c</code> · <code>3e526ae</code> · <code>0b11472</code> · <code>ccca6f3</code> · <code>3b1fc7a</code> · <code>a78c7bc</code>.</p>
+</footer>
+
+</body>
+</html>
