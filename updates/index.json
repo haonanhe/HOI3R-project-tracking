@@ -1,9 +1,9 @@
 [
   {
-    "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 Real Eval + Visualizations (v4)",
+    "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 Rigid Projection (v5)",
     "date": "2026-04-20",
     "status": "finding",
-    "summary": "Real Phase-2 eval with camera-view MP4 overlays and 3D world-space scatters for all 5 legs. B.00 17.03mm (baseline), B.1 779mm (catastrophic Procrustes drift visible in video), C.00 13.05mm best obj L2 but hand regresses +68%.",
+    "summary": "v5 adds direct pose-head rigid projection viz: pred=s*R*canonical+t. Traj head wins on C.00/C.01 (13/23 vs 30/36 mm) but pose head WINS on C.02 (28 vs 61 mm) \u2014 head rescues Procrustes translation drift.",
     "path": "updates/2026-04-20-dcf-object-pose-head-cx-ablations.html"
   },
   {
