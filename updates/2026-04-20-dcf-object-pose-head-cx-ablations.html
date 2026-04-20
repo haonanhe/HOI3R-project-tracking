@@ -230,6 +230,64 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
     </thead>
     <tbody><tr><td><strong>C00</strong></td><td>13.05</td><td>30.01</td><td><span style="color:#e53935">+17.0 mm</span></td><td><span class="badge badge-finding">traj head wins</span></td></tr><tr><td><strong>C01</strong></td><td>23.16</td><td>35.75</td><td><span style="color:#e53935">+12.6 mm</span></td><td><span class="badge badge-finding">traj head wins</span></td></tr><tr><td><strong>C02</strong></td><td>60.94</td><td>28.44</td><td><span style="color:#27ae60;font-weight:600">-32.5 mm</span></td><td><span class="badge badge-pass">pose head WINS</span></td></tr></tbody>
   </table>
+</section>
+
+<section>
+  <h2>Shape-Drift Metric (new) — Does the trajectory preserve shape?</h2>
+  <p>For each consecutive frame pair <code>(f, f+1)</code>, Procrustes-align the object
+    prediction at frame <code>f+1</code> to frame <code>f</code>, measure the mean per-point
+    residual. <strong>Zero ⇒ shape identical across frames; non-zero ⇒ shape drifts over
+    time.</strong> YCB objects are rigid, so the true shape drift is 0.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Leg</th>
+        <th>Trajectory shape drift (mean mm)</th>
+        <th>Trajectory shape drift (max mm)</th>
+        <th>GT baseline</th>
+        <th>Pose-rigid baseline</th>
+        <th>Interpretation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>B.00</strong></td><td>1.93</td><td>3.90</td><td>0.01</td><td>—</td><td>Trajectory head has no inter-frame coupling; drifts ~2mm/frame.</td></tr>
+      <tr><td><strong>B.1</strong></td><td style="color:#27ae60;font-weight:600">0.11</td><td>0.13</td><td>0.01</td><td>—</td><td><strong>Shape preserved</strong> — exactly what Procrustes loss rewards. But world-frame L2 is 779mm: <em>right shape, wrong place</em>.</td></tr>
+      <tr><td><strong>C.00</strong></td><td>1.41</td><td>4.90</td><td>0.00</td><td style="color:#27ae60">0.09</td><td>w_consist=0.5 cuts drift ~27% vs B.00 (1.93 → 1.41).</td></tr>
+      <tr><td><strong>C.01</strong></td><td>1.66</td><td>3.28</td><td>0.00</td><td>0.10</td><td>w_consist=0: only modestly better than B.00 despite pose supervision.</td></tr>
+      <tr><td><strong>C.02</strong></td><td>0.89</td><td>2.11</td><td>0.00</td><td>0.10</td><td>w_consist=0.5 + Procrustes: best non-B.1 shape drift. Procrustes directly penalises shape change.</td></tr>
+      <tr style="background:#fff3e0"><td><strong>D.0</strong> (pending)</td><td colspan="5">Option A: balanced pose weights + <code>w_consist=2.0</code>. Tests whether heavy consistency drives trajectory shape drift toward pose-rigid's 0.1 mm floor. ACP job <code>pt-bv23ezpv</code> submitted 2026-04-20; ~10 h wall.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight">
+    <strong>Finding 6 · The trajectory head's shape-drift problem is quantified.</strong>
+    B.00 (plain L1): 1.93 mm mean drift, 3.90 mm worst-case. Even at the best C.x setting,
+    drift is still 10× larger than the pose-head rigid projection (0.09 mm). The trajectory
+    head has no built-in notion of "this object is the same rigid body at frame f+1 as at
+    frame f" — it's 256 independent point predictions per frame.
+  </div>
+
+  <div class="warning">
+    <strong>B.1's shape is perfect but its position is catastrophic.</strong>
+    0.11 mm shape drift combined with 779 mm world-frame L2 exposes a fundamental flaw in
+    Procrustes-as-loss: it rewards the model for preserving shape but zeros the gradient
+    for getting that shape to the right place. "Right shape, wrong place."
+  </div>
+
+  <h3>D.0 (pending) — Option A: tight consistency for shape preservation</h3>
+  <p>Configuration (<code>scripts/dcf_dataloader_train.py</code>):</p>
+  <pre style="background:#f4f4f4;padding:12px;border-radius:4px;overflow:auto"><code>--enable-object-pose-head
+--dcf-pose-R-weight 0.2 --dcf-pose-t-weight 0.2 --dcf-pose-s-weight 0.1
+--dcf-pose-cls-weight 0.1 --dcf-pose-res-weight 0.1
+--dcf-pose-consist-weight 2.0     # was 0.5 in C.00
+--object-loss-mode world          # NOT procrustes (avoid B.1 trap)</code></pre>
+
+  <p>Hypothesis: a heavy consistency weight forces the trajectory head's 256 free points
+    to mimic the pose head's rigid projection, pulling shape drift from 1.41 mm (C.00
+    with consist=0.5) toward the pose-rigid 0.1 mm floor. The risk: over-constraining the
+    trajectory and increasing hand L2 via shared-capacity competition. We measure all three
+    (obj L2, hand L2, shape drift) after the run.</p>
 
   <div class="highlight">
     <strong>C.02 — pose head rescues the Procrustes trajectory catastrophe.</strong>
