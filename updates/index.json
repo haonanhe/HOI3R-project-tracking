@@ -1,18 +1,18 @@
 [
   {
+    "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 Real Eval Metrics (v3)",
+    "date": "2026-04-20",
+    "status": "finding",
+    "summary": "Real Phase-2 eval: B.00 17.03 mm, B.1 779 mm (catastrophic - Procrustes residual measured wrong thing), C.00 13.05 mm obj L2 (best, but hand L2 regresses +68%). Pose head helps obj, hurts hand.",
+    "path": "updates/2026-04-20-dcf-object-pose-head-cx-ablations.html"
+  },
+  {
     "date": "2026-04-18",
     "title": "2026-04-18 \u00b7 B.1 Procrustes vs B.00 new-baseline \u2014 DCF Thread B first results",
     "status": "finding",
     "summary": "B.00 (8\u00d78 re-baseline) passes spec exit: obj L2 17.03 mm vs exp_b 50.07 (3\u00d7 better), hand L2 13.98 vs 21.46. B.1 Procrustes-aligned loss broke pose supervision: obj L2 779 mm (shape learned, translation arbitrary). Procrustes is a regularizer, not a drop-in replacement.",
     "path": "updates/2026-04-18-dcf-b1-procrustes-vs-b00-baseline.html",
     "file": "updates/2026-04-18-dcf-b1-procrustes-vs-b00-baseline.html"
-  },
-  {
-    "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 B.x / C.x Ablations",
-    "date": "2026-04-20",
-    "status": "finding",
-    "summary": "5-leg comparison: B.00 baseline 9mm, B.1 Procrustes alone 0.71mm (best), C.0x pose head variants. Pose head delivers first-class (R,t,s) but does not beat Procrustes on obj L2 at this operating point.",
-    "path": "updates/2026-04-20-dcf-object-pose-head-cx-ablations.html"
   },
   {
     "date": "2026-04-20",
