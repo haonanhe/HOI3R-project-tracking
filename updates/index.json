@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-04-18",
+    "title": "2026-04-18 \u00b7 B.1 Procrustes vs B.00 new-baseline \u2014 DCF Thread B first results",
+    "status": "finding",
+    "summary": "B.00 (8\u00d78 re-baseline) passes spec exit: obj L2 17.03 mm vs exp_b 50.07 (3\u00d7 better), hand L2 13.98 vs 21.46. B.1 Procrustes-aligned loss broke pose supervision: obj L2 779 mm (shape learned, translation arbitrary). Procrustes is a regularizer, not a drop-in replacement.",
+    "path": "updates/2026-04-18-dcf-b1-procrustes-vs-b00-baseline.html",
+    "file": "updates/2026-04-18-dcf-b1-procrustes-vs-b00-baseline.html"
+  },
+  {
     "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 B.x / C.x Ablations",
     "date": "2026-04-20",
     "status": "finding",
