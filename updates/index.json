@@ -1,9 +1,9 @@
 [
   {
-    "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 Rigid Projection (v5)",
+    "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 Shape Drift + D.0 Pending (v6)",
     "date": "2026-04-20",
     "status": "finding",
-    "summary": "v5 adds direct pose-head rigid projection viz: pred=s*R*canonical+t. Traj head wins on C.00/C.01 (13/23 vs 30/36 mm) but pose head WINS on C.02 (28 vs 61 mm) \u2014 head rescues Procrustes translation drift.",
+    "summary": "v6 adds inter-frame shape-drift metric: B.00 trajectory drifts 1.93 mm/frame, B.1 only 0.11 (right shape wrong place), C.00 1.41 mm. D.0 (w_consist=2.0) submitted to test tight-consistency shape preservation.",
     "path": "updates/2026-04-20-dcf-object-pose-head-cx-ablations.html"
   },
   {
