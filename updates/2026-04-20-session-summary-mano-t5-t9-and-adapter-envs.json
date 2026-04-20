@@ -1,0 +1,60 @@
+{
+  "date": "2026-04-20",
+  "topic": "mano-t5-t9-and-adapter-envs",
+  "branch": "feat/benchmark",
+  "head_sha": "a78c7bc",
+  "baseline_sha": "c146fb0",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-benchmark",
+  "spec_path": "docs/superpowers/specs/2026-04-17-mano-convention-finalization-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-17-mano-convention-finalization.md",
+  "commits": [
+    {"sha": "cc9fced", "type": "docs", "subject": "add joint-index audit report"},
+    {"sha": "a17f75d", "type": "fix", "subject": "magichoi adapter emits canonical joints"},
+    {"sha": "d8cda60", "type": "fix", "subject": "fp_hawor adapters remap HaWoR joints to canonical"},
+    {"sha": "64ec92c", "type": "fix", "subject": "dcf adapter emits canonical joints"},
+    {"sha": "3e526ae", "type": "fix", "subject": "metrics and MANO validator declare canonical joint input"},
+    {"sha": "0b11472", "type": "build", "subject": "drop manopth sys.path hacks in loaders"},
+    {"sha": "ccca6f3", "type": "test", "subject": "numeric MANO validation scaffolding for 3 datasets"},
+    {"sha": "3b1fc7a", "type": "feat", "subject": "add smoke_5frame.yaml override config"},
+    {"sha": "a78c7bc", "type": "feat", "subject": "add 5-frame smoke_run.sh scripts for 3 adapters"}
+  ],
+  "tasks_completed": [
+    {"id": "T5", "summary": "Joint-index audit at docs/superpowers/specs/2026-04-17-joint-index-audit.md"},
+    {"id": "T6", "summary": "Adapter canonical remap (magichoi/fp_hawor/dcf) — 3 commits"},
+    {"id": "T7", "summary": "Metrics + MANO validator docstring canonical contract"},
+    {"id": "T8", "summary": "Dropped manopth sys.path hacks; manopth now pip install -e in human3r"},
+    {"id": "T9", "summary": "Numeric MANO test scaffold (3 skipped pending toolkit refs) + summarize_dataset_vs_toolkit helper"},
+    {"id": "infra.smoke_yaml", "summary": "benchmark/configs/smoke_5frame.yaml override config"},
+    {"id": "infra.smoke_run_sh", "summary": "benchmark/adapters/{magichoi,fp_hawor,dcf}/smoke_run.sh"},
+    {"id": "envs.hawor", "summary": "Installed hawor conda env (5.0 GB): torch 1.13.1+cu117 + pytorch3d 0.7.3 + chumpy-patched"},
+    {"id": "envs.MagicHOI", "summary": "Installed MagicHOI conda env (5.3 GB): torch 2.0.1+cu118 + pytorch3d 0.7.4 + kaolin 0.15.0 + numpy<2"},
+    {"id": "envs.foundationpose", "summary": "Installed foundationpose conda env (7.7 GB): torch 2.0.0+cu118 + FP requirements.txt (mycuda NOT compiled)"}
+  ],
+  "tasks_pending": [
+    {"id": "T10", "summary": "MagicHOI DexYCB 5-frame smoke runtime — needs MagicHOI-preprocessed DexYCB data + MagicHOI checkpoints + num_smoke_frames adapter slicing", "priority": "P0"},
+    {"id": "T11", "summary": "FP+HaWoR DexYCB+HO3D 5-frame smokes — needs FP weights from Google Drive + bash build_all_conda.sh (mycuda) + num_smoke_frames adapter slicing", "priority": "P0"},
+    {"id": "T12", "summary": "DCF DexYCB 5-frame smoke — needs trained checkpoint from feat/dcf (logs/train/runs empty) + adapter DCF_CHECKPOINT env-var wiring", "priority": "P0"},
+    {"id": "T9.refs", "summary": "Paste toolkit reference values into benchmark/tests/numeric/test_mano_conventions.py and flip <DATASET>_REF[refs_pasted]=True", "priority": "P1"},
+    {"id": "infra.num_smoke_frames", "summary": "Add num_smoke_frames slicing to 3 adapter entries per plan Task 10/11/12 Step 2", "priority": "P1"},
+    {"id": "infra.hot3d_extract", "summary": "HOT3D processed-20260403T080057Z.tar.gz extraction still pending; blocks HOT3D reference + any HOT3D smoke", "priority": "P2"}
+  ],
+  "memory_entries_written": [
+    "reference_pypi_tuna_mirror.md",
+    "reference_adapter_envs_installed.md",
+    "feedback_ssh_long_commands_drop.md",
+    "reference_hawor_env_quirks.md",
+    "reference_magichoi_numpy_pin.md",
+    "reference_fp_weights_gdrive.md",
+    "project_mano_convention_finalization.md"
+  ],
+  "caveats": [
+    "T10-T12 smoke_run.sh wrappers are committed but runtime smokes have NOT been executed — each adapter still needs num_smoke_frames sequence slicing added to its Python entry.",
+    "FP env has torch + requirements.txt but mycpp/mycuda C++/CUDA extensions are NOT compiled; run bash third_party/FoundationPose/build_all_conda.sh before T11.",
+    "PyPI from the debug container is ~10-20 KB/s; always use pypi.tuna.tsinghua.edu.cn as primary index for follow-up installs.",
+    "SSH foreground commands drop on long-running installs; use nohup pattern for anything expected to exceed ~10 min.",
+    "HaWoR env skips DROID-SLAM + Metric3D (ego-SLAM only); static-camera smokes are unaffected, ego-camera smokes (e.g. HOT3D) would need those re-added.",
+    "T9 numeric tests are skipped by default; reference values must be generated via each dataset's OFFICIAL toolkit and pasted before they run."
+  ],
+  "resume_prompt": "Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-20-session-summary-mano-t5-t9-and-adapter-envs.json and continue from the first pending task.",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-20-session-summary-mano-t5-t9-and-adapter-envs.html"
+}
