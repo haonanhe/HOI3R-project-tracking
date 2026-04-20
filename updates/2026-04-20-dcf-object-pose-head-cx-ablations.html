@@ -48,7 +48,8 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
     <div class="meta-grid">
       <div class="meta-label">Date</div><div class="meta-value">2026-04-20</div>
       <div class="meta-label">Branch</div><div class="meta-value">feat/dcf</div>
-      <div class="meta-label">Final commit</div><div class="meta-value">cb4adda (infer fix) · 99e78ff (dcf train wiring) · 1b4bb1b (integration smoke)</div>
+      <div class="meta-label">Final commit</div><div class="meta-value">cb4adda (infer fix — unblocks C.x eval) · 99e78ff (dcf train wiring) · 1b4bb1b (integration smoke)</div>
+      <div class="meta-label">Publish revision</div><div class="meta-value">v3 · corrected with real Phase-2 eval metrics (2026-04-20 PM)</div>
       <div class="meta-label">ACP jobs</div><div class="meta-value">pt-medsrtw3 · pt-1ire9lec · pt-b4vromeb (all SUCCEEDED, ~10h each)</div>
       <div class="meta-label">Config</div><div class="meta-value">8×<code>N6lS.Iu.I10.8.64c1024g</code>, bs=8/rank, 2000 epochs, subject01 manifest</div>
       <div class="meta-label">Spec</div><div class="meta-value">docs/superpowers/specs/2026-04-18-dcf-object-pose-head-design.md</div>
@@ -58,86 +59,104 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 
 <section>
   <h2>TL;DR</h2>
-  <div class="warning">
-    <strong>Updated with B.00 / B.1 results</strong>: the original B.00 baseline was already
-    at 9.06 mm object L2 (not the 50 mm quoted in the stale exp_b sidecar).
-    B.1 (Procrustes-aligned trajectory loss alone) reaches <strong>0.71 mm</strong>
-    — still the best overall on object L2. The pose head (C.x) produces first-class
-    <code>(R, t, s)</code> outputs but does not improve object trajectory beyond B.1.
+  <div class="error">
+    <strong>Initial publish was based on contaminated training loss.</strong>
+    The <code>loss_obj</code> term in <code>history.json</code> switches functions based
+    on <code>--object-loss-mode</code>: for <code>world</code> it's plain L1 (comparable
+    across runs); for <code>procrustes_aligned</code> (B.1, C.02) it's the residual <em>after</em>
+    Kabsch alignment — which can be near-zero even when the prediction is meters off.
+    The page has been rebuilt using the real Phase-2 eval metric from
+    <code>infer_per_view_overfit.py</code> on held-out sequence <code>20200709_141754</code>.
+  </div>
+
+  <div class="error">
+    <strong>B.1 Procrustes training alone is catastrophic.</strong>
+    Real eval shows B.1 has <strong>obj L2 = 779.09 mm</strong> and
+    obj chamfer = 1427.22 mm — the trajectory shape is preserved but
+    global position drifts by nearly a meter. Procrustes residual at training time
+    (0.71 mm) showed a false &quot;near-perfect&quot; signal.
   </div>
 
   <div class="highlight">
-    <strong>Pose head delivers per-frame pose outputs, not object-L2 gains.</strong>
-    Diagnostic pose metrics (rot MAE ~16.3°, trans MAE ~32.2 mm)
-    are available on all three C.x legs — previously only derivable post-hoc via Kabsch
-    fit on the trajectory. The Procrustes object loss (B.1 → C.02) is the dominant
-    trajectory regularizer.
+    <strong>C.00 (pose head + consistency) gets the best object L2 overall — 13.05 mm</strong>,
+    beating the B.00 baseline (17.03 mm). But hand L2 regresses
+    from 13.98 to 23.49 mm (+68%),
+    breaking the 1.5× gate. The pose head competes with hand prediction for shared decoder
+    capacity — a known trade-off, now quantified.
   </div>
 
   <div class="grid-4">
-    <div class="stat-card"><div class="value" style="color:#e67e22">0.71 mm</div><div class="label">Best object L2 (B.1)</div></div>
-    <div class="stat-card"><div class="value">9.06 mm</div><div class="label">B.00 baseline</div></div>
-    <div class="stat-card"><div class="value">16.3°</div><div class="label">Rot MAE (C.00)</div></div>
-    <div class="stat-card"><div class="value">32.2 mm</div><div class="label">Best trans MAE</div></div>
+    <div class="stat-card"><div class="value" style="color:#27ae60">13.05 mm</div><div class="label">Best obj L2 (C.00)</div></div>
+    <div class="stat-card"><div class="value">17.03 mm</div><div class="label">B.00 baseline obj L2</div></div>
+    <div class="stat-card"><div class="value" style="color:#e53935">779.09 mm</div><div class="label">B.1 catastrophe</div></div>
+    <div class="stat-card"><div class="value">16.3°</div><div class="label">Rot MAE (C.00 train)</div></div>
   </div>
 </section>
 
 <section>
-  <h2>Quantitative Summary</h2>
-  <p>Averaged over the last 100 training steps per run. All five runs trained for 2000 epochs at
-    8 GPU × bs=8 (effective batch 64) on the subject01 manifest (100 sequences).
-    B.00 is the new pre-FPS-refactor baseline (no pose head); B.1 adds Procrustes-aligned object
-    loss; C.00–C.02 add the learned pose head on top of B.00 with varying combinations.</p>
+  <h2>Quantitative Summary — Held-out Eval</h2>
+  <p>All metrics computed by <code>scripts/infer_per_view_overfit.py</code> on the
+    held-out sequence <code>20200709-subject-01/20200709_141754</code> (63 tracked frames
+    after skipping 9 untracked warmup frames, sliding window S=4). Rot/Trans MAE are
+    training-time diagnostics from the last 100 steps of 2000 epochs (C.x only; B.x
+    has no pose head). Pass gate from spec §5.3: <strong>obj L2 &lt; 30 mm</strong> AND
+    <strong>hand L2 ≤ 1.5× B.00</strong> (= 20.97 mm).</p>
   <table>
     <thead>
       <tr>
         <th>Leg</th><th>Variant</th><th>Steps</th>
-        <th>Obj L2 (mm) ↓</th><th>Hand L2 (mm) ↓</th>
-        <th>Rot MAE (°) ↓</th><th>Trans MAE (mm) ↓</th><th>Scale MAE ↓</th>
-        <th>Exit bar</th>
+        <th>Obj L2 (mm) ↓</th><th>Hand L2 (mm) ↓</th><th>Obj Chamfer (mm) ↓</th>
+        <th>Rot MAE (°) ↓</th><th>Trans MAE (mm) ↓</th>
+        <th>Gate</th>
       </tr>
     </thead>
-    <tbody><tr><td><strong>B00</strong></td><td>Baseline (no pose head, L1 only)</td><td>2000</td><td style="color:#333;font-weight:600">9.06</td><td>8.85</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-pass">PASS</span></td></tr><tr><td><strong>B1</strong></td><td>B.00 + Procrustes-aligned object loss</td><td>2000</td><td style="color:#27ae60;font-weight:600">0.71</td><td>8.32</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-pass">PASS</span></td></tr><tr><td><strong>C00</strong></td><td>B.00 + pose head + consistency 0.5</td><td>2000</td><td style="color:#333;font-weight:600">9.63</td><td>10.99</td><td>16.27</td><td>32.23</td><td>0.0086</td><td><span class="badge badge-pass">PASS</span></td></tr><tr><td><strong>C01</strong></td><td>B.00 + pose head, consistency OFF</td><td>2000</td><td style="color:#333;font-weight:600">11.16</td><td>11.76</td><td>15.34</td><td>37.08</td><td>0.0106</td><td><span class="badge badge-pass">PASS</span></td></tr><tr><td><strong>C02</strong></td><td>B.00 + pose head + Procrustes (C.00+B.1)</td><td>2000</td><td style="color:#333;font-weight:600">2.66</td><td>11.07</td><td>14.99</td><td>36.48</td><td>0.0084</td><td><span class="badge badge-pass">PASS</span></td></tr></tbody>
+    <tbody><tr><td><strong>B00</strong></td><td>Baseline (no pose head, L1 only)</td><td>2000</td><td style="color:#333;font-weight:600">17.03</td><td style="color:#333;font-weight:400">13.98</td><td>20.48</td><td>—</td><td>—</td><td><span class="badge badge-pass">PASS</span></td></tr><tr><td><strong>B1</strong></td><td>B.00 + Procrustes-aligned object loss</td><td>2000</td><td style="color:#333;font-weight:600">779.09</td><td style="color:#333;font-weight:400">15.17</td><td>1427.22</td><td>—</td><td>—</td><td><span class="badge badge-finding">PARTIAL</span></td></tr><tr><td><strong>C00</strong></td><td>B.00 + pose head + consistency 0.5</td><td>2000</td><td style="color:#27ae60;font-weight:600">13.05</td><td style="color:#e53935;font-weight:600">23.49</td><td>18.52</td><td>16.27</td><td>32.23</td><td><span class="badge badge-finding">PARTIAL</span></td></tr><tr><td><strong>C01</strong></td><td>B.00 + pose head, consistency OFF</td><td>2000</td><td style="color:#333;font-weight:600">23.16</td><td style="color:#333;font-weight:400">19.60</td><td>26.97</td><td>15.34</td><td>37.08</td><td><span class="badge badge-pass">PASS</span></td></tr><tr><td><strong>C02</strong></td><td>B.00 + pose head + Procrustes (C.00+B.1)</td><td>2000</td><td style="color:#333;font-weight:600">60.94</td><td style="color:#e53935;font-weight:600">22.19</td><td>28.03</td><td>14.99</td><td>36.48</td><td><span class="badge badge-fail">FAIL</span></td></tr></tbody>
   </table>
 </section>
 
 <section>
   <h2>Key Findings</h2>
-  <div class="highlight">
-    <strong>Finding 1 · Procrustes-aligned object loss dominates (B.1).</strong>
-    B.1 drives object L2 from 9.06 mm (B.00) down to <strong>0.71 mm</strong>
-    — a 12.7× improvement — with no architectural change to the branch,
-    just a closed-form Kabsch alignment in the trajectory loss. Hand L2 also improves
-    (8.85 → 8.32 mm).
-  </div>
-  <div class="warning">
-    <strong>Finding 2 · Pose head alone does not improve object L2 at this operating point.</strong>
-    C.01 (pose head, no consistency) actually regresses from B.00: 11.16 vs 9.06 mm
-    (+23.3%). C.00 (with consistency) is basically tied: 9.63 mm.
-    The original sidecar's 50 mm B.00 quote was stale — the new baseline is already near the
-    trajectory-head floor, so the low-rank rigid prior has little regularization work to do.
-  </div>
-  <div class="warning">
-    <strong>Finding 3 · Stacking pose head on B.1 hurts slightly (C.02 vs B.1).</strong>
-    C.02 (2.66 mm) is 3.7× <em>worse</em> than B.1 alone (0.71 mm).
-    Still much better than C.00, but the pose head appears to pull the trajectory
-    slightly away from the Procrustes optimum. Likely cause: the coarse pose head
-    (rot MAE ~15.0°) feeds a noisy signal into the shared decoder tokens,
-    and that noise competes with the near-perfect Procrustes trajectory.
+  <div class="error">
+    <strong>Finding 1 · Procrustes training as the sole object loss is broken.</strong>
+    B.1 eval obj L2 = 779.09 mm (chamfer 1427.22 mm).
+    Kabsch alignment in the loss zeros out the global-rotation and global-translation signal,
+    so the model satisfies training loss while drifting hundreds of mm in world frame.
+    Training-time <code>loss_obj = 0.71 mm</code> was measuring the
+    residual AFTER removing this drift — a textbook &quot;optimised metric ≠ evaluation metric&quot;
+    failure. <strong>Never use Procrustes as the sole object-trajectory loss.</strong>
   </div>
   <div class="highlight">
-    <strong>Finding 4 · Real value of the pose head: first-class <code>(R, t, s)</code> outputs.</strong>
-    On all three C.x legs, rot MAE is ~16° and trans MAE is ~32 mm —
-    directly reportable pose metrics without a post-hoc Kabsch fit. This is a new
-    capability (B.00/B.1 have no pose output at all) and is what enables the SAM-3D-Objects
-    pose-only direction from <code>project_sam3d_object_prior_idea</code>.
+    <strong>Finding 2 · Pose head + consistency (C.00) yields the best object L2 — 13.05 mm.</strong>
+    That's 23% better than B.00 (17.03 mm) and passes
+    the &lt;30 mm bar. The learned rigid prior via <code>s · R · canonical + t</code> constrains
+    per-point trajectories to a rigid transform of the canonical mesh; consistency loss
+    couples it bidirectionally to the trajectory head. So the spec hypothesis does hold —
+    the pose head does regularise the object trajectory.
+  </div>
+  <div class="error">
+    <strong>Finding 3 · Pose head breaks hand L2 (+68% on C.00).</strong>
+    Hand L2 regresses from 13.98 mm (B.00) to 23.49 mm (C.00),
+    19.60 mm (C.01), 22.19 mm (C.02). Only C.01 passes the
+    1.5× hand gate (20.97 mm). The pose head shares the aggregator's global decoder
+    with the hand trajectory head — adding 6 new supervisions there (geodesic R, L1 t, L1 s,
+    CE cls, L1 residual, consistency) pulls capacity away from hand prediction. Candidates
+    for fixing this: reduce pose-loss weights, add a dedicated pose feature path, or schedule
+    pose-head activation after hand converges.
   </div>
   <div class="warning">
-    <strong>Caveat · Pose metrics are still coarse.</strong>
-    K = 2048 codebook ≈ 15° Voronoi cell, tanh-bounded residual at 0.35 rad (~20°). That caps the
-    practical rotation accuracy. Translation MAE ~30 mm aligns with the DDP-batch diagnostic
-    floor. Options forward: larger codebook, multi-step residual refinement, or a dedicated
-    pose head with its own feature path (rather than sharing the trajectory decoder).
+    <strong>Finding 4 · Stacking pose head + procrustes (C.02) pulls partway back from B.1.</strong>
+    C.02 obj L2 = 60.94 mm — bad (43.91 mm worse than B.00)
+    but <em>12× better</em> than B.1's catastrophic 779.09 mm. The pose head's rigid
+    supervision pulls the trajectory back toward world-frame reasonableness despite the
+    Procrustes loss nulling the global-drift gradient. Interesting as a safety rail but
+    not competitive with C.00.
+  </div>
+  <div class="highlight">
+    <strong>Finding 5 · Pose head delivers first-class <code>(R, t, s)</code> outputs.</strong>
+    On all three C.x legs, training-time rot MAE is ~16° and trans MAE is
+    ~32 mm — directly reportable pose metrics without a post-hoc Kabsch
+    fit. New capability vs B.00/B.1. Pose metrics are still coarse (K = 2048 codebook ≈ 15°
+    Voronoi cell, tanh residual bound 0.35 rad) but sufficient as a first-class model output.
   </div>
 </section>
 
@@ -215,21 +234,29 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <section>
   <h2>Follow-ups</h2>
   <ul>
-    <li><strong>Inference eval</strong> — Phase 2 eval on the ACP runs failed because
-      <code>infer_per_view_overfit.py</code> rebuilt <code>DCFBranch</code> without
-      <code>enable_object_pose_head=True</code>. Fixed in commit <code>cb4adda</code>
-      (auto-detect pose head from checkpoint keys). Re-run pending to generate the
-      3D scatter + camera-view MP4 artifacts.</li>
+    <li><strong>Fix the hand-L2 regression</strong> (top priority). C.00 has the best
+      object L2 but breaks the hand gate by +68%.
+      Three candidate directions: (a) reduce the six pose-loss weights, especially
+      <code>dcf_pose_cls_weight</code> and <code>dcf_pose_res_weight</code> which pull the
+      aggregator toward discrete rotation classification; (b) add a dedicated pose-feature
+      path so the pose head doesn't share decoder capacity with the hand trajectory head;
+      (c) delay pose-head activation via warmup so hand trajectory converges first.</li>
+    <li><strong>Never use Procrustes as the sole object loss</strong> — B.1's 779 mm
+      catastrophe is now documented. The fix is either to combine with a small
+      world-frame L1 weight, or to switch to the pose-head-based rigid loss entirely.</li>
     <li><strong>Pose accuracy refinement</strong> — rotation MAE ~15° reflects the
       coarse codebook quantization. Options: larger K, multi-step residual
       refinement, or a second pose-only head with its own feature path.</li>
-    <li><strong>Multi-subject generalization</strong> — all three runs trained on
-      subject01 only. Need to confirm the pose head generalizes across subjects
-      before the final C.02 config enters the main training path.</li>
+    <li><strong>Multi-subject generalization</strong> — all five runs trained on
+      subject01 only. Need to confirm C.00's configuration generalises across
+      subjects before it enters the main training path.</li>
     <li><strong>SAM-3D-Objects integration</strong> — per
       <code>project_sam3d_object_prior_idea</code>, this pose head could become
-      pose-only once object shape comes from a dedicated prior. C.02's success
-      suggests this direction is promising.</li>
+      pose-only once object shape comes from a dedicated prior, removing the shared-
+      decoder capacity contention that's hurting hand L2.</li>
+    <li><strong>Methodology note for future runs</strong> — always report eval metrics
+      in publish pages, not training-step losses. Training <code>loss_obj</code> is not
+      comparable across <code>object_loss_mode</code> settings.</li>
   </ul>
 </section>
 
