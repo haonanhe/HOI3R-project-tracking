@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 C.x Ablations",
+    "date": "2026-04-20",
+    "status": "converged",
+    "summary": "Learned per-frame (R,t,s) pose head + rigid-projection consistency loss. All 3 ACP legs clear the <30mm obj L2 bar; C.02 (pose + Procrustes) hits 2.66mm \u2014 19x better than B.00 baseline.",
+    "path": "updates/2026-04-20-dcf-object-pose-head-cx-ablations.html"
+  },
+  {
     "date": "2026-04-18",
     "title": "2026-04-18 \u00b7 Session Summary \u2014 exp_b improvements 8\u00d78 re-baseline launch",
     "status": "wip",
