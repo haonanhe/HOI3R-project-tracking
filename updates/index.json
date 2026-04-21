@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-21 \u00b7 DCF Pose Head \u2014 Train/Test Split + Full Video Matrix (v7)",
+    "date": "2026-04-21",
+    "status": "finding",
+    "summary": "5-8x generalisation gap (seen subj-01 17mm vs unseen subj-08 104mm obj L2). D.0/D.1/D.2 results added. Full video matrix: camera overlay + world-space multiframe + rotating camera, all 8 legs, train + test seqs. C.00 best on test obj L2 (83mm); D.2 best on test hand L2 (73mm).",
+    "path": "updates/2026-04-21-dcf-pose-head-train-test-v7.html"
+  },
+  {
     "title": "2026-04-20 \u00b7 DCF Object Pose Head \u2014 Shape Drift + D.0 Pending (v6)",
     "date": "2026-04-20",
     "status": "finding",
