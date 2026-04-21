@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>2026-04-21 Session — DCF Motion Head Brainstorm (4RC)</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+h4{color:#555;margin-top:16px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.caption{font-size:.85em;color:#666;margin-top:4px;text-align:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2,.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>2026-04-21 Session Summary &mdash; DCF Motion Head Brainstorm (4RC-inspired)</h1>
+<div class="meta-box">
+<div class="meta-grid">
+<div class="meta-label">Date</div><div class="meta-value">2026-04-21 (PM session, same day as dcf-pose-head-train-test)</div>
+<div class="meta-label">Branch</div><div class="meta-value">feat/dcf</div>
+<div class="meta-label">HEAD SHA</div><div class="meta-value">4ecc2c2 (pre-progress-log commit)</div>
+<div class="meta-label">Worktree</div><div class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</div>
+<div class="meta-label">Goal</div><div class="meta-value">Reach a concrete, scoped design for an architecture change that improves both train-set fit AND generalization, using 4RC (2602.10094) as inspiration.</div>
+<div class="meta-label">Outcome</div><div class="meta-value">Design spec drafted, self-reviewed, and audited &mdash; awaiting user approval gate before writing-plans.</div>
+</div>
+</div>
+</header>
+
+<section>
+<h2>Headline stats</h2>
+<div class="grid-4">
+<div class="stat-card"><div class="value">1</div><div class="label">new design spec</div></div>
+<div class="stat-card"><div class="value">4</div><div class="label">memory entries written</div></div>
+<div class="stat-card"><div class="value">23 / 23</div><div class="label">brainstorm items audit-covered</div></div>
+<div class="stat-card"><div class="value">0</div><div class="label">ACP runs (brainstorm-only)</div></div>
+</div>
+</section>
+
+<section>
+<h2>Tasks &amp; activities</h2>
+<table>
+<tr><th>Step</th><th>Status</th><th>Artifact / commit</th><th>What happened</th></tr>
+<tr><td>Read 4RC paper (15 pages)</td><td><span class="badge badge-pass">DONE</span></td><td><code>docs/papers/4RC-summary.md</code></td><td>Condensed into HOI3R-relevant takeaways: factored motion, encode-once/query-anywhere, motion-head internals, losses, streaming S-4RC variant.</td></tr>
+<tr><td>Clone 4RC codebase</td><td><span class="badge badge-pass">DONE</span></td><td><code>third_party/4RC/</code> (remote)</td><td>Local clone + rsync due to remote GitHub stall at <code>index-pack</code>. See finding #5.</td></tr>
+<tr><td>Read 4RC architecture code</td><td><span class="badge badge-pass">DONE</span></td><td>&mdash;</td><td>Read <code>arc.py</code>, <code>motiondecoder.py</code>, <code>dinov2.py</code>, <code>block.py</code>, <code>inference.py</code>. Confirmed: inference-only release, causal plumbing pre-wired but unused.</td></tr>
+<tr><td>4-path migration effort analysis</td><td><span class="badge badge-pass">DONE</span></td><td>in conversation</td><td>Paths A (pretrained drop-in), B (port + causality), C (distillation), D (factored DCF, no port). User chose to defer A/B/C; scope narrowed to &ldquo;borrow motion + tracks into current framework&rdquo;.</td></tr>
+<tr><td>Brainstorm Q&amp;A &times; 3 rounds</td><td><span class="badge badge-pass">DONE</span></td><td>in conversation</td><td>Q1 goal: both train-fit + overfit. Q2 base choice: user corrected to per-frame traj + motion head. Q3 training budget: 4-view budget OK given dual-head.</td></tr>
+<tr><td>User corrections (&ldquo;only learn points&rdquo;)</td><td><span class="badge badge-fix">CORRECTED</span></td><td><code>feedback_dcf_only_points_principle.md</code></td><td>Drifted into MANO &beta; / SE(3) / scale regression proposals twice; user reinforced &ldquo;we only learn points&rdquo;. Disabled 2026-04-18 object pose head in new design.</td></tr>
+<tr><td>Write motion-head design spec</td><td><span class="badge badge-pass">DONE</span></td><td><code>docs/superpowers/specs/2026-04-21-dcf-motion-head-design.md</code> @ 4ecc2c2</td><td>Dual-head, strict-causal pairs (q&lt;t), 4-view budget preserved, aleatoric/temporal/consistency losses, 1.5-week effort estimate.</td></tr>
+<tr><td>Self-review + tightenings</td><td><span class="badge badge-pass">DONE</span></td><td>spec</td><td>Strict-causal bound clarified (q&lt;t excludes self-pairs); positional encoding story simplified (GPS rides on features, K/V uses 2D RoPE).</td></tr>
+<tr><td>Sub-agent coverage audit</td><td><span class="badge badge-pass">DONE</span></td><td>&mdash;</td><td>Audited 23 pre-specified items A&ndash;W; one partial (O &mdash; smoke-protocol wording) fixed. 12 appropriate additions flagged, no scope creep.</td></tr>
+<tr><td>SSH port change</td><td><span class="badge badge-fix">MIGRATED</span></td><td>memory</td><td>Old 46681/46682 died ~06:00 UTC; new primary 20161, fallback 21161. Memory + MEMORY.md index updated.</td></tr>
+<tr><td>User review gate</td><td><span class="badge badge-fail">OPEN</span></td><td>&mdash;</td><td>Spec awaits user &ldquo;approved&rdquo; / &ldquo;approved with changes&rdquo;. Writing-plans NOT yet invoked.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Key discoveries</h2>
+
+<div class="panel">
+<span class="badge badge-finding">FINDING</span>
+<strong>4RC is inference-only &mdash; no training code released.</strong>
+<p>GitHub repo <code>Luo-Yihang/4RC</code> (released 2026-04-13) ships <code>inference.py</code> + Gradio app + <code>Arc.from_pretrained()</code>. No <code>train.py</code>, no loss modules, no dataset loaders, no S-4RC (streaming STream3R variant) weights or config. Full backbone migration to 4RC therefore requires reimplementing all four losses (<code>L_depth + L_ray + L_cam + L_motion</code> with aleatoric weighting + temporal gradient) from the paper. Sidesteps this entirely by porting only the 180-LOC MotionDecoder head.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-finding">FINDING</span>
+<strong>Factored motion's real benefit for HOI3R is subject-invariance, not temporal consistency.</strong>
+<p>The motion decoder's queries are canonical-point tokens (identical tensor across subjects); its output is displacement relative to a query frame, not world-space coordinates. This packs subject-specific shape into the trajectory head's per-frame output and leaves the motion module subject-invariant &mdash; directly attacking <code>project_overfit_subject01</code>. Temporal consistency benefits (smaller magnitude, &nabla;<sub>t</sub>&Delta;P smoothness) are real but secondary.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-finding">FINDING</span>
+<strong>4-view training budget is not a blocker for the dual-head design.</strong>
+<p>With strict-causal pairs (q&lt;t) the 4-view sample yields 6 forward (q,t) pairs per sample: {(0,1),(0,2),(0,3),(1,2),(1,3),(2,3)}. Motion offsets of 1&ndash;3 frames are supervised per sample. Because the trajectory head still produces per-frame absolute points at every t, there is no long-range extrapolation at inference &mdash; so the training/inference distribution mismatch that would have plagued a &ldquo;base+motion&rdquo; formulation is avoided.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-fix">FIX</span>
+<strong>User corrected the design twice: &ldquo;we only learn points&rdquo;.</strong>
+<p>Earlier brainstorm drafts proposed learning MANO &beta; (via persistent shape tokens), SE(3), and scale parameters. User rejected: DCF learns only 3D points; pose is analytical downstream (Kabsch / Procrustes / NLF fitting). Applied: the 2026-04-18 <code>dcf_object_pose_head</code> (codebook-SO(3) + t + s) is config-gated OFF for this experiment &mdash; it regressed parameters and overfit worse than the trajectory head (per <code>project_dcf_pose_head_findings</code>). Saved as <code>feedback_dcf_only_points_principle.md</code>.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-fix">FIX</span>
+<strong>Remote git clone stalls &mdash; use local clone + rsync instead.</strong>
+<p>Direct <code>ssh &hellip; git clone https://github.com/&hellip;</code> stalled at <code>index-pack</code> for 5+ minutes with no progress for the 4RC repo. Local Mac clone of same URL finished in &lt;30 s (81 MB). Fix: clone on Mac first, then <code>rsync -rlpt --no-o --no-g --exclude=.git</code> to remote. Saved as <code>feedback_remote_github_slow.md</code>. Note <code>rsync -a</code> fails with &ldquo;chown Operation not permitted&rdquo; on mounted quarkfs from a non-root local user &mdash; explicitly drop ownership preservation.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-fix">FIX</span>
+<strong>Debug container SSH ports changed.</strong>
+<p>Old 46681/46682 stopped responding around 06:00 UTC. Container cycled &mdash; new host <code>app-f1dd302c9fc04b63b7a036afe8782f9b-&hellip;</code> with 108 d uptime, ED25519 host key. New ports: <strong>20161 primary, 21161 fallback</strong>. <code>/mnt/afs</code> persists across the cycle; <code>/tmp</code> does not. Memory file + <code>MEMORY.md</code> index updated on this same session.</p>
+</div>
+</section>
+
+<section>
+<h2>Commits</h2>
+<table>
+<tr><th>SHA</th><th>Type</th><th>Subject</th></tr>
+<tr><td><code>4ecc2c2</code></td><td>docs</td><td>4RC paper summary + DCF motion head design spec (draft)</td></tr>
+<tr><td><em>pending</em></td><td>docs(progress)</td><td>DCF motion head brainstorm checkpoint (CP-20260421-02) &mdash; appended after HTML publish</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Module / branch state</h2>
+<table>
+<tr><th>Aspect</th><th>State</th></tr>
+<tr><td>Branch</td><td><code>feat/dcf</code> on remote worktree</td></tr>
+<tr><td>HEAD</td><td><code>4ecc2c2</code> &mdash; <em>docs: 4RC paper summary + DCF motion head design spec (draft)</em></td></tr>
+<tr><td>Spec doc</td><td><code>docs/superpowers/specs/2026-04-21-dcf-motion-head-design.md</code> (DRAFT, awaiting approval)</td></tr>
+<tr><td>Plan doc</td><td><em>not yet written</em> &mdash; to be produced by <code>superpowers:writing-plans</code> after user approves spec</td></tr>
+<tr><td>Paper summary</td><td><code>docs/papers/4RC-summary.md</code></td></tr>
+<tr><td>4RC reference code</td><td><code>third_party/4RC/</code> on remote worktree (rsync&apos;d, no <code>.git</code>)</td></tr>
+<tr><td>Previous checkpoint (AM session)</td><td>2026-04-21 dcf-pose-head-train-test, HEAD was <code>4af02e1</code></td></tr>
+<tr><td>SSH port</td><td><code>20161</code> primary, <code>21161</code> fallback</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Open issues &amp; next steps</h2>
+<table>
+<tr><th>Priority</th><th>Item</th><th>Action</th></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>User approves (or revises) the motion-head spec</td><td>Read <code>docs/superpowers/specs/2026-04-21-dcf-motion-head-design.md</code>; say &ldquo;approved&rdquo; or &ldquo;approved with changes: &hellip;&rdquo;. This is the explicit brainstorming-skill gate &mdash; do NOT start coding without it.</td></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>Invoke <code>superpowers:writing-plans</code></td><td>Once the spec is approved, turn it into a sequenced TDD implementation plan at <code>docs/superpowers/plans/2026-04-21-dcf-motion-head-plan.md</code>. Do not skip this step.</td></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>P0-manifest expansion (carried from AM session)</td><td>Still pending from the dcf-pose-head-train-test sidecar: expand training manifest beyond subject-01 to subjects 00&ndash;06 (s1_train setup). Architectural findings stay contaminated without this; unchanged by today&apos;s design choice.</td></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>Full s1_test eval (carried from AM session)</td><td>~200 sequences across subjects 7+8 per <code>reference_dexycb_splits</code>. Current test numbers are 1-sequence.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>Memprobe for motion head</td><td>Update <code>dcf_memory_probe.py</code> per <code>feedback_dcf_memprobe_config_drift</code>: add <code>--enable-motion-head</code>, <code>--motion-pairs</code>, <code>--query-count</code> flags. Run after implementation lands.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>Config-gate disable <code>dcf_object_pose_head</code></td><td>Per spec &sect;3, during motion-head experiment this head stays in code but is not trained. Add <code>dcf.enable_object_pose_head=False</code> default in the experiment config.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>Install 4RC as Python package on remote</td><td>Optional &mdash; only needed if we want to try Path A (offline pretrained) as a later ablation. <code>cd third_party/4RC && pip install -e .</code> in the <code>human3r</code> env.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Memory entries written this session</h2>
+<table>
+<tr><th>File</th><th>Type</th><th>What</th></tr>
+<tr><td><code>project_dcf_motion_head_spec.md</code></td><td>project</td><td>In-progress state of the 2026-04-21 spec: awaiting user approval, all key design decisions locked</td></tr>
+<tr><td><code>reference_4rc_codebase.md</code></td><td>reference</td><td>Where 4RC lives, what is/isn&apos;t released, key files for porting</td></tr>
+<tr><td><code>feedback_dcf_only_points_principle.md</code></td><td>feedback</td><td>DCF learns only 3D points &mdash; never MANO/SE(3)/scale/R/t</td></tr>
+<tr><td><code>feedback_remote_github_slow.md</code></td><td>feedback</td><td>Clone on Mac + rsync to remote; direct remote clone hangs at index-pack</td></tr>
+<tr><td><code>feedback_ssh_debug.md</code> <em>(updated)</em></td><td>feedback</td><td>Ports 46681/46682 &rarr; 20161/21161 migration, host-key change, filesystem-persistence note</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Caveats</h2>
+<div class="warning">
+<ul>
+<li>Spec is <strong>not yet approved</strong> &mdash; the brainstorming skill&apos;s user-review gate is open; writing-plans has not run.</li>
+<li>P0-manifest expansion (subjects 00&ndash;06) remains pending from the AM session; this design doesn&apos;t replace it &mdash; the motion-head experiment is an <em>architectural</em> attack on the overfit, data expansion is a separate P0.</li>
+<li>4-view budget is assumed sufficient. If smoke / overfit reveal that motion extrapolation is limited, falling back to widening the sample window (8 or 16 views) may be required &mdash; documented in spec &sect;8.</li>
+<li>Positional-encoding plumbing: spec assumes 4RC&apos;s <code>CrossBlock</code> accepts <code>pos=(None, pos_k)</code>. If not, fallback to a learned 1D embedding over the 512 canonical-point slots &mdash; verify at smoke time (spec &sect;9 open question #1).</li>
+<li>LOC count discrepancy: spec says &ldquo;~200 LOC after wiring&rdquo; for the new file; the source <code>motiondecoder.py</code> is 180 LOC. Describes different things (source vs target after adaptation). Not a bug.</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>How to resume</h2>
+<div class="info">
+<p><strong>To resume, paste into a new Claude Code session:</strong></p>
+<pre><code>Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-dcf-motion-head-brainstorm.json
+and continue from the first pending task.</code></pre>
+<p>The first pending task is <strong>user approval of the spec at <code>docs/superpowers/specs/2026-04-21-dcf-motion-head-design.md</code></strong>. Once approved, invoke <code>superpowers:writing-plans</code> to produce the implementation plan.</p>
+</div>
+</section>
+
+<footer>
+<p>Session HTML &amp; sidecar JSON published via GitHub Contents API on 2026-04-21. Memory files in <code>~/.claude/projects/&hellip;/memory/</code>. Source repo: <code>feat/dcf</code> @ <code>4ecc2c2</code>. Previous session (AM): <a href="2026-04-21-session-summary-dcf-pose-head-train-test.html">dcf-pose-head-train-test</a>.</p>
+</footer>
+</body>
+</html>
