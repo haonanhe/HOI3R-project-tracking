@@ -1,0 +1,46 @@
+{
+  "date": "2026-04-21",
+  "topic": "4rc-migration-plan",
+  "branch": "feat/dcf",
+  "head_sha": "ee9cc04",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-21-feat-dcf-4rc-migration-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-21-feat-dcf-4rc-migration-plan.md",
+  "commits": [
+    {"sha": "ff895f8", "type": "docs(spec)", "subject": "feat/dcf 4RC migration + V2-sampled-NLF foreground design"},
+    {"sha": "c20efd6", "type": "docs(spec)", "subject": "4RC migration — explicit note on shared shape-agnostic object heads"},
+    {"sha": "ee9cc04", "type": "docs(plan)", "subject": "feat/dcf 4RC migration + V2-sampled-NLF implementation plan"}
+  ],
+  "tasks_completed": [
+    {"id": "S1", "summary": "Brainstorm: 10+ clarifying questions across problem framing, scope, canonical PE, coord frame, head sharing, encoder training, losses, data, manifest, migration strategy, query flow (4 variants explored → V2-sampled-NLF locked)"},
+    {"id": "S2", "summary": "Spec written with self-review (Stage 3 LoRA correction, scene-heads-frozen clarification) — commit ff895f8"},
+    {"id": "S3", "summary": "Sub-agent alignment audit: all 13 brainstorm decisions present; §3.2 shape-agnostic object-head rationale fixed inline — commit c20efd6"},
+    {"id": "S4", "summary": "Implementation plan: 9 phases, ~28 tasks, TDD steps with concrete code and commands — commit ee9cc04"}
+  ],
+  "tasks_pending": [
+    {"id": "S5", "summary": "User chooses execution mode (subagent-driven vs inline)", "priority": "P0"},
+    {"id": "A1", "summary": "Mac-side clone of 4RC from https://github.com/Luo-Yihang/4RC.git into /Users/hnhe/Downloads/SLAI/4RC-mirror", "priority": "P0"},
+    {"id": "A2", "summary": "rsync 4RC to remote third_party/4RC/ + backup /mnt/afs/haonan/checkpoints/4RC-mirror/ (survives container recycle)", "priority": "P0"},
+    {"id": "A3", "summary": "pip install -e . on 4RC in human3r env via Tuna mirror", "priority": "P1"},
+    {"id": "A4", "summary": "Cache 4RC HF weights at /mnt/afs/haonan/hoi3r/checkpoints/4RC", "priority": "P1"},
+    {"id": "A5", "summary": "Observe 4RC forward signature — informs Task B3 encoder port", "priority": "P1"},
+    {"id": "STAGE2_PLAN", "summary": "Write Stage 2/3 follow-up plan after Stage 1 PASS", "priority": "P2"},
+    {"id": "LICENSE", "summary": "Check 4RC HF weights license before paper submission", "priority": "P2"}
+  ],
+  "memory_entries_written": [
+    "project_4rc_migration_pivot.md",
+    "project_4rc_migration_plan_state.md",
+    "reference_nlf_post_fit_mechanism.md",
+    "project_dcf_motion_head_spec.md",
+    "reference_4rc_codebase.md"
+  ],
+  "caveats": [
+    "No code written yet — only spec + plan. All architecture decisions are paper-and-signature level; first compile + forward-pass test is still ahead.",
+    "Remote third_party/4RC/ clone is currently MISSING (container recycle wiped it). Task A1/A2 restore path.",
+    "Stage 1 exit criteria (hand L2 < 10mm, obj L2 < 20mm) are hypotheses — may need to relax after seeing first overfit curve; plan documents this.",
+    "4RC ViT-G weights inference API is not yet directly observed; Task A5 documents it; Task B3 (port encoder loop) is the first concrete dependency on that API.",
+    "Debug SSH ports rolled today (46681/46682 → 20161/21161); any old ACP startup scripts referencing the old ports need updating."
+  ],
+  "resume_prompt": "Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-4rc-migration-plan.json and continue from the first pending task.",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-4rc-migration-plan.html"
+}
