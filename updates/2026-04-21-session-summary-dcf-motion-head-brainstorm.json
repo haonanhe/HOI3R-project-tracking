@@ -1,0 +1,51 @@
+{
+  "date": "2026-04-21",
+  "topic": "dcf-motion-head-brainstorm",
+  "branch": "feat/dcf",
+  "head_sha": "4ecc2c2",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-21-dcf-motion-head-design.md",
+  "plan_path": null,
+  "commits": [
+    {"sha": "4ecc2c2", "type": "docs", "subject": "4RC paper summary + DCF motion head design spec (draft)"}
+  ],
+  "tasks_completed": [
+    {"id": "R1", "summary": "Read 4RC paper (2602.10094v1, 15 pages); wrote docs/papers/4RC-summary.md"},
+    {"id": "R2", "summary": "Cloned 4RC repo to remote third_party/4RC via local-clone+rsync (direct remote clone stalled)"},
+    {"id": "R3", "summary": "Read 4RC architecture code: arc.py, motiondecoder.py, dinov2.py, blocks, inference.py"},
+    {"id": "R4", "summary": "4-path migration effort analysis (drop-in / port+causality / distillation / factored-only)"},
+    {"id": "B1", "summary": "Brainstorm Q1: goal = both train-fit + overfit; architecture is the bottleneck, not data alone"},
+    {"id": "B2", "summary": "Brainstorm Q2 (with user correction): dual-head design — traj per-frame absolute + motion decoder"},
+    {"id": "B3", "summary": "Brainstorm Q3: 4-view training budget preserved given dual-head; strict-causal pairs"},
+    {"id": "B4", "summary": "User-corrected 'only learn points' principle; disabled dcf_object_pose_head for this experiment"},
+    {"id": "S1", "summary": "Wrote design spec at docs/superpowers/specs/2026-04-21-dcf-motion-head-design.md"},
+    {"id": "S2", "summary": "Self-reviewed spec: tightened strict-causal bound (q<t), simplified positional-encoding story"},
+    {"id": "S3", "summary": "Sub-agent coverage audit: 23/23 items A–W present, one partial (O) fixed, 12 appropriate additions noted"},
+    {"id": "SSH", "summary": "Debug container SSH ports migrated 46681/46682 → 20161/21161; memory updated"}
+  ],
+  "tasks_pending": [
+    {"id": "P0-approve", "priority": "P0", "summary": "User reviews and approves (or revises) the motion-head spec at docs/superpowers/specs/2026-04-21-dcf-motion-head-design.md. Brainstorming-skill gate; do NOT start coding without this."},
+    {"id": "P0-plan", "priority": "P0", "summary": "Invoke superpowers:writing-plans to turn the spec into a sequenced TDD implementation plan at docs/superpowers/plans/2026-04-21-dcf-motion-head-plan.md. Only after spec approval."},
+    {"id": "P0-manifest", "priority": "P0", "summary": "Carried from AM session: expand training manifest beyond subject-01 to subjects 00–06 (s1_train). Architectural findings remain contaminated without this; unchanged by today's design."},
+    {"id": "P0-s1test-full", "priority": "P0", "summary": "Carried from AM session: full s1_test eval across all ~200 sequences in subjects 7+8, not the 1-sequence current numbers."},
+    {"id": "P1-memprobe", "priority": "P1", "summary": "Update dcf_memory_probe.py with --enable-motion-head, --motion-pairs, --query-count flags (per feedback_dcf_memprobe_config_drift). Run after impl lands."},
+    {"id": "P1-pose-head-off", "priority": "P1", "summary": "Add config default dcf.enable_object_pose_head=False in the motion-head experiment config (per spec §3)."},
+    {"id": "P2-4rc-install", "priority": "P2", "summary": "Optional: pip install -e third_party/4RC on remote if we want to run Path A (offline pretrained inference) as an ablation."}
+  ],
+  "memory_entries_written": [
+    "project_dcf_motion_head_spec.md",
+    "reference_4rc_codebase.md",
+    "feedback_dcf_only_points_principle.md",
+    "feedback_remote_github_slow.md",
+    "feedback_ssh_debug.md"
+  ],
+  "caveats": [
+    "Spec is NOT yet approved — user-review gate open, writing-plans not invoked.",
+    "P0-manifest expansion from AM sidecar remains pending; this design is architectural, does not replace data expansion.",
+    "4-view budget assumed sufficient; if motion extrapolation is limited in smoke/overfit, fall back to widening to 8 or 16 views (spec §8).",
+    "Positional encoding assumes 4RC CrossBlock accepts pos=(None, pos_k); fallback is learned 1D embedding over 512 canonical-point slots (spec §9 open Q #1).",
+    "LOC: spec says ~200 LOC after wiring for new file; source motiondecoder.py is 180 LOC — different things (source vs adapted target)."
+  ],
+  "resume_prompt": "Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-dcf-motion-head-brainstorm.json and continue from the first pending task.",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-dcf-motion-head-brainstorm.html"
+}
