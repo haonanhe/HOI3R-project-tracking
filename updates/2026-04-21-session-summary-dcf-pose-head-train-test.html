@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-04-21 · Session Summary — DCF Pose Head Train/Test</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+h4{color:#555;margin-top:16px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.caption{font-size:.85em;color:#666;margin-top:4px;text-align:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2,.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Session Summary — DCF Object Pose Head: Full Ablation + Train/Test Split</h1>
+  <div class="meta-box">
+    <div class="meta-grid">
+      <div class="meta-label">Date</div><div class="meta-value">2026-04-21 (multi-day session: 2026-04-18 → 2026-04-21)</div>
+      <div class="meta-label">Branch</div><div class="meta-value">feat/dcf</div>
+      <div class="meta-label">HEAD SHA</div><div class="meta-value">8dab0ec — feat(render): world-space multi-frame + rotating-camera videos</div>
+      <div class="meta-label">Worktree</div><div class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</div>
+      <div class="meta-label">Spec</div><div class="meta-value">docs/superpowers/specs/2026-04-18-dcf-object-pose-head-design.md</div>
+      <div class="meta-label">Plan</div><div class="meta-value">docs/superpowers/plans/2026-04-18-dcf-object-pose-head-plan.md</div>
+      <div class="meta-label">Goal</div><div class="meta-value">Add learned (R,t,s) object pose head to DCF branch; ablate against B.00/B.1 on both train and s1_test splits.</div>
+      <div class="meta-label">Publish</div><div class="meta-value"><a href="2026-04-21-dcf-pose-head-train-test-v7.html">2026-04-21-dcf-pose-head-train-test-v7.html</a></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2>Headline numbers</h2>
+  <div class="grid-4">
+    <div class="stat-card"><div class="value" style="color:#27ae60">14 / 14</div><div class="label">TDD tasks committed (11 + 3 bonus)</div></div>
+    <div class="stat-card"><div class="value">8</div><div class="label">ACP runs trained to 2000 epochs</div></div>
+    <div class="stat-card"><div class="value" style="color:#e53935">5–7×</div><div class="label">Generalisation gap (train → s1_test obj L2)</div></div>
+    <div class="stat-card"><div class="value">14</div><div class="label">Commits on feat/dcf (3720eb6 → 8dab0ec)</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Experiments / tasks completed</h2>
+  <table>
+    <thead><tr><th>Task / Leg</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead>
+    <tbody>
+      <tr><td>T1 · SO(3) codebook shared module</td><td><span class="badge badge-pass">DONE</span></td><td><code>3720eb6</code></td><td>stream3r/models/so3_codebook.py; 6 tests</td></tr>
+      <tr><td>T2+T4 · ObjectPoseHead module</td><td><span class="badge badge-pass">DONE</span></td><td><code>6a797af</code></td><td>dcf_object_pose_head.py; 7 tests (shapes + overfit recovery)</td></tr>
+      <tr><td>T3 · [CLS_POSE_OBJ] token into DCFBranch</td><td><span class="badge badge-pass">DONE</span></td><td><code>2fb3a73</code></td><td>enable_object_pose_head flag; decode_outputs assertion flip</td></tr>
+      <tr><td>T5 · 4 GT pose fields in DexYCBDCFDataset</td><td><span class="badge badge-pass">DONE</span></td><td><code>1159b75</code></td><td>Umeyama-derived s_gt + load-time &lt;1mm assertion</td></tr>
+      <tr><td>T6 · schema validator</td><td><span class="badge badge-fix">SKIPPED</span></td><td>—</td><td>N/A: hoi_schema_validator.py validates a different NPZ format, not DexYCBDCFDataset</td></tr>
+      <tr><td>T7+T8 · 6 GT-supervised pose + consistency losses</td><td><span class="badge badge-pass">DONE</span></td><td><code>7fd1a38</code></td><td>R, t, s, cls, res, consist losses in CausalLoss; stream3r.py key propagation</td></tr>
+      <tr><td>T9 · Hydra configs</td><td><span class="badge badge-pass">DONE</span></td><td><code>a8fcf0a</code></td><td>dcf_smoke.yaml + dcf_overfit.yaml with full pose-head block</td></tr>
+      <tr><td>T10 · memprobe flag mirror</td><td><span class="badge badge-pass">DONE</span></td><td><code>64679f9</code></td><td>--enable-object-pose-head / --pose-head-so3-k in dcf_memory_probe.py</td></tr>
+      <tr><td>T11 · End-to-end integration smoke</td><td><span class="badge badge-pass">DONE</span></td><td><code>1b4bb1b</code></td><td>tests/smoke/test_dcf_object_pose_integration.py (2 tests, full 6-loss stack)</td></tr>
+      <tr><td>Bonus · dcf_dataloader_train.py pose-loss wiring</td><td><span class="badge badge-pass">DONE</span></td><td><code>99e78ff</code></td><td>13 new CLI flags; required for ACP path which bypasses Hydra</td></tr>
+      <tr><td>Bonus · infer auto-detect pose head</td><td><span class="badge badge-fix">FIX</span></td><td><code>cb4adda</code></td><td>Peek checkpoint keys to auto-set enable_object_pose_head; unblocked C.x Phase-2 eval</td></tr>
+      <tr><td>Bonus · infer saves pose-rigid per frame</td><td><span class="badge badge-pass">DONE</span></td><td><code>a3fc2f6</code></td><td>pred_obj_rigid_per_frame + rigid_obj_l2_mm in predictions bundle</td></tr>
+      <tr><td>Bonus · Option B'' shape-consistency loss</td><td><span class="badge badge-pass">DONE</span></td><td><code>f5d76a3</code>, <code>302f191</code></td><td>--shape-consistency-weight; GT-pose-relative inter-frame L1; dataset flag decoupled from pose head</td></tr>
+      <tr><td>Bonus · world-space render script</td><td><span class="badge badge-pass">DONE</span></td><td><code>8dab0ec</code></td><td>scripts/render_world_space.py: multi-frame + rotating-camera MP4s</td></tr>
+      <tr><td>ACP C.00 · pose head + consistency</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>pt-medsrtw3</td><td>Train obj L2 13.05 (best on train). Test obj L2 83.4 (best on test). Hand regresses +68%</td></tr>
+      <tr><td>ACP C.01 · pose head, no consistency</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>pt-1ire9lec</td><td>Confirms consistency loss buys ~10mm of object accuracy</td></tr>
+      <tr><td>ACP C.02 · pose head + Procrustes</td><td><span class="badge badge-fail">DEGRADED</span></td><td>pt-b4vromeb</td><td>Obj L2 61 (traj) / 28 (rigid). Procrustes+pose-head compete</td></tr>
+      <tr><td>ACP D.0 · balanced pose + consist=2.0</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>pt-bv23ezpv</td><td>Shape drift 1.51 → pose-rigid drift 0.04 mm (tightest pose head). Hand 23.1</td></tr>
+      <tr><td>ACP D.1 · D.0 + loss_weight_hand=3.7</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>pt-n070367n</td><td>Hand recovers to 14.3 (B.00-tier) but obj degrades to 24.2</td></tr>
+      <tr><td>ACP D.2 · B.00 + Option B'' GT-relative</td><td><span class="badge badge-pass">SUCCEEDED</span></td><td>pt-jzmp74u6</td><td>Test hand L2 72.85 (best). Pose head NOT used. Option B'' works standalone</td></tr>
+      <tr><td>Eval · Train + s1_test on all 8 legs</td><td><span class="badge badge-pass">DONE</span></td><td>—</td><td>Full matrix; powered v7 publish</td></tr>
+      <tr><td>Viz · 48 videos (camera + world-multi + world-rot) × (train, test)</td><td><span class="badge badge-pass">DONE</span></td><td>8dab0ec</td><td>All uploaded to updates/assets/2026-04-20-dcf-pose-head/</td></tr>
+      <tr><td>Publish v3 → v7</td><td><span class="badge badge-pass">DONE</span></td><td>c08e0f41</td><td>v3 corrected training-loss-vs-eval-metric; v7 is final canonical page</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Key discoveries</h2>
+
+  <div class="panel">
+    <span class="badge badge-fail">FAIL</span>
+    <strong>Procrustes-aligned loss alone is catastrophic. B.1 and C.02 have obj L2 of 779 mm / 61 mm.</strong>
+    <p>Kabsch removes optimal (R*, t*) before computing L1, so global translation gradient is zeroed.
+       Training converges to "right shape, wrong place." Shape drift is near-perfect (0.11 mm) but
+       world-frame position drifts hundreds of millimetres. <em>Never use Procrustes as sole object loss.</em></p>
+  </div>
+
+  <div class="panel">
+    <span class="badge badge-finding">FINDING</span>
+    <strong>Training loss ≠ eval metric when object_loss_mode differs.</strong>
+    <p>Initial v1 publish used training-step <code>loss_obj</code> averaged over last 100 steps and claimed
+       B.1 was best. That was Procrustes residual, not world-frame L2. Real eval on held-out seq showed
+       B.1 = 779 mm. <em>Publish pages must use <code>infer_per_view_overfit.py</code> held-out eval,
+       not training history.</em> See <code>feedback_training_loss_vs_eval.md</code>.</p>
+  </div>
+
+  <div class="panel">
+    <span class="badge badge-fail">FAIL</span>
+    <strong>Subject-01 overfit dominates architectural differences.</strong>
+    <p>On unseen subject-08 (s1_test): B.00 obj L2 = 104 mm (vs 17 on train). <em>All C.x/D.x tuning lives
+       in a 30 mm band on test</em>, swamped by the 90 mm overfit gap. Any further arch ablation on
+       subject-01-only training is contaminated. Priority invert: expand training manifest first.</p>
+  </div>
+
+  <div class="panel">
+    <span class="badge badge-finding">FINDING</span>
+    <strong>Pose head helps obj L2 on train, costs hand L2 (shared aggregator capacity).</strong>
+    <p>C.00 obj L2 13.05 vs B.00's 17.03 (23% better) — but hand 23.5 vs 14.0 (+68%). The pose head's
+       6 new loss terms on the shared decoder steal capacity from hand. D.1 (balanced hand_weight=3.7)
+       recovers hand but regresses obj. Tradeoff is fundamental unless pose head gets dedicated feature
+       path (Option C, not tried).</p>
+  </div>
+
+  <div class="panel">
+    <span class="badge badge-finding">FINDING</span>
+    <strong>Option B'' (D.2) is the simplest winning configuration.</strong>
+    <p>B.00 + GT-pose-relative inter-frame consistency (<code>--shape-consistency-weight 1.0</code>),
+       no pose head. Test hand L2 72.85 (best; 5 mm better than B.00), test obj L2 101.62 (matches B.00).
+       Shape drift 2.87 (best among non-Procrustes on test). No architectural complexity — just one extra loss.</p>
+  </div>
+
+  <div class="panel">
+    <span class="badge badge-finding">FINDING</span>
+    <strong>Pose-head rigid is WORSE than trajectory on test (154 vs 115 mm for D.0).</strong>
+    <p>7-DoF pose head has higher inductive bias than 768-DoF trajectory head. On seen data this means
+       the pose head generalises less. <em>Consumer must not always prefer pose-head-rigid over trajectory</em>
+       — depends on whether Procrustes-mode training is active (C.02 → yes, else → no).</p>
+  </div>
+
+  <div class="panel">
+    <span class="badge badge-finding">FINDING</span>
+    <strong>Soft shape-regularisation bottoms out at 0.9–1.5 mm drift. Only Procrustes (or Option C structural)
+       can go lower.</strong>
+    <p>D.0's <code>w_consist=2.0</code>: 1.51 mm drift vs C.00's 1.41. D.2's Option B'': 1.45. None approach
+       B.1's 0.11 mm. <em>If shape-perfect rigidity is required, structural enforcement is the next step
+       (<code>pred_traj = s·R·canonical + t + delta</code>, Option C from the spec).</em></p>
+  </div>
+</section>
+
+<section>
+  <h2>Commits this session</h2>
+  <table>
+    <thead><tr><th>SHA</th><th>Type</th><th>Message</th></tr></thead>
+    <tbody>
+      <tr><td><code>cf0521c</code></td><td>docs(specs)</td><td>DCF object pose head design — codebook+residual + bidirectional consistency</td></tr>
+      <tr><td><code>b10114b</code></td><td>docs(specs)</td><td>clarify L_pose_res supervises only GT bin residual</td></tr>
+      <tr><td><code>c03e5c7</code></td><td>docs(specs)</td><td>address audit findings on DCF object pose head spec</td></tr>
+      <tr><td><code>44f20dc</code></td><td>docs(plans)</td><td>DCF object pose head — 11-task TDD implementation plan</td></tr>
+      <tr><td><code>3720eb6</code></td><td>refactor(models)</td><td>factor SO(3) codebook utilities into so3_codebook.py</td></tr>
+      <tr><td><code>6a797af</code></td><td>feat(dcf)</td><td>ObjectPoseHead module — codebook+residual + scale + translation</td></tr>
+      <tr><td><code>2fb3a73</code></td><td>feat(dcf)</td><td>wire [CLS_POSE_OBJ] token + ObjectPoseHead into DCFBranch</td></tr>
+      <tr><td><code>1159b75</code></td><td>feat(dcf)</td><td>emit 4 GT pose fields from DexYCBDCFDataset</td></tr>
+      <tr><td><code>7fd1a38</code></td><td>feat(loss)</td><td>5 GT-supervised DCF pose losses + consistency L_consist</td></tr>
+      <tr><td><code>a8fcf0a</code></td><td>feat(config)</td><td>enable object pose head in dcf_smoke + dcf_overfit</td></tr>
+      <tr><td><code>64679f9</code></td><td>feat(memprobe)</td><td>mirror enable_object_pose_head flag (Task 10)</td></tr>
+      <tr><td><code>1b4bb1b</code></td><td>test(dcf)</td><td>end-to-end integration smoke for object pose head</td></tr>
+      <tr><td><code>99e78ff</code></td><td>feat(train)</td><td>wire object pose head losses into dcf_dataloader_train.py</td></tr>
+      <tr><td><code>cb4adda</code></td><td>fix(infer)</td><td>autodetect enable_object_pose_head from checkpoint</td></tr>
+      <tr><td><code>a3fc2f6</code></td><td>feat(infer)</td><td>save pose-head (R,t,s) and pred_rigid = s*R*canonical+t per frame</td></tr>
+      <tr><td><code>f5d76a3</code></td><td>feat(train)</td><td>Option B — GT-pose-relative inter-frame shape consistency loss</td></tr>
+      <tr><td><code>302f191</code></td><td>fix(train)</td><td>import torch.nn.functional as F for Option B shape-consistency loss</td></tr>
+      <tr><td><code>8dab0ec</code></td><td>feat(render)</td><td>world-space multi-frame + rotating-camera videos</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Module / branch state</h2>
+  <table>
+    <thead><tr><th>Aspect</th><th>State</th></tr></thead>
+    <tbody>
+      <tr><td>feat/dcf branch</td><td>HEAD 8dab0ec. Pushed? Yes (via ACP jobs which cloned from remote workspace). All 18 commits clean, smoke tests pass.</td></tr>
+      <tr><td>Object pose head module</td><td>Production-quality. Codebook+residual rotation, isotropic softplus scale, direct translation. Shared <code>so3_codebook.py</code> utility.</td></tr>
+      <tr><td>DCFBranch wiring</td><td>Behind <code>enable_object_pose_head</code> flag (default False — legacy B.x reproductions unaffected). <code>[CLS_POSE_OBJ]</code> appended; decode_outputs assertion flipped.</td></tr>
+      <tr><td>Dataset GT pose</td><td>DexYCBDCFDataset emits <code>object_pose_R/t_dcf_frame</code>, <code>scale_dcf</code>, <code>valid</code> when flag on. Auto-on if shape-consistency-weight &gt; 0.</td></tr>
+      <tr><td>Loss side</td><td>6 new losses in CausalLoss + 1 inline in dcf_dataloader_train.py (Option B''). All graph-preserving-zero on valid=False.</td></tr>
+      <tr><td>Infer script</td><td>Auto-detects pose head from checkpoint keys. Saves pred_obj_rigid and pose (R, t, s) when present.</td></tr>
+      <tr><td>Render scripts</td><td>dcf_render_camera_view.py (existing) + render_world_space.py (new, world multi-frame + rotating cam)</td></tr>
+      <tr><td>Publish pages</td><td>v7 canonical: <a href="2026-04-21-dcf-pose-head-train-test-v7.html">updates/2026-04-21-dcf-pose-head-train-test-v7.html</a></td></tr>
+      <tr><td>In-flight ACP jobs</td><td>None — all 8 runs (B.00, B.1, C.00–C.02, D.0–D.2) completed.</td></tr>
+      <tr><td>Training manifest</td><td><strong>Still subject-01 only</strong> — <code>manifests/dexycb_subject01_manifest.json</code>. Needs expansion.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Open issues &amp; next steps</h2>
+  <table>
+    <thead><tr><th>Priority</th><th>Item</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-p0">P0</span></td>
+        <td>Expand training manifest beyond subject-01</td>
+        <td>Build manifest covering subjects 0–6 (s1_test holds 7–8). Every arch finding this session
+          is contaminated by single-subject overfit (5–7× gap). Per <code>project_overfit_subject01.md</code>
+          this is the <em>dominant</em> error source.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-p0">P0</span></td>
+        <td>Run full s1_test eval (not one sequence)</td>
+        <td>Current publish uses <code>20201002-subject-08/20201002_104620</code> only. Official s1_test has
+          ~200 sequences across subjects 7+8. Build s1-test manifest via <code>dex_ycb_toolkit</code> factory
+          and average metrics. D.2 vs C.00 rankings could flip at proper averaging.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-p1">P1</span></td>
+        <td>Implement Option C (residual reparametrisation)</td>
+        <td><code>pred_traj = s·R·canonical + t + delta</code>; penalise <code>||delta||</code>. Guarantees
+          shape drift = 0 at zero delta. Only unexplored mechanism for hard shape constancy without
+          B.1's Procrustes trap. ~50 LOC in <code>dcf_branch.py</code>.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-p1">P1</span></td>
+        <td>Run s3_test (unseen objects) + s0_test</td>
+        <td>Official DexYCB splits for object-generalisation. Pose head may overfit specifically to the
+          subject-01 object set; s3 would reveal it.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-p2">P2</span></td>
+        <td>Larger codebook K=8192</td>
+        <td>Current K=2048 → ~15° Voronoi cells. Cheap ablation to see if pose rotation accuracy floor drops below ~15°.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-p2">P2</span></td>
+        <td>Per-object breakdown on test set</td>
+        <td>Some YCB objects (symmetric: cans, spheres) likely benefit more from pose head than others.
+          Per-object L2 table would reveal where the pose head's bias pays off vs costs.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-p2">P2</span></td>
+        <td>Regularise pose head specifically</td>
+        <td>D.0/D.1 show pose-rigid overfits more than trajectory on test. Options: dropout on
+          <code>object_pose_head.*</code>, weight decay boost, or LR schedule specifically for pose head.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Caveats</h2>
+  <ul>
+    <li>All eval numbers are from <strong>one sequence per split</strong>. Proper s1_test averaging pending.</li>
+    <li>Training data is subject-01 only. Every architectural finding assumes this confounded baseline.</li>
+    <li>Pose-head rotation accuracy is capped at ~15° by K=2048 codebook Voronoi cells; hasn't been raised.</li>
+    <li>Shape drift metric is inter-frame Procrustes residual. Alternative (per-frame rigid-fit residual) not computed.</li>
+    <li><code>infer_per_view_overfit.py</code> auto-detection relies on <code>object_pose_cls_token</code> key; future pose-head variants may need explicit flag.</li>
+    <li>v1–v2 of the publish page were wrong (training loss confused with eval metric). v3–v7 are corrected; v1/v2 overwritten, not deleted.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Memory entries written this session</h2>
+  <ul>
+    <li><a href="https://github.com/claude-code/nonexistent/feedback_training_loss_vs_eval.md"><code>feedback_training_loss_vs_eval.md</code></a> — training loss vs eval metric trap; never publish training history</li>
+    <li><code>reference_dexycb_splits.md</code> — s0/s1/s2/s3 definitions from toolkit; s1_test subjects = 07+08</li>
+    <li><code>project_dcf_pose_head_findings.md</code> — 8-leg ablation numbers + findings at commit 8dab0ec</li>
+    <li><code>reference_world_space_render.md</code> — scripts/render_world_space.py documentation + parallel pattern</li>
+    <li><code>reference_option_bprime_shape_consistency.md</code> — Option B'' GT-pose-relative loss; D.2 result numbers</li>
+    <li><code>feedback_git_safe_directory_worktree.md</code> — first-time safe.directory fix per worktree</li>
+    <li><code>project_overfit_subject01.md</code> — 5–7× generalisation gap dominates arch ablation</li>
+  </ul>
+</section>
+
+<section>
+  <h2>How to resume</h2>
+  <div class="info">
+    To resume, paste into a new Claude Code session:
+    <pre style="background:#f4f4f4;padding:12px;border-radius:4px;overflow:auto"><code>Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-dcf-pose-head-train-test.json
+and continue from the first pending task.</code></pre>
+  </div>
+</section>
+
+<footer>
+  <p>Session artifacts: spec <code>docs/superpowers/specs/2026-04-18-dcf-object-pose-head-design.md</code>,
+     plan <code>docs/superpowers/plans/2026-04-18-dcf-object-pose-head-plan.md</code>,
+     branch <code>feat/dcf @ 8dab0ec</code>,
+     publish <a href="2026-04-21-dcf-pose-head-train-test-v7.html">v7 canonical report</a>.
+  </p>
+</footer>
+</body>
+</html>
