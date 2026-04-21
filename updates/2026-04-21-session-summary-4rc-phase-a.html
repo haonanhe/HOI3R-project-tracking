@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2026-04-21 Session — 4RC Phase A + DexYCB Smoke v2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+h4{color:#555;margin-top:16px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.caption{font-size:.85em;color:#666;margin-top:4px;text-align:center}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-2,.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>2026-04-21 Session — 4RC Phase A + DexYCB Smoke v2 (README-correct)</h1>
+<div class="meta-box">
+<div class="meta-grid">
+<div class="meta-label">Date</div><div class="meta-value">2026-04-21</div>
+<div class="meta-label">Branch</div><div class="meta-value">feat/dcf</div>
+<div class="meta-label">HEAD SHA</div><div class="meta-value">397ccdd</div>
+<div class="meta-label">Worktree</div><div class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</div>
+<div class="meta-label">Session goal</div><div class="meta-value">Execute 4RC migration Phase A bring-up (A1–A5 + LICENSE + B1), validate end-to-end with a real DexYCB smoke, publish visualizations.</div>
+<div class="meta-label">Plan path</div><div class="meta-value">docs/superpowers/plans/2026-04-21-feat-dcf-4rc-migration-plan.md</div>
+<div class="meta-label">Spec path</div><div class="meta-value">docs/superpowers/specs/2026-04-21-feat-dcf-4rc-migration-design.md</div>
+</div>
+</div>
+</header>
+
+<section>
+<h2>Headline</h2>
+<div class="grid-4">
+<div class="stat-card"><div class="value">11</div><div class="label">commits on feat/dcf</div></div>
+<div class="stat-card"><div class="value">1.52 B</div><div class="label">4RC params cached (5.7 GB)</div></div>
+<div class="stat-card"><div class="value">504×378</div><div class="label">v2 DexYCB input shape (aspect-fixed)</div></div>
+<div class="stat-card"><div class="value">5</div><div class="label">memory entries written/updated</div></div>
+</div>
+</section>
+
+<section>
+<h2>Tasks &amp; experiments</h2>
+<table>
+<thead><tr><th>ID</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead>
+<tbody>
+<tr><td>S5</td><td><span class="badge badge-pass">PASS</span></td><td>—</td><td>User chose subagent-driven execution mode.</td></tr>
+<tr><td>A1</td><td><span class="badge badge-pass">PASS</span></td><td>upstream <code>b48ac6d</code></td><td>Mac-side clone of 4RC to <code>/Users/hnhe/Downloads/SLAI/4RC-mirror/</code> (81 MB).</td></tr>
+<tr><td>A2</td><td><span class="badge badge-pass">PASS</span></td><td><code>cc7039f</code></td><td>rsynced worktree copy (42 MB, excl .git) + backup <code>/mnt/afs/haonan/checkpoints/4RC-mirror/</code> (82 MB). Required unplanned <code>mkdir -p /mnt/afs/haonan/checkpoints/</code>.</td></tr>
+<tr><td>A3</td><td><span class="badge badge-pass">PASS</span></td><td>env-only</td><td><code>pip install -e .</code> in <code>human3r</code>; zero deps pulled (upstream setup.py has no install_requires); foundationals unchanged.</td></tr>
+<tr><td>A4</td><td><span class="badge badge-pass">PASS</span></td><td><code>b16f9d6</code></td><td>HF weights cached at <code>/mnt/afs/haonan/hoi3r/checkpoints/4RC/</code> (revision <code>3634b32</code>, 1.52 B params) via <code>HF_ENDPOINT=hf-mirror.com</code>.</td></tr>
+<tr><td>A5</td><td><span class="badge badge-pass">PASS</span></td><td><code>6a019bc</code></td><td>Smoke run on random-init frames; observed forward signature recorded in <code>docs/third_party_4rc_note.md</code>. Three upstream gotchas discovered (see findings).</td></tr>
+<tr><td>LICENSE</td><td><span class="badge badge-pass">PASS</span></td><td><code>6c623b3</code></td><td>S-Lab License 1.0 (non-commercial) confirmed for both code &amp; weights; compatible with NeurIPS submission.</td></tr>
+<tr><td>X1 v1</td><td><span class="badge badge-fail">BROKEN</span></td><td><code>e956e84</code></td><td>DexYCB smoke v1 — squished 480×640 into 504×504 square, bypassed <code>inference()</code> wrapper, output depth distorted.</td></tr>
+<tr><td>X2 v1</td><td><span class="badge badge-fail">BROKEN</span></td><td><code>0ad0b7c</code></td><td>Rendered v1 MP4s (kept as archive for honest record).</td></tr>
+<tr><td>X3 v1</td><td><span class="badge badge-fix">SUPERSEDED</span></td><td>tracking repo</td><td>First published page (superseded by v2 later in the session).</td></tr>
+<tr><td>X1 v2</td><td><span class="badge badge-pass">PASS</span></td><td><code>f8ad2c8</code></td><td>README-correct DexYCB smoke via <code>load_images(size=512, patch_size=14)</code> + <code>inference(dtype="bf16-mixed", use_center_as_anchor=False)</code>. Input 504×378 (aspect-preserved).</td></tr>
+<tr><td>X2 v2</td><td><span class="badge badge-pass">PASS</span></td><td><code>b36856c</code></td><td>Re-rendered MP4s at the correct rectangular aspect.</td></tr>
+<tr><td>X3 v2</td><td><span class="badge badge-pass">PASS</span></td><td>tracking repo</td><td>Published v2 at the same URL, with v1 assets archived under <code>-v1-broken/</code> asset dir and a methodology-correction note above the fold.</td></tr>
+<tr><td>B1</td><td><span class="badge badge-pass">PASS</span></td><td><code>1cbad76</code></td><td><code>hoi3r/</code> package skeleton (7 dirs + 8 empty <code>__init__.py</code>).</td></tr>
+<tr><td>robot_arm</td><td><span class="badge badge-pass">PASS</span></td><td><code>0740a9e</code></td><td>Canonical 4RC CLI run on the upstream <code>examples/robot_arm</code> + depth video + <a href="2026-04-21-4rc-robot-arm-depth.html">published page</a>.</td></tr>
+<tr><td>subject-07</td><td><span class="badge badge-pass">PASS</span></td><td><code>397ccdd</code></td><td>4RC depth video on DexYCB subject-07 / 20200928_143249 / cam0 (30 / 74 frames). Local-only (no publish); MP4 at <code>/Users/hnhe/Downloads/SLAI/hoi3r/tmp-4rc-depth/</code>.</td></tr>
+<tr><td>viser</td><td><span class="badge badge-pass">PASS</span></td><td>—</td><td>Interactive 3D viewer served for robot_arm + subject-07 via SSH -L 8020 tunnel. Predictions.pt→flat-npz conversion captured as reusable pattern.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Key discoveries</h2>
+
+<div class="panel">
+<span class="badge badge-finding">FINDING</span>
+<h3>Arc forward API: <code>list[dict]</code> with <code>img</code> key, not a raw tensor</h3>
+<p>The plan's A5 assumed <code>model(frames)</code> with a <code>(B,T,C,H,W)</code> tensor. Actual API: <code>model([{"img": tensor_BCHW}, ...])</code> where <code>T</code> is the list length. Per-frame output dict has 9 keys (<code>pts</code>, <code>conf</code>, <code>track</code>, <code>conf_track</code>, <code>track_multi</code>, <code>conf_track_multi</code>, <code>track_query_idx</code>, <code>extrinsic</code>, <code>intrinsic</code>). Recorded in <code>docs/third_party_4rc_note.md</code>; carried into Phase B.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-finding">FINDING</span>
+<h3>HF repo <code>Luo-Yihang/4RC</code> has NO <code>config.json</code></h3>
+<p>Hub siblings are <code>.gitattributes / LICENSE / README.md / model.safetensors</code> only. <code>Arc.from_pretrained("Luo-Yihang/4RC")</code> fails with the HF <code>.no_exist</code> sentinel unless a fabricated minimal <code>config.json</code> sits in the snapshot dir. All six <code>Arc.__init__</code> kwargs have defaults, so a default config matches the checkpoint arch (verified against 1.52 B param count).</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-finding">FINDING</span>
+<h3>Upstream batch-dim bug in <code>_postprocess_output</code></h3>
+<p><code>extrinsic[4,4]</code> and <code>intrinsic[3,3]</code> return without a B dim — only the last batch element's camera is preserved. Harmless at B=1 (our usage). Phase B's encoder wrapper either forces B=1 or bypasses <code>_postprocess_output</code>.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-fix">FIX</span>
+<h3>Depth distortion from aspect-squishing (v1 → v2)</h3>
+<p>First-pass smoke center-cropped 480×640 → 480×480 then resized to 504×504 — a ~25% horizontal content loss + stretch. 4RC was trained on aspect-preserving <code>load_images(size=512, patch_size=14)</code> input, which yields 504×378 for 480×640 DexYCB frames. Raw <code>model(views)</code> in fp32 also skipped the bf16 autocast that <code>inference()</code> applies. v2 smoke (<code>f8ad2c8</code>) uses the README's <code>load_images + inference(dtype="bf16-mixed")</code> path verbatim. Depth range tightened from 0.37–2.86 m (broken distribution) to 0.47–2.80 m (p5/p95 around median 2.03 m — geometrically coherent).</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-finding">FINDING</span>
+<h3>huggingface.co unreachable from debug container</h3>
+<p>Returns <code>[Errno 101] Network is unreachable</code>. Workaround: <code>HF_ENDPOINT=https://hf-mirror.com</code> — Tsinghua-hosted read-only mirror of the hub. All future HF calls from the debug container need this. Memory <code>reference_hf_mirror_debug_container.md</code> captures the pattern + known-good cache paths.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-fix">FIX</span>
+<h3>Publish via Git Data API single commit, not 16 Contents API commits</h3>
+<p>User directive: when uploading multiple files to the tracking repo, use the Git Data API (blobs → tree → commit → ref) so N files land in ONE commit. The Contents API PUT-per-file approach creates 1 commit per file (16 commits for a typical page+assets set). The robot_arm publish used the Data API pattern end-to-end (7 API calls: 4 blobs + 1 tree + 1 commit + 1 ref). Captured in updated <code>reference_publish_html.md</code>.</p>
+</div>
+
+<div class="panel">
+<span class="badge badge-finding">FINDING</span>
+<h3>Viser visualizer: flatten <code>predictions.pt</code> → <code>result.npz</code></h3>
+<p>The viser CLI expects the flat <code>pred_&lt;i&gt;_&lt;k&gt;</code> / <code>view_&lt;i&gt;_&lt;k&gt;</code> schema produced by <code>inference.py</code>'s <code>save_npz</code>. Our v2 smoke saves a <code>predictions.pt</code> in PyTorch dict format — a 10-line flattener converts it. Also: viser silently auto-increments port (8020 → 8021) if the requested port is taken, so <code>ssh -L 8020:8020</code> ends up pointing at nothing. Always <code>pkill -f viser_visualizer_track</code> on remote before starting.</p>
+</div>
+</section>
+
+<section>
+<h2>Commits on feat/dcf</h2>
+<table>
+<thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead>
+<tbody>
+<tr><td><code>cc7039f</code></td><td>docs(4RC)</td><td>mirror location + restore recipe</td></tr>
+<tr><td><code>b16f9d6</code></td><td>docs(4RC)</td><td>record HF weights cache path</td></tr>
+<tr><td><code>6a019bc</code></td><td>docs(4RC)</td><td>record observed forward signature from smoke test</td></tr>
+<tr><td><code>6c623b3</code></td><td>docs(4RC)</td><td>record S-Lab License 1.0 (non-commercial) and compliance plan</td></tr>
+<tr><td><code>e956e84</code></td><td>feat(smoke)</td><td>4RC inference on DexYCB subject-01 s141754 cam0 <em>(v1 broken — retained for honest record)</em></td></tr>
+<tr><td><code>0ad0b7c</code></td><td>feat(smoke)</td><td>render 4RC DexYCB smoke videos <em>(v1 broken — retained)</em></td></tr>
+<tr><td><code>f8ad2c8</code></td><td>feat(smoke)</td><td>README-correct 4RC smoke via load_images + inference() <em>(v2)</em></td></tr>
+<tr><td><code>b36856c</code></td><td>feat(smoke)</td><td>render 4RC smoke v2 videos (aspect-preserved 504×378)</td></tr>
+<tr><td><code>1cbad76</code></td><td>feat(hoi3r)</td><td>create package skeleton for 4RC migration <em>(B1)</em></td></tr>
+<tr><td><code>0740a9e</code></td><td>feat(smoke)</td><td>render depth video from 4RC robot_arm example</td></tr>
+<tr><td><code>397ccdd</code></td><td>feat(smoke)</td><td>4RC depth video on DexYCB subject-07 (new seq, no publish)</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Module / branch state</h2>
+<table>
+<thead><tr><th>Aspect</th><th>State</th></tr></thead>
+<tbody>
+<tr><td>4RC source on remote</td><td><code>third_party/4RC/</code> at upstream <code>b48ac6d</code>; backup at <code>/mnt/afs/haonan/checkpoints/4RC-mirror/</code> (survives container recycle).</td></tr>
+<tr><td>4RC weights</td><td>Cached at <code>/mnt/afs/haonan/hoi3r/checkpoints/4RC/</code> (5.7 GB, revision <code>3634b32</code>). Load via local snapshot path or <code>Arc.from_pretrained("Luo-Yihang/4RC")</code> with <code>HF_HOME</code> + <code>HF_ENDPOINT=hf-mirror.com</code> env vars set.</td></tr>
+<tr><td>conda env <code>human3r</code></td><td>arc-1.0 editable-installed; no foundational package drift (numpy 1.26.4, torch 2.5.1+cu121, scipy 1.17.1, torchvision 0.20.1+cu121 all unchanged).</td></tr>
+<tr><td>hoi3r package</td><td>Skeleton at <code>hoi3r/{__init__, models/{arc, heads, postprocess}, losses, data}/__init__.py</code> — B1 complete, B2+ pending.</td></tr>
+<tr><td>feat/dcf HEAD</td><td><code>397ccdd</code> (11 session commits; all docs + scripts, no binary artifacts).</td></tr>
+<tr><td>Published pages</td><td>Updated <a href="2026-04-21-4rc-dexycb-smoke.html">DexYCB smoke (v2)</a> with v1 archive collapsible; new <a href="2026-04-21-4rc-robot-arm-depth.html">robot_arm reference</a>.</td></tr>
+<tr><td>Local artifacts on Mac</td><td><code>/Users/hnhe/Downloads/SLAI/hoi3r/tmp-4rc-depth/</code> holds subject-07 depth MP4 + stills + runlog (4 files, ~1.2 MB).</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Open issues &amp; next steps</h2>
+<table>
+<thead><tr><th>Priority</th><th>Task</th><th>Detail</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-p0">P0</span></td><td>B2 — ArcEncoderWrapper skeleton + failing test</td><td>Write <code>hoi3r/models/arc/encoder_wrapper.py</code> + <code>tests/hoi3r/test_arc_encoder_wrapper.py</code>. Note: plan's <code>from_pretrained('Luo-Yihang/4RC')</code> needs adjustment — the HF repo lacks config.json. Use local snapshot path or fabricate config (Phase A A5 already did this once in the snapshot cache, so repo-id load may now succeed).</td></tr>
+<tr><td><span class="badge badge-p0">P0</span></td><td>B3 — port 4RC encoder attention loop</td><td>Replace placeholder <code>self.arc.forward_with_extra_tokens</code> with a real port of 4RC's encoder forward, accepting hand/obj query tokens. Main body of work. B2's failing test drives TDD.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>B4 — freeze discipline test</td><td>Assert only <code>e_hand</code>/<code>e_obj</code> are trainable (2 × 1536 params).</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>C1 — GPS+Fourier PE → 1536-d hand query tokens</td><td>Wrap existing GPS PE module (see memory <code>project_gps_todo.md</code>) to emit 1536-d hand query embeddings.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>D1–D5 — four foreground heads + AdaLN block</td><td>HandGeom / ObjGeom (MLP) + AdaLN + HandMotion / ObjMotion (self+cross-attn).</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>E1–E2 — uncertainty-weighted L1 loss + sampling helper</td><td>Per-step random barycentric surface sampling shared across frames.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>F1 — 16-frame DexYCB clip loader</td><td>Wrap existing DexYCB dataset for T=16 clips with shared query samples.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>G1–G3 — HOI3RModel + Stage 0 smoke + contamination probe</td><td>Integrate encoder wrapper + 4 heads + query encoder; validate gradients flow end-to-end; assert scene-depth RMSE unchanged when type embeddings zero'd.</td></tr>
+<tr><td><span class="badge badge-p1">P1</span></td><td>H1–H4 — Stage 1 ACP training + eval</td><td>Training script, ACP submission (p1 workspace, RESERVED, backoff_limit=0), monitor, PASS/FAIL gate against exit criteria (hand L2&lt;10mm, obj L2&lt;20mm).</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>I1 — delete STream3R encoder tree</td><td>Gated on H4 PASS.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>STAGE2_PLAN</td><td>Write Stage 2/3 follow-up plan after Stage 1 PASS.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Memory entries written or updated</h2>
+<ul>
+<li><code>reference_hf_mirror_debug_container.md</code> — huggingface.co unreachable from debug container; use <code>HF_ENDPOINT=https://hf-mirror.com</code>.</li>
+<li><code>project_4rc_license.md</code> — S-Lab 1.0 non-commercial; NeurIPS-compatible.</li>
+<li><code>feedback_4rc_inference_wrapper.md</code> — always use <code>load_images + inference()</code>; raw <code>model(views)</code> on manual-cropped squares distorts depth.</li>
+<li><code>reference_4rc_viser_visualization.md</code> — SSH -L tunnel + viser + predictions.pt→npz flattener; watch for viser's port auto-increment.</li>
+<li><code>project_4rc_migration_plan_state.md</code> — Phase A complete, findings carried into Phase B, first pending = B1 (now done) → B2.</li>
+<li><code>reference_publish_html.md</code> — updated to Git Data API single-commit pattern as default for multi-file publishes.</li>
+</ul>
+</section>
+
+<section>
+<h2>Caveats</h2>
+<ul>
+<li>11 tracking-repo commits from this session (batched before the Git Data API memory was written); future sessions should collapse multi-file publishes into single commits via the new pattern.</li>
+<li>v1 broken smoke assets are still live under <code>updates/assets/2026-04-21-4rc-dexycb-smoke-v1-broken/</code> — intentional, for honest record.</li>
+<li>Phase A config.json workaround (minimal defaults) was verified to match the 1.52 B param checkpoint; if S-Lab ships a real config.json upstream later, our fabricated one should be replaced.</li>
+<li>Viser session was foreground-transient — the tunnel is closed; re-run via memory <code>reference_4rc_viser_visualization.md</code> for future interactive viewing.</li>
+<li>B2 plan's test uses <code>from_pretrained('Luo-Yihang/4RC')</code> — this works NOW because A5 left a <code>config.json</code> in the local HF cache, but tear-down of the cache would break it; B2 implementer should plumb a local-snapshot fallback as a belt-and-braces measure.</li>
+</ul>
+</section>
+
+<section>
+<h2>How to resume</h2>
+<div class="info">
+<p>To resume, paste into a new Claude Code session:</p>
+<pre><code>Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-4rc-phase-a.json
+and continue from the first pending task.</code></pre>
+<p>That sidecar points at the plan file, current HEAD (<code>397ccdd</code>), and the P0 next task (B2 — ArcEncoderWrapper skeleton). Memory entries <code>reference_hf_mirror_debug_container.md</code>, <code>project_4rc_license.md</code>, <code>feedback_4rc_inference_wrapper.md</code>, <code>reference_4rc_viser_visualization.md</code>, <code>project_4rc_migration_plan_state.md</code>, and the updated <code>reference_publish_html.md</code> carry the Phase A findings forward automatically.</p>
+</div>
+</section>
+
+<footer>
+<p>Generated 2026-04-21 via <code>/conclude-session</code>. Plan <code>docs/superpowers/plans/2026-04-21-feat-dcf-4rc-migration-plan.md</code>, spec <code>docs/superpowers/specs/2026-04-21-feat-dcf-4rc-migration-design.md</code>.</p>
+</footer>
+</body>
+</html>
