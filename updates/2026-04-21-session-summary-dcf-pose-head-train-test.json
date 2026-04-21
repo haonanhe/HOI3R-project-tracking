@@ -1,0 +1,117 @@
+{
+  "date": "2026-04-21",
+  "topic": "dcf-pose-head-train-test",
+  "branch": "feat/dcf",
+  "head_sha": "8dab0ec",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-18-dcf-object-pose-head-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-18-dcf-object-pose-head-plan.md",
+  "commits": [
+    {"sha": "cf0521c", "type": "docs(specs)", "subject": "DCF object pose head design — codebook+residual + bidirectional consistency"},
+    {"sha": "b10114b", "type": "docs(specs)", "subject": "clarify L_pose_res supervises only GT bin residual"},
+    {"sha": "c03e5c7", "type": "docs(specs)", "subject": "address audit findings on DCF object pose head spec"},
+    {"sha": "44f20dc", "type": "docs(plans)", "subject": "DCF object pose head — 11-task TDD implementation plan"},
+    {"sha": "3720eb6", "type": "refactor(models)", "subject": "factor SO(3) codebook utilities into so3_codebook.py"},
+    {"sha": "6a797af", "type": "feat(dcf)", "subject": "ObjectPoseHead module — codebook+residual + scale + translation"},
+    {"sha": "2fb3a73", "type": "feat(dcf)", "subject": "wire [CLS_POSE_OBJ] token + ObjectPoseHead into DCFBranch"},
+    {"sha": "1159b75", "type": "feat(dcf)", "subject": "emit 4 GT pose fields from DexYCBDCFDataset"},
+    {"sha": "7fd1a38", "type": "feat(loss)", "subject": "5 GT-supervised DCF pose losses + consistency L_consist"},
+    {"sha": "a8fcf0a", "type": "feat(config)", "subject": "enable object pose head in dcf_smoke + dcf_overfit"},
+    {"sha": "64679f9", "type": "feat(memprobe)", "subject": "mirror enable_object_pose_head flag (Task 10)"},
+    {"sha": "1b4bb1b", "type": "test(dcf)", "subject": "end-to-end integration smoke for object pose head"},
+    {"sha": "99e78ff", "type": "feat(train)", "subject": "wire object pose head losses into dcf_dataloader_train.py"},
+    {"sha": "cb4adda", "type": "fix(infer)", "subject": "autodetect enable_object_pose_head from checkpoint"},
+    {"sha": "a3fc2f6", "type": "feat(infer)", "subject": "save pose-head (R,t,s) and pred_rigid = s*R*canonical+t per frame"},
+    {"sha": "f5d76a3", "type": "feat(train)", "subject": "Option B — GT-pose-relative inter-frame shape consistency loss"},
+    {"sha": "302f191", "type": "fix(train)", "subject": "import torch.nn.functional as F for Option B shape-consistency loss"},
+    {"sha": "8dab0ec", "type": "feat(render)", "subject": "world-space multi-frame + rotating-camera videos"}
+  ],
+  "acp_jobs": [
+    {"job_id": "pt-medsrtw3", "leg": "C.00", "state": "SUCCEEDED", "train_obj_l2_mm": 13.05, "test_obj_l2_mm": 83.38},
+    {"job_id": "pt-1ire9lec", "leg": "C.01", "state": "SUCCEEDED", "train_obj_l2_mm": 23.16, "test_obj_l2_mm": 96.93},
+    {"job_id": "pt-b4vromeb", "leg": "C.02", "state": "SUCCEEDED", "train_obj_l2_mm": 60.94, "test_obj_l2_mm": 103.95},
+    {"job_id": "pt-bv23ezpv", "leg": "D.0",  "state": "SUCCEEDED", "train_obj_l2_mm": 16.72, "test_obj_l2_mm": 115.24},
+    {"job_id": "pt-n070367n", "leg": "D.1",  "state": "SUCCEEDED", "train_obj_l2_mm": 24.22, "test_obj_l2_mm": 103.40},
+    {"job_id": "pt-a0xvy8bv", "leg": "D.2 v1", "state": "FAILED", "note": "NameError F not defined; re-submitted as v2"},
+    {"job_id": "pt-jzmp74u6", "leg": "D.2 v2", "state": "SUCCEEDED", "train_obj_l2_mm": 14.99, "test_obj_l2_mm": 101.62}
+  ],
+  "tasks_completed": [
+    {"id": "T1", "summary": "SO(3) codebook utilities factored into shared so3_codebook.py (+6 tests)"},
+    {"id": "T2+T4", "summary": "ObjectPoseHead module + 7 tests including overfit-recovery"},
+    {"id": "T3", "summary": "[CLS_POSE_OBJ] token wired into DCFBranch behind enable_object_pose_head flag"},
+    {"id": "T5", "summary": "DexYCBDCFDataset emits 4 GT pose fields + Umeyama-derived s_gt + <1mm load-time assertion"},
+    {"id": "T7+T8", "summary": "6 new pose losses in CausalLoss (R, t, s, cls, res, consist); stream3r.py key propagation"},
+    {"id": "T9", "summary": "dcf_smoke.yaml + dcf_overfit.yaml updated to enable pose head"},
+    {"id": "T10", "summary": "dcf_memory_probe.py --enable-object-pose-head flag mirror"},
+    {"id": "T11", "summary": "End-to-end integration smoke (tests/smoke/test_dcf_object_pose_integration.py)"},
+    {"id": "Bonus-A", "summary": "dcf_dataloader_train.py: 13 new CLI flags + Option B'' shape-consistency loss"},
+    {"id": "Bonus-B", "summary": "infer_per_view_overfit.py: auto-detect pose head from checkpoint; save pred_rigid per frame"},
+    {"id": "Bonus-C", "summary": "scripts/render_world_space.py: multi-frame + rotating-camera world-space MP4s"},
+    {"id": "Bonus-D", "summary": "All 8 ACP runs trained to 2000 epochs + evaluated on train + s1_test sequences"},
+    {"id": "Publish-v7", "summary": "Canonical train/test/shape-drift/video-matrix publish at updates/2026-04-21-dcf-pose-head-train-test-v7.html"}
+  ],
+  "tasks_pending": [
+    {
+      "id": "P0-manifest",
+      "priority": "P0",
+      "summary": "Expand training manifest beyond subject-01 (subjects 0-6 for s1_test setup)",
+      "detail": "All current architectural findings are contaminated by single-subject overfit (5-7x generalisation gap on unseen subject-08). Build manifest covering subjects 00-06 matching dexycb s1 train split, retrain a B.00-analogue as the new baseline. Per memory/project_overfit_subject01.md."
+    },
+    {
+      "id": "P0-s1test-full",
+      "priority": "P0",
+      "summary": "Run full s1_test eval (all ~200 sequences across subjects 7+8)",
+      "detail": "Current test numbers use one sequence (20201002-subject-08/20201002_104620). Build s1-test manifest via dex_ycb_toolkit factory.get_dataset('s1_test'), adapt infer_per_view_overfit.py to iterate over all sequences and average metrics. D.2 vs C.00 ranking may flip."
+    },
+    {
+      "id": "P1-option-c",
+      "priority": "P1",
+      "summary": "Implement Option C (residual reparametrisation) for hard shape constancy",
+      "detail": "pred_traj = s*R*canonical + t + delta, with heavy ||delta|| penalty. Only unexplored mechanism for <0.5 mm shape drift without B.1's Procrustes catastrophe. ~50 LOC in stream3r/models/dcf_branch.py.decode_outputs."
+    },
+    {
+      "id": "P1-splits",
+      "priority": "P1",
+      "summary": "Eval on s0_test + s3_test (official DexYCB splits for grasp / object generalisation)",
+      "detail": "Complement s1 (subject) generalisation with s3 (object) to detect object-specific overfitting. Use dex_ycb_toolkit factory for split definitions."
+    },
+    {
+      "id": "P2-codebook",
+      "priority": "P2",
+      "summary": "Larger codebook K=8192 ablation",
+      "detail": "Current K=2048 gives ~15 deg Voronoi cells; pose rotation MAE bottoms out there. Cheap config change to drop floor below ~10 deg."
+    },
+    {
+      "id": "P2-per-object",
+      "priority": "P2",
+      "summary": "Per-object breakdown of test eval",
+      "detail": "Split test obj L2 by YCB class. Hypothesis: pose head helps more for symmetric objects (cans, spheres) where traj head has ambiguity to resolve."
+    },
+    {
+      "id": "P2-pose-reg",
+      "priority": "P2",
+      "summary": "Regularise pose head specifically (dropout / weight decay / LR)",
+      "detail": "D.0/D.1 show pose-rigid overfits more than trajectory on test (154 vs 115 mm). Try dropout on object_pose_head.* modules or separate LR schedule."
+    }
+  ],
+  "memory_entries_written": [
+    "feedback_training_loss_vs_eval.md",
+    "reference_dexycb_splits.md",
+    "project_dcf_pose_head_findings.md",
+    "reference_world_space_render.md",
+    "reference_option_bprime_shape_consistency.md",
+    "feedback_git_safe_directory_worktree.md",
+    "project_overfit_subject01.md"
+  ],
+  "caveats": [
+    "All eval numbers are from one sequence per split; proper s1_test averaging pending.",
+    "Training data is subject-01 only — every architectural finding assumes this confounded baseline.",
+    "Pose-head rotation accuracy capped at ~15 deg by K=2048 codebook Voronoi cells; hasn't been raised.",
+    "Shape drift metric is inter-frame Procrustes residual only; per-frame rigid-fit residual not computed.",
+    "infer_per_view_overfit.py auto-detection relies on object_pose_cls_token key; future pose-head variants may need explicit flag.",
+    "v1-v2 of the publish page were wrong (training loss confused with eval metric); v3-v7 are corrected but v1/v2 were overwritten not deleted."
+  ],
+  "resume_prompt": "Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-dcf-pose-head-train-test.json and continue from the first pending task.",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-session-summary-dcf-pose-head-train-test.html",
+  "canonical_publish_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-21-dcf-pose-head-train-test-v7.html"
+}
