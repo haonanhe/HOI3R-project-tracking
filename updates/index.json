@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-04-21",
+    "title": "DCF Motion Head Brainstorm (4RC-inspired)",
+    "file": "updates/2026-04-21-session-summary-dcf-motion-head-brainstorm.html",
+    "sidecar": "updates/2026-04-21-session-summary-dcf-motion-head-brainstorm.json",
+    "summary": "Brainstorm + design spec for porting 4RC MotionDecoder into DCF (dual-head, strict-causal pairs, only-points principle). Spec drafted and audited; awaiting user approval before writing-plans."
+  },
+  {
     "title": "2026-04-21 · Session Summary — DCF Pose Head Train/Test",
     "date": "2026-04-21",
     "status": "converged",
