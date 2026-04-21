@@ -1,6 +1,14 @@
 [
   {
     "date": "2026-04-21",
+    "title": "2026-04-21 · 4RC Depth on robot_arm Example (canonical upstream)",
+    "status": "reference",
+    "summary": "Verbatim run of `python inference.py --input examples/robot_arm --save result.npz` from 4RC repo. 30 frames, 4.2 s inference, 504x280 resolution. Depth p2-p98: 0.50-2.01 m. Extrinsic: c2w (translations <0.014). Validates bring-up produces same canonical output as paper demo. Render script commit 0740a9e on feat/dcf.",
+    "path": "updates/2026-04-21-4rc-robot-arm-depth.html",
+    "file": "updates/2026-04-21-4rc-robot-arm-depth.html"
+  },
+  {
+    "date": "2026-04-21",
     "title": "2026-04-21 · 4RC Bring-up Smoke — DexYCB subject-01 (v2, README-correct)",
     "status": "smoke",
     "summary": "Phase A bring-up: 4RC pretrained backbone (1.52 B params, DINOv2 ViT-G + 4 heads) run end-to-end on 16 DexYCB frames. v2 (README-correct): aspect-preserved 504×378 input via load_images(size=512, patch_size=14), inference() wrapper with bf16-mixed. 100 s wall (87 s load + 4.7 s inference), 12.10 GiB VRAM. Depth range 0.47–2.80 m, conf sigmoid 0.73–0.95. v2 replaces v1 (commit e956e84) which had 504×504 aspect distortion. Backbone ready for fine-tuning integration.",
