@@ -1,0 +1,230 @@
+{
+  "date": "2026-04-22",
+  "topic": "4rc-migration-phase-bh-complete",
+  "branch": "feat/dcf",
+  "head_sha": "c8e9ded",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-21-feat-dcf-4rc-migration-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-21-feat-dcf-4rc-migration-plan.md",
+  "commits": [
+    {
+      "sha": "c8e9ded",
+      "type": "feat(viz)",
+      "subject": "offline camera-view renderer (no viser, no Playwright)"
+    },
+    {
+      "sha": "081b2bc",
+      "type": "chore(acp)",
+      "subject": "Stage 2 paper-recipe smoke submission spec"
+    },
+    {
+      "sha": "4e7c181",
+      "type": "refactor(train)",
+      "subject": "overfit = fixed short T + bigger bs; paper-recipe = Stage 2"
+    },
+    {
+      "sha": "2716998",
+      "type": "feat(stage2)",
+      "subject": "paper-recipe training — random T ∈ [2,18] + random H,W + aug"
+    },
+    {
+      "sha": "15cf860",
+      "type": "perf(hoi3r)",
+      "subject": "encoder-output caching for Stage 1 overfit"
+    },
+    {
+      "sha": "fca3b21",
+      "type": "fix(stage1)",
+      "subject": "cast metric inputs to fp32 so chamfer cdist survives bf16 autocast"
+    },
+    {
+      "sha": "53ba432",
+      "type": "perf(hoi3r)",
+      "subject": "encoder.eval() override + torch.compile flag + R1/R2 ACP specs"
+    },
+    {
+      "sha": "17b5dec",
+      "type": "perf(hoi3r)",
+      "subject": "batch motion-head + bf16-mixed + DDP static_graph"
+    },
+    {
+      "sha": "1e0afd1",
+      "type": "feat(viz)",
+      "subject": "patch 4RC viser for DexYCB autoplay + scene-scale camera"
+    },
+    {
+      "sha": "b74a52d",
+      "type": "data(manifest)",
+      "subject": "add dexycb_subject07_test.json (5 seqs) for held-out eval"
+    },
+    {
+      "sha": "ca1cd95",
+      "type": "fix(exp3)",
+      "subject": "move Arc to device AFTER wrapping LoRA adapters"
+    },
+    {
+      "sha": "dda1208",
+      "type": "feat(scripts)",
+      "subject": "exp_4rc_eval_compare — 3-way DexYCB test-set metric table"
+    },
+    {
+      "sha": "4ecc8b5",
+      "type": "fix(exp2/3)",
+      "subject": "use DDP static_graph=True to survive 4RC's reentrant checkpoint"
+    },
+    {
+      "sha": "84da1a4",
+      "type": "fix(exp2/3)",
+      "subject": "rewrite exp_4rc_finetune to use Arc training-mode output keys"
+    },
+    {
+      "sha": "63c50d7",
+      "type": "feat(scripts,acp)",
+      "subject": "EXP_2/EXP_3 — 4RC full + LoRA finetune on DexYCB"
+    },
+    {
+      "sha": "9d370b6",
+      "type": "feat(scripts)",
+      "subject": "exp1_4rc_dexycb_viser — pristine 4RC inference on DexYCB seqs"
+    },
+    {
+      "sha": "030d524",
+      "type": "feat(scripts)",
+      "subject": "hoi3r_eval — post-Stage-1 inference to predictions.pt"
+    },
+    {
+      "sha": "36aafac",
+      "type": "ops(acp)",
+      "subject": "Stage 1 overfit job spec — p1 workspace, RESERVED, backoff=0, 8×H100"
+    },
+    {
+      "sha": "4135ce5",
+      "type": "feat(scripts)",
+      "subject": "hoi3r_stage1_overfit — DDP training with L2/CD metrics + exit gate"
+    },
+    {
+      "sha": "ae6012f",
+      "type": "feat(hoi3r)",
+      "subject": "HOI3RModel — encoder + 4 foreground heads + query MLPs"
+    },
+    {
+      "sha": "8f8cd3c",
+      "type": "feat(hoi3r)",
+      "subject": "DexYCB16FrameClip — consistent FPS samples across T frames"
+    },
+    {
+      "sha": "1d23d1e",
+      "type": "feat(hoi3r)",
+      "subject": "port 4RC encoder attention loop to accept hand/obj query tokens"
+    },
+    {
+      "sha": "1d8be54",
+      "type": "feat(hoi3r)",
+      "subject": "ArcEncoderWrapper skeleton with type embeddings"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "B2-B4",
+      "summary": "ArcEncoderWrapper + encoder-loop port + freeze-discipline test"
+    },
+    {
+      "id": "C1",
+      "summary": "GPS + Fourier query encoding → 1536-d tokens"
+    },
+    {
+      "id": "D1-D5",
+      "summary": "4 foreground heads + AdaLN primitive"
+    },
+    {
+      "id": "E1-E2",
+      "summary": "uncertainty-weighted L1 losses + 1-query-view sampler"
+    },
+    {
+      "id": "F1",
+      "summary": "DexYCB16FrameClip with consistent FPS samples"
+    },
+    {
+      "id": "G1-G3",
+      "summary": "HOI3RModel + Stage 0 smoke + contamination probe"
+    },
+    {
+      "id": "H1-H4",
+      "summary": "Stage 1 DDP + ACP + H4 PASS at step 2860"
+    },
+    {
+      "id": "EXP_1",
+      "summary": "pristine 4RC inference + viser + offline overlay videos"
+    },
+    {
+      "id": "EXP_2",
+      "summary": "full 4RC finetune on DexYCB (pt-jmpbw8qv)"
+    },
+    {
+      "id": "EXP_3",
+      "summary": "LoRA-16 finetune on DexYCB (pt-xewech2j)"
+    },
+    {
+      "id": "EXP_COMPARE",
+      "summary": "3-way metrics on subject-07 test (5 seqs)"
+    },
+    {
+      "id": "PERF_FIX",
+      "summary": "batched motion head + bf16 + encoder.eval + cache"
+    },
+    {
+      "id": "STAGE2_PAPER_RECIPE",
+      "summary": "variable T/H/W + aug; pt-so45y00y SUCCEEDED"
+    },
+    {
+      "id": "VIZ_OFFLINE",
+      "summary": "pure-python camera-view renderer; white bg"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "STAGE2_FULL",
+      "summary": "Launch hoi3r_stage2_train.py on full subject-01 (100 seqs) × ~4000 steps; budget ~5 h on 8×H100",
+      "priority": "P1"
+    },
+    {
+      "id": "I1",
+      "summary": "Delete stream3r/models/ subtree + legacy DCF scripts after verifying no surviving imports. Large blast radius — confirm with user",
+      "priority": "P2"
+    },
+    {
+      "id": "MOTION_DECODER_TRANSFER",
+      "summary": "Port 4RC MotionDecoder weights to our HandMotionHead — requires RoPE + cross-first-block refactor (~200 lines)",
+      "priority": "P2"
+    },
+    {
+      "id": "VIZ_SIDE45_FIT",
+      "summary": "Offline renderer side-45° MP4 is only 88 KB — auto-fit synthetic intrinsic to scene extents instead of reusing frame-0 FOV",
+      "priority": "P2"
+    },
+    {
+      "id": "ROT_COORD_CONVENTION",
+      "summary": "EXP_COMPARE pristine rot_err 165° suggests coord-frame mismatch between GT extrinsic and Arc.pose_enc; fix before paper-comparable numbers",
+      "priority": "P2"
+    }
+  ],
+  "memory_entries_written": [
+    "project_4rc_stage1_submitted.md",
+    "project_4rc_verify_experiments.md",
+    "feedback_hoi3r_motion_head_loop_cost.md",
+    "feedback_4rc_ddp_static_graph.md",
+    "reference_viser_recording_pattern.md",
+    "project_4rc_migration_phase_bh_done.md",
+    "project_stage2_paper_recipe_validated.md",
+    "reference_offline_renderer.md"
+  ],
+  "caveats": [
+    "Stage 1 hand-L2 mean (~12 mm) is noisy due to random frame sampling; use best-of-last-20 or median-of-last-100, not single-step snapshot.",
+    "EXP_COMPARE rot_err numbers are valid for relative ordering only; absolute values suffer from a coord-frame convention mismatch (pristine = 165°).",
+    "R3 encoder-cache mode forces e_hand/e_obj + query MLPs frozen; not appropriate for anything beyond Stage 1 overfit validation.",
+    "Offline renderer side45 camera reuses the frame-0 FOV — content partially off-frame when scene is wide; camera-view MP4 is the primary deliverable.",
+    "The Stage 2 paper-recipe run (pt-so45y00y) used --max-manifest-size=5 and --num-steps=200; full convergence numbers are NOT established yet."
+  ],
+  "resume_prompt": "Read the sidecar at https://haonanhe.github.io/haonanhe/HOI3R-project-tracking/updates/2026-04-22-session-summary-4rc-migration-phase-bh-complete.json and continue from the first pending task.",
+  "html_url": "https://haonanhe.github.io/haonanhe/HOI3R-project-tracking/updates/2026-04-22-session-summary-4rc-migration-phase-bh-complete.html"
+}
