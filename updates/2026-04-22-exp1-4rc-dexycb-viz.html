@@ -84,7 +84,33 @@
     </div>
   </section>
 
+
+  <section class="seq" id="r3-overlay">
+    <h2>R3 overfit overlay — subject-01 / 20200709_141754 (trained 3 k steps, hand 15.5 mm / obj 12.0 mm)</h2>
+    <p style="color:#55606a;font-size:.92rem;margin:.2rem 0 .9rem;">
+      HOI3R checkpoint <code>logs/stage1_r3_cached_3k/model_final.pt</code> @ commit <code>081b2bc</code> ·
+      16-frame clip from DexYCB camera 836212060125 ·
+      predicted hand points (red, source frame brighter), predicted object points (blue),
+      source→frame-i tracks in magenta (hand) / cyan (object).
+      Scene geometry comes from the pristine 4RC inference; HOI3R prediction layers are rendered as a static trajectory trail on top.
+    </p>
+    <div class="video-pair">
+      <figure>
+        <figcaption>Default camera (viser overlay, 10 s)</figcaption>
+        <video controls loop muted playsinline
+               src="assets/2026-04-22-exp1-4rc-dexycb-viz/subject-01_r3_3k_camera.mp4"
+               style="width:100%;max-width:640px;"></video>
+      </figure>
+      <figure>
+        <figcaption>Side-45° (canvas dragged +30% width before record)</figcaption>
+        <video controls loop muted playsinline
+               src="assets/2026-04-22-exp1-4rc-dexycb-viz/subject-01_r3_3k_side45.mp4"
+               style="width:100%;max-width:640px;"></video>
+      </figure>
+    </div>
+  </section>
+
 <footer>
-  <p>Interactive viser session (requires tunnel <code>ssh -L 8020:localhost:8020 -L 8021:localhost:8021 -L 8022:localhost:8022 -N -p 21161 root@180.184.249.158</code>): <a href="http://localhost:8020">:8020</a> · <a href="http://localhost:8021">:8021</a> · <a href="http://localhost:8022">:8022</a>.</p>
+  <p>Interactive viser session (requires tunnel <code>ssh -L 8020:localhost:8020 -L 8021:localhost:8021 -L 8022:localhost:8022 -L 8030:localhost:8030 -N -p 20161 root@180.184.249.158</code> (R3 overlay on :8030)): <a href="http://localhost:8020">:8020</a> · <a href="http://localhost:8021">:8021</a> · <a href="http://localhost:8022">:8022</a>.</p>
 </footer>
 </body></html>

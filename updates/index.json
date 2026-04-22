@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-22 · HOI3R R3-3k overlay on subject-01 viser",
+    "date": "2026-04-22",
+    "status": "finding",
+    "summary": "HOI3R stage-1 checkpoint (R3 cached overfit, 3 k steps) evaluated on the training sequence subject-01/20200709_141754, with predicted hand/object trajectories overlaid on the 4RC viser scene. Hand L2 mean 15.5 mm, object L2 mean 12.0 mm. Two Playwright-captured MP4s (default + side-45°) show the red hand points and blue object points as a trajectory trail (source-frame brighter, non-source frames dimmed) with magenta/cyan source-to-frame tracks.",
+    "path": "updates/2026-04-22-exp1-4rc-dexycb-viz.html#r3-overlay"
+  },
+  {
     "title": "2026-04-22 · 4RC DexYCB Finetune — pristine vs full-FT vs LoRA on subject-07",
     "date": "2026-04-22",
     "status": "finding",
