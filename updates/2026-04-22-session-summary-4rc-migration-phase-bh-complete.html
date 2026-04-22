@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>2026-04-22 · 4RC Migration Phase B–H + Stage-2 Recipe + Offline Viz</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>2026-04-22 · 4RC Migration Phase B–H + Stage-2 Recipe + Offline Viz</h1>
+<div class="meta-box">
+<div class="meta-grid">
+  <div class="meta-label">Date</div><div class="meta-value">2026-04-22</div>
+  <div class="meta-label">Branch</div><div class="meta-value">feat/dcf @ <code>c8e9ded</code></div>
+  <div class="meta-label">Worktree</div><div class="meta-value">/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</div>
+  <div class="meta-label">Spec</div><div class="meta-value">docs/superpowers/specs/2026-04-21-feat-dcf-4rc-migration-design.md</div>
+  <div class="meta-label">Plan</div><div class="meta-value">docs/superpowers/plans/2026-04-21-feat-dcf-4rc-migration-plan.md</div>
+  <div class="meta-label">Session goal</div><div class="meta-value">Execute 4RC migration plan tasks B2→I1, add 3 backbone-verification experiments, and accelerate training per paper recipe</div>
+</div>
+</div>
+</header>
+
+<section>
+<h2>Headline numbers</h2>
+<div class="grid-4">
+  <div class="stat-card"><div class="value">40+</div><div class="label">commits on feat/dcf</div></div>
+  <div class="stat-card"><div class="value">130×</div><div class="label">best per-step speedup (R3 cached)</div></div>
+  <div class="stat-card"><div class="value">5.88 mm</div><div class="label">Stage 1 best-step hand L2</div></div>
+  <div class="stat-card"><div class="value">3</div><div class="label">tracking-repo pages published</div></div>
+</div>
+</section>
+
+<section>
+<h2>Tasks completed</h2>
+<table>
+<thead><tr><th>ID</th><th>Status</th><th>Anchor commit</th><th>What landed</th></tr></thead>
+<tbody>
+<tr><td>B2–B4</td><td><span class="badge badge-pass">PASS</span></td><td><code>1d8be54 … e86142c</code></td><td>ArcEncoderWrapper + encoder-loop port + freeze-discipline test</td></tr>
+<tr><td>C1</td><td><span class="badge badge-pass">PASS</span></td><td><code>f7a0a3f</code></td><td>GPS + Fourier query encoding → 1536-d tokens</td></tr>
+<tr><td>D1–D5</td><td><span class="badge badge-pass">PASS</span></td><td><code>2c2f0c1 … 5a0d208</code></td><td>All 4 foreground heads + AdaLN primitive</td></tr>
+<tr><td>E1–E2</td><td><span class="badge badge-pass">PASS</span></td><td><code>99f427e 37cc96c</code></td><td>Uncertainty-weighted L1 foreground losses + 1-query-view sampler</td></tr>
+<tr><td>F1</td><td><span class="badge badge-pass">PASS</span></td><td><code>8f8cd3c</code></td><td>DexYCB16FrameClip with consistent FPS samples across frames</td></tr>
+<tr><td>G1–G3</td><td><span class="badge badge-pass">PASS</span></td><td><code>ae6012f d278770 1428e62</code></td><td>HOI3RModel + Stage 0 smoke + contamination probe</td></tr>
+<tr><td>H1–H4</td><td><span class="badge badge-pass">PASS</span></td><td><code>4135ce5 36aafac</code></td><td>Stage 1 DDP script + ACP spec + submitted (pt-9fa652zu); hit exit criteria step 2860</td></tr>
+<tr><td>EXP_1</td><td><span class="badge badge-pass">PASS</span></td><td><code>9d370b6</code></td><td>Pristine 4RC inference on 3 DexYCB seqs + viser + offline overlay videos</td></tr>
+<tr><td>EXP_2 full-FT</td><td><span class="badge badge-pass">PASS</span></td><td>pt-jmpbw8qv</td><td>Full 4RC finetune on DexYCB subject-01, 990 steps, loss 0.14</td></tr>
+<tr><td>EXP_3 LoRA-FT</td><td><span class="badge badge-pass">PASS</span></td><td>pt-xewech2j</td><td>LoRA-16 on QKV, 990 steps, loss 0.29</td></tr>
+<tr><td>EXP_COMPARE</td><td><span class="badge badge-pass">PASS</span></td><td><code>dda1208</code></td><td>Pristine vs full-FT vs LoRA on subject-07 held-out (5 seqs)</td></tr>
+<tr><td>PERF_FIX</td><td><span class="badge badge-pass">PASS</span></td><td><code>17b5dec 53ba432 15cf860</code></td><td>Batched motion head + bf16 + encoder.eval + cache</td></tr>
+<tr><td>STAGE2_PAPER_RECIPE</td><td><span class="badge badge-pass">PASS</span></td><td><code>2716998 4e7c181</code></td><td>Variable T∈[2,18] + random H·W + aug; pt-so45y00y SUCCEEDED</td></tr>
+<tr><td>VIZ_OFFLINE</td><td><span class="badge badge-pass">PASS</span></td><td><code>c8e9ded</code></td><td>Pure-python camera-view renderer; white bg; 341 KB camera + 88 KB side45 MP4</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Key discoveries</h2>
+
+<div class="panel"><span class="badge badge-finding">FINDING</span>
+<b>Motion head serial loop dominated step-time.</b> The original HOI3RModel.forward ran 32 motion-head calls per step (B·T·2) as a Python for-loop. Batching to a single (B·T, N, 1536) forward dropped that block from ~10–15 s to ~1 s on 8×H100.
+</div>
+
+<div class="panel"><span class="badge badge-finding">FINDING</span>
+<b>Encoder output can be cached for overfit.</b> With e_hand/e_obj frozen and a fixed clip, <code>hoi3r_stage1_cached.py</code> runs at <b>0.19 s/step</b> on a single MIG 3g.40gb (vs 25 s/step baseline = 130× speedup). 3000 steps in 9 min.
+</div>
+
+<div class="panel"><span class="badge badge-finding">FINDING</span>
+<b>Paper-recipe variable-T is the right Stage-2 win.</b> Quadratic global attention cost is the encoder bottleneck; 4RC's uniform T∈[2,18] amortizes this to ~5× faster than fixed T=16. Validated on pt-so45y00y at 4.85 s/step with correct cross-rank shape sync.
+</div>
+
+<div class="panel"><span class="badge badge-fix">FIX</span>
+<b>DDP + 4RC reentrant checkpoint.</b> DinoV2's global-attn wraps <code>torch.utils.checkpoint.checkpoint</code> when training=True. Under DDP with find_unused_parameters=True, the reentrant backward marks params ready twice ("ls2.gamma has been marked as ready twice"). Fix: <code>static_graph=True</code> + <code>find_unused_parameters=False</code> (EXP_2/3); or switch encoder to eval() mode so the checkpoint wrapper is never entered (Stage 1 perf-fix).
+</div>
+
+<div class="panel"><span class="badge badge-fix">FIX</span>
+<b>LoRA adapters landed on CPU.</b> EXP_3 crashed with "input module parameters locate in ('cpu', 'cuda')" because LoRALinear created new nn.Linear <em>after</em> model.to(device). Always move the wrapped model to device <em>after</em> adapter wrapping.
+</div>
+
+<div class="panel"><span class="badge badge-fix">FIX</span>
+<b>bf16 broke torch.cdist.</b> Inside <code>torch.autocast(bfloat16)</code> the chamfer metric's tensors became bf16 and cdist threw "expected scalar type Float but found BFloat16". Cast metric inputs to <code>.float()</code> explicitly.
+</div>
+
+<div class="panel"><span class="badge badge-fix">FIX</span>
+<b>Viser default camera was wrong scale for DexYCB.</b> 4RC's <code>start_visualization</code> hardcodes client.camera at z=-0.07 m (robot_arm cm-scale). DexYCB scene is at z = 0.3–3.8 m, so the camera sat behind the scene and Playwright captures showed only the WorldAxes triad. Patched to use a meter-scale centroid-anchored camera.
+</div>
+
+<div class="panel"><span class="badge badge-finding">FINDING</span>
+<b>EXP_COMPARE: LoRA beats full-FT on rotation.</b> Depth metrics both improve 3–4× over pristine; but pristine rot_err 165° → full-FT 124° → LoRA 37.6°. Full-FT's unconstrained backbone drift disturbs the pretrained cam_dec; LoRA's low-rank constraint preserves it. Informs Stage 3 choice to favor LoRA over full.
+</div>
+</section>
+
+<section>
+<h2>Commits (newest first)</h2>
+<table>
+<thead><tr><th>SHA</th><th>Type</th><th>Message</th></tr></thead>
+<tbody>
+<tr><td><code>c8e9ded</code></td><td>feat(viz)</td><td>offline camera-view renderer (no viser, no Playwright)</td></tr>
+<tr><td><code>081b2bc</code></td><td>chore(acp)</td><td>Stage 2 paper-recipe smoke submission spec</td></tr>
+<tr><td><code>4e7c181</code></td><td>refactor(train)</td><td>overfit = fixed short T + bigger bs; paper-recipe = Stage 2</td></tr>
+<tr><td><code>2716998</code></td><td>feat(stage2)</td><td>paper-recipe training — random T ∈ [2,18] + random H,W + aug</td></tr>
+<tr><td><code>15cf860</code></td><td>perf(hoi3r)</td><td>encoder-output caching for Stage 1 overfit</td></tr>
+<tr><td><code>fca3b21</code></td><td>fix(stage1)</td><td>cast metric inputs to fp32 so chamfer cdist survives bf16 autocast</td></tr>
+<tr><td><code>53ba432</code></td><td>perf(hoi3r)</td><td>encoder.eval() override + torch.compile flag + R1/R2 ACP specs</td></tr>
+<tr><td><code>17b5dec</code></td><td>perf(hoi3r)</td><td>batch motion-head + bf16-mixed + DDP static_graph</td></tr>
+<tr><td><code>1e0afd1</code></td><td>feat(viz)</td><td>patch 4RC viser for DexYCB autoplay + scene-scale camera</td></tr>
+<tr><td><code>b74a52d</code></td><td>data(manifest)</td><td>add dexycb_subject07_test.json (5 seqs) for held-out eval</td></tr>
+<tr><td><code>ca1cd95</code></td><td>fix(exp3)</td><td>move Arc to device AFTER wrapping LoRA adapters</td></tr>
+<tr><td><code>dda1208</code></td><td>feat(scripts)</td><td>exp_4rc_eval_compare — 3-way DexYCB test-set metric table</td></tr>
+<tr><td><code>4ecc8b5</code></td><td>fix(exp2/3)</td><td>use DDP static_graph=True to survive 4RC's reentrant checkpoint</td></tr>
+<tr><td><code>84da1a4</code></td><td>fix(exp2/3)</td><td>rewrite exp_4rc_finetune to use Arc training-mode output keys</td></tr>
+<tr><td><code>63c50d7</code></td><td>feat(scripts,acp)</td><td>EXP_2/EXP_3 — 4RC full + LoRA finetune on DexYCB</td></tr>
+<tr><td><code>9d370b6</code></td><td>feat(scripts)</td><td>exp1_4rc_dexycb_viser — pristine 4RC inference on DexYCB seqs</td></tr>
+<tr><td><code>030d524</code></td><td>feat(scripts)</td><td>hoi3r_eval — post-Stage-1 inference to predictions.pt</td></tr>
+<tr><td><code>dd7d878</code></td><td>docs(stage1)</td><td>record contamination probe result on random noise + caveat</td></tr>
+<tr><td><code>927797f</code></td><td>docs(stage1)</td><td>experiment record stub (pt-9fa652zu) + Stage 2 plan draft</td></tr>
+<tr><td><code>36aafac</code></td><td>ops(acp)</td><td>Stage 1 overfit job spec — p1 workspace, RESERVED, backoff=0, 8×H100</td></tr>
+<tr><td><code>4135ce5</code></td><td>feat(scripts)</td><td>hoi3r_stage1_overfit — DDP training with L2/CD metrics + exit gate</td></tr>
+<tr><td><code>1428e62</code></td><td>feat(scripts)</td><td>arc_contamination_probe — patch-token RMSE drift vs pristine 4RC</td></tr>
+<tr><td><code>d278770</code></td><td>feat(scripts)</td><td>hoi3r_stage0_smoke — single-GPU smoke validator</td></tr>
+<tr><td><code>ae6012f</code></td><td>feat(hoi3r)</td><td>HOI3RModel — encoder + 4 foreground heads + query MLPs</td></tr>
+<tr><td><code>8f8cd3c</code></td><td>feat(hoi3r)</td><td>DexYCB16FrameClip — consistent FPS samples across T frames</td></tr>
+<tr><td><code>e86142c</code></td><td>test(hoi3r)</td><td>assert only e_hand/e_obj trainable (B4 freeze discipline)</td></tr>
+<tr><td colspan="3"><em>…14 earlier commits covering B2, B3, C1, D1–D5, E1–E2 (full list in <code>git log</code>)</em></td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Module / branch state</h2>
+<table>
+<thead><tr><th>Aspect</th><th>Current state</th></tr></thead>
+<tbody>
+<tr><td>Branch</td><td>feat/dcf, HEAD <code>c8e9ded</code>, clean relative to pre-session baseline</td></tr>
+<tr><td>hoi3r package</td><td>arc/encoder_wrapper + query_encoding; heads/{hand,obj}_{geom,motion} + common (AdaLN, UncertaintyHead); losses/{foreground,query_sampling}; models/hoi3r_model; data/dexycb_clip_loader</td></tr>
+<tr><td>Training scripts</td><td>hoi3r_stage1_overfit (DDP, fixed short T, bf16), hoi3r_stage1_cached (1-GPU cached-encoder), hoi3r_stage2_train (paper recipe, variable T/H/W)</td></tr>
+<tr><td>Experiment scripts</td><td>exp1_4rc_dexycb_viser, exp_4rc_finetune (full+LoRA), exp_4rc_eval_compare, hoi3r_offline_render</td></tr>
+<tr><td>ACP jobs (all complete)</td><td>pt-9fa652zu (Stage 1, killed step 2880, PASS); pt-eym6vq7t, pt-ltemwwsn, pt-kkv9g55o, pt-e57md01g, pt-6rauzgzs (early bug iterations, all killed); pt-jmpbw8qv (full-FT), pt-xewech2j (LoRA), pt-so45y00y (Stage 2 smoke, SUCCEEDED)</td></tr>
+<tr><td>Checkpoints on AFS</td><td>logs/hoi3r_stage1_overfit/model_final.pt (~6 GB DDP), logs/stage1_r3_cached_3k/model_final.pt (~6 GB 1-GPU cached), logs/exp_4rc_{full,lora}_finetune/arc_{full,lora}_final.pt</td></tr>
+<tr><td>Published pages</td><td>2026-04-22-exp1-4rc-dexycb-viz (+offline-overlay), 2026-04-22-exp-compare-4rc-finetune, 2026-04-22-stage2-paper-recipe-smoke</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Open issues &amp; next steps</h2>
+<table>
+<thead><tr><th>Priority</th><th>Item</th><th>Detail</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-p1">P1</span></td><td>Full Stage 2 training</td><td>Launch <code>hoi3r_stage2_train.py</code> on full subject-01 manifest (100 seqs), ~4000 steps. Budget ~5 h at 4.85 s/step on 8×H100. Target: hand L2 &lt; 25 mm on subject-07 held-out. ACP template ready at <code>acp_stage2_paper_smoke.json</code>.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>I1 STream3R deletion</td><td>Gated on H4 PASS (done). Plan's Phase I1 removes <code>stream3r/models/</code> subtree + legacy DCF scripts. Verify no surviving imports; large blast radius — ask user before executing.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>4RC MotionDecoder weight transfer</td><td>Candidate R3 in speed-matrix. Needs RoPE + cross-first-block refactor of HandMotionHead to match 4RC's (cross-attn → self-attn-with-AdaLN) topology; then copy MLP + attention weights from Arc.motion_decoder. ~200 lines of refactor.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>Viz overlay tracks dim</td><td>Offline renderer side-45° MP4 is only 88 KB — tracks project partially off-frame because synthetic intrinsic reuses frame-0's FOV. Consider wider synthetic intrinsic or compute auto-fit fov from scene extents.</td></tr>
+<tr><td><span class="badge badge-p2">P2</span></td><td>Rotation-error coord convention</td><td>EXP_COMPARE pristine rot_err 165° suggests a coord-frame mismatch between our GT extrinsic and Arc's pose_enc. Fix before publishing paper-comparable rotation numbers.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Memory entries written this session</h2>
+<ul>
+  <li><code>project_4rc_stage1_submitted.md</code> — pt-9fa652zu submission + exit criteria</li>
+  <li><code>project_4rc_verify_experiments.md</code> — 3-experiment backbone sweep</li>
+  <li><code>feedback_hoi3r_motion_head_loop_cost.md</code> — Python (b,τ) loop at 16 s/step; batching fix</li>
+  <li><code>feedback_4rc_ddp_static_graph.md</code> — reentrant checkpoint + static_graph workaround</li>
+  <li><code>reference_viser_recording_pattern.md</code> — Playwright + viser recording pipeline</li>
+  <li><code>project_4rc_migration_phase_bh_done.md</code> — Phase B–H complete + H4 PASS</li>
+  <li><code>project_stage2_paper_recipe_validated.md</code> — variable T/H/W at 4.85 s/step</li>
+  <li><code>reference_offline_renderer.md</code> — pure-python camera-view renderer</li>
+</ul>
+</section>
+
+<section>
+<h2>How to resume</h2>
+<div class="info">
+To resume, paste into a new Claude Code session:
+<pre>Read the sidecar at https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-22-session-summary-4rc-migration-phase-bh-complete.json
+and continue from the first pending task.</pre>
+</div>
+</section>
+
+<footer>
+Session summary generated 2026-04-22. Branch feat/dcf @ c8e9ded. Artifacts: <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-22-exp1-4rc-dexycb-viz.html#offline-overlay">EXP_1 (+ offline overlay)</a> · <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-22-exp-compare-4rc-finetune.html">EXP_COMPARE</a> · <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-22-stage2-paper-recipe-smoke.html">Stage 2 smoke</a>.
+</footer>
+
+</body>
+</html>
+
