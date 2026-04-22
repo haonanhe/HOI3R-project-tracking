@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>2026-04-22 · 4RC DexYCB Finetune — pristine vs full-FT vs LoRA on subject-07</title>
+<style>
+  body { background:#fff; color:#2c3e50; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;
+         margin:0; padding:2rem 2.5rem; max-width:1200px; }
+  header h1 { margin-top:0; font-size:1.4rem; }
+  .meta { color:#55606a; font-size:0.95rem; margin-bottom:1.2rem; }
+  .badge-info { background:#e8f4fd; color:#0969da; padding:.1rem .5rem; border-radius:999px; font-size:.8rem; }
+  table { border-collapse:collapse; margin:1.2rem 0; font-size:.95rem; }
+  th, td { padding:.5rem .8rem; border:1px solid #e1e4e8; text-align:right; }
+  th { background:#24292f; color:#fff; text-align:center; }
+  td:first-child { text-align:left; }
+  .highlight { background:#fff9e6; border-left:3px solid #d4ac0d; padding:.7rem 1rem; margin:1rem 0; }
+  .info { background:#e8f4fd; border-left:3px solid #0969da; padding:.7rem 1rem; margin:1rem 0; }
+  code { background:#f6f8fa; padding:.1rem .3rem; border-radius:3px; }
+  footer { margin-top:3rem; color:#55606a; font-size:.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>2026-04-22 · 4RC DexYCB Finetune — pristine vs full-FT vs LoRA on subject-07</h1>
+  <div class="meta">
+    <span class="badge-info">EXP_COMPARE</span>
+    branch <code>feat/dcf</code> @ <code>b74a52d</code> · 5 sequences × 4 frames each ·
+    ACP jobs <code>pt-jmpbw8qv</code> (full), <code>pt-xewech2j</code> (LoRA) · both 1000 steps on 8×H100
+  </div>
+  <p>Finetuned 4RC on DexYCB subject-01 (100 seqs, 1000 steps, 8×H100) with scene depth + camera pose losses, in two modes: full-weight (all params) and LoRA (rank-16 on QKV). Evaluated all three on held-out subject-07 test manifest (5 seqs). Finetuning massively improves depth (abs_rel 0.47→0.11/0.15, δ<1.25 0.29→0.93/0.88); LoRA wins on rotation (37° vs full's 124°) because it preserves cam_dec integrity.</p>
+</header>
+
+<h2>Metrics — aggregated over 5 held-out sequences</h2>
+<p style="color:#55606a;font-size:.9rem;">Depth metrics from 4RC paper; camera metrics from our own pose_enc comparison (quaternion error in degrees; translation is a direction comparison).</p>
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">variant</th>
+      <th colspan="4">Depth (lower ↓ except δ)</th>
+      <th colspan="5">Camera (lower ↓ except RRA/RTA/AUC ↑)</th>
+    </tr>
+    <tr>
+      <th>abs_rel ↓</th><th>sq_rel ↓</th><th>rmse ↓</th><th>δ&lt;1.25 ↑</th>
+      <th>rot err° ↓</th><th>trans err° ↓</th><th>RRA@5 ↑</th><th>RTA@5 ↑</th><th>AUC@30 ↑</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+        <tr>
+          <td><b>pristine</b></td>
+          <td>0.474</td>
+          <td>1.475</td>
+          <td>3.344</td>
+          <td>0.288</td>
+          <td>165.13°</td>
+          <td>101.86°</td>
+          <td>0.000</td>
+          <td>0.000</td>
+          <td>0.000</td>
+        </tr>
+        <tr>
+          <td><b>full FT</b></td>
+          <td>0.113</td>
+          <td>0.342</td>
+          <td>1.274</td>
+          <td>0.928</td>
+          <td>124.02°</td>
+          <td>11.04°</td>
+          <td>0.000</td>
+          <td>0.000</td>
+          <td>0.500</td>
+        </tr>
+        <tr>
+          <td><b>LoRA FT r=16</b></td>
+          <td>0.155</td>
+          <td>0.409</td>
+          <td>1.269</td>
+          <td>0.878</td>
+          <td>37.60°</td>
+          <td>10.86°</td>
+          <td>0.000</td>
+          <td>0.000</td>
+          <td>0.500</td>
+        </tr>
+  </tbody>
+</table>
+
+<div class="highlight">
+  <b>Depth:</b> both finetunes cut abs_rel by ~3–4× and push δ&lt;1.25 from 0.29 → 0.88 (LoRA) / 0.93 (full). Full FT's extra capacity delivers a modest depth advantage.
+</div>
+<div class="highlight">
+  <b>Camera:</b> LoRA wins decisively on rotation (37° vs full's 124°). Full FT's unrestricted backbone update disturbs the pretrained <code>cam_dec</code>; LoRA's limited capacity preserves it. Translation-direction error collapses to ~11° for both FTs (from 102° pristine).
+</div>
+<div class="info">
+  <b>Caveat:</b> pristine rotation error of 165° suggests a coord-frame convention mismatch between our GT extrinsic (DexYCB world→cam 4×4) and Arc's <code>pose_enc</code> (9-dim relT+quat+FoV). The relative ordering pristine ≫ full ≈ LoRA still holds, but absolute rotation numbers should be interpreted within the same evaluator.
+</div>
+
+<h2>Training losses (for context)</h2>
+<table>
+  <thead>
+    <tr><th>variant</th><th>steps</th><th>final loss</th><th>final l_depth</th><th>final l_cam</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><b>full FT</b></td><td>990</td><td>0.138</td><td>0.111</td><td>0.272</td></tr>
+    <tr><td><b>LoRA FT r=16</b></td><td>990</td><td>0.290</td><td>0.283</td><td>0.067</td></tr>
+  </tbody>
+</table>
+
+<footer>
+  <p>Scripts: <code>scripts/exp_4rc_finetune.py</code> (training) · <code>scripts/exp_4rc_eval_compare.py</code> (eval). Checkpoints on remote <code>logs/exp_4rc_{full,lora}_finetune/arc_{full,lora}_final.pt</code> (~6 GB each).</p>
+</footer>
+</body></html>

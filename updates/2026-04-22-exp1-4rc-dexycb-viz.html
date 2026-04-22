@@ -1,45 +1,46 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
+<html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>2026-04-22 · 4RC Pristine on DexYCB — per-seq 3D reconstruction</title>
+<title>2026-04-22 · 4RC Pristine on DexYCB — viser screen captures (camera + side 45°)</title>
 <style>
   body { background:#fff; color:#2c3e50; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;
          margin:0; padding:2rem 2.5rem; max-width:1200px; }
   header h1 { margin-top:0; }
-  .meta { color:#55606a; font-size:0.95rem; margin-bottom:1.5rem; }
+  .meta { color:#55606a; font-size:0.95rem; margin-bottom:1.2rem; }
   .badge-info { background:#e8f4fd; color:#0969da; padding:.1rem .5rem; border-radius:999px; font-size:.8rem; }
   section.seq { margin:2rem 0; border-top:1px solid #e1e4e8; padding-top:1.2rem; }
   section.seq h2 { font-size:1.2rem; margin:.2rem 0 1rem; }
   .video-pair { display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:1.5rem; }
   .video-pair figure { margin:0; }
   .video-pair figcaption { font-size:.9rem; color:#55606a; margin-bottom:.3rem; }
+  .highlight { background:#fff9e6; border-left:3px solid #d4ac0d; padding:.7rem 1rem; margin:1rem 0; }
   footer { margin-top:3rem; color:#55606a; font-size:.85rem; }
 </style>
 </head>
 <body>
 <header>
-  <h1>2026-04-22 · 4RC Pristine on DexYCB — per-seq 3D reconstruction</h1>
+  <h1>2026-04-22 · 4RC Pristine on DexYCB — viser screen captures (camera + side 45°)</h1>
   <div class="meta">
     <span class="badge-info">EXP_1</span>
-    branch <code>feat/dcf</code> @ <code>84da1a4</code> ·
-    pristine 4RC (no finetune) · 30-frame sample @ 512×384 via <code>load_images(size=512, patch_size=14)</code>
+    branch <code>feat/dcf</code> @ <code>b74a52d</code> · pristine 4RC (<code>Luo-Yihang/4RC</code>) · 30-frame sample @ 512×384 via <code>load_images(size=512, patch_size=14)</code>
   </div>
-  <p>Pristine 4RC (no finetune) inferred on 3 DexYCB sequences (subject-01 train, subject-07 held-out, subject-04 mid); 30-frame 3D point-cloud scatter rendered from both the camera and a 45° side viewpoint. Viser interactive available via SSH tunnel.</p>
+  <p>Pristine 4RC inference on 3 DexYCB sequences; six MP4s captured directly from the interactive viser viewer via Playwright (no custom rendering). Each sequence gets a default-camera recording and a 45°-side recording. Viser auto-plays (gui_playing initial_value = True), scene centered for DexYCB's meter-scale geometry.</p>
+  <div class="highlight">
+    Recordings were captured from the actual viser WebGL canvas (Playwright headless chromium → WebM → ffmpeg MP4). The previous matplotlib scatter renders (2026-04-22 commit 129b6fa) looked wrong and have been replaced. White background, default GUI panel ("Show Controls" with Playback/Display/Confidence folders), camera frustum overlays, and track trajectories are all visible as in the interactive viser session.
+  </div>
 </header>
 
   <section class="seq">
     <h2>subject-01 / 20200709_141754 (Stage 1 training seq)</h2>
     <div class="video-pair">
       <figure>
-        <figcaption>Camera-view 3D</figcaption>
+        <figcaption>Default camera (viser auto-play, 10 s)</figcaption>
         <video controls loop muted playsinline
                src="assets/2026-04-22-exp1-4rc-dexycb-viz/20200709-subject-01_20200709_141754_836212060125_camera.mp4"
                style="width:100%;max-width:640px;"></video>
       </figure>
       <figure>
-        <figcaption>Side-45° 3D</figcaption>
+        <figcaption>Side-45° (canvas dragged +30% width before record)</figcaption>
         <video controls loop muted playsinline
                src="assets/2026-04-22-exp1-4rc-dexycb-viz/20200709-subject-01_20200709_141754_836212060125_side45.mp4"
                style="width:100%;max-width:640px;"></video>
@@ -51,13 +52,13 @@
     <h2>subject-07 / 20200928_143249 (held-out split s1_test)</h2>
     <div class="video-pair">
       <figure>
-        <figcaption>Camera-view 3D</figcaption>
+        <figcaption>Default camera (viser auto-play, 10 s)</figcaption>
         <video controls loop muted playsinline
                src="assets/2026-04-22-exp1-4rc-dexycb-viz/20200928-subject-07_20200928_143249_836212060125_camera.mp4"
                style="width:100%;max-width:640px;"></video>
       </figure>
       <figure>
-        <figcaption>Side-45° 3D</figcaption>
+        <figcaption>Side-45° (canvas dragged +30% width before record)</figcaption>
         <video controls loop muted playsinline
                src="assets/2026-04-22-exp1-4rc-dexycb-viz/20200928-subject-07_20200928_143249_836212060125_side45.mp4"
                style="width:100%;max-width:640px;"></video>
@@ -69,13 +70,13 @@
     <h2>subject-04 / 20200903_103554 (mid-split baseline)</h2>
     <div class="video-pair">
       <figure>
-        <figcaption>Camera-view 3D</figcaption>
+        <figcaption>Default camera (viser auto-play, 10 s)</figcaption>
         <video controls loop muted playsinline
                src="assets/2026-04-22-exp1-4rc-dexycb-viz/20200903-subject-04_20200903_103554_836212060125_camera.mp4"
                style="width:100%;max-width:640px;"></video>
       </figure>
       <figure>
-        <figcaption>Side-45° 3D</figcaption>
+        <figcaption>Side-45° (canvas dragged +30% width before record)</figcaption>
         <video controls loop muted playsinline
                src="assets/2026-04-22-exp1-4rc-dexycb-viz/20200903-subject-04_20200903_103554_836212060125_side45.mp4"
                style="width:100%;max-width:640px;"></video>
@@ -84,8 +85,6 @@
   </section>
 
 <footer>
-  <p>Companion interactive viewer (viser): SSH tunnel ports 8020/8021/8022 while the debug container is up.</p>
-  <p>Rendered from <code>pred_i_pts</code> (378×504 per-pixel unprojected points, world frame) with confidence &gt; 2.0 and 15k-point subsample per frame. Camera view uses the extrinsic-derived (elev, azim); side view adds +45° azimuth.</p>
+  <p>Interactive viser session (requires tunnel <code>ssh -L 8020:localhost:8020 -L 8021:localhost:8021 -L 8022:localhost:8022 -N -p 21161 root@180.184.249.158</code>): <a href="http://localhost:8020">:8020</a> · <a href="http://localhost:8021">:8021</a> · <a href="http://localhost:8022">:8022</a>.</p>
 </footer>
-</body>
-</html>
+</body></html>

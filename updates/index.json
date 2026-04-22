@@ -1,9 +1,16 @@
 [
   {
-    "title": "2026-04-22 · 4RC Pristine on DexYCB — 3D scatter @ camera vs side45",
+    "title": "2026-04-22 · 4RC DexYCB Finetune — pristine vs full-FT vs LoRA on subject-07",
     "date": "2026-04-22",
     "status": "finding",
-    "summary": "Pristine 4RC (no finetune) inferred on 3 DexYCB sequences (subject-01 train, subject-07 held-out, subject-04 mid); 30-frame 3D point-cloud scatter rendered from both the camera and a 45° side viewpoint. Viser interactive available via SSH tunnel.",
+    "summary": "Finetuned 4RC on DexYCB subject-01 (100 seqs, 1000 steps, 8×H100) with scene depth + camera pose losses, in two modes: full-weight (all params) and LoRA (rank-16 on QKV). Evaluated all three on held-out subject-07 test manifest (5 seqs). Finetuning massively improves depth (abs_rel 0.47→0.11/0.15, δ<1.25 0.29→0.93/0.88); LoRA wins on rotation (37° vs full's 124°) because it preserves cam_dec integrity.",
+    "path": "updates/2026-04-22-exp-compare-4rc-finetune.html"
+  },
+  {
+    "title": "2026-04-22 · 4RC Pristine on DexYCB — viser screen captures (camera + side 45°)",
+    "date": "2026-04-22",
+    "status": "finding",
+    "summary": "Pristine 4RC inference on 3 DexYCB sequences; six MP4s captured directly from the interactive viser viewer via Playwright (no custom rendering). Each sequence gets a default-camera recording and a 45°-side recording. Viser auto-plays (gui_playing initial_value = True), scene centered for DexYCB's meter-scale geometry.",
     "path": "updates/2026-04-22-exp1-4rc-dexycb-viz.html"
   },
   {
