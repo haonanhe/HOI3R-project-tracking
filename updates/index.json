@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-22 · Investigate three user concerns: (1) is HOI3R training-step forward slower than 4RC inference? (2) what must change in the offline renderer to match arc/viz/viser_visualizer_track.py style? (3) how should HOI3R handle left vs right hand in the query architecture?",
+    "date": "2026-04-22",
+    "status": "finding",
+    "summary": "Investigate three user concerns: (1) is HOI3R training-step forward slower than 4RC inference? (2) what must change in the offline renderer to match arc/viz/viser_visualizer_track.py style? (3) how should HOI3R handle left vs right hand in the query architecture?",
+    "path": "updates/2026-04-22-session-summary-investigation-fwd-timing-renderer-handedness.html",
+    "file": "updates/2026-04-22-session-summary-investigation-fwd-timing-renderer-handedness.html",
+    "sidecar": "updates/2026-04-22-session-summary-investigation-fwd-timing-renderer-handedness.json"
+  },
+  {
     "date": "2026-04-22",
     "title": "2026-04-22 · 4RC Migration Phase B–H + Stage-2 Recipe + Offline Viz",
     "file": "updates/2026-04-22-session-summary-4rc-migration-phase-bh-complete.html",

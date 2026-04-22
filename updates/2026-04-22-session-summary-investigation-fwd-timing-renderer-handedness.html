@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-22 · investigation-fwd-timing-renderer-handedness</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Investigation Fwd Timing Renderer Handedness</h1>
+  <div class="meta">2026-04-22 · <code>feat/dcf</code> · <code>@57e2d30</code> · spec: <code>docs/superpowers/specs/2026-04-21-feat-dcf-4rc-migration-design.md</code> · plan: <code>docs/superpowers/plans/2026-04-21-feat-dcf-4rc-migration-plan.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Investigate three user concerns: (1) is HOI3R training-step forward slower than 4RC inference? (2) what must change in the offline renderer to match arc/viz/viser_visualizer_track.py style? (3) how should HOI3R handle left vs right hand in the query architecture?</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">0.78×</div><div class="label">HOI3R fwd / 4RC inference</div></div><div class="stat"><div class="val">611.4 ± 3.0 ms</div><div class="label">HOI3R training fwd (16f, H100)</div></div><div class="stat"><div class="val">782.2 ± 18.5 ms</div><div class="label">4RC pristine inference (16f, H100)</div></div><div class="stat"><div class="val">499 / 501</div><div class="label">DexYCB L/R split</div></div><div class="stat"><div class="val">2 (left + right)</div><div class="label">Handedness slots decided</div></div><div class="stat"><div class="val">1 (L-hand seqs train with R-hand GPS)</div><div class="label">Latent bugs surfaced</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>FWD_TIMING</td><td><span class="badge badge-pass">PASS</span></td><td>57e2d30</td><td>ACP jobs pt-dhb96stn (4RC inference) and pt-v6k889xj (HOI3R train fwd) both SUCCEEDED on 1× N6lS.Iu.I10.1 H100 — HOI3R fwd is 22% faster than 4RC inference on the same 16 frames</td></tr><tr><td>RENDERER_PLAN</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Extracted 4RC viser_visualizer_track.py style rules (HSV hue per track, 10-frame sliding window, raw-pixel RGB scene) and produced function-by-function diff plan for scripts/hoi3r_offline_render.py</td></tr><tr><td>HANDEDNESS_AUDIT</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Read HOI3RModel + DexYCB16FrameClip + ArcEncoderWrapper; decided 2-slot (A) with 6-file surgery sketch; surfaced a latent bug in the current loader (slot_index dropped)</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> HOI3R training forward is 22% FASTER than 4RC pristine inference</h3><p>On H100 80GB, same 16-frame DexYCB clip (subject-01/20200709_141754 cam 836212060125), bf16-mixed, bs=1, cache DISABLED: HOI3R fwd 611.4 ± 3.0 ms vs 4RC inference 782.2 ± 18.5 ms. Ratio 0.78×. The user&#x27;s concern that training forward was abnormally slow is not borne out — any per-step slowness lives in backward + optimizer.step() + DDP all-reduce + dataloader, not the forward graph. The 4RC inference wrapper is actually heavier because it runs loss_of_one_batch + CPU movement in addition to the model forward.</p></div>
+<div class="panel"><h3><span class="badge badge-fail">FAIL</span> DexYCB left-hand sequences train with right-hand GPS features</h3><p>DexYCB on disk is 499 left / 501 right sequences. stream3r/data/dexycb_dcf_dataset.py:562 already computes slot_index per side. But hoi3r/data/dexycb_clip_loader.py:72-83 (DexYCB16FrameClip.__getitem__) DROPS that information and returns a single-hand tensor. ArcEncoderWrapper.forward (encoder_wrapper.py:89) adds one scalar self.e_hand to every hand token regardless of side. mano_surface_gps_k16.npy was precomputed on the right-hand MANO layer. Net: ~50% of DexYCB training data is fed the wrong-handed eigenbasis. All Stage-1 H1–H4 + Stage-2 smoke results to date were produced under this bug.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Handedness architecture decision: 2 fixed slots (left + right)</h3><p>Evaluated 3 options (A: 2 slots, B: 1 slot + handedness embedding, C: variable-slot set transformer) against param count / efficiency / code complexity / dataset compat / inference / 4RC surgery. Picked A because it&#x27;s the only option that natively represents &#x27;both hands present&#x27; — required for HOT3D bimanual Stage 2. DexYCB pays ~5-10% wasted attention on the masked slot (50/50 L/R split means one slot is always masked), trivial vs the cost of migrating B→A later. Decision branch: B defensible only if Stage 2 stays DexYCB-only for the whole month.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> 4RC track-viz style: HSV hue per track, 10-frame sliding window, raw-pixel RGB scene</h3><p>Read arc/viz/viser_visualizer_track.py line-by-line: scene points use raw pixel RGB decode ((img+1)*127.5)/255, sorted by conf desc, top-percentile filtered. Motion tracks: sliding window default_track_len=10 frames, shape (N_tracks, len_t, 2, 3) flattened for add_line_segments, per-track HSV hue stable across time (rainbow comes from the set, not from time), lines[::10] + conf-weighted subsample. For offline matplotlib port: use LineCollection/Line3DCollection (not per-line ax.plot), override HSV with a distinct solid color for hand/obj trails, bump scene alpha to 1.0 for paper figures.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> ACP startup scripts must invoke python directly — NO conda run</h3><p>First submission pair (pt-geubxejk / pt-whnkc1b5) wrote `conda run -n human3r …` in the startup script and died with `bash: line 11: conda: command not found`, exit 127, ~3s after container start. Template pt-xt073hk1 exports PATH=.../envs/human3r/bin:$PATH which makes `python` resolvable but NOT `conda` (conda itself lives under .../miniconda3/bin). Fix: call /mnt/afs/haonan/miniconda3/envs/human3r/bin/python directly — which is the template&#x27;s actual pattern. Resubmit (pt-dhb96stn / pt-v6k889xj) succeeded immediately. Rule: when cloning an ACP template, preserve its exact command-invocation pattern, don&#x27;t &#x27;improve&#x27; to conda run.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>57e2d30</td><td>chore(profile)</td><td>4RC vs HOI3R fwd timing scripts (scripts/time_4rc_fwd.py + scripts/time_hoi3r_fwd.py)</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Forward-graph perf</td><td>Healthy — 0.78× of 4RC inference on H100; cache-disabled numbers are the real numbers</td></tr><tr><td>Handedness pipeline</td><td>BROKEN — slot_index dropped in DexYCB16FrameClip; 50% of training uses wrong-handed GPS. Fix is P0, ships with 2-slot redesign</td></tr><tr><td>Hand-query architecture</td><td>Decided = 2 fixed slots. Implementation deferred; 6-file surgery sketched in memory</td></tr><tr><td>Offline renderer</td><td>Plan finalized (LineCollection + sliding window + raw RGB scene). No code changes yet</td></tr><tr><td>ACP submission convention</td><td>Codified — direct python path, never conda run. Captured in feedback memory so next session doesn&#x27;t repeat</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>DEXYCB_HANDEDNESS_BUG</td><td><span class="badge badge-p0">P0</span></td><td>Fix DexYCB16FrameClip to carry slot_index + per-side GPS features — today ~50% of DexYCB training uses wrong-handed eigvecs. All Stage-1 H1–H4 and Stage-2 smoke results to date produced under this bug</td></tr><tr><td>HANDEDNESS_TWO_SLOT</td><td><span class="badge badge-p1">P1</span></td><td>Implement 2-slot handedness per project_hoi3r_handedness_two_slot_decision.md (6 files). Ship with DEXYCB_HANDEDNESS_BUG fix — same surgery area. Need mano_surface_gps_k16_left.npy</td></tr><tr><td>RENDERER_REDESIGN</td><td><span class="badge badge-p1">P1</span></td><td>Apply offline-renderer plan: LineCollection-based scene/hand/obj trails with sliding 10-frame window; scene-alpha=1.0 for paper figures; graceful degrade when pred_i_track absent from older smoke npz</td></tr><tr><td>FULL_TRAIN_STEP_TIMING</td><td><span class="badge badge-p2">P2</span></td><td>Submit one more ACP job to time full training step (fwd + bwd + optimizer.step). 611 ms fwd → whatever the step is → Δ isolates bwd+opt+DDP overhead</td></tr><tr><td>STAGE2_FULL</td><td><span class="badge badge-p1">P1</span></td><td>Inherited from 2026-04-22 4rc-migration-phase-bh-complete sidecar — full subject-01 (100 seqs) × ~4000 steps, ~5h on 8×H100</td></tr><tr><td>ROT_COORD_CONVENTION</td><td><span class="badge badge-p2">P2</span></td><td>Inherited — pristine rot_err 165° coord-frame mismatch between GT extrinsic and Arc.pose_enc; fix before paper-comparable numbers</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>Forward-timing result (0.78×) is on 1× H100 at bs=1, T=16, image 512², patch 14. Full DDP training-step wall-clock includes backward + optimizer + all-reduce + dataloader — none of which are measured here.</li><li>Handedness latent bug invalidates the PER-SIDE interpretation of every Stage-1 H1–H4 and Stage-2 smoke metric produced to date. The aggregate numbers are still meaningful for relative comparisons, but a per-hand error analysis requires a rerun after the fix.</li><li>2-slot decision assumes Stage 2 moves to HOT3D. If the plan pivots to DexYCB-only-for-the-month, option B (1 slot + handedness embedding) becomes defensible and is cheaper.</li><li>4RC track-viz port assumes pred_i_track / pred_i_conf_track keys in the scene npz. Older smoke npz (pre-exp1_4rc_dexycb) lack them; renderer must degrade silently to &#x27;no scene tracks&#x27; with a warning.</li><li>First pair of ACP jobs (pt-geubxejk / pt-whnkc1b5) is FAILED — ignore them. Real results are pt-dhb96stn (4RC) and pt-v6k889xj (HOI3R).</li></ul>
+</section>
+
+<section><h2>Memory entries written this session</h2>
+<ul><li><code>project_hoi3r_fwd_not_bottleneck.md</code></li><li><code>feedback_acp_direct_python_path.md</code></li><li><code>project_dexycb_handedness_latent_bug.md</code></li><li><code>project_hoi3r_handedness_two_slot_decision.md</code></li><li><code>reference_4rc_viser_track_style.md</code></li></ul>
+</section>
+
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-22-session-summary-investigation-fwd-timing-renderer-handedness.json
+and continue from tasks_pending[0] (DEXYCB_HANDEDNESS_BUG [P0]: Fix DexYCB16FrameClip to carry slot_index + per-side GPS features — today ~50% of DexYCB training uses wrong-handed eigvecs. All Stage-1 H1–H4 and Stage-2 smoke results to date produced under this bug).
+Context: branch feat/dcf@57e2d30; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-04-21-feat-dcf-4rc-migration-design.md, docs/superpowers/plans/2026-04-21-feat-dcf-4rc-migration-plan.md.</pre></section>
+</div></body></html>
