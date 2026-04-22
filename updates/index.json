@@ -1,5 +1,12 @@
 [
   {
+    "title": "2026-04-22 · Stage 2 paper-recipe smoke — variable T/H/W works end-to-end",
+    "date": "2026-04-22",
+    "status": "smoke",
+    "summary": "First run of the 4RC-paper training recipe (T∈[2,18] per step, longer-side ≤504 px patch-aligned, AR ∈ [0.5, 2.0], color/blur/grayscale aug) on DexYCB subject-01 (5 seqs, 200 steps smoke on 8×H100). ACP pt-so45y00y succeeded; variable T/H/W sampler confirmed cross-rank consistent; loss fell 5.18 → -2.50 in 180 steps at ~4.85 s/step (5× speedup vs fixed T=16).",
+    "path": "updates/2026-04-22-stage2-paper-recipe-smoke.html"
+  },
+  {
     "title": "2026-04-22 · HOI3R R3-3k overlay on subject-01 viser",
     "date": "2026-04-22",
     "status": "finding",

@@ -113,4 +113,27 @@
 <footer>
   <p>Interactive viser session (requires tunnel <code>ssh -L 8020:localhost:8020 -L 8021:localhost:8021 -L 8022:localhost:8022 -L 8030:localhost:8030 -N -p 20161 root@180.184.249.158</code> (R3 overlay on :8030)): <a href="http://localhost:8020">:8020</a> · <a href="http://localhost:8021">:8021</a> · <a href="http://localhost:8022">:8022</a>.</p>
 </footer>
+<!-- offline-overlay-begin -->
+  <section class="seq" id="offline-overlay">
+    <h2>R3-3k offline camera-view overlay (HOI3R predictions on 4RC scene)</h2>
+    <p style="color:#55606a;font-size:.9rem;max-width:70ch;">
+      Pure-python offline renderer (<code>scripts/hoi3r_offline_render.py</code>): pinhole
+      projection of 4RC scene points (colored by reconstructed RGB) + HOI3R hand (red)
+      + obj (blue) points + tracks (purple = hand source→i, teal = obj source→i) on a
+      white canvas. Camera view uses each frame's own extrinsic/intrinsic; side-45°
+      uses a synthetic pose rotated 45° around the base camera's up axis. No viser, no
+      Playwright — deterministic per-frame matplotlib + ffmpeg.
+    </p>
+    <div class="video-pair">
+      <figure>
+        <figcaption>Camera view — HOI3R R3-3k overlay (hand L2 mean 15.5 mm)</figcaption>
+        <video controls loop muted playsinline src="assets/2026-04-22-exp1-4rc-dexycb-viz/r3_3k_offline_camera.mp4" style="width:100%;max-width:640px;"></video>
+      </figure>
+      <figure>
+        <figcaption>Side-45° view — same scene rotated</figcaption>
+        <video controls loop muted playsinline src="assets/2026-04-22-exp1-4rc-dexycb-viz/r3_3k_offline_side45.mp4" style="width:100%;max-width:640px;"></video>
+      </figure>
+    </div>
+  </section>
+<!-- offline-overlay-end -->
 </body></html>
