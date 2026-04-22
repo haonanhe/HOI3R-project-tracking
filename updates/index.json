@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-04-22",
+    "title": "2026-04-22 · 4RC Migration Phase B–H + Stage-2 Recipe + Offline Viz",
+    "file": "updates/2026-04-22-session-summary-4rc-migration-phase-bh-complete.html",
+    "sidecar": "updates/2026-04-22-session-summary-4rc-migration-phase-bh-complete.json",
+    "summary": "Executed plan tasks B2→I1 of the 4RC migration. Stage 1 pt-9fa652zu hit exit criteria (H4 PASS, hand 5.88 mm / obj 3.57 mm). Ran 3 backbone-verification experiments (pristine viser, full-FT, LoRA-FT) with EXP_COMPARE table on subject-07 held-out. Landed perf fixes (batched motion head, bf16, encoder.eval, encoder cache) achieving 130× single-GPU speedup for overfit. Validated the 4RC paper-recipe (variable T∈[2,18] + random H·W + aug) at 4.85 s/step on 8×H100. Shipped a pure-python offline camera-view renderer (white background, no viser/Playwright). Three tracking-repo pages published."
+  },
+  {
     "title": "2026-04-22 · Stage 2 paper-recipe smoke — variable T/H/W works end-to-end",
     "date": "2026-04-22",
     "status": "smoke",
