@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>2026-04-22 · Offline matplotlib renderer — 4RC viser track style</title>
+<style>
+  body{background:#fff;color:#2c3e50;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;padding:2rem 2.5rem;max-width:1100px}
+  h1{margin-top:0;font-size:1.5rem;line-height:1.25}
+  h2{margin-top:2rem;font-size:1.2rem;border-bottom:1px solid #e1e4e8;padding-bottom:.25rem}
+  h3{margin-top:1.2rem;font-size:1.02rem}
+  .meta{color:#55606a;font-size:.95rem;margin-bottom:1rem}
+  .badge{display:inline-block;padding:.12rem .5rem;border-radius:999px;font-size:.78rem;font-weight:600;letter-spacing:.02em;margin-right:.3rem}
+  .badge-info{background:#e8f4fd;color:#0969da}
+  .badge-fix{background:#fff2e0;color:#cb6b00}
+  .badge-caveat{background:#fce9d8;color:#9a3412}
+  code{background:#f6f8fa;padding:.08rem .32rem;border-radius:3px;font-size:.9em}
+  pre{background:#f6f8fa;padding:.7rem 1rem;border-radius:6px;overflow:auto;font-size:.85rem;line-height:1.45}
+  .info{background:#e8f4fd;border-left:3px solid #0969da;padding:.7rem 1rem;margin:1rem 0}
+  .warning{background:#fff9e6;border-left:3px solid #d4ac0d;padding:.7rem 1rem;margin:1rem 0}
+  .caveat{background:#fce9d8;border-left:3px solid #9a3412;padding:.7rem 1rem;margin:1rem 0}
+  .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1rem 0}
+  .video-grid figure{margin:0}
+  .video-grid video{width:100%;background:#000;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  figcaption{font-size:.85rem;color:#55606a;margin-top:.35rem}
+  .hero{max-width:100%;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.14);margin:1rem 0}
+  table{border-collapse:collapse;margin:.6rem 0;font-size:.9rem}
+  th,td{padding:.35rem .75rem;border:1px solid #e1e4e8}
+  th{background:#24292f;color:#fff;text-align:left}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  ul{margin:.3rem 0}
+  li{margin:.18rem 0}
+  .footnote{color:#6b7280;font-size:.85rem;margin-top:2rem;border-top:1px solid #eee;padding-top:.8rem}
+</style>
+</head>
+<body>
+<h1>2026-04-22 · Offline matplotlib renderer — 4RC viser track style</h1>
+<div class="meta">
+  <span class="badge badge-info">RENDERER_REDESIGN</span>
+  <span class="badge badge-fix">P1</span>
+  branch <code>feat/dcf</code> @ <code>9a1eb87</code> · predictions from <code>stage1_r3_cached_3k (exp_eval/r3_3k_preds.pt — 16 frames, 128 hand + 256 obj)</code>
+</div>
+
+<p>The offline matplotlib renderer now produces 4RC viser-style motion-track visualizations without any viser / Playwright / browser dependency. Each track has a distinct hue from a uniformly-spaced HSV wheel, and a 10-frame sliding window of per-step segments gives a rainbow ribbon of recent motion. The camera-view MP4 overlays on the raw RGB frame; the world-view MP4 shows the same trails in 3D with a gentle azimuth sweep.</p>
+
+<div class="caveat">
+  <b>Renderer demo only — not a scientific result.</b> The predictions.pt used
+  here (<code>r3_3k_preds.pt</code>) was produced <b>before</b> the 2026-04-22
+  DexYCB handedness fix (see <code>project_dexycb_handedness_latent_bug.md</code>):
+  left-hand sequences trained with the wrong GPS latent. The point of this publish
+  is to show the <i>rendering pipeline</i>, not to attribute model quality to it.
+  Do not quote L2/chamfer numbers from this page as model evaluation.
+</div>
+
+<h2>Videos</h2>
+<div class="video-grid">
+  <figure>
+    <video controls loop muted playsinline autoplay src="assets/2026-04-22-renderer-4rc-track-style/track_camera.mp4"></video>
+    <figcaption><b>track_camera.mp4</b> — raw RGB frame with per-track HSV-hue trails
+      (128 hand + 256 obj tracks) over a 10-frame sliding window; current-frame dots
+      outlined in white. Scene cloud FPS-subsampled to ~1.2 k pts, colored by the
+      4RC-reconstructed RGB. 143 KiB, 504×378, 10 fps.</figcaption>
+  </figure>
+  <figure>
+    <video controls loop muted playsinline autoplay src="assets/2026-04-22-renderer-4rc-track-style/track_world.mp4"></video>
+    <figcaption><b>track_world.mp4</b> — world-space 3D view (white bg, no axis
+      clutter) with the same sliding-window trails rendered as
+      <code>Line3DCollection</code>. Gentle azim sweep -60° → 0° across the clip.
+      40 KiB.</figcaption>
+  </figure>
+</div>
+
+<figure>
+  <img class="hero" src="assets/2026-04-22-renderer-4rc-track-style/track_hero.png"/>
+  <figcaption>Hero still (mid-clip, frame 8) used as a paper-figure candidate —
+    hand & object trails clearly readable against the scene.</figcaption>
+</figure>
+
+<h2>What changed in the renderer</h2>
+<p><code>scripts/hoi3r_offline_render.py</code> gained <code>--mode track</code>
+(legacy <code>multiframe</code> preserved for back-compat). The port is a direct
+translation of the 4RC viser behaviour:</p>
+
+<table>
+<thead><tr><th>4RC viser rule</th><th>matplotlib port</th></tr></thead>
+<tbody>
+<tr>
+  <td>Per-track HSV hue (<code>generate_uniform_colors</code>): one hue per track
+      ID, full S/V, rainbow spread across <i>tracks</i>, not time.</td>
+  <td><code>hsv_uniform(N)</code>: <code>linspace(0,1,N,endpoint=False)</code>
+      + <code>mcolors.hsv_to_rgb</code>. One hue per track, broadcast across the
+      whole 10-frame trail.</td>
+</tr>
+<tr>
+  <td>10-frame sliding window: at frame <i>t</i>, render segments for
+      <i>(j−1 → j)</i>, <i>j ∈ [t−9, t]</i>. Shape <code>(N, len_t, 2, 3)</code>.</td>
+  <td><code>build_window_lines(per_frame, t, win=10)</code> emits
+      <code>(N·len_t, 2, 3)</code> flattened into <code>LineCollection</code>
+      (2D camera view) or <code>Line3DCollection</code> (3D world view).</td>
+</tr>
+<tr>
+  <td>Raw-pixel RGB for the scene background; scene point cloud at current <i>t</i>
+      only.</td>
+  <td><code>ax.imshow(rgb_bg)</code> under everything, then pinhole-projected
+      scene cloud colored by the 4RC reconstructed RGB (no white wash).</td>
+</tr>
+<tr>
+  <td><code>add_line_segments(points, colors, line_width)</code> in one viser call
+      per frame (fast path).</td>
+  <td>One <code>LineCollection</code> per-entity per-frame (hand, object) —
+      batched, not per-segment <code>ax.plot</code>.</td>
+</tr>
+<tr>
+  <td>Conf-weighted random subsample + track-ID decimation (<code>lines[::10]</code>)
+      to keep ~50 % of tracks.</td>
+  <td>All hand (128) + object (256) tracks kept — already sparse. Scene-cloud
+      subsample uses FPS to ~1.2 k points (deterministic).</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Added: alpha fade on the trail</h3>
+<p>Matplotlib <code>LineCollection</code> takes per-segment RGBA, so we layer a
+linear alpha fade from 0.15 (tail / oldest) to 1.0 (head / current) on top of the
+fixed hue. This is NOT in 4RC viser (viser segments are opaque), but it gives
+the matplotlib output a readable motion-blur cue that compensates for the lack
+of interactive depth.</p>
+
+<h2>Inputs</h2>
+<ul>
+  <li><b>Predictions:</b> <code>logs/exp_eval/r3_3k_preds.pt</code> — HOI3R Stage 1 R3 cached
+      overfit @ 3 k steps. Schema: <code>pred_hand_per_frame</code>
+      <code>(16, 128, 3)</code>, <code>pred_obj_per_frame</code> <code>(16, 256, 3)</code>
+      in world coordinates, plus matching GT.</li>
+  <li><b>Scene:</b> <code>logs/exp1_4rc_dexycb/20200709-subject-01_20200709_141754_836212060125.npz</code>
+      — 4RC pristine inference on the same clip (30 frames; we render the
+      overlapping first 16).</li>
+  <li><b>Sequence:</b> DexYCB subject-01 / <code>20200709_141754</code> / camera
+      <code>836212060125</code>.</li>
+  <li><b>Rendering cmd (remote):</b></li>
+</ul>
+<pre>python scripts/hoi3r_offline_render.py \
+    --scene-npz logs/exp1_4rc_dexycb/20200709-subject-01_20200709_141754_836212060125.npz \
+    --predictions logs/exp_eval/r3_3k_preds.pt \
+    --output-dir logs/renderer_redesign_r3_3k \
+    --mode track --window 10 --track-lw 1.2 \
+    --scene-track-pts 1200 --scene-point-size 2.2 --scene-alpha 0.9 --fps 10</pre>
+
+<h2>Could not cleanly port</h2>
+<div class="warning">
+  <b>SAM2 text-mask gate for tracks</b> — 4RC's <code>track_filter_mask</code>
+  uses a SAM2-based text prompt (e.g. "foreground object") eroded by 3 pixels to
+  select which pixel-indexed tracks to render. That pipeline needs the original
+  per-pixel <code>track_multi</code> + <code>conf_track_multi</code> tensors,
+  which are <i>not</i> present in HOI3R's <code>predictions.pt</code>. <b>Workaround:</b>
+  our tracks are already semantic (hand = 128 MANO-canonical verts, object = 256
+  obj-canonical verts); every track is "foreground" by construction, so no mask
+  is required.
+</div>
+<div class="warning">
+  <b>Conf-weighted probabilistic subsample</b> — 4RC keeps 50 % of tracks chosen
+  by aggregated <code>track_conf</code>. We have no per-track confidence; all
+  tracks are kept. If future HOI3R checkpoints expose per-vertex confidence, drop
+  it into <code>build_window_lines</code>'s keep-mask and it fits the existing
+  LineCollection path 1-for-1.
+</div>
+
+<h2>Unexpected finding in the existing renderer</h2>
+<div class="info">
+  The pre-existing <code>_scatter_scene</code> path used <code>alpha=0.85</code>
+  on a white background. On bright DexYCB frames that washed out dark points
+  (the user-visible "ghosty RGB" in earlier offline overlays). The track mode
+  flips this: RGB image <i>underneath</i>, opaque scene scatter over it, so we
+  no longer fight the background color. Keeping the multiframe path unchanged
+  preserves back-compat, but the fix pattern ports cleanly if needed.
+</div>
+
+<h2>Reproduce</h2>
+<pre>ssh root@180.184.249.158 -p 20161
+cd /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf
+git log -1 --format='%H %s' 9a1eb87  # feat(render): port 4RC viser track style...
+/mnt/afs/haonan/miniconda3/envs/human3r/bin/python scripts/hoi3r_offline_render.py \
+    --scene-npz logs/exp1_4rc_dexycb/20200709-subject-01_20200709_141754_836212060125.npz \
+    --predictions logs/exp_eval/r3_3k_preds.pt \
+    --output-dir logs/renderer_redesign_r3_3k --mode track</pre>
+
+<p class="footnote">
+  Renderer commit <code>9a1eb87</code> on <code>feat/dcf</code> (worktree
+  <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code>). Commit not yet
+  pushed to GitHub — debug container has no outbound https to github.com; will
+  be pushed from Mac or by the next ACP job rsync.
+</p>
+</body></html>
