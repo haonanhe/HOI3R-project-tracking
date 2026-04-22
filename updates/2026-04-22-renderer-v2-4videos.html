@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>2026-04-22 · Offline renderer v2 — 4 videos</title>
+<style>
+  body{background:#fff;color:#2c3e50;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;padding:2rem 2.5rem;max-width:1100px}
+  h1{margin-top:0;font-size:1.5rem;line-height:1.25}
+  h2{margin-top:2rem;font-size:1.2rem;border-bottom:1px solid #e1e4e8;padding-bottom:.25rem}
+  h3{margin-top:1.2rem;font-size:1.02rem}
+  .meta{color:#55606a;font-size:.95rem;margin-bottom:1rem}
+  .badge{display:inline-block;padding:.12rem .5rem;border-radius:999px;font-size:.78rem;font-weight:600;letter-spacing:.02em;margin-right:.3rem}
+  .badge-info{background:#e8f4fd;color:#0969da}
+  .badge-fix{background:#fff2e0;color:#cb6b00}
+  .badge-caveat{background:#fce9d8;color:#9a3412}
+  code{background:#f6f8fa;padding:.08rem .32rem;border-radius:3px;font-size:.9em}
+  pre{background:#f6f8fa;padding:.7rem 1rem;border-radius:6px;overflow:auto;font-size:.85rem;line-height:1.45}
+  .info{background:#e8f4fd;border-left:3px solid #0969da;padding:.7rem 1rem;margin:1rem 0}
+  .warning{background:#fff9e6;border-left:3px solid #d4ac0d;padding:.7rem 1rem;margin:1rem 0}
+  .caveat{background:#fce9d8;border-left:3px solid #9a3412;padding:.7rem 1rem;margin:1rem 0}
+  .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1rem 0}
+  .video-grid figure{margin:0}
+  .video-grid video{width:100%;background:#000;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  .eyeball-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+  .eyeball-grid img{width:100%;border-radius:6px;border:1px solid #e1e4e8}
+  figcaption{font-size:.85rem;color:#55606a;margin-top:.35rem}
+  table{border-collapse:collapse;margin:.6rem 0;font-size:.9rem}
+  th,td{padding:.35rem .75rem;border:1px solid #e1e4e8}
+  th{background:#24292f;color:#fff;text-align:left}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  ul{margin:.3rem 0}
+  li{margin:.18rem 0}
+  .footnote{color:#6b7280;font-size:.85rem;margin-top:2rem;border-top:1px solid #eee;padding-top:.8rem}
+</style>
+</head>
+<body>
+<h1>2026-04-22 · Offline renderer v2 — 4-video spec</h1>
+<div class="meta">
+  <span class="badge badge-info">RENDERER_V2</span>
+  <span class="badge badge-fix">P1</span>
+  branch <code>feat/dcf</code> @ <code>8afc6fb</code> · predictions <code>logs/exp_eval/r3_3k_preds.pt</code>
+  · <a href="2026-04-22-session-summary-investigation-fwd-timing-renderer-handedness.html">session plan</a>
+  · supersedes <a href="2026-04-22-renderer-4rc-track-style.html">renderer v1</a>
+</div>
+
+<p>Expands the offline matplotlib renderer to a 4-video spec and adds a
+frame-0 "camera matches RGB input" trick for the world-space rotating view.
+All four videos are rendered from the same predictions (HOI3R Stage 1 R3
+cached overfit, 3 k steps) and the same 4RC pristine scene .npz that v1
+used — the only change is the drawing. No viser, no Playwright, no OpenGL.</p>
+
+<div class="caveat">
+  <b>Renderer demo only — not a scientific result.</b> The predictions.pt used
+  here (<code>r3_3k_preds.pt</code>) was produced <b>before</b> the 2026-04-22
+  DexYCB handedness fix (see <code>project_dexycb_handedness_latent_bug.md</code>):
+  left-hand sequences trained with the wrong GPS latent. This publish is about
+  the <i>rendering pipeline</i>. Do not quote L2/chamfer numbers from this page
+  as model evaluation.
+</div>
+
+<h2>Four videos</h2>
+<div class="video-grid">
+  <figure>
+    <video controls loop muted playsinline autoplay src="assets/2026-04-22-renderer-v2-4videos/track_scene_only.mp4"></video>
+    <figcaption><b>1 · track_scene_only.mp4</b> — what the 4RC backbone alone
+      emits: 500 FPS-subsampled scene-track points (per-pixel Motion-head
+      outputs from <code>pred_N_track</code>, query frame t=15) with per-track
+      HSV hue. Raw RGB frame underlay. No hand/obj overlay. 16 frames, 504×378, 10 fps.
+      <span id="v1size"></span></figcaption>
+  </figure>
+  <figure>
+    <video controls loop muted playsinline autoplay src="assets/2026-04-22-renderer-v2-4videos/camera_hand_obj_no_tracks.mp4"></video>
+    <figcaption><b>2 · camera_hand_obj_no_tracks.mp4</b> — camera view. Scene
+      cloud is rendered <b>semi-transparent</b> (alpha 0.25) so the RGB photo
+      shows through. Hand (128 pts, warm orange hue family) and object
+      (256 pts, cool cyan hue family) are opaque, at the current frame only —
+      no trails, no tracks. Stable per-vertex hue across frames. 16 frames, 504×378, 10 fps.
+      <span id="v2size"></span></figcaption>
+  </figure>
+  <figure>
+    <video controls loop muted playsinline autoplay src="assets/2026-04-22-renderer-v2-4videos/camera_hand_obj_with_tracks.mp4"></video>
+    <figcaption><b>3 · camera_hand_obj_with_tracks.mp4</b> — video 2 + the
+      4RC-style sliding-window trails (10-frame window, LineCollection, per-track
+      HSV hue + tail-to-head alpha fade) for hand and object. Scene remains
+      semi-transparent underneath. 16 frames, 504×378, 10 fps. <span id="v3size"></span></figcaption>
+  </figure>
+  <figure>
+    <video controls loop muted playsinline autoplay src="assets/2026-04-22-renderer-v2-4videos/world_full_scene_rotating.mp4"></video>
+    <figcaption><b>4 · world_full_scene_rotating.mp4</b> — world-space 3D;
+      frame 0 viewer matches the RGB input camera, then azimuthal sweep of
+      360° around the scene centroid across the 16 frames. Semi-transparent
+      scene cloud + opaque hand + opaque obj + hand/obj trails
+      (Line3DCollection). 16 frames, 504×378, 10 fps. <span id="v4size"></span></figcaption>
+  </figure>
+</div>
+
+<h2>Video 4 — the "camera matches RGB input" trick</h2>
+<p>The DexYCB raw RGB input was recorded by the camera whose pose, in the
+4RC world frame, is <code>extr_c2w ≈ I</code> at frame 0 (4RC sets its
+canonical-world origin at the first-frame camera center). For matplotlib's
+<code>ax.view_init(elev, azim)</code> to place the viewer at that same
+location, we need to:</p>
+<ol>
+  <li>Rotate all world-space points by a fixed basis <code>R</code> so the
+      DexYCB "scene up" (−Y_world) becomes matplotlib's +Z_mpl. The basis is
+      <code>R = [[1,0,0],[0,0,1],[0,−1,0]]</code> (i.e., Y ↔ −Z).</li>
+  <li>Compute the scene centroid in world coords
+      (<code>scene[0..T−1]["pts"]</code> mean on the high-confidence mask).</li>
+  <li>Call <code>camera_pose_to_view_init(extr_c2w, centroid_world,
+      world_basis=R)</code>, which takes the camera-in-world vector
+      <code>C − centroid</code>, applies <code>R</code> once, and reads off
+      <code>elev = asin(v_z/|v|)</code>, <code>azim = atan2(v_y, v_x)</code>.</li>
+  <li>Sweep the azimuth by <code>+total_rot × (t/(T−1))</code> across the
+      clip. Default <code>total_rot = 360°</code>.</li>
+</ol>
+<p>For this demo clip:</p>
+<table>
+  <thead><tr><th>quantity</th><th>value</th></tr></thead>
+  <tbody>
+    <tr><td>frame-0 <code>elev</code></td><td class="n">8.92°</td></tr>
+    <tr><td>frame-0 <code>azim</code></td><td class="n">−79.36°</td></tr>
+    <tr><td>radius <code>|C − centroid|</code></td><td class="n">0.594 m</td></tr>
+    <tr><td>scene centroid (world)</td><td class="n">(−0.108, 0.092, 0.577)</td></tr>
+    <tr><td>scene centroid (matplotlib frame)</td><td class="n">(−0.108, 0.577, −0.092)</td></tr>
+    <tr><td>azimuth sweep</td><td class="n">−79.36° → +280.64° (one full revolution)</td></tr>
+  </tbody>
+</table>
+
+<h3>Eyeball check — world frame 0 vs RGB frame 0</h3>
+<div class="eyeball-grid">
+  <figure>
+    <img src="assets/2026-04-22-renderer-v2-4videos/rgb_frame0.png"/>
+    <figcaption>RGB input, frame 0 — subject on left, drill in hand (orange)
+      center-left, blue can center, yellow tool on right floor.</figcaption>
+  </figure>
+  <figure>
+    <img src="assets/2026-04-22-renderer-v2-4videos/world_frame0.png"/>
+    <figcaption>World-space render at frame 0 (same view_init)— orange hand-verts
+      on left, cyan obj-verts center, scene cloud behind. Same left/right
+      orientation as RGB; the 3D box padding makes the vertical framing
+      taller than the camera's crop, but the viewer direction is within
+      &lt;5° of the RGB azimuth.</figcaption>
+  </figure>
+</div>
+
+<h2>v1 vs v2 drawing changes</h2>
+<table>
+<thead><tr><th>concern</th><th>v1 (<code>--mode track</code>)</th><th>v2 (<code>--mode v2</code>)</th></tr></thead>
+<tbody>
+<tr><td>scene cloud in camera overlays</td>
+    <td>opaque (alpha 0.9) RGB-colored scatter on top of the RGB frame</td>
+    <td>semi-transparent (alpha 0.25) — RGB frame shows through cleanly</td></tr>
+<tr><td>hand / obj color</td>
+    <td>single color (red / blue) for the whole entity</td>
+    <td>per-vertex hue from a hue family (orange / cyan) so each vertex is
+        individually resolvable</td></tr>
+<tr><td>scene tracks</td>
+    <td>not rendered — scene cloud is drawn as RGB points only</td>
+    <td>video 1 renders 500 FPS-subsampled scene <i>tracks</i> (from
+        <code>pred_N_track</code>) as their own HSV-hue sliding-window
+        trails — the 4RC Motion head output visualized standalone</td></tr>
+<tr><td>world-space camera</td>
+    <td>hand-picked start azimuth −60°, sweeps 60° total; elev fixed at 18°</td>
+    <td>frame-0 view_init derived from the RGB-input <code>extr_c2w</code>;
+        azimuth sweeps a full 360° revolution across the clip</td></tr>
+<tr><td>world axis convention</td>
+    <td>rely on matplotlib default ZXY; data plotted in world-Y-down frame
+        (upside-down risk)</td>
+    <td>fixed basis <code>R = [[1,0,0],[0,0,1],[0,-1,0]]</code> applied to all
+        plotted points so DexYCB <code>−Y_world</code> = matplotlib
+        <code>+Z_mpl</code></td></tr>
+<tr><td>videos produced</td>
+    <td>2 (<code>track_camera</code> + <code>track_world</code>)</td>
+    <td>4 (scene-only, ho-only, ho+tracks, world-rotating)</td></tr>
+</tbody>
+</table>
+
+<h2>Inputs</h2>
+<ul>
+  <li><b>Predictions:</b> <code>logs/exp_eval/r3_3k_preds.pt</code> — HOI3R
+      Stage 1 R3 cached overfit @ 3 k steps. Same file as v1 (not re-generated).
+      Schema: <code>pred_hand_per_frame (16, 128, 3)</code>,
+      <code>pred_obj_per_frame (16, 256, 3)</code> in world coordinates.</li>
+  <li><b>Scene + scene tracks:</b>
+      <code>logs/exp1_4rc_dexycb/20200709-subject-01_20200709_141754_836212060125.npz</code>
+      — same 4RC pristine inference file used by v1. The per-pixel
+      <code>pred_N_track</code> tensors were already present (v1 never loaded
+      them); v2's <code>load_scene(path, with_tracks=True)</code> now reads
+      <code>pred_N_track</code> and <code>pred_N_conf_track</code> and exposes
+      them per frame. No fresh 4RC forward pass was needed.</li>
+  <li><b>Sequence:</b> DexYCB <code>subject-01 / 20200709_141754</code>, camera
+      <code>836212060125</code>, frames 0..15.</li>
+</ul>
+
+<h2>Reproduce</h2>
+<pre>ssh root@180.184.249.158 -p 20161
+cd /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf
+git log -1 --format='%H %s' 8afc6fb
+/mnt/afs/haonan/miniconda3/envs/human3r/bin/python scripts/hoi3r_offline_render.py \
+    --scene-npz logs/exp1_4rc_dexycb/20200709-subject-01_20200709_141754_836212060125.npz \
+    --predictions logs/exp_eval/r3_3k_preds.pt \
+    --output-dir logs/renderer_v2/r3_3k \
+    --mode v2 --v2-emit-frame0-png</pre>
+
+<h2>v1 regressions accepted</h2>
+<p>None. <code>--mode multiframe</code> and <code>--mode track</code> still
+produce bit-identical outputs (re-ran <code>--mode track</code> after the v2
+edit: <code>track_camera.mp4</code> = 143 KiB, <code>track_world.mp4</code>
+= 39 KiB, matching the v1-page sizes to the kilobyte).</p>
+
+<h2>Open follow-ups</h2>
+<ul>
+  <li>After the DexYCB handedness fix lands in a new Stage 1 overfit, re-run
+      this pipeline on the new <code>predictions.pt</code> and publish a
+      "post-handedness-fix" tracker entry with the same 4 videos.</li>
+  <li>Video 4's "camera matches RGB" is validated on a nearly-identity
+      <code>extr_c2w</code>. For non-canonical 4RC clips (not yet used in
+      HOI3R), the same <code>camera_pose_to_view_init</code> path applies but
+      the matplotlib framing will need per-clip <code>ax.set_box_aspect</code>
+      tuning.</li>
+  <li>Scene-track rendering in video 1 currently takes the track-query frame
+      (default t=15) pixels. For clips where the query is mid-sequence, the
+      trails include prediction looking both forward and backward from t=15
+      — an asymmetry that matches 4RC viser behaviour but may read as
+      jittery on very-long clips.</li>
+</ul>
+
+<p class="footnote">
+  Renderer commit <code>8afc6fb</code> on <code>feat/dcf</code>
+  (<code>feat(render): RENDERER_V2 4-video spec (--mode v2)</code>).
+  Previous renderer (v1, commit <code>9a1eb87</code>): <a href="2026-04-22-renderer-4rc-track-style.html">2026-04-22-renderer-4rc-track-style.html</a>.
+</p>
+</body></html>
