@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-04-23 · MOTION_HEAD_ARCH_MATCH — align HOI3R motion heads with 4RC MotionDecoder</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1200px;margin:0 auto;padding:24px 28px 60px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px;margin-bottom:4px}
+h2{color:#2c3e50;border-left:4px solid #2c3e50;padding-left:10px;margin-top:30px;font-size:20px}
+h3{color:#34495e;margin-top:22px;font-size:16px}
+.badge{display:inline-block;padding:3px 10px;border-radius:10px;font-weight:600;font-size:.85em;margin-right:8px}
+.badge-arch{background:#e3f2fd;color:#0d47a1;border:1px solid #1976d2}
+.badge-refactor{background:#fff3e0;color:#e65100;border:1px solid #f57c00}
+.meta{background:#fff;border:1px solid #ddd;border-radius:8px;padding:14px 18px;margin:14px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:6px 14px;font-size:.92em}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',ui-monospace,monospace;font-size:.92em}
+table{border-collapse:collapse;width:100%;margin:14px 0;background:#fff;font-size:.9em}
+th,td{border:1px solid #ddd;padding:6px 10px;text-align:left}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f6f8fa}
+.ok{color:#16a34a;font-weight:700}
+.panel{background:#fff;border:1px solid #ddd;border-left:4px solid #2563eb;border-radius:6px;padding:12px 16px;margin:10px 0}
+.panel.warn{border-left-color:#d97706}
+.panel.ok{border-left-color:#16a34a;color:#14532d}
+.code{background:#0f172a;color:#e5e7eb;padding:12px 14px;border-radius:8px;overflow:auto;white-space:pre;font:13px ui-monospace,SFMono-Regular,Menlo,monospace;margin:10px 0}
+.code .add{color:#4ade80}
+.code .del{color:#f87171}
+.code .ctx{color:#94a3b8}
+.fig{background:#fff;border:1px solid #ddd;border-radius:8px;padding:14px;margin:16px 0;text-align:center}
+.fig img{width:100%;max-width:1200px;height:auto;display:block;margin:0 auto}
+.fig .cap{font-size:.85em;color:#666;margin-top:10px;font-style:italic}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:.9em;color:#c7254e}
+.toc{background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:.9em}
+.toc a{text-decoration:none;color:#2c3e50;margin-right:14px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MOTION_HEAD_ARCH_MATCH — align HOI3R HandMotion / ObjMotion with 4RC MotionDecoder</h1>
+  <div style="margin:6px 0 14px 0">
+    <span class="badge badge-arch">Architecture refactor</span>
+    <span class="badge badge-refactor">No training / eval included</span>
+  </div>
+  <div class="meta">
+    <div class="meta-grid">
+      <div class="meta-label">Date</div><div class="meta-value">2026-04-23</div>
+      <div class="meta-label">Branch</div><div class="meta-value">feat/dcf</div>
+      <div class="meta-label">Head commit (pre)</div><div class="meta-value"><code>b18a2d8</code> — perf(memory): activation checkpoint encoder blocks</div>
+      <div class="meta-label">Head commit (post)</div><div class="meta-value"><code>58532a2</code> — refactor(motion-heads): align with 4RC MotionDecoder (origin/feat/dcf)</div>
+      <div class="meta-label">Files touched</div><div class="meta-value">hoi3r/models/heads/{hand,obj}_motion.py, load_4rc_motion_init.py, tests/hoi3r/test_load_4rc_motion_init.py, scripts/figures/motion_head_compare.py, docs/notes/motion_decoder_spec.md</div>
+      <div class="meta-label">Running jobs affected</div><div class="meta-value">None — pt-vchlwhid (arm-A) and pt-bbq2n8ni (arm-B) were frozen at <code>5cc5faf</code>; both have since SUCCEEDED</div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <strong>Jump to:</strong>
+  <a href="#why">Why</a>
+  <a href="#structure">New structure</a>
+  <a href="#diff">Code diff</a>
+  <a href="#figure">Comparison figure</a>
+  <a href="#transfer">Transfer coverage</a>
+  <a href="#validation">Validation</a>
+  <a href="#follow-ups">Follow-ups</a>
+</nav>
+
+<section id="why">
+<h2>Why this refactor matters</h2>
+<p>
+A prior audit (memory <code>project_motion_init_mismatch.md</code>, ckpt <code>8c72a09</code>) found that
+<code>HandMotion</code> / <code>ObjMotion</code> structurally diverged from 4RC's <code>MotionDecoder</code>:
+</p>
+<ul>
+  <li><strong>AdaLN style differs</strong>. 4RC = DiT-style 6·D (shift/scale/gate × {MSA, MLP}); HOI3R used post-attention LN + scale + shift (2·D).</li>
+  <li><strong>No pre-attention LayerNorm</strong>. 4RC: <code>x + attn(norm1(x))</code>. HOI3R: <code>q + self_attn(q, q, q)</code>.</li>
+  <li><strong>No LayerScale.</strong> 4RC uses <code>ls1.gamma</code> / <code>ls2.gamma</code> for residual gating.</li>
+  <li><strong>Cross-attn K/V share one context</strong> (no pre-norm). 4RC applies <code>normy(y)</code> separately.</li>
+</ul>
+<p>
+Consequence: only <strong>56 of ~166 per-head params</strong> transferred through
+<code>load_4rc_motion_init_into</code>, so <code>--motion-init-from-4rc</code> was
+<em>de facto</em> a random init with some MLP/QKV seeding — not a real warm-start.
+</p>
+</section>
+
+<section id="structure">
+<h2>New structure — byte-identical to 4RC</h2>
+<p>
+Each HOI3R motion-head layer is now a <code>(cross_block, self_block)</code> pair,
+where both blocks are instantiated directly from the 4RC layer library
+(<code>third_party/4RC/arc/models/arc/layers/block.py</code>):
+</p>
+<ul>
+  <li><code>cross_block</code> → 4RC <code>CrossBlock</code> — <code>norm1</code>, <code>normy</code>,
+      <code>CrossAttention</code> (split <code>toq/tok/tov</code>, <code>qk_norm</code> = True),
+      <code>ls1</code>, <code>norm2</code>, <code>Mlp</code>, <code>ls2</code>
+      (LayerScale init = 0.01).</li>
+  <li><code>self_block</code> → 4RC <code>AdaLNBlock</code> — <code>norm1</code>, fused
+      <code>qkv</code>, <code>qk_norm</code>, <code>proj</code>,
+      <code>norm2</code>, <code>Mlp</code>, and the DiT-style 6·D
+      <code>adaLN_modulation</code> sidecar (<code>SiLU</code> → <code>Linear(D, 6D)</code>,
+      zero-init). No LayerScale (AdaLNBlock deletes it).</li>
+</ul>
+<p>
+Forward ordering within each layer follows 4RC
+<code>motiondecoder.py:146-177</code>: <strong>cross then self</strong>.
+Module path <code>blocks.{i}.self_block.<i>X</i></code> matches the 4RC
+checkpoint path <code>motion_decoder.self_blocks.{i}.<i>X</i></code> after a
+single prefix rewrite.
+</p>
+<p>
+The <em>only</em> intentional differences from 4RC scene MotionDecoder:
+</p>
+<ul>
+  <li>Token counts per head: hand = 2·N_H = 256 slots, object = N_O = 256 — vs. 4RC's 1 + P≈484 patches.</li>
+  <li>RoPE disabled (HOI3R motion queries are 1-D token streams, not a 2-D image grid).</li>
+  <li>Colocated output projections <code>delta_proj</code> (<code>Linear(1536, 3)</code>) and
+      <code>uncert.proj</code> (<code>Linear(1536, 1)</code>) — 4RC factors these into a separate track head.</li>
+</ul>
+</section>
+
+<section id="diff">
+<h2>Code diff — key structural changes</h2>
+<p>Old <code>_MotionBlock</code> (pre-refactor) → new <code>_MotionLayer</code> (post-refactor):</p>
+<div class="code"><span class="del">- class _MotionBlock(nn.Module):</span>
+<span class="del">-     def __init__(self, hidden: int = HIDDEN):</span>
+<span class="del">-         super().__init__()</span>
+<span class="del">-         self.self_attn  = nn.MultiheadAttention(hidden, N_HEADS, batch_first=True)</span>
+<span class="del">-         self.cross_attn = nn.MultiheadAttention(hidden, N_HEADS, batch_first=True)</span>
+<span class="del">-         self.adaln      = AdaLNBlock(hidden)          # 2·D scale+shift only</span>
+<span class="del">-         self.mlp        = nn.Sequential(nn.LayerNorm(hidden),</span>
+<span class="del">-                                         nn.Linear(hidden, 4*hidden), nn.GELU(),</span>
+<span class="del">-                                         nn.Linear(4*hidden, hidden))</span>
+<span class="del">-     def forward(self, q, context, time_cond):</span>
+<span class="del">-         q = q + self.self_attn(q, q, q)[0]            # no pre-norm, no LayerScale</span>
+<span class="del">-         q = q + self.cross_attn(q, context, context)[0]  # no normy, no LayerScale</span>
+<span class="del">-         q = self.adaln(q, time_cond)                  # 2·D post-norm</span>
+<span class="del">-         q = q + self.mlp(q)</span>
+<span class="del">-         return q</span>
+
+<span class="add">+ from arc.models.arc.layers.block import AdaLNBlock, CrossBlock</span>
+<span class="add">+ from arc.models.arc.layers.attention import CrossAttention</span>
+<span class="add">+</span>
+<span class="add">+ class _MotionLayer(nn.Module):</span>
+<span class="add">+     def __init__(self, hidden=1536, num_heads=16, mlp_ratio=4.0,</span>
+<span class="add">+                  init_values=0.01, qk_norm=True):</span>
+<span class="add">+         super().__init__()</span>
+<span class="add">+         self.cross_block = CrossBlock(</span>
+<span class="add">+             dim=hidden, num_heads=num_heads, mlp_ratio=mlp_ratio,</span>
+<span class="add">+             init_values=init_values, cross_attn_init_values=init_values,</span>
+<span class="add">+             qk_norm=qk_norm, rope=None, attn_class=CrossAttention,</span>
+<span class="add">+         )  # gives: norm1, normy, attn(toq/tok/tov + qk_norm + proj),</span>
+<span class="add">+            #        ls1, norm2, mlp(fc1/fc2), ls2</span>
+<span class="add">+         self.self_block = AdaLNBlock(</span>
+<span class="add">+             dim=hidden, num_heads=num_heads, mlp_ratio=mlp_ratio,</span>
+<span class="add">+             init_values=init_values, qk_norm=qk_norm, rope=None,</span>
+<span class="add">+         )  # gives: norm1, attn(qkv + qk_norm + proj), norm2,</span>
+<span class="add">+            #        mlp(fc1/fc2), adaLN_modulation (6·D DiT-style)</span>
+<span class="add">+</span>
+<span class="add">+     def forward(self, q, context, time_cond):</span>
+<span class="add">+         q = self.cross_block(q, context, pos=None)          # cross first (4RC order)</span>
+<span class="add">+         q = self.self_block(q, cond=time_cond, pos=None)    # then self w/ DiT-AdaLN</span>
+<span class="add">+         return q</span>
+</div>
+<p>
+The key-rewrite in <code>load_4rc_motion_init.py</code> collapsed from
+~120 lines of shape-aware branching (fused-QKV assembly, name rename tables, LN
+remapping) to a pair of regex substitutions:
+</p>
+<div class="code"><span class="ctx"># motion_decoder.self_blocks.{i}.<sub>   -> blocks.{i}.self_block.<sub></span>
+<span class="ctx"># motion_decoder.cross_blocks.{i}.<sub>  -> blocks.{i}.cross_block.<sub></span>
+</div>
+</section>
+
+<section id="figure">
+<h2>Architecture comparison figure</h2>
+<div class="fig">
+  <img src="motion_head_arch_compare.png" alt="4RC vs HOI3R HandMotion vs HOI3R ObjMotion block diagrams"/>
+  <div class="cap">
+    Column 1 = 4RC <code>MotionDecoder</code> (reference) · column 2 = HOI3R
+    <code>HandMotion</code> · column 3 = HOI3R <code>ObjMotion</code>. Columns 2
+    and 3 are byte-identical to column 1; only the input q_source annotation
+    (hand vs object token count) and context annotation differ. Every module
+    box — <code>LayerNorm</code>, <code>Attention/CrossAttention</code>,
+    <code>LayerScale</code>, <code>MLP</code>, <code>AdaLN</code> sidecar — uses
+    the same 4RC name and ordering.
+  </div>
+</div>
+</section>
+
+<section id="transfer">
+<h2>4RC → HOI3R transfer coverage</h2>
+<p>Run against the real <code>Luo-Yihang/4RC</code> checkpoint at
+<code>/mnt/afs/haonan/hoi3r/checkpoints/4RC/hub/models--Luo-Yihang--4RC/
+snapshots/3634b324abb16634a527987c8efa212e392a1449/model.safetensors</code>:</p>
+<table>
+<thead><tr><th>Head</th><th>total dst keys</th><th>transferred</th><th>shape mismatches</th><th>skipped_not_in_source</th></tr></thead>
+<tbody>
+<tr>
+  <td><strong>Before refactor</strong> (HandMotion @ <code>b18a2d8</code>)</td>
+  <td>~170</td>
+  <td>56 of ~166 (34%)</td>
+  <td>many (AdaLN 2·D vs 6·D, missing pre-norms)</td>
+  <td>pre-norms, LayerScale, AdaLN, qk_norm…</td>
+</tr>
+<tr class="ok-row">
+  <td><strong>After refactor</strong> (HandMotion)</td>
+  <td>172</td>
+  <td class="ok">168 of 168 motion_decoder keys (100%)</td>
+  <td class="ok">0</td>
+  <td>4 — only <code>delta_proj.{w,b}</code> + <code>uncert.proj.{w,b}</code> (no 4RC counterpart by design)</td>
+</tr>
+<tr class="ok-row">
+  <td><strong>After refactor</strong> (ObjMotion)</td>
+  <td>172</td>
+  <td class="ok">168 of 168 (100%)</td>
+  <td class="ok">0</td>
+  <td>4 — same four output-projection params</td>
+</tr>
+</tbody>
+</table>
+<div class="panel ok">
+  <strong>Full structural coverage.</strong> Every tensor in
+  <code>motion_decoder.{self,cross}_blocks.*</code> now has a byte-compatible
+  home in the HOI3R head. <code>--motion-init-from-4rc</code> is now a true
+  warm-start: norm params, LayerScale gammas, split-QKV projections, qk_norm,
+  and the 6·D AdaLN modulation all load from 4RC.
+</div>
+</section>
+
+<section id="validation">
+<h2>Validation</h2>
+<table>
+<thead><tr><th>Test</th><th>What it checks</th><th>Result</th></tr></thead>
+<tbody>
+<tr>
+  <td><code>tests/hoi3r/test_hand_motion.py</code></td>
+  <td>Output shape: <code>(B, N, 3)</code> + <code>(B, N)</code></td>
+  <td><span class="ok">PASS</span></td>
+</tr>
+<tr>
+  <td><code>tests/hoi3r/test_obj_motion.py</code></td>
+  <td>Output shape; ObjMotion is a subclass — shares structure</td>
+  <td><span class="ok">PASS</span></td>
+</tr>
+<tr>
+  <td><code>tests/hoi3r/test_adaln.py</code></td>
+  <td><code>common.AdaLNBlock</code> still works (unchanged; used elsewhere)</td>
+  <td><span class="ok">PASS</span></td>
+</tr>
+<tr>
+  <td><code>tests/hoi3r/test_hoi3r_model_batched.py</code></td>
+  <td>Batched <code>(B·T)</code> motion-head forward ≡ serial <code>for b,τ</code> loop</td>
+  <td><span class="ok">PASS</span></td>
+</tr>
+<tr>
+  <td><code>tests/hoi3r/test_load_4rc_motion_init.py</code> (9 cases)</td>
+  <td>Key rewrite, shape-check, idempotence, strict-mode error, extra-keys skip</td>
+  <td><span class="ok">9/9 PASS</span></td>
+</tr>
+<tr>
+  <td>Real-ckpt transfer (<code>Luo-Yihang/4RC</code>)</td>
+  <td>168/168 motion_decoder tensors, 0 shape mismatches, 4 output-head keys unchanged</td>
+  <td><span class="ok">PASS</span></td>
+</tr>
+</tbody>
+</table>
+<div class="panel warn">
+  <strong>Numerics change vs old impl is expected.</strong> The new architecture
+  produces different outputs than the old on the same input / seed — pre-norm,
+  LayerScale, and DiT-AdaLN are structural differences, not a bug-fix-preserving
+  refactor. The <em>API</em> (<code>q_source</code>, <code>context</code>,
+  <code>time_cond</code> → <code>delta</code>, <code>sigma</code>) is preserved
+  exactly; HOI3RModel.forward and the overfit script call-sites do not change.
+</div>
+</section>
+
+<section id="running-jobs">
+<h2>Running-job sanity check (read-only)</h2>
+<p>
+The two running overfit ablations at <code>5cc5faf</code> (pre-refactor) were:
+</p>
+<ul>
+  <li><code>pt-vchlwhid</code> — arm-A random init — state: <strong>SUCCEEDED</strong> (created 2026-04-23T02:33:06Z).</li>
+  <li><code>pt-bbq2n8ni</code> — arm-B 4RC init — state: <strong>SUCCEEDED</strong> (created 2026-04-23T02:33:16Z).</li>
+</ul>
+<p>
+Both finished before this commit landed. This refactor makes their result a
+"previous-architecture" baseline, as planned. No log directories were touched.
+</p>
+</section>
+
+<section id="follow-ups">
+<h2>Open follow-ups</h2>
+<ul>
+  <li>
+    <strong>STAGE2_FULL recipe should default to <code>--motion-init-from-4rc</code></strong>
+    now that the flag is a real warm-start. Pre-refactor it only seeded ~34 %
+    of params so the flag was mostly decorative; post-refactor it seeds every
+    norm / LayerScale / QKV / AdaLN tensor, which should shorten the
+    cold-start plateau in the motion heads. Worth a smoke A/B on the same
+    subject-01 clip (arm-A random, arm-B 4RC-init) with the new architecture
+    to confirm the warm-start signal is real before committing it to the
+    default recipe.
+  </li>
+  <li>
+    <strong>4RC weights do NOT semantically match hand/object motion.</strong>
+    4RC <code>MotionDecoder</code> was trained on generic scene-point tracking;
+    HOI3R adapts the same modules to hand-joint and object-surface motion.
+    Warm-starting only the norm/attn projections (not the delta/sigma output
+    heads) is intentional — the last linear layer must reset for the new
+    geometry. Expect early-training convergence to look similar in the first
+    ~100 steps regardless of init, then diverge.
+  </li>
+  <li>
+    <strong>Arm-B re-run on new architecture.</strong> The closed
+    arm-A/arm-B pair at <code>5cc5faf</code> measured init-impact on the
+    <em>old</em> architecture where only 34 % of params could transfer. A
+    clean re-run on the new architecture will give the first real
+    "4RC-init vs random-init on structurally matched heads" comparison.
+  </li>
+  <li>
+    <strong>Optional: expose 4RC's <code>init_values</code> as a config knob.</strong>
+    Currently hard-coded at 0.01 (matching 4RC). If arm-A (random init, new
+    arch) diverges, worth sweeping init_values ∈ {1e-5, 1e-4, 1e-2}.
+  </li>
+</ul>
+</section>
+
+<section>
+<h2>Spec reference</h2>
+<p>
+Full architectural inventory: <code>docs/notes/motion_decoder_spec.md</code>
+(committed in this change). Lists every per-block tensor with shape and
+provenance, used as ground truth by <code>tests/hoi3r/test_load_4rc_motion_init.py</code>
+to enumerate expected transfer counts.
+</p>
+</section>
+
+</body>
+</html>

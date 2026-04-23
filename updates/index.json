@@ -1,5 +1,13 @@
 [
   {
+    "title": "2026-04-23 · Motion-head architecture aligned with 4RC MotionDecoder",
+    "date": "2026-04-23",
+    "status": "complete",
+    "summary": "Rewrote HandMotion/ObjMotion to match 4RC MotionDecoder structure (pre-norm, LayerScale, DiT 6*D AdaLN, normy). 4RC -> HOI3R transfer: 56/166 -> 168/168 per head.",
+    "path": "updates/2026-04-23-motion-head-arch-match.html",
+    "file": "updates/2026-04-23-motion-head-arch-match.html"
+  },
+  {
     "title": "2026-04-23 · Offline renderer v3 — RGB-free overlays + interactive Plotly",
     "date": "2026-04-23",
     "status": "finding",
