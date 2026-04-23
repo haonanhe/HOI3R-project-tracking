@@ -1,5 +1,13 @@
 [
   {
+    "title": "2026-04-23 · Offline renderer v3 — RGB-free overlays + interactive Plotly",
+    "date": "2026-04-23",
+    "status": "finding",
+    "summary": "Renderer regression fixes: videos 1-3 drop the raw RGB input frame. Video 1 shows the 4RC scene geometry + motion tracks on white. Videos 2 & 3 use the projected scene point cloud ITSELF as the background, with opaque hand/obj on top. Video 4 is replaced with an embedded Plotly scatter3d (interactive orbit + frame slider); slow rotating MP4 kept as fallback. Same predictions as v2 (r3_3k_preds.pt, pre-handedness-fix).",
+    "path": "updates/2026-04-23-renderer-v3.html",
+    "file": "updates/2026-04-23-renderer-v3.html"
+  },
+  {
     "title": "2026-04-22 · Verify MagicHOI (+ FP+HaWoR) preprocessing → training → evaluation pipeline end-to-end via ACP smoke; iterate until MagicHOI 7-stage training on hold_MC1_ho3d.0 emits it100-export/camera.json.",
     "date": "2026-04-22",
     "status": "wip",
@@ -11,8 +19,8 @@
   {
     "title": "2026-04-22 · Offline renderer v2 — 4 videos (scene-only, ho-only, ho+tracks, world-rotating)",
     "date": "2026-04-22",
-    "status": "finding",
-    "summary": "RENDERER_V2 — scripts/hoi3r_offline_render.py gains --mode v2, which emits four MP4s from the same r3_3k_preds.pt that v1 used: track_scene_only (500 FPS-subsampled 4RC Motion-head scene tracks, HSV hues), camera_hand_obj_no_tracks (semi-transparent scene + opaque hand/obj at current frame), camera_hand_obj_with_tracks (same + 10-frame sliding trails for hand/obj), and world_full_scene_rotating (world-space 3D where frame-0 viewer matches the RGB-input camera via camera_pose_to_view_init(extr_c2w, centroid, world_basis=R), then sweeps 360° around the scene centroid across the 16 frames). Same predictions + same scene .npz as v1 (pred_N_track tensor was already emitted, v2 just reads it). No viser, no Playwright, no OpenGL. CAVEAT: predictions predate the 2026-04-22 DexYCB handedness fix.",
+    "status": "superseded",
+    "summary": "[superseded by v3] RENDERER_V2 — scripts/hoi3r_offline_render.py gains --mode v2, which emits four MP4s from the same r3_3k_preds.pt that v1 used: track_scene_only (500 FPS-subsampled 4RC Motion-head scene tracks, HSV hues), camera_hand_obj_no_tracks (semi-transparent scene + opaque hand/obj at current frame), camera_hand_obj_with_tracks (same + 10-frame sliding trails for hand/obj), and world_full_scene_rotating (world-space 3D where frame-0 viewer matches the RGB-input camera via camera_pose_to_view_init(extr_c2w, centroid, world_basis=R), then sweeps 360° around the scene centroid across the 16 frames). Same predictions + same scene .npz as v1 (pred_N_track tensor was already emitted, v2 just reads it). No viser, no Playwright, no OpenGL. CAVEAT: predictions predate the 2026-04-22 DexYCB handedness fix.",
     "path": "updates/2026-04-22-renderer-v2-4videos.html",
     "file": "updates/2026-04-22-renderer-v2-4videos.html"
   },
