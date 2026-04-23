@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-23 · Land the motion-grounding-ablation plan (LoRA + combined motion topology) and run E1/E4 + scene-loss + patches-only-ctx ablations on DexYCB subject-01 single-seq overfit",
+    "date": "2026-04-23",
+    "status": "wip",
+    "summary": "Land the motion-grounding-ablation plan (LoRA + combined motion topology) and run E1/E4 + scene-loss + patches-only-ctx ablations on DexYCB subject-01 single-seq overfit",
+    "path": "updates/2026-04-23-session-summary-motion-grounding-lora-ablation-infra.html",
+    "file": "updates/2026-04-23-session-summary-motion-grounding-lora-ablation-infra.html",
+    "sidecar": "updates/2026-04-23-session-summary-motion-grounding-lora-ablation-infra.json"
+  },
+  {
     "title": "2026-04-23 · Arm B′ archmatch bs=8 (pt-drxe2i2e)",
     "date": "2026-04-23",
     "status": "final",

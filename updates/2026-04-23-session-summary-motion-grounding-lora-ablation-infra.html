@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-23 · motion-grounding-lora-ablation-infra</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Motion Grounding Lora Ablation Infra</h1>
+  <div class="meta">2026-04-23 · <code>feat/dcf</code> · <code>@a0783be</code> · spec: <code>docs/superpowers/specs/2026-04-23-motion-grounding-ablation-design.md</code> · plan: <code>docs/superpowers/plans/2026-04-23-motion-grounding-ablation-plan.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Land the motion-grounding-ablation plan (LoRA + combined motion topology) and run E1/E4 + scene-loss + patches-only-ctx ablations on DexYCB subject-01 single-seq overfit</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">16 on feat/dcf</div><div class="label">Commits landed</div></div><div class="stat"><div class="val">5/5 model + 4+4 encoder + 3 combined-motion</div><div class="label">Tests passing</div></div><div class="stat"><div class="val">4 running</div><div class="label">ACP jobs active</div></div><div class="stat"><div class="val">T1-T4, T9-T11 (7/11 scoped) + 3 extensions</div><div class="label">Plan tasks done</div></div><div class="stat"><div class="val">378×504 (inference-matched)</div><div class="label">Training resolution</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>T1</td><td><span class="badge badge-pass">PASS</span></td><td>89f6e7d</td><td>LoRA primitive: LoRALinear + apply_lora_to_arc, 40 backbone qkv wraps, 4/4 tests</td></tr><tr><td>T2</td><td><span class="badge badge-pass">PASS</span></td><td>7e16c1a</td><td>ArcEncoderWrapper.__init__ accepts encoder_mode/lora_rank/lora_alpha, branches frozen/lora/unfreeze</td></tr><tr><td>T3</td><td><span class="badge badge-pass">PASS</span></td><td>bd9e3d6</td><td>HOI3RModel.from_pretrained_arc forwards encoder_mode/lora kwargs</td></tr><tr><td>T4</td><td><span class="badge badge-pass">PASS</span></td><td>4740df7</td><td>scripts/hoi3r_stage1_overfit.py adds --encoder-mode/--lora-rank/--lora-alpha + trainable-params diagnostic</td></tr><tr><td>T5</td><td><span class="badge badge-pass">PASS</span></td><td>-</td><td>Single-GPU smoke: LoRA mode prints &#x27;trainable params: 581M/2.1B (27.68%)&#x27;, step 0 loss finite</td></tr><tr><td>T9</td><td><span class="badge badge-pass">PASS</span></td><td>b44837c</td><td>CombinedMotionHead + 2/2 shape/param-count tests</td></tr><tr><td>T10</td><td><span class="badge badge-pass">PASS</span></td><td>9fe127e</td><td>HOI3RModel branches hand_motion+obj_motion vs combined_motion on --motion-topology</td></tr><tr><td>T11</td><td><span class="badge badge-pass">PASS</span></td><td>8852a5c</td><td>--motion-topology CLI flag + E1/E4 job scripts (superseded by Stage 2 path)</td></tr><tr><td>EXT1</td><td><span class="badge badge-pass">PASS</span></td><td>11faede,793ec83,21a799f,05002c9</td><td>Stage 2 variable-T recipe adopted: --clip-len 0, --t-max 16, --fixed-h 378 --fixed-w 504 matching inference H/W</td></tr><tr><td>EXT2</td><td><span class="badge badge-pass">PASS</span></td><td>09bb7a0,f857235</td><td>Scene-loss integration: --scene-loss-weight 0.1 uses single-forward shared feats from ArcEncoderWrapper.return_feats=True; DualDPT + CameraDec on captured feats, LoRA grads flow, bit-identity proven on fg path</td></tr><tr><td>EXT3</td><td><span class="badge badge-pass">PASS</span></td><td>a0783be</td><td>Motion-head cross-attn ctx = image patches only (drops other-frame hand/obj tokens)</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Inference H/W ≠ dataset-native</h3><p>logs/exp1_4rc_dexycb .npz shows view_X_img is (1, 3, 378, 504). 4RC&#x27;s load_images(size=512) preserves AR over DexYCB&#x27;s 480×640 → 378×504 (27×36 patches × 14). Dataset returns 518×518 but that&#x27;s never what 4RC inference actually feeds.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> Stage 2 default --num-epochs broke single-seq overfit</h3><p>Default 200 caps runs at 200 steps (1 clip × 1 batch per epoch with max-manifest-size=1). Stage 1 defaults 10000. Symptom was 2 jobs &#x27;SUCCEEDED&#x27; in 17 min at step 180 instead of 3000.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> set -uo pipefail masks torchrun crash as ACP SUCCEEDED</h3><p>Without -e, a 429-free exit-1 from torchrun lets the trailing `echo &#x27;training complete&#x27;` set bash&#x27;s final exit to 0. ACP records SUCCEEDED for a job that never trained. Always use set -euo pipefail.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> sample_step_shape off-by-one on T range</h3><p>rng.randint(2, t_max + 1) with Python random.Random is inclusive on both ends → yields [2, t_max+1]. With t_max=16 we observed T=17 in history.json. Fixed to rng.randint(2, t_max).</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> Motion-init loader assumes separate topology</h3><p>scripts/hoi3r_stage1_overfit.py:66 called model.hand_motion / model.obj_motion unconditionally. Under --motion-topology combined, those attributes don&#x27;t exist — AttributeError crashed pt-vb73r5xg. Fixed to branch on args.motion_topology and load into combined_motion for the combined path.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Two-forward scene-loss was wasteful</h3><p>The first scene-loss impl (09bb7a0) ran a second vanilla arc._forward() just for depth+camera heads. 2× ViT-G wall-time. Refactor f857235 captures intermediate feats at 4RC&#x27;s hardcoded out_layers=[19,27,33,39] in a single forward; DualDPT consumes them directly. Bit-identity proven on fg path (max_abs_diff=0 on Z/C/T_tok/Q_hand/Q_obj). LoRA grad flows through shared feats.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Workspace quota is shared across clusters</h3><p>workspace_aec2_total is summed across computing-cluster-01e + computing-cluster-01e-02 + a third cluster. Cluster selection targets a specific machine pool but can&#x27;t bypass a 429. A tight poll-and-submit loop with &lt;5s gap wins most races against other teams.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>89f6e7d</td><td>feat</td><td>LoRA primitive for 4RC ViT-G self-attn qkv (40 wraps)</td></tr><tr><td>7e16c1a</td><td>feat</td><td>--encoder-mode switch frozen/lora/unfreeze in ArcEncoderWrapper</td></tr><tr><td>bd9e3d6</td><td>feat</td><td>Plumb encoder_mode/lora kwargs through from_pretrained_arc</td></tr><tr><td>4740df7</td><td>feat</td><td>Stage 1 --encoder-mode/--lora-rank/--lora-alpha CLI flags + param diagnostic</td></tr><tr><td>b44837c</td><td>feat</td><td>CombinedMotionHead — shared-weight hand+obj motion decoder</td></tr><tr><td>9fe127e</td><td>feat</td><td>--motion-topology branch for separate vs combined</td></tr><tr><td>8852a5c</td><td>feat</td><td>--motion-topology CLI flag + E1/E4 ACP job scripts</td></tr><tr><td>7a37090</td><td>feat</td><td>Bump E1/E4 job scripts to batch-size 4</td></tr><tr><td>143efb7</td><td>fix</td><td>stage1: branch motion-init-from-4rc load on --motion-topology</td></tr><tr><td>11faede</td><td>feat</td><td>Stage 2 --encoder-mode/--lora-*/--motion-topology/--t-max flags</td></tr><tr><td>793ec83</td><td>feat</td><td>Stage 2 --fixed-hw flag (skip paper random H/W)</td></tr><tr><td>21a799f</td><td>feat</td><td>Stage 2 split --fixed-hw into separate --fixed-h/--fixed-w</td></tr><tr><td>05002c9</td><td>fix</td><td>sample_step_shape T inclusive upper (off-by-one)</td></tr><tr><td>09bb7a0</td><td>feat</td><td>Stage 2 --scene-loss-weight flag (2-forward version)</td></tr><tr><td>f857235</td><td>refactor</td><td>Scene-loss single-forward shared-feats (drop 2nd backbone pass)</td></tr><tr><td>a0783be</td><td>feat</td><td>Motion cross-attn scope = image patches only (drop other-frame hand/obj tokens)</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Encoder</td><td>ArcEncoderWrapper supports encoder_mode={frozen,lora,unfreeze} and return_feats for scene-head access; 40 backbone qkv wraps under LoRA rank=16 alpha=32</td></tr><tr><td>Motion heads</td><td>Separate (HandMotionHead+ObjMotionHead) or shared-weight (CombinedMotionHead) via --motion-topology; cross-attn context switched to patches-only in a0783be</td></tr><tr><td>Scene path</td><td>Stage 2 supports --scene-loss-weight with single-forward shared feats; DualDPT + CameraDec consume captured feats; frozen scene heads still paper-contract</td></tr><tr><td>Training recipe</td><td>Paper variable-T with --clip-len 0 --t-max 16 --fixed-h 378 --fixed-w 504 bs=4 matches inference input H/W; motion-init-from-4rc transfers 168/172 weights per head</td></tr><tr><td>ACP</td><td>4 jobs active on p1-video-world-model-for-robot-learning; pt-drxe2i2e template cloned for all submissions; set -euo pipefail in all new startup_scripts</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>T7</td><td><span class="badge badge-p0">P0</span></td><td>Evaluate E1 result once pt-6f68ecsh completes; check exit bar (hand&lt;5, obj&lt;3, cd_h&lt;5, cd_o&lt;3.5)</td></tr><tr><td>T8</td><td><span class="badge badge-p0">P0</span></td><td>Phase 1 decision gate based on E1 outcome (PASS/PARTIAL/NO-IMPROVEMENT) — documented in plan §Task 8</td></tr><tr><td>EVAL-4JOBS</td><td><span class="badge badge-p0">P0</span></td><td>Compare 4-job ablation matrix (baseline E1/E4, +scene-loss, +patches-only-ctx); build ablation publish page per reference_publish_html.md</td></tr><tr><td>MEM-FIX</td><td><span class="badge badge-p1">P1</span></td><td>Bump scripts/hoi3r_stage2_train.py default --num-epochs from 200 to 10000 (or require &gt;= num-steps) to prevent silent early exit on single-seq overfit</td></tr><tr><td>EVAL-HW</td><td><span class="badge badge-p2">P2</span></td><td>Current hoi3r_eval.py runs at dataset-native 518×518, but train is at 378×504; align eval H/W or the gap will confound ablation metrics</td></tr><tr><td>LORA-RETIRE-2FWD</td><td><span class="badge badge-p2">P2</span></td><td>Once pt-cwhz5bvz (2-forward) and pt-e9dqtgv7 (single-forward) both complete, 2-forward reference code path in history is obsolete — safe to drop if any compatibility shims remain</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>4 ACP jobs still RUNNING at conclude time; eval + publish pending on their completion (~2 hr each on 1-GPU).</li><li>hoi3r_eval.py currently feeds 518×518 (dataset-native) not 378×504 (train-matched); metrics comparison against pt-9fa652zu is on 518 too but a proper apples-to-apples review should align eval H/W.</li><li>Stage 2 num-epochs default of 200 remains unfixed in the script source; new submissions must pass --num-epochs explicitly. See feedback_stage2_num_epochs.md.</li><li>pt-vb73r5xg (E4 v1) was recorded as SUCCEEDED on ACP but actually crashed — the AttributeError was masked by missing `set -e`. Don&#x27;t trust that job&#x27;s state.</li><li>The motion-init loader reports `transferred=168/172` for both separate and combined paths; 4 weights are entity-specific (e.g., delta_proj + uncert) and don&#x27;t transfer to the shared combined head. Known expected.</li></ul>
+</section>
+
+<section><h2>Memory entries written this session</h2>
+<ul><li><code>feedback_stage2_num_epochs.md</code></li><li><code>feedback_acp_startup_set_e.md</code></li><li><code>reference_arc_encoder_wrapper_feats.md</code></li><li><code>reference_4rc_dexycb_inference_hw.md</code></li><li><code>reference_acp_workspace_quota_shared.md</code></li><li><code>project_motion_grounding_ablation_jobs.md</code></li></ul>
+</section>
+
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-23-session-summary-motion-grounding-lora-ablation-infra.json
+and continue from tasks_pending[0] (T7 [P0]: Evaluate E1 result once pt-6f68ecsh completes; check exit bar (hand&lt;5, obj&lt;3, cd_h&lt;5, cd_o&lt;3.5)).
+Context: branch feat/dcf@a0783be; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-04-23-motion-grounding-ablation-design.md, docs/superpowers/plans/2026-04-23-motion-grounding-ablation-plan.md.</pre></section>
+</div></body></html>
