@@ -1,0 +1,166 @@
+{
+  "date": "2026-04-22",
+  "topic": "magichoi-acp-pipeline-wip",
+  "branch": "feat/benchmark",
+  "head_sha": "d3f9d43",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-benchmark",
+  "spec_path": "docs/superpowers/specs/2026-04-17-mano-convention-finalization-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-17-mano-convention-finalization.md",
+  "goal": "Verify MagicHOI (+ FP+HaWoR) preprocessing → training → evaluation pipeline end-to-end via ACP smoke; iterate until MagicHOI 7-stage training on hold_MC1_ho3d.0 emits it100-export/camera.json.",
+  "status": "wip",
+  "headline_stats": [
+    {
+      "label": "ACP iterations",
+      "value": "19"
+    },
+    {
+      "label": "Env stack",
+      "value": "✅ fully plumbed"
+    },
+    {
+      "label": "Training reach",
+      "value": "❌ still env-blocked"
+    },
+    {
+      "label": "Memory entries written",
+      "value": "5"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "d3f9d43",
+      "type": "feat",
+      "subject": "honour num_smoke_frames in adapters and loaders"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "Phase A",
+      "summary": "MagicHOI HO3D scaffold from GT seg (30 frames, hold_MC1_ho3d)"
+    },
+    {
+      "id": "Phase B",
+      "summary": "hloc + hamer + foundationpose + MagicHOI envs all plumbed; HaWoR lietorch/DROID-SLAM built from source"
+    },
+    {
+      "id": "Phase C'",
+      "summary": "Synthesize MagicHOI colmap tree from HO3D GT + YCB mesh (/tmp/synth_magichoi_colmap.py)"
+    },
+    {
+      "id": "Env Scrub",
+      "summary": "v9 diag pt-iqel30q5 SUCCEEDED with unset PYTHONPATH + strip host torch from LD_LIBRARY_PATH recipe"
+    },
+    {
+      "id": "Dep Cascade",
+      "summary": "11 diag iterations installed pl 2.0.9, nvdiffrast 0.3.3, jaxtyping, tinycudann (from source), nerfacc 0.5.2, open3d, envlight, einops, wandb, taming-transformers, openai-clip"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "Torch restore",
+      "priority": "P0",
+      "summary": "Reinstall torch 2.0.1+cu118 in MagicHOI env — 2.15 GB wheel scp'd to /mnt/afs/haonan/tmp/wheels/ but install not verified yet."
+    },
+    {
+      "id": "Diag pt-mhdc-<ts>",
+      "priority": "P0",
+      "summary": "One more diag iteration: should reach trainer.fit and write it100-export/camera.json."
+    },
+    {
+      "id": "Training→Eval",
+      "priority": "P0",
+      "summary": "Once Phase D produces a last.ckpt + model.obj, adapter parses → predictions.npz → benchmark eval."
+    },
+    {
+      "id": "FP+HaWoR smoke",
+      "priority": "P1",
+      "summary": "Retry pt-yfkt8fg0 on HO3D after HaWoR stack built. adapter image_dir fix at benchmark/adapters/fp_hawor/fp_hawor_ho3d.py:260 still uncommitted."
+    },
+    {
+      "id": "droid.pth + metric_depth weights",
+      "priority": "P1",
+      "summary": "HaWoR demo.py runtime needs droid.pth + metric_depth_vit_large_800k.pth — Google-Drive-gated, user must supply."
+    },
+    {
+      "id": "Commit worktree changes",
+      "priority": "P2",
+      "summary": "Stage + commit: benchmark/adapters/fp_hawor/fp_hawor_ho3d.py (/rgb fix), /tmp/synth_magichoi_colmap.py → benchmark/preprocessing/, /tmp/acp_magichoi_diag_startup.sh → scripts/acp/."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fix",
+      "title": "ACP image torch 2.3.0 pollutes conda env cu118 via LD_LIBRARY_PATH",
+      "body": "ACP base image seeds LD_LIBRARY_PATH with /usr/local/lib/python3.10/dist-packages/torch/lib. Conda env cu118 python 3.9 loads host libtorch (wrong ABI) at import torch → segfault in torch::onnx::initONNXBindings. Fix: unset PYTHONPATH PYTHONHOME LD_PRELOAD + strip dist-packages/site-packages from LD_LIBRARY_PATH before conda activate. Confirmed after 9 ACP iterations (v3..v8 segfaulted, v9 SUCCEEDED)."
+    },
+    {
+      "badge": "fix",
+      "title": "pytorch-lightning 2.3.0 requires torch 2.1+ (LRScheduler API)",
+      "body": "MagicHOI's requirements.txt pins pytorch-lightning==2.3.0 but the env's torch 2.0.1+cu118 doesn't have torch.optim.lr_scheduler.LRScheduler (added in torch 2.1). Downgrade pl to 2.0.9 + lightning-utilities 0.9.0 + lightning-fabric 2.0.9 + torchmetrics<1.0 — and install all with --no-deps to stop pl pulling torch 2.8."
+    },
+    {
+      "badge": "fix",
+      "title": "Synthesized MagicHOI colmap tree from HO3D GT bypasses COLMAP entirely",
+      "body": "HO3D's per-frame GT (K, obj_rot, obj_trans, hand_pose, hand_beta, hand_transl) + YCB canonical mesh is sufficient to construct every file MagicHOI's training reads from the colmap_<seq>.0/ tree: o2w_normalized_aligned.npy, fused.ply / fused_normalized.ply / sparse_points_normalized{_aligned,}.ply, HO3D/cameras/*.json, intrinsic.npy, poses.npy, mat_normalized.npy + hold_fit.slerp.npy + j2d.full.npy + v3d.npy. Replicate MagicHOI's center_and_normalize_point_cloud (rot=I, scale-to-unit-cube). /tmp/synth_magichoi_colmap.py handles it."
+    },
+    {
+      "badge": "finding",
+      "title": "ACP container rootfs + tmpfs are ephemeral; only /mnt/afs persists",
+      "body": "Each ACP job start wipes apt-installed packages (libgl1, colmap, libboost-*, libegl1, libosmesa6) and /tmp. Conda envs under /mnt/afs/haonan/miniconda3/envs/ and any path under /mnt/afs/ persists. Every startup script MUST reinstall apt deps + log to /mnt/afs/haonan/tmp/ (not /tmp/)."
+    },
+    {
+      "badge": "finding",
+      "title": "Host-download stall for cu118 torch wheel",
+      "body": "wget of torch-2.0.1+cu118 (2.15 GB) from pytorch.org from the debug container stalls at ~1.65 GB (80%) indefinitely. Mac curl completes in 2-5 min; scp to /mnt/afs/haonan/tmp/wheels/ is reliable. Document: feedback_acp_wheel_scp.md."
+    },
+    {
+      "badge": "finding",
+      "title": "HaWoR demo.py unconditionally imports DROID-SLAM / lietorch",
+      "body": "Earlier memory claimed SLAM was skippable for static cameras — false. demo.py imports hawor_slam at line 8 before any conditional branching. Subagent ae55fa415a5aa4fbe built lietorch 0.3 from source + DROID-SLAM in-place + torch_scatter 2.1.1+pt113cu117 + mmcv 1.6.0 pure-python. Recipe now in reference_hawor_env_quirks.md."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Phase A — HO3D data scaffold",
+      "state": "✅ committed on feat/benchmark; 30 frames at data/hold_MC1_ho3d/processed/"
+    },
+    {
+      "aspect": "Phase B — conda envs",
+      "state": "✅ MagicHOI + hloc + hamer + foundationpose + hawor all importable (cu117/118 nvcc inside each)"
+    },
+    {
+      "aspect": "Phase C' — synthesized colmap tree",
+      "state": "✅ written via /tmp/synth_magichoi_colmap.py; script not yet committed to worktree"
+    },
+    {
+      "aspect": "Phase D — MagicHOI 7-stage training on ACP",
+      "state": "❌ BLOCKED: torch 2.0.1+cu118 mid-restore in MagicHOI env; pl+nvdiffrast+tcnn chain all installed"
+    },
+    {
+      "aspect": "Phase E — benchmark eval dispatch",
+      "state": "✅ scaffold verified (raises proper FileNotFoundError when upstream yields nothing)"
+    },
+    {
+      "aspect": "FP+HaWoR branch",
+      "state": "⚠️ adapter /rgb fix uncommitted; HaWoR stack ready but droid.pth + metric_depth weights not staged"
+    }
+  ],
+  "memory_entries_written": [
+    "reference_acp_env_scrub_for_conda.md",
+    "project_magichoi_pipeline_wip.md",
+    "reference_magichoi_python_deps.md",
+    "feedback_acp_wheel_scp.md",
+    "reference_magichoi_run_py_max_steps.md"
+  ],
+  "caveats": [
+    "SSH ports cycle unpredictably — 20161 primary / 21161 fallback as of session end (2026-04-22 ~11:00 UTC). Old 46681/46682 dead.",
+    "Synthesized colmap tree is smoke-grade: identity PCA rotation, zero-stub depth maps, GL→CV coord conversion unverified against MagicHOI's internal alignment steps.",
+    "Uncommitted worktree changes at d3f9d43: fp_hawor_ho3d.py (/rgb fix), synth script, diag startup script — stage before next session.",
+    "FP+HaWoR deferred: adapter fix done but ACP retry never submitted; also needs droid.pth + metric_depth_vit_large weights from Google Drive.",
+    "MagicHOI env's torchvision is currently 0.8.2 or gone after torch uninstall; will need reinstall alongside torch 2.0.1+cu118 — wheels staged at /mnt/afs/haonan/tmp/wheels/.",
+    "Every new ACP startup_script must source /mnt/afs/haonan/miniconda3/etc/profile.d/conda.sh + apt install libgl1+libglib2.0-0+libsm6+libxext6+libegl1+libosmesa6+colmap (rootfs wipes per-job)."
+  ],
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-22-session-summary-magichoi-acp-pipeline-wip.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-22-session-summary-magichoi-acp-pipeline-wip.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-22-session-summary-magichoi-acp-pipeline-wip.json\nand continue from tasks_pending[0] (Torch restore [P0]: Reinstall torch 2.0.1+cu118 in MagicHOI env — 2.15 GB wheel scp'd to /mnt/afs/haonan/tmp/wheels/ but install not verified yet.).\nContext: branch feat/benchmark@d3f9d43; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-benchmark.\nAlso read: docs/superpowers/specs/2026-04-17-mano-convention-finalization-design.md, docs/superpowers/plans/2026-04-17-mano-convention-finalization.md."
+}
