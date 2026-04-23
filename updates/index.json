@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-23 · Fix handedness latent bug, align HandMotion/ObjMotion with 4RC, quantify motion-init value, unlock bs=8 for Stage 2.",
+    "date": "2026-04-23",
+    "status": "wip",
+    "summary": "Fix handedness latent bug, align HandMotion/ObjMotion with 4RC, quantify motion-init value, unlock bs=8 for Stage 2.",
+    "path": "updates/2026-04-23-session-summary-feat-dcf-ablation-archmatch.html",
+    "file": "updates/2026-04-23-session-summary-feat-dcf-ablation-archmatch.html",
+    "sidecar": "updates/2026-04-23-session-summary-feat-dcf-ablation-archmatch.json"
+  },
+  {
     "title": "2026-04-23 · Offline renderer v3 — RGB-free overlays + interactive Plotly",
     "date": "2026-04-23",
     "status": "finding",
