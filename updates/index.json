@@ -1,9 +1,9 @@
 [
   {
-    "title": "2026-04-24 · Motion-Grounding 4-Way Ablation (E1/E4 × scene-loss × patches-only)",
+    "title": "2026-04-24 · Motion-Grounding 4-Way Ablation (baseline + E1/E4 × scene-loss × patches-only) — full-sequence 378×504",
     "date": "2026-04-24",
     "status": "final",
-    "summary": "All 4 cells miss the exit bar; E1 + scene-loss wins (eval 57.9/32.2 mm) but phase-1 decision = NO-IMPROVEMENT vs frozen baseline.",
+    "summary": "Full-sequence eval at training-matched 378×504 collapses the prior gap ~6×. E1+scene-loss wins (train 8.3/3.9 · eval 12.4/4.8 mm). Phase-1 = PARTIAL.",
     "path": "updates/2026-04-24-motion-grounding-4way-ablation.html",
     "file": "updates/2026-04-24-motion-grounding-4way-ablation.html"
   },
