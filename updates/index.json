@@ -1,5 +1,13 @@
 [
   {
+    "title": "2026-04-24 · Motion-Grounding 4-Way Ablation (E1/E4 × scene-loss × patches-only)",
+    "date": "2026-04-24",
+    "status": "final",
+    "summary": "All 4 cells miss the exit bar; E1 + scene-loss wins (eval 57.9/32.2 mm) but phase-1 decision = NO-IMPROVEMENT vs frozen baseline.",
+    "path": "updates/2026-04-24-motion-grounding-4way-ablation.html",
+    "file": "updates/2026-04-24-motion-grounding-4way-ablation.html"
+  },
+  {
     "title": "2026-04-23 · Land the motion-grounding-ablation plan (LoRA + combined motion topology) and run E1/E4 + scene-loss + patches-only-ctx ablations on DexYCB subject-01 single-seq overfit",
     "date": "2026-04-23",
     "status": "wip",
