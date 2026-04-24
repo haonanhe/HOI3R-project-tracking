@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-24 · Eval 4 motion-grounding LoRA ablation cells at training-matched 378x504 across the full 63-frame tracked range; extend with pt-drxe2i2e/pt-bbq2n8ni/pt-vchlwhid motion-init ablation cells; publish a single 7-cell comparison page with interactive Plotly (gray GT overlay) and per-frame line charts.",
+    "date": "2026-04-24",
+    "status": "finding",
+    "summary": "Eval 4 motion-grounding LoRA ablation cells at training-matched 378x504 across the full 63-frame tracked range; extend with pt-drxe2i2e/pt-bbq2n8ni/pt-vchlwhid motion-init ablation cells; publish a single 7-cell comparison page with interactive Plotly (gray GT overlay) and per-frame line charts.",
+    "path": "updates/2026-04-24-session-summary-full-sequence-ablation-eval.html",
+    "file": "updates/2026-04-24-session-summary-full-sequence-ablation-eval.html",
+    "sidecar": "updates/2026-04-24-session-summary-full-sequence-ablation-eval.json"
+  },
+  {
     "title": "2026-04-24 · Motion-Grounding 7-Cell Ablation — full-sequence 378×504 eval, baseline vs LoRA vs init-ablation",
     "date": "2026-04-24",
     "status": "final",

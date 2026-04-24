@@ -1,0 +1,159 @@
+{
+  "date": "2026-04-24",
+  "topic": "full-sequence-ablation-eval",
+  "branch": "feat/dcf",
+  "head_sha": "94c0905",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "plan_path": "docs/superpowers/plans/2026-04-23-motion-grounding-ablation-plan.md",
+  "spec_path": "docs/superpowers/specs/2026-04-23-motion-grounding-ablation-design.md",
+  "goal": "Eval 4 motion-grounding LoRA ablation cells at training-matched 378x504 across the full 63-frame tracked range; extend with pt-drxe2i2e/pt-bbq2n8ni/pt-vchlwhid motion-init ablation cells; publish a single 7-cell comparison page with interactive Plotly (gray GT overlay) and per-frame line charts.",
+  "status": "finding",
+  "headline_stats": [
+    {
+      "label": "Final verdict",
+      "value": "NO-IMPROVEMENT"
+    },
+    {
+      "label": "Cells evaluated at 378×504",
+      "value": "5 of 8"
+    },
+    {
+      "label": "Frozen baseline (pt-9fa652zu)",
+      "value": "5.08 / 3.57 mm (train)"
+    },
+    {
+      "label": "Best LoRA cell (E1+scene)",
+      "value": "8.31 / 3.93 mm train · 12.4 / 4.8 mm eval"
+    },
+    {
+      "label": "Published page",
+      "value": "updates/2026-04-24-motion-grounding-4way-ablation.html"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "94c0905",
+      "type": "feat",
+      "subject": "feat(eval,render): --full-sequence/--fixed-hw eval, Plotly GT overlay, baseline retrain script"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "EVAL-ALL",
+      "sha": "94c0905",
+      "summary": "Eval 4 LoRA cells + pt-drxe2i2e at --full-sequence --fixed-h 378 --fixed-w 504 (63 frames at 4RC inference H/W)"
+    },
+    {
+      "id": "SCENE-REGEN",
+      "sha": "local",
+      "summary": "Regenerate subject-01 scene npz to 63 frames by calling arc.dust3r.inference_multiview.inference directly (bypasses 30-frame cap in 4RC inference.py main)"
+    },
+    {
+      "id": "GT-OVERLAY",
+      "sha": "94c0905",
+      "summary": "Plotly v3 renderer overlays pred['hand_traj_gt']/pred['object_traj_gt'] in gray (rgba 120/160 @ 0.55 alpha) on every frame"
+    },
+    {
+      "id": "PERFRAME",
+      "sha": "local",
+      "summary": "Per-frame hand/obj L2 line charts added for 5 cells (4 LoRA + pt-drxe2i2e), log-y to accommodate pt-drxe2i2e cl-mismatch outlier"
+    },
+    {
+      "id": "DIR-FIX",
+      "sha": "local",
+      "summary": "Corrected baseline dir mapping: pt-9fa652zu = logs/hoi3r_stage1_overfit (DDP 2880 steps, 5.08/3.57 best-of-last-20), NOT logs/stage1_r3_cached_3k"
+    },
+    {
+      "id": "PUBLISH",
+      "sha": "856d2bbb",
+      "summary": "Single Git Data API commit: 18 assets (12 MP4 + 4 Plotly HTML + 1 updated HTML + index.json), ~60 MB"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "T-BASELINE-RETRAIN",
+      "priority": "P0",
+      "summary": "Retrain pt-9fa652zu-equivalent at current HEAD via scripts/acp_jobs/motion_grounding/BASELINE_frozen_separate.sh so baseline full-sequence eval + v3 render can land on the page (currently blocked: state-dict key drift from pre-58532a2 motion-head rewrite). Claude's HMAC credentials cannot submit to p1 workspace — submit from user console."
+    },
+    {
+      "id": "T-ARMS-A-B-RETRAIN",
+      "priority": "P1",
+      "summary": "Same as above for pt-bbq2n8ni (arm A random-init) and pt-vchlwhid (arm B 4RC-init) if the init-ablation comparison matters at current HEAD. Lower priority because the motion-init effect was already characterized at the pre-rewrite architecture."
+    },
+    {
+      "id": "T-PHASE2A-NEW",
+      "priority": "P2",
+      "summary": "If continuing ablation: try scene-loss alone on the FROZEN baseline (without LoRA). Current ablation shows scene-loss only partially compensates for LoRA-added capacity; test whether it helps a model that is already at 5.08/3.57."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fix",
+      "title": "H/W train/eval mismatch was the dominant confound (6× gap)",
+      "body": "Morning eval at dataloader-native 518×518 on a 16-frame clip produced hand 57-109 mm / obj 32-110 mm for the 4 LoRA cells. Re-running with --full-sequence --fixed-h 378 --fixed-w 504 (matching 4RC's load_images(size=512, patch_size=14) rectangular crop of DexYCB 480×640) collapsed everything to 12-18 hand / 5-9 obj mm. hoi3r_eval.py now supports these flags natively."
+    },
+    {
+      "badge": "fail",
+      "title": "All LoRA cells regress vs the frozen baseline on training metrics",
+      "body": "Frozen baseline pt-9fa652zu reaches best-of-last-20 hand 5.08 / obj 3.57 mm. Every LoRA cell is worse: E1 8.72/5.00, E4 9.66/5.57, E1+scene 8.31/3.93, E1+patchctx 9.17/4.62. The ViT-G wasn't a bottleneck at this regime; LoRA capacity adds memorization noise. Phase-1 decision = NO-IMPROVEMENT."
+    },
+    {
+      "badge": "finding",
+      "title": "Scene-loss is the only LoRA intervention that partially recovers",
+      "body": "Within the LoRA family, E1 + --scene-loss-weight 0.1 (single-forward shared feats) beats E1 by 16% on eval hand and 14% on eval obj (12.4/4.8 vs 14.7/5.6). Obj 3.93 on train is the closest any LoRA cell gets to the baseline's 3.57. Aux depth+camera forces LoRA into scene-geometry preservation rather than motion-only shortcut."
+    },
+    {
+      "badge": "fail",
+      "title": "pt-9fa652zu checkpoint + arms A/B checkpoints don't load into current HEAD",
+      "body": "Three checkpoints predate the 2026-04-23 motion-head rewrite (commit 58532a2) and the 2026-04-22 handedness two-slot fix (commit 7cdd0f5a). State-dict keys don't match (old self_attn/cross_attn/adaln.proj/mlp vs new cross_block/self_block/attn.toq-tok-tov/LayerScale). Fresh retrain at current HEAD is the only unblock — BASELINE_frozen_separate.sh staged."
+    },
+    {
+      "badge": "finding",
+      "title": "pt-drxe2i2e cl=4-train eval at cl=63 produces 40× regression (6.2 → 432 mm obj)",
+      "body": "archmatch-bs8 was trained at a fixed clip length of 4 frames. Evaluated at the full 63-frame sequence it degrades ~40× on obj (best-of-last-20 train 6.21 → full-seq eval 431.63). Confirms memory project_cl_train_eval_mismatch: train cl determines inference cl. The 4 LoRA cells were trained at variable T ∈ [2, 16] so they generalize to 63 frames without this failure."
+    },
+    {
+      "badge": "fix",
+      "title": "Plotly v3 renderer now overlays pred + GT on every frame",
+      "body": "hoi3r_offline_render.py v3 mode now reads predictions.pt's hand_traj_gt / object_traj_gt and emits gray (rgba 120/160 @ 0.55 alpha) scatter traces underneath the colored pred points on every slider frame. Reveals pred-vs-GT drift per-frame without a separate comparison video. Skips silently if GT keys are absent."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "scripts/hoi3r_eval.py",
+      "state": "Supports --encoder-mode/--lora-{rank,alpha}/--motion-topology + --full-sequence --fixed-h --fixed-w. Committed in 94c0905."
+    },
+    {
+      "aspect": "scripts/hoi3r_offline_render.py",
+      "state": "v3 Plotly overlays pred['hand_traj_gt'] / pred['object_traj_gt'] in gray by default (skip if absent). Committed in 94c0905."
+    },
+    {
+      "aspect": "scripts/acp_jobs/motion_grounding/BASELINE_frozen_separate.sh",
+      "state": "Staged (executable, committed in 94c0905). ACP submission blocked on HMAC scope; user must submit from console."
+    },
+    {
+      "aspect": "logs/exp1_4rc_dexycb/...63frames.npz",
+      "state": "63-frame scene npz cached on remote for subject-01 seq-01; reuse across future full-seq evals on this sequence."
+    },
+    {
+      "aspect": "Published ablation page",
+      "state": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-24-motion-grounding-4way-ablation.html — 7 cells, commit 856d2bbb. updates/index.json restored after an accidental wipe mid-session (commit 09a707cf)."
+    }
+  ],
+  "memory_entries_written": [
+    "project_motion_grounding_ablation_results.md",
+    "feedback_acp_hmac_permission_scope.md",
+    "reference_hoi3r_eval_fullseq.md",
+    "feedback_check_dir_mapping_before_claiming_memory_wrong.md"
+  ],
+  "caveats": [
+    "Baseline full-sequence eval is BLOCKED until a retrain at current HEAD. Training numbers (5.08/3.57) come from logs/hoi3r_stage1_overfit/train.log; checkpoint was not saved and cannot be reconstructed.",
+    "pt-drxe2i2e's 375/432 mm full-seq eval is not a real regression — it's a cl=4 train / cl=63 eval distribution shift. Don't compare it against the LoRA cells' numbers as a direct capability measure.",
+    "The ACP HMAC credentials stored in macOS Keychain do NOT have workspace.trainingJob.* permission on p1-video-world-model-for-robot-learning. User must submit ACP training jobs from their console; Claude can only prepare scripts.",
+    "updates/index.json briefly lost its 2 pre-today entries during a rapid-fire multi-publish; restored manually (commit 09a707cf). Publisher's _fetch_index silently returned [] on a Contents-API staleness window — consider adding a retry in future.",
+    "Prior memory project_4rc_migration_phase_bh_done.md is CORRECT about pt-9fa652zu — 5.88/3.57 at step 2860 is in logs/hoi3r_stage1_overfit/train.log. An earlier subagent report claimed it was wrong based on probing the wrong directory (logs/stage1_r3_cached_3k, a different cached-heads run)."
+  ],
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-24-session-summary-full-sequence-ablation-eval.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-24-session-summary-full-sequence-ablation-eval.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-24-session-summary-full-sequence-ablation-eval.json\nand continue from tasks_pending[0] (T-BASELINE-RETRAIN [P0]: Retrain pt-9fa652zu-equivalent at current HEAD via scripts/acp_jobs/motion_grounding/BASELINE_frozen_separate.sh so baseline full-sequence eval + v3 render can land on the page (currently blocked: state-dict key drift from pre-58532a2 motion-head rewrite). Claude's HMAC credentials cannot submit to p1 workspace — submit from user console.).\nContext: branch feat/dcf@94c0905; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-04-23-motion-grounding-ablation-design.md, docs/superpowers/plans/2026-04-23-motion-grounding-ablation-plan.md."
+}
