@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-26 · trajectory-head-v1-design</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Trajectory Head V1 Design</h1>
+  <div class="meta">2026-04-26 · <code>feat/dcf</code> · <code>@d34ffe2</code> · spec: <code>docs/superpowers/specs/2026-04-26-trajectory-head-v1-design.md</code> · plan: <code>docs/superpowers/plans/2026-04-26-trajectory-head-v1.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Brainstorm + spec + plan + start implementing trajectory-head v1 (single-Φ + object Procrustes + 21-joint hand, replacing the 4-head topology)</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">1/13</div><div class="label">Tasks done</div></div><div class="stat"><div class="val">written, audit-clean (34/34 decisions captured)</div><div class="label">Spec</div></div><div class="stat"><div class="val">written, 13 tasks, ~60 bite-sized steps</div><div class="label">Plan</div></div><div class="stat"><div class="val">d34ffe2</div><div class="label">Branch HEAD</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>T1</td><td><span class="badge badge-pass">PASS</span></td><td>d34ffe2</td><td>Extract _MotionLayer into hoi3r/models/heads/_layer.py — pure refactor, test passes, doc-fix follow-up commit restores 4RC provenance comments</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Discussion notes reframed v1 as a video-conditioned canonical 4D correspondence field</h3><p>User&#x27;s hoi3r_4rc_dcf_discussion_notes.md argues the 4-head HandGeom/ObjGeom/HandMotion/ObjMotion topology is the wrong mathematical object — it can learn mutually inconsistent {Φ(q,t), Φ(q,τ), Δ(q,t→τ)}. Single-Φ Φ(q,t) makes Δ derived: Δ(q,t→τ) := Φ(q,τ) − Φ(q,t), so cycle/transport composition holds by construction. This explains the cl=4-train→cl=16-eval 10× regression and the motion-grounding null result. v1 commits to the doc&#x27;s §22 minimal scope (single-Φ + cycle + object Procrustes) plus encoder LoRA + scene loss. Hand LBS+residual deferred to v2.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Pose-query mechanism = repurposed motion head</h3><p>Discovered that the legacy geom heads (HandGeomHead, ObjGeomHead) are tiny per-token MLPs with NO cross-attention to image features and NO time conditioning. The only mechanism for a query to look at frame-t image features is the motion head&#x27;s CrossBlock + AdaLNBlock. So &#x27;single-Φ pose-query&#x27; isn&#x27;t a new architecture — it&#x27;s a renamed motion head reinterpreted as per-frame Φ(q,t) decoder, with context = frame-t patches and time-cond = frame-t time token (no source/target asymmetry). AdaLN time-conditioning is inherited; nothing new to design.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Hand 21 joints, not vertex samples</h3><p>Predicting 128 free xyz canonical samples per hand slot is intractable without articulated structure. v1 reduces hand identity space to 21 MANO joints — 6× smaller, well-supervised by GT, eligible for 2D-projection auxiliary loss. Vertex recovery is post-hoc via MANO joint-fit at eval (LBFGS over θ with β frozen). Lever-d (commit 269531b) already plumbed 21 joint GPS tokens; v1 elevates them from auxiliary to primary.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> PyTorch3D unavailable in human3r env</h3><p>Spec recommended pytorch3d.ops.corresponding_points_alignment for weighted Kabsch; verified it&#x27;s not installed. Plan rolls our own via torch.linalg.svd (recipe in Task 4 of plan). Reference impl at stream3r/loss/dcf_losses.py:199- (unweighted).</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Object branch losses lock to exactly 2 terms</h3><p>L_final (Procrustes-projected output vs GT, weight 1.0) + L_raw_nll (per-point heteroscedastic NLL on noisy correspondences vs GT, weight 0.1). σ does double duty: NLL-supervised AND used as Procrustes weight (1/σ²). Symmetric YCB objects filtered (quotient loss deferred to v1.1). No explicit rotation or translation loss — point-on-surface loss already pins them.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>2c636ea</td><td>refactor</td><td>extract _MotionLayer into shared _layer module</td></tr><tr><td>d34ffe2</td><td>docs</td><td>restore _MotionLayer class docstring + 4RC source refs</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Foreground heads (legacy)</td><td>4-head topology stable; HandMotion/ObjMotion already mirror 4RC MotionDecoder (commit 58532a2); pt-ivn0p7l0 baseline runs on this</td></tr><tr><td>Foreground heads (v1)</td><td>_MotionLayer extracted to _layer.py (T1 done); HandTrajectoryHead/ObjTrajectoryHead/Procrustes wrapper pending T2-T4</td></tr><tr><td>Encoder + scene heads</td><td>v1 will use LoRA(qkv,r=8,α=16) + scene heads unfrozen @ 0.1× LR + scene loss (depth 0.1, cam 0.05). Differs from pt-ivn0p7l0&#x27;s frozen baseline.</td></tr><tr><td>Hand identity space</td><td>v1 reduces from 128 canonical samples to 21 MANO joints; vertices via post-fit MANO at eval. Lever-d joint plumbing reused.</td></tr><tr><td>Object identity space</td><td>Unchanged — N_O canonical samples. Symmetric YCB filtered; quotient loss deferred to v1.1.</td></tr><tr><td>Cycle/transport</td><td>Structurally enforced by single-Φ. λ_cycle=0.01 kept as bf16-precision insurance.</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>T2</td><td><span class="badge badge-p0">P0</span></td><td>HandTrajectoryHead — single-Φ joint output, random init via DiT identity-at-init</td></tr><tr><td>T3</td><td><span class="badge badge-p0">P0</span></td><td>ObjTrajectoryHead — separate-weights subclass of HandTrajectoryHead</td></tr><tr><td>T4</td><td><span class="badge badge-p0">P0</span></td><td>Differentiable weighted Kabsch (SVD-based; PyTorch3D unavailable)</td></tr><tr><td>T5</td><td><span class="badge badge-p0">P0</span></td><td>Trajectory v1 loss module — joint 3D NLL + 2D projection + obj final + obj raw NLL + cycle</td></tr><tr><td>T6</td><td><span class="badge badge-p1">P1</span></td><td>Symmetric YCB filter (master_chef_can / tomato_soup_can / mustard_bottle / banana initial)</td></tr><tr><td>T7</td><td><span class="badge badge-p0">P0</span></td><td>Wire trajectory heads into HOI3RModel — head_mode dispatch, query restriction, _forward_trajectory</td></tr><tr><td>T8</td><td><span class="badge badge-p0">P0</span></td><td>Training script — CLI flags, trajectory loss assembly, manifest filter</td></tr><tr><td>T9</td><td><span class="badge badge-p0">P0</span></td><td>Eval script + MANO joint-fit (LBFGS, β frozen)</td></tr><tr><td>T10</td><td><span class="badge badge-p0">P0</span></td><td>Single-GPU memprobe gate (bs=8 + LoRA + scene loss + T=16 must fit ≥10 GiB headroom)</td></tr><tr><td>T11</td><td><span class="badge badge-p0">P0</span></td><td>5-frame smoke training run on debug container</td></tr><tr><td>T12</td><td><span class="badge badge-p0">P0</span></td><td>ACP launcher + submission gate (8×H100, p1 workspace, RESERVED, backoff_limit=0)</td></tr><tr><td>T13</td><td><span class="badge badge-p2">P2</span></td><td>Cleanup legacy heads — gated on v1 ACP run ≥1000 steps</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>v1 hand head predicts 21 joints, NOT vertices. Benchmark continuity for MPVPE is via post-fit MANO joint-fit at eval. Pure vertex prediction is v2&#x27;s LBS+residual push.</li><li>Symmetric YCB filter list is empirical — initial set (master_chef_can, tomato_soup_can, mustard_bottle, banana) may need refinement once per-object Procrustes residual histograms are run on the manifest.</li><li>Discussion-notes §5 information-gain diagnostic (full-video vs single-frame ablation) deferred to a parallel side experiment post-v1, not skipped permanently.</li><li>ACP HMAC submission perms are scoped out (memory feedback_acp_hmac_permission_scope.md); when v1 is ready, surface the launcher to user for submission rather than retry HMAC.</li><li>Plan task 13 (delete legacy heads) is gated on v1 ACP run ≥1000 steps without crash — do not execute pre-emptively or pt-ivn0p7l0 comparison eval becomes hard to re-run.</li></ul>
+</section>
+
+<section><h2>Memory entries written this session</h2>
+<ul><li><code>project_trajectory_head_v1_status.md</code></li><li><code>reference_pytorch3d_not_installed.md</code></li></ul>
+</section>
+
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-trajectory-head-v1-design.json
+and continue from tasks_pending[0] (T2 [P0]: HandTrajectoryHead — single-Φ joint output, random init via DiT identity-at-init).
+Context: branch feat/dcf@d34ffe2; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-04-26-trajectory-head-v1-design.md, docs/superpowers/plans/2026-04-26-trajectory-head-v1.md.</pre></section>
+</div></body></html>

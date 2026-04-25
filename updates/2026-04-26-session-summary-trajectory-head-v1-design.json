@@ -1,0 +1,177 @@
+{
+  "date": "2026-04-26",
+  "topic": "trajectory-head-v1-design",
+  "branch": "feat/dcf",
+  "head_sha": "d34ffe2",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-26-trajectory-head-v1-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-26-trajectory-head-v1.md",
+  "goal": "Brainstorm + spec + plan + start implementing trajectory-head v1 (single-Φ + object Procrustes + 21-joint hand, replacing the 4-head topology)",
+  "status": "wip",
+  "headline_stats": [
+    {
+      "label": "Tasks done",
+      "value": "1/13"
+    },
+    {
+      "label": "Spec",
+      "value": "written, audit-clean (34/34 decisions captured)"
+    },
+    {
+      "label": "Plan",
+      "value": "written, 13 tasks, ~60 bite-sized steps"
+    },
+    {
+      "label": "Branch HEAD",
+      "value": "d34ffe2"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "2c636ea",
+      "type": "refactor",
+      "subject": "extract _MotionLayer into shared _layer module"
+    },
+    {
+      "sha": "d34ffe2",
+      "type": "docs",
+      "subject": "restore _MotionLayer class docstring + 4RC source refs"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "T1",
+      "sha": "d34ffe2",
+      "summary": "Extract _MotionLayer into hoi3r/models/heads/_layer.py — pure refactor, test passes, doc-fix follow-up commit restores 4RC provenance comments"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "T2",
+      "priority": "P0",
+      "summary": "HandTrajectoryHead — single-Φ joint output, random init via DiT identity-at-init"
+    },
+    {
+      "id": "T3",
+      "priority": "P0",
+      "summary": "ObjTrajectoryHead — separate-weights subclass of HandTrajectoryHead"
+    },
+    {
+      "id": "T4",
+      "priority": "P0",
+      "summary": "Differentiable weighted Kabsch (SVD-based; PyTorch3D unavailable)"
+    },
+    {
+      "id": "T5",
+      "priority": "P0",
+      "summary": "Trajectory v1 loss module — joint 3D NLL + 2D projection + obj final + obj raw NLL + cycle"
+    },
+    {
+      "id": "T6",
+      "priority": "P1",
+      "summary": "Symmetric YCB filter (master_chef_can / tomato_soup_can / mustard_bottle / banana initial)"
+    },
+    {
+      "id": "T7",
+      "priority": "P0",
+      "summary": "Wire trajectory heads into HOI3RModel — head_mode dispatch, query restriction, _forward_trajectory"
+    },
+    {
+      "id": "T8",
+      "priority": "P0",
+      "summary": "Training script — CLI flags, trajectory loss assembly, manifest filter"
+    },
+    {
+      "id": "T9",
+      "priority": "P0",
+      "summary": "Eval script + MANO joint-fit (LBFGS, β frozen)"
+    },
+    {
+      "id": "T10",
+      "priority": "P0",
+      "summary": "Single-GPU memprobe gate (bs=8 + LoRA + scene loss + T=16 must fit ≥10 GiB headroom)"
+    },
+    {
+      "id": "T11",
+      "priority": "P0",
+      "summary": "5-frame smoke training run on debug container"
+    },
+    {
+      "id": "T12",
+      "priority": "P0",
+      "summary": "ACP launcher + submission gate (8×H100, p1 workspace, RESERVED, backoff_limit=0)"
+    },
+    {
+      "id": "T13",
+      "priority": "P2",
+      "summary": "Cleanup legacy heads — gated on v1 ACP run ≥1000 steps"
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "Discussion notes reframed v1 as a video-conditioned canonical 4D correspondence field",
+      "body": "User's hoi3r_4rc_dcf_discussion_notes.md argues the 4-head HandGeom/ObjGeom/HandMotion/ObjMotion topology is the wrong mathematical object — it can learn mutually inconsistent {Φ(q,t), Φ(q,τ), Δ(q,t→τ)}. Single-Φ Φ(q,t) makes Δ derived: Δ(q,t→τ) := Φ(q,τ) − Φ(q,t), so cycle/transport composition holds by construction. This explains the cl=4-train→cl=16-eval 10× regression and the motion-grounding null result. v1 commits to the doc's §22 minimal scope (single-Φ + cycle + object Procrustes) plus encoder LoRA + scene loss. Hand LBS+residual deferred to v2."
+    },
+    {
+      "badge": "finding",
+      "title": "Pose-query mechanism = repurposed motion head",
+      "body": "Discovered that the legacy geom heads (HandGeomHead, ObjGeomHead) are tiny per-token MLPs with NO cross-attention to image features and NO time conditioning. The only mechanism for a query to look at frame-t image features is the motion head's CrossBlock + AdaLNBlock. So 'single-Φ pose-query' isn't a new architecture — it's a renamed motion head reinterpreted as per-frame Φ(q,t) decoder, with context = frame-t patches and time-cond = frame-t time token (no source/target asymmetry). AdaLN time-conditioning is inherited; nothing new to design."
+    },
+    {
+      "badge": "finding",
+      "title": "Hand 21 joints, not vertex samples",
+      "body": "Predicting 128 free xyz canonical samples per hand slot is intractable without articulated structure. v1 reduces hand identity space to 21 MANO joints — 6× smaller, well-supervised by GT, eligible for 2D-projection auxiliary loss. Vertex recovery is post-hoc via MANO joint-fit at eval (LBFGS over θ with β frozen). Lever-d (commit 269531b) already plumbed 21 joint GPS tokens; v1 elevates them from auxiliary to primary."
+    },
+    {
+      "badge": "fix",
+      "title": "PyTorch3D unavailable in human3r env",
+      "body": "Spec recommended pytorch3d.ops.corresponding_points_alignment for weighted Kabsch; verified it's not installed. Plan rolls our own via torch.linalg.svd (recipe in Task 4 of plan). Reference impl at stream3r/loss/dcf_losses.py:199- (unweighted)."
+    },
+    {
+      "badge": "finding",
+      "title": "Object branch losses lock to exactly 2 terms",
+      "body": "L_final (Procrustes-projected output vs GT, weight 1.0) + L_raw_nll (per-point heteroscedastic NLL on noisy correspondences vs GT, weight 0.1). σ does double duty: NLL-supervised AND used as Procrustes weight (1/σ²). Symmetric YCB objects filtered (quotient loss deferred to v1.1). No explicit rotation or translation loss — point-on-surface loss already pins them."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Foreground heads (legacy)",
+      "state": "4-head topology stable; HandMotion/ObjMotion already mirror 4RC MotionDecoder (commit 58532a2); pt-ivn0p7l0 baseline runs on this"
+    },
+    {
+      "aspect": "Foreground heads (v1)",
+      "state": "_MotionLayer extracted to _layer.py (T1 done); HandTrajectoryHead/ObjTrajectoryHead/Procrustes wrapper pending T2-T4"
+    },
+    {
+      "aspect": "Encoder + scene heads",
+      "state": "v1 will use LoRA(qkv,r=8,α=16) + scene heads unfrozen @ 0.1× LR + scene loss (depth 0.1, cam 0.05). Differs from pt-ivn0p7l0's frozen baseline."
+    },
+    {
+      "aspect": "Hand identity space",
+      "state": "v1 reduces from 128 canonical samples to 21 MANO joints; vertices via post-fit MANO at eval. Lever-d joint plumbing reused."
+    },
+    {
+      "aspect": "Object identity space",
+      "state": "Unchanged — N_O canonical samples. Symmetric YCB filtered; quotient loss deferred to v1.1."
+    },
+    {
+      "aspect": "Cycle/transport",
+      "state": "Structurally enforced by single-Φ. λ_cycle=0.01 kept as bf16-precision insurance."
+    }
+  ],
+  "memory_entries_written": [
+    "project_trajectory_head_v1_status.md",
+    "reference_pytorch3d_not_installed.md"
+  ],
+  "caveats": [
+    "v1 hand head predicts 21 joints, NOT vertices. Benchmark continuity for MPVPE is via post-fit MANO joint-fit at eval. Pure vertex prediction is v2's LBS+residual push.",
+    "Symmetric YCB filter list is empirical — initial set (master_chef_can, tomato_soup_can, mustard_bottle, banana) may need refinement once per-object Procrustes residual histograms are run on the manifest.",
+    "Discussion-notes §5 information-gain diagnostic (full-video vs single-frame ablation) deferred to a parallel side experiment post-v1, not skipped permanently.",
+    "ACP HMAC submission perms are scoped out (memory feedback_acp_hmac_permission_scope.md); when v1 is ready, surface the launcher to user for submission rather than retry HMAC.",
+    "Plan task 13 (delete legacy heads) is gated on v1 ACP run ≥1000 steps without crash — do not execute pre-emptively or pt-ivn0p7l0 comparison eval becomes hard to re-run."
+  ],
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-trajectory-head-v1-design.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-trajectory-head-v1-design.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-trajectory-head-v1-design.json\nand continue from tasks_pending[0] (T2 [P0]: HandTrajectoryHead — single-Φ joint output, random init via DiT identity-at-init).\nContext: branch feat/dcf@d34ffe2; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-04-26-trajectory-head-v1-design.md, docs/superpowers/plans/2026-04-26-trajectory-head-v1.md."
+}

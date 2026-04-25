@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-26 · Brainstorm + spec + plan + start implementing trajectory-head v1 (single-Φ + object Procrustes + 21-joint hand, replacing the 4-head topology)",
+    "date": "2026-04-26",
+    "status": "wip",
+    "summary": "Brainstorm + spec + plan + start implementing trajectory-head v1 (single-Φ + object Procrustes + 21-joint hand, replacing the 4-head topology)",
+    "path": "updates/2026-04-26-session-summary-trajectory-head-v1-design.html",
+    "file": "updates/2026-04-26-session-summary-trajectory-head-v1-design.html",
+    "sidecar": "updates/2026-04-26-session-summary-trajectory-head-v1-design.json"
+  },
+  {
     "title": "2026-04-24 · Eval 4 motion-grounding LoRA ablation cells at training-matched 378x504 across the full 63-frame tracked range; extend with pt-drxe2i2e/pt-bbq2n8ni/pt-vchlwhid motion-init ablation cells; publish a single 7-cell comparison page with interactive Plotly (gray GT overlay) and per-frame line charts.",
     "date": "2026-04-24",
     "status": "finding",
