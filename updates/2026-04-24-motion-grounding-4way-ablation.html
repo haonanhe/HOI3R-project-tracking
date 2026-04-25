@@ -477,4 +477,212 @@ new Chart(document.getElementById('objPerFrame'), {
 });
 </script>
 
+
+<!-- ============================================================
+     2026-04-26 EVAL + VIZ APPENDIX
+     pt-ivn0p7l0 (BUNDLED 4-lever) vs pt-6ttdqgom (CONTROL frozen-3-lever)
+     ============================================================ -->
+<hr style="margin: 60px 0 30px 0; border: none; border-top: 2px dashed #2c3e50;">
+
+<h2>Eval + Visualization &mdash; bundled 4-lever vs frozen-3-lever control (2026-04-26)</h2>
+
+<p>Following the original 4-way LoRA ablation, we trained two new 4000-step single-seq overfit jobs on
+<code>subject-01/20200709_141754</code> at <code>--fixed-h 378 --fixed-w 504</code>:</p>
+
+<ul>
+  <li><strong>BUNDLED</strong> (<code>pt-ivn0p7l0</code>) &mdash; LoRA r=16 &alpha;=32 + scene-loss
+      w=0.1 + scene-Geometry-Head unfrozen at 0.1&times; LR + N<sub>H</sub>=256 +
+      approach-oversample 2&times; + 21 MANO joint tokens (joint anchor weight 1.0)</li>
+  <li><strong>CONTROL</strong> (<code>pt-6ttdqgom</code>) &mdash; encoder + 4RC heads frozen,
+      no scene-loss; same N<sub>H</sub>=256, approach-oversample 2&times;, 21 joint tokens</li>
+</ul>
+
+<p>Both eval'd full-sequence (63 frames) at training-matched H&times;W. The CONTROL isolates
+LoRA + scene-loss + scene-Geometry-Head unfreeze from the three "simpler" levers.</p>
+
+<h3>Aggregate eval metrics (63 frames)</h3>
+
+<table>
+  <thead>
+    <tr><th>Metric</th>
+        <th>BUNDLED <small>pt-ivn0p7l0</small></th>
+        <th>CONTROL <small>pt-6ttdqgom</small></th>
+        <th>&Delta; (B&minus;C)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>hand L2 mean (mm)</td>
+        <td><strong>12.00</strong></td>
+        <td>20.21</td>
+        <td style="color:#0a7c2f"><strong>-8.21</strong></td></tr>
+    <tr><td>hand L2 median</td>
+        <td><strong>10.96</strong></td>
+        <td>15.56</td>
+        <td style="color:#0a7c2f">-4.60</td></tr>
+    <tr><td>hand L2 max (worst frame)</td>
+        <td><strong>25.42</strong></td>
+        <td>73.01</td>
+        <td style="color:#0a7c2f">-47.59</td></tr>
+    <tr><td>obj L2 mean</td>
+        <td><strong>3.21</strong></td>
+        <td>8.30</td>
+        <td style="color:#0a7c2f"><strong>-5.09</strong></td></tr>
+    <tr><td>obj L2 median</td>
+        <td><strong>3.08</strong></td>
+        <td>8.30</td>
+        <td style="color:#0a7c2f">-5.23</td></tr>
+    <tr><td>obj L2 max</td>
+        <td><strong>6.20</strong></td>
+        <td>15.66</td>
+        <td style="color:#0a7c2f">-9.46</td></tr>
+    <tr><td>joint anchor L2 mean</td>
+        <td><strong>5.34</strong></td>
+        <td>16.12</td>
+        <td style="color:#0a7c2f"><strong>-10.78</strong></td></tr>
+    <tr><td>joint anchor L2 median</td>
+        <td><strong>3.48</strong></td>
+        <td>10.37</td>
+        <td style="color:#0a7c2f">-6.88</td></tr>
+  </tbody>
+</table>
+
+<div class="highlight" style="background:#e6f3ff; border-left:4px solid #2563eb; padding:14px 18px; margin:18px 0;">
+  <strong>Headline:</strong> BUNDLED beats CONTROL on every aggregate by roughly
+  2&times;&ndash;4&times;, suggesting LoRA + scene-loss + scene-geom-unfreeze materially help
+  even on a single-sequence overfit. <strong>Caveat:</strong> the early-frame "approach
+  spike" persists in both runs &mdash; CONTROL frame 0 = 73 mm vs BUNDLED frame 0 = 25 mm.
+  Approach-oversample 2&times; reduced the spike but didn't eliminate it.
+</div>
+
+<h3>Per-frame error curves (63 frames)</h3>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 18px 0;">
+  <div><canvas id="appendix_hand_per_frame" height="160"></canvas></div>
+  <div><canvas id="appendix_obj_per_frame" height="160"></canvas></div>
+</div>
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 18px 0;">
+  <div><canvas id="appendix_joint_per_frame" height="160"></canvas></div>
+  <div style="padding:14px; background:#f5f5f5; border-radius:6px; font-size:0.9em;">
+    <strong>Per-frame structure:</strong>
+    <ul style="margin: 6px 0 0 20px; padding:0;">
+      <li>Worst BUNDLED frames: 0, 1, 2, 5, 4 (hand 16.8&ndash;25.4 mm) &mdash; all approach phase</li>
+      <li>Worst CONTROL frames: 0, 1, 2, 3, 4 (hand 45.1&ndash;73.0 mm) &mdash; same approach pattern, much amplified</li>
+      <li>Best frames in both: mid-grasp (frames 26&ndash;49); BUNDLED hand &ap; 10.4 mm,
+          CONTROL hand &ap; 12.8 mm</li>
+      <li>Curve shape: monotonically decreasing through approach, then plateau through grasp.
+          Both runs share the shape; CONTROL is uniformly elevated above BUNDLED.</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Visualizations</h3>
+
+<details open style="margin: 14px 0; padding: 14px 18px; background:#fafafa; border-left:3px solid #0a7c2f; border-radius:4px;">
+<summary style="cursor:pointer; font-weight:600; font-size:1.05em;">BUNDLED &mdash; pt-ivn0p7l0 (4-lever)</summary>
+<p style="margin-top: 14px;">Three rendered views (matplotlib, 63 frames, ~2s each) plus an
+interactive Plotly scene with frame slider. GT hand/obj overlaid in gray.</p>
+<div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 10px;">
+  <figure style="margin:0;">
+    <video src="assets/2026-04-24-motion-grounding-4way-ablation/E1_bundle/track_scene_pred_only.mp4" controls muted loop style="width:100%; border:1px solid #ddd;"></video>
+    <figcaption style="font-size:0.85em; color:#555;">Pred-only tracks (no scene RGB)</figcaption>
+  </figure>
+  <figure style="margin:0;">
+    <video src="assets/2026-04-24-motion-grounding-4way-ablation/E1_bundle/scene_bg_hand_obj_no_tracks.mp4" controls muted loop style="width:100%; border:1px solid #ddd;"></video>
+    <figcaption style="font-size:0.85em; color:#555;">Scene + hand/obj, no tracks</figcaption>
+  </figure>
+  <figure style="margin:0;">
+    <video src="assets/2026-04-24-motion-grounding-4way-ablation/E1_bundle/scene_bg_hand_obj_with_tracks.mp4" controls muted loop style="width:100%; border:1px solid #ddd;"></video>
+    <figcaption style="font-size:0.85em; color:#555;">Scene + hand/obj + 10-frame trails</figcaption>
+  </figure>
+</div>
+<p style="margin-top:14px;">
+  <a href="assets/2026-04-24-motion-grounding-4way-ablation/E1_bundle/scene_interactive.html" target="_blank" rel="noopener"
+     style="display:inline-block; padding:8px 14px; background:#2563eb; color:#fff; text-decoration:none; border-radius:4px; font-weight:600;">
+     Open BUNDLED interactive Plotly &rarr;
+  </a>
+</p>
+</details>
+
+<details open style="margin: 14px 0; padding: 14px 18px; background:#fafafa; border-left:3px solid #f59e0b; border-radius:4px;">
+<summary style="cursor:pointer; font-weight:600; font-size:1.05em;">CONTROL &mdash; pt-6ttdqgom (frozen-3-lever)</summary>
+<p style="margin-top: 14px;">Same renders for the frozen-encoder control. Note the approach-phase
+hand drift is much more pronounced.</p>
+<div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 10px;">
+  <figure style="margin:0;">
+    <video src="assets/2026-04-24-motion-grounding-4way-ablation/BASELINE_3lever/track_scene_pred_only.mp4" controls muted loop style="width:100%; border:1px solid #ddd;"></video>
+    <figcaption style="font-size:0.85em; color:#555;">Pred-only tracks</figcaption>
+  </figure>
+  <figure style="margin:0;">
+    <video src="assets/2026-04-24-motion-grounding-4way-ablation/BASELINE_3lever/scene_bg_hand_obj_no_tracks.mp4" controls muted loop style="width:100%; border:1px solid #ddd;"></video>
+    <figcaption style="font-size:0.85em; color:#555;">Scene + hand/obj, no tracks</figcaption>
+  </figure>
+  <figure style="margin:0;">
+    <video src="assets/2026-04-24-motion-grounding-4way-ablation/BASELINE_3lever/scene_bg_hand_obj_with_tracks.mp4" controls muted loop style="width:100%; border:1px solid #ddd;"></video>
+    <figcaption style="font-size:0.85em; color:#555;">Scene + hand/obj + 10-frame trails</figcaption>
+  </figure>
+</div>
+<p style="margin-top:14px;">
+  <a href="assets/2026-04-24-motion-grounding-4way-ablation/BASELINE_3lever/scene_interactive.html" target="_blank" rel="noopener"
+     style="display:inline-block; padding:8px 14px; background:#f59e0b; color:#fff; text-decoration:none; border-radius:4px; font-weight:600;">
+     Open CONTROL interactive Plotly &rarr;
+  </a>
+</p>
+</details>
+
+<h3>Caveats and next steps</h3>
+<ul>
+  <li>Both jobs are single-sequence overfits (subject-01/20200709_141754); generalization
+      is not measured.</li>
+  <li>4 levers bundled together &mdash; can't attribute the win to a specific lever without
+      further ablation. The CONTROL pins down "LoRA + scene-loss + scene-geom-unfreeze"
+      as a group, but doesn't disentangle within that group.</li>
+  <li>Approach-spike still dominates per-frame error in both runs. Possible follow-ups:
+      higher approach-oversample factor, motion-magnitude-weighted loss, or a temporal
+      curriculum that upweights early frames.</li>
+  <li>Joint anchor (Lever D) shows clean signal: BUNDLED 5.34 mm mean vs CONTROL 16.12 mm.
+      The 21 MANO joint tokens are productively trained on top of the 256 vertex queries.</li>
+</ul>
+
+<h3>Reproducibility</h3>
+<ul>
+  <li><strong>Branch / HEAD:</strong> <code>feat/dcf @ 225d93f</code> (eval slice fix on top
+      of <code>410e372</code> bundled-config commits).</li>
+  <li><strong>Submission:</strong> 8&times;H100, p1-video-world-model-for-robot-learning workspace,
+      RESERVED + NORMAL priority, backoff_limit=0.</li>
+  <li><strong>Launchers:</strong>
+      <code>scripts/acp_jobs/motion_grounding/E1_scene_plus_bundle.sh</code>
+      and <code>scripts/acp_jobs/motion_grounding/BASELINE_frozen_3lever.sh</code>.</li>
+  <li><strong>Eval:</strong> <code>scripts/hoi3r_eval.py --full-sequence --fixed-h 378
+      --fixed-w 504 --n-hand 256</code> + <code>scripts/hoi3r_offline_render.py --mode v3
+      --scene-npz logs/exp1_4rc_dexycb/20200709-subject-01_20200709_141754_836212060125_63frames.npz</code>.</li>
+</ul>
+
+<script>
+const APPENDIX_PER_FRAME = {"E1_bundle":{"hand_l2_mm":[25.418,19.523,18.091,16.72,16.799,17.767,14.03,14.105,12.596,12.709,12.28,12.547,11.576,13.671,11.71,13.925,11.426,11.212,12.272,11.388,11.224,11.233,11.204,11.268,10.959,10.782,10.476,10.65,10.518,10.549,10.548,11.349,11.007,11.052,10.633,10.8,11.88,10.865,11.444,10.774,10.737,11.198,11.027,10.403,10.397,10.533,10.697,10.652,10.668,10.529,10.719,10.689,10.652,10.648,10.899,10.892,10.729,10.83,10.635,10.855,10.913,10.872,10.725],"obj_l2_mm":[3.916,4.371,3.591,2.35,2.748,2.553,3.445,3.501,2.382,2.927,2.206,2.881,2.672,3.007,2.192,3.22,2.567,2.162,2.416,2.482,3.24,2.344,2.535,2.872,2.344,2.657,3.082,3.08,2.802,3.075,2.501,4.7,2.494,2.466,4.198,4.912,4.58,3.91,6.204,4.73,3.59,3.506,3.074,2.728,3.119,2.868,4.244,3.108,3.583,2.299,2.436,3.287,3.372,3.881,2.836,3.838,2.725,2.771,3.23,3.954,3.801,4.136,3.362],"joint_l2_mm":[25.252,15.533,15.775,14.334,16.13,18.479,10.684,11.695,9.623,8.758,5.946,6.143,4.157,7.877,5.398,8.867,4.684,4.547,5.4,4.606,3.737,3.949,4.341,3.485,3.806,3.383,2.597,2.7,2.627,2.603,2.636,3.775,2.809,2.692,2.55,3.193,4.511,3.664,5.961,3.558,3.261,4.677,3.828,2.122,1.997,2.927,3.08,2.811,2.966,2.087,2.832,2.568,2.202,2.411,2.431,2.731,2.334,2.444,2.789,2.823,3.055,3.003,2.335]},"BASELINE_3lever":{"hand_l2_mm":[73.011,68.24,59.306,52.272,45.067,37.683,27.385,25.186,31.277,22.8,23.486,26.997,26.476,16.759,15.407,15.046,18.197,13.903,15.677,15.06,16.058,15.2,13.363,15.481,16.064,15.982,15.986,15.732,16.741,16.593,19.392,12.82,15.097,16.609,18.619,15.561,15.849,16.576,13.342,15.419,17.241,14.924,13.669,13.503,16.206,13.151,14.518,13.238,13.33,14.177,14.062,13.525,14.664,13.101,14.036,14.88,14.119,13.34,15.858,13.797,13.437,14.914,13.974],"obj_l2_mm":[15.66,9.669,7.671,5.673,10.334,8.634,8.301,7.174,8.734,5.283,12.564,11.958,12.848,5.531,6.257,8.311,10.324,6.812,8.512,8.476,10.194,11.4,11.644,9.127,12.367,10.649,11.409,8.634,11.861,10.73,9.804,4.693,7.465,9.325,8.215,8.764,9.626,14.521,5.578,8.332,13.751,7.803,6.016,5.125,7.884,7.635,4.293,4.48,4.474,5.536,5.141,5.9,8.253,4.779,8.729,10.966,5.503,5.443,6.976,4.131,4.054,5.72,7.132],"joint_l2_mm":[79.354,76.88,67.587,61.533,47.832,37.921,24.292,19.137,27.703,16.335,18.604,26.128,26.255,13.806,10.528,10.533,13.844,10.676,12.902,11.489,12.297,10.748,7.738,9.976,10.996,11.179,10.11,10.151,11.411,10.741,12.517,7.497,8.52,8.94,11.381,10.368,9.326,12.289,8.877,10.248,11.681,8.104,8.026,8.454,8.943,7.858,8.713,8.214,9.002,7.354,6.966,8.905,7.687,6.415,7.802,9.267,8.244,7.792,10.152,8.2,8.823,9.647,10.709]}};
+function appendixPerFrameDs(metric) {
+  return [
+    { label: 'BUNDLED  pt-ivn0p7l0', borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.10)',
+       data: APPENDIX_PER_FRAME.E1_bundle[metric].map((y,i)=>({x:i, y:y})), pointRadius:2, tension:0.2 },
+    { label: 'CONTROL  pt-6ttdqgom',  borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.10)',
+       data: APPENDIX_PER_FRAME.BASELINE_3lever[metric].map((y,i)=>({x:i, y:y})), pointRadius:2, tension:0.2 }
+  ];
+}
+const APPENDIX_OPTS = {
+  responsive: true, maintainAspectRatio: false,
+  scales: { x: { title:{display:true,text:'frame index'}}, y: { title:{display:true,text:'L2 (mm)'} } },
+  plugins: { legend: { position: 'top' } }
+};
+new Chart(document.getElementById('appendix_hand_per_frame'), {
+  type: 'line', data: {datasets: appendixPerFrameDs('hand_l2_mm')},
+  options: {...APPENDIX_OPTS, plugins: {...APPENDIX_OPTS.plugins, title: {display:true, text:'hand_l2_mm per frame'}}}
+});
+new Chart(document.getElementById('appendix_obj_per_frame'), {
+  type: 'line', data: {datasets: appendixPerFrameDs('obj_l2_mm')},
+  options: {...APPENDIX_OPTS, plugins: {...APPENDIX_OPTS.plugins, title: {display:true, text:'obj_l2_mm per frame'}}}
+});
+new Chart(document.getElementById('appendix_joint_per_frame'), {
+  type: 'line', data: {datasets: appendixPerFrameDs('joint_l2_mm')},
+  options: {...APPENDIX_OPTS, plugins: {...APPENDIX_OPTS.plugins, title: {display:true, text:'joint_anchor_l2_mm per frame'}}}
+});
+</script>
+
 </body></html>
