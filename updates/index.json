@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-23 · Continue 2026-04-22 pipeline-WIP: restore torch in MagicHOI env, drive diag to trainer.fit + camera.json, advance Task 4 (FP+HaWoR) and stage HaWoR weights.",
+    "date": "2026-04-23",
+    "status": "wip",
+    "summary": "Continue 2026-04-22 pipeline-WIP: restore torch in MagicHOI env, drive diag to trainer.fit + camera.json, advance Task 4 (FP+HaWoR) and stage HaWoR weights.",
+    "path": "updates/2026-04-23-session-summary-magichoi-pipeline-progress.html",
+    "file": "updates/2026-04-23-session-summary-magichoi-pipeline-progress.html",
+    "sidecar": "updates/2026-04-23-session-summary-magichoi-pipeline-progress.json"
+  },
+  {
     "title": "2026-04-26 · Brainstorm HOI3R v2 framework + write spec + write Plan 1 (core architecture + P1 single-seq overfit)",
     "date": "2026-04-26",
     "status": "converged",

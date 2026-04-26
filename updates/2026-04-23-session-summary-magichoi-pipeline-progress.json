@@ -1,0 +1,155 @@
+{
+  "date": "2026-04-23",
+  "topic": "magichoi-pipeline-progress",
+  "branch": "feat/benchmark",
+  "head_sha": "d78c22e",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-benchmark",
+  "spec_path": "docs/superpowers/specs/2026-04-17-mano-convention-finalization-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-17-mano-convention-finalization.md",
+  "goal": "Continue 2026-04-22 pipeline-WIP: restore torch in MagicHOI env, drive diag to trainer.fit + camera.json, advance Task 4 (FP+HaWoR) and stage HaWoR weights.",
+  "status": "wip",
+  "headline_stats": [
+    {
+      "label": "ACP iterations",
+      "value": "v12 → v14"
+    },
+    {
+      "label": "Tasks closed",
+      "value": "5/9"
+    },
+    {
+      "label": "Weights staged",
+      "value": "2 (1.66 GB)"
+    },
+    {
+      "label": "Commits",
+      "value": "2"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "e086361",
+      "type": "feat",
+      "subject": "fp_hawor ho3d /rgb image_dir fix + diag startup script"
+    },
+    {
+      "sha": "d78c22e",
+      "type": "feat",
+      "subject": "magichoi diag v14 with mesh.py None-safety patch"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "T1",
+      "sha": "—",
+      "summary": "Torch restore [P0]: 2.0.1+cu118 wheel re-downloaded via Aliyun mirror (prior was truncated, no EOCD); installed --no-deps in MagicHOI env; pl 2.0.9 import-chain verified."
+    },
+    {
+      "id": "T2",
+      "sha": "d78c22e",
+      "summary": "Diag reaches trainer.fit + writes camera.json [P0]: v12 pt-oc9qs2r0 reached trainer.fit; v13 pt-9q4tt1q4 wrote camera.json (93 B) + last.ckpt (96 MB) at 100 steps via makedirs patch."
+    },
+    {
+      "id": "T6",
+      "sha": "e086361",
+      "summary": "Worktree commit [P2]: /rgb image_dir fix in fp_hawor_ho3d.py + persisted scripts/acp/acp_magichoi_diag_startup.sh."
+    },
+    {
+      "id": "T5",
+      "sha": "—",
+      "summary": "User uploaded both HaWoR weights — metric_depth_vit_large_800k.pth (1.65 GB) + droid.pth (16 MB) — to third_party/HaWoR/weights/external/. Symlinked metric_depth into Metric3D/weights/."
+    },
+    {
+      "id": "T7",
+      "sha": "—",
+      "summary": "v14 diag pt-lm02uujv (max_steps=1000) SUCCEEDED but produced no model.obj: research showed only_3d uses Zero123 diffusion guidance only (do_3d_guidance_only=True), depth stubs are NOT the SDF blocker."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "T3",
+      "priority": "P1",
+      "summary": "MagicHOI Task 3 model.obj: stage-1 SDF needs Zero123 hyperparam tuning (guidance_scale, ref view, longer training) — not depth data. Adapter still needs full 7-stage final 3d_ref_weight artifacts."
+    },
+    {
+      "id": "T9",
+      "priority": "P1",
+      "summary": "FP+HaWoR HO3D smoke: all weights staged. HaWoR demo.py is ready to invoke on /mnt/afs/haonan/datasets/haonan/datasets/HO3D/train/MC1/rgb/ (897 frames). FP path still blocked on mycuda ninja compile error."
+    },
+    {
+      "id": "FP-mycuda",
+      "priority": "P2",
+      "summary": "Build third_party/FoundationPose/bundlesdf/mycuda — ninja compile error against torch 2.0.0+cu118 in foundationpose env. Required for FP runtime."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fix",
+      "title": "MagicHOI only_3d uses Zero123, NOT depths",
+      "body": "Stage-1 SDF non-convergence is not caused by zero-stub depth maps. only_3d takes do_3d_guidance_only=True, which routes through zero123_guidance.py:99/324 and skips both visibility_binarys (depth) and visibility_colors (RGB recon). Depths are only consumed in stage-2 align_corres.py via --query_depth_f. Replacing zero stubs with Metric3D depths won't unblock model.obj. See project_magichoi_only3d_zero123_finding.md."
+    },
+    {
+      "badge": "fix",
+      "title": "Aliyun pytorch-wheels mirror works",
+      "body": "pytorch.org wheel download from debug container stalls at ~80%; Tsinghua Tuna returns 404; mirrors.aliyun.com/pytorch-wheels/cu118/... works at 26 MB/s for the 2.15 GB torch 2.0.1+cu118 wheel (84 s total). Verified with zipfile.testzip() — 10,092 files. Saved as feedback_pytorch_wheel_aliyun_mirror.md."
+    },
+    {
+      "badge": "fix",
+      "title": "v13 patches: makedirs + None-safety",
+      "body": "Two inline patches in scripts/acp/acp_magichoi_diag_startup.sh let MagicHOI's stage-1 export write camera.json even when SDF is degenerate: run.py::export_cond_cam now os.makedirs(os.path.dirname(cam_f), exist_ok=True), and threestudio/models/mesh.py::remove_outlier returns self when max_comp is None. The downstream amin() on empty v_pos still raises IndexError but run.py's `|| true` swallows it; ACP exit 0."
+    },
+    {
+      "badge": "finding",
+      "title": "Truncated wheels look intact at the start",
+      "body": "Prior session's torch wheel scp left 2,251,915,264 bytes (vs correct 2,267,322,772). File starts with PK\\x04\\x03 (valid local header) so it looks like a zip, but unzip -t says 'End-of-central-directory signature not found'. pip install rejects with 'Wheel ... is invalid'. Always verify wheels with zipfile.testzip() before pip install."
+    },
+    {
+      "badge": "finding",
+      "title": "droid.pth is the small fnet-only variant",
+      "body": "User-supplied droid.pth is 16,061,701 bytes (~16 MB, 4M params), much smaller than the typical full DROID-SLAM checkpoint (~287 MB). torch.load returns OrderedDict with module.fnet.* keys — appears to be the recurrent-backbone subset HaWoR's hawor_slam.py needs, not the full DROID."
+    },
+    {
+      "badge": "finding",
+      "title": "p1 ACP quota blink",
+      "body": "p1-video-world-model-for-robot-learning briefly returned 0 GPUs remaining (workspace_aec2_total) when armA/armB 8+8 + ember + smpl + lyx were all running. share-space-01e is also at workspace_member_default 0. A retry on p1 a minute later succeeded — quota wobbles are transient. Stay on p1 per CLAUDE.md."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "MagicHOI env (torch+pl)",
+      "state": "✅ torch 2.0.1+cu118 + pl 2.0.9 + threestudio import chain verified"
+    },
+    {
+      "aspect": "MagicHOI HO3D pipeline (stage-1 only_3d)",
+      "state": "⚠️ trainer.fit reached, last.ckpt + camera.json written, model.obj missing (SDF needs Zero123 tuning, not depth fix)"
+    },
+    {
+      "aspect": "FP+HaWoR weights",
+      "state": "✅ all staged (FP refiner/scorer + hawor.ckpt + infiller.pt + detector.pt + droid.pth + metric_depth_vit_large_800k.pth)"
+    },
+    {
+      "aspect": "FP env",
+      "state": "⚠️ nvdiffrast 0.3.3 installed; mycuda build fails (ninja compile error)"
+    },
+    {
+      "aspect": "HaWoR env",
+      "state": "✅ torch 1.13.1+cu117 + lietorch + DROID-SLAM + Metric3D + mmcv 1.6.0; metric_depth weight symlinked into Metric3D/weights/"
+    }
+  ],
+  "memory_entries_written": [
+    "feedback_pytorch_wheel_aliyun_mirror.md",
+    "project_magichoi_only3d_zero123_finding.md",
+    "project_magichoi_pipeline_wip.md",
+    "reference_weights_staged.md"
+  ],
+  "caveats": [
+    "Worktree has uncommitted local patches: benchmark/adapters/magichoi/magichoi_utils.py (smoke STAGE_MAX_STEPS + single-sequence MAGICHOI_HO3D_SEQUENCES). Intentionally kept uncommitted per prior session.",
+    "v14 diag (pt-lm02uujv) is the latest known-good ACP startup script (committed at d78c22e); contains makedirs + None-safety patches.",
+    "If you re-run any MagicHOI ACP job, the trap-restore via `git checkout HEAD -- run.py threestudio/models/mesh.py` will reset to MagicHOI HEAD (3997e06 in third_party/MagicHOI which is its own git repo) — the inline Python patch then re-applies makedirs + max_steps overrides.",
+    "ACP p1 quota was at 0 briefly during the session; may need a retry-loop on submit if armA/armB plus other 8-GPU jobs are all running.",
+    "Synthesized colmap tree depths at colmap_*/HO3D/depths/*.png are still zero stubs but those don't block stage-1; they will become a real blocker once stage-1 SDF converges and stages 2-7 need real depth for alignment."
+  ],
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-23-session-summary-magichoi-pipeline-progress.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-23-session-summary-magichoi-pipeline-progress.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-23-session-summary-magichoi-pipeline-progress.json\nand continue from tasks_pending[0] (T3 [P1]: MagicHOI Task 3 model.obj: stage-1 SDF needs Zero123 hyperparam tuning (guidance_scale, ref view, longer training) — not depth data. Adapter still needs full 7-stage final 3d_ref_weight artifacts.).\nContext: branch feat/benchmark@d78c22e; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-benchmark.\nAlso read: docs/superpowers/specs/2026-04-17-mano-convention-finalization-design.md, docs/superpowers/plans/2026-04-17-mano-convention-finalization.md."
+}
