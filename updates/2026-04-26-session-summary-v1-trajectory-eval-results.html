@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-26 · v1-trajectory-eval-results</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>V1 Trajectory Eval Results</h1>
+  <div class="meta">2026-04-26 · <code>feat/dcf</code> · <code>@2cc4e11</code> · spec: <code>docs/superpowers/specs/2026-04-26-trajectory-head-v1-design.md</code> · plan: <code>docs/superpowers/plans/2026-04-26-trajectory-head-v1.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Implement trajectory-head v1 (T2-T12), train via ACP, evaluate on subject-01 train + s1_test, render visualizations, publish two cross-experiment pages.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">11/12</div><div class="label">Tasks landed (T2-T12)</div></div><div class="stat"><div class="val">trained 4000 steps</div><div class="label">ACP pt-wlapue0u</div></div><div class="stat"><div class="val">12.35 mm (-24% vs anchor)</div><div class="label">V1 train hand joint L2</div></div><div class="stat"><div class="val">132.30 mm (-59% vs anchor)</div><div class="label">V1 s1_test hand joint L2</div></div><div class="stat"><div class="val">130.93 mm (-20% vs anchor)</div><div class="label">V1 s1_test obj L2</div></div><div class="stat"><div class="val">partial-pass</div><div class="label">Spec §7 verdict</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>T2</td><td><span class="badge badge-pass">PASS</span></td><td>8c2375b</td><td>HandTrajectoryHead — single-Φ joint output, random init</td></tr><tr><td>T3</td><td><span class="badge badge-pass">PASS</span></td><td>dd66fb7</td><td>ObjTrajectoryHead — separate-weights subclass</td></tr><tr><td>T4</td><td><span class="badge badge-pass">PASS</span></td><td>9c9364f</td><td>Differentiable weighted Kabsch + apply_se3 (raw torch.linalg.svd)</td></tr><tr><td>T5</td><td><span class="badge badge-pass">PASS</span></td><td>16f4e0d</td><td>trajectory_v1 loss module — joint 3D/2D + obj final/raw + cycle</td></tr><tr><td>T6</td><td><span class="badge badge-pass">PASS</span></td><td>e4f6d62</td><td>SYMMETRIC_YCB_IDS filter (soft-fails on missing ycb_id key)</td></tr><tr><td>T7</td><td><span class="badge badge-pass">PASS</span></td><td>8013a5a</td><td>HOI3RModel head_mode=&#x27;trajectory&#x27; wiring + Procrustes wrap</td></tr><tr><td>T8</td><td><span class="badge badge-pass">PASS</span></td><td>13a5b7a</td><td>stage2_train trajectory CLI flags + loss assembly + manifest filter</td></tr><tr><td>T9</td><td><span class="badge badge-pass">PASS</span></td><td>dca34d0</td><td>hoi3r_eval trajectory mode + MANO joint-fit (soft-fail) + new metrics</td></tr><tr><td>T11</td><td><span class="badge badge-pass">PASS</span></td><td>eec8a82</td><td>Smoke fixes: Kabsch fp32 autocast, symm filter no-op, 2D loss intrinsic norm</td></tr><tr><td>T12</td><td><span class="badge badge-pass">PASS</span></td><td>2cc4e11</td><td>ACP launcher V1_trajectory_head.sh (8×H100 bs=8 cl∈[2,16])</td></tr><tr><td>EVAL</td><td><span class="badge badge-pass">PASS</span></td><td>2cc4e11</td><td>6 evals: V1 + baseline on subject-01 train + s1_test idx 0+2</td></tr><tr><td>VIZ</td><td><span class="badge badge-pass">PASS</span></td><td>2cc4e11</td><td>12 MP4s rendered (camera-view + world-space, V1 + baseline, 3 sequences)</td></tr><tr><td>PUB</td><td><span class="badge badge-pass">PASS</span></td><td>2cc4e11</td><td>2 pages published: V1-vs-baseline detail + 10-experiment cross-comparison</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> V1 wins s1_test, loses subject-01 obj — Procrustes is the variable</h3><p>On unseen subject-07 sequences V1 reduces hand joint L2 by 59% (324→132 mm) and obj L2 by 20% (164→131 mm) versus the anchor. On the training sequence V1 hand joint L2 wins by 24% (16.12→12.35 mm) but V1 obj L2 loses by 75% (8.30→14.51 mm). The SE(3) Procrustes wrapper rigidifies object motion — a generalization win on unseen subjects, but it gives up the legacy free-vertex regression&#x27;s ability to fit object deformation noise on the training sequence. Mitigation for v1.1: lower --obj-procrustes-weight or add quotient-symmetry loss.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> ACP pt-wlapue0u: training succeeded; FAILED state was a tee artifact</h3><p>Training completed all 4000 optimizer steps; model_final.pt (7.8 GB) + 8 checkpoints + history.json all saved. ACP marked the job FAILED because the startup_script wrapped the launcher with `bash launcher.sh 2&gt;&amp;1 | tee logs/V1_trajectory_head/train.log` while logs/V1_trajectory_head/ didn&#x27;t exist yet. tee returned nonzero → set -euo pipefail propagated. Fix for future submits: mkdir -p before tee, or drop tee entirely (stage2_train.py already writes history.json). Recorded in feedback_acp_tee_logdir.md.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> Kabsch SVD under bf16 autocast needs explicit autocast disable + fp32 cast</h3><p>torch.linalg.svd and torch.det are not implemented for bfloat16 on CUDA (svd_cuda_gesvdjBatched, lu_factor_cublas). Plain `H.float()` is insufficient because autocast wraps surrounding matmul (V @ U.T) and downcasts back. Pattern: `with torch.amp.autocast(device_type=&#x27;cuda&#x27;, enabled=False): ... fp32 closed-form ...; cast back outside the block.` Recorded in feedback_kabsch_autocast_disable.md.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> hand_l2_mm means different things across head_mode</h3><p>Same metric key in legacy = vertex L2 over 256 canonical samples; in V1 trajectory = joint L2 over 21 MANO joints. Never compare directly — vertex L2 is mechanically larger. Cross-experiment table separates `Train hand-vert` and `Train hand-joint` columns. To unify, V1 needs MANO post-fit MPVPE (currently blocked by missing MANO_RIGHT.pkl).</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Spec §7 partial-pass = multi-subject expansion is the next move</h3><p>Spec §7 success requires both s1_test obj L2 ≤ 60 mm AND beats anchor + cl-stability &lt; 2×. V1 passes the relative criteria but misses the absolute target by 2× (131 vs 60 mm). Per the spec&#x27;s pre-registered fallback: &#x27;failing condition (1) but passing (2) is partial — the trajectory framing helps consistency but not generalization, and the next move is multi-subject manifest expansion rather than further architectural change.&#x27; Train V1 on all 10 DexYCB subjects (~1000 seq) before any further architectural change.</p></div>
+
+</section>
+
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Branch</td><td>feat/dcf @ 2cc4e11 — pushed to origin</td></tr><tr><td>Worktree</td><td>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</td></tr><tr><td>ACP job</td><td>pt-wlapue0u — state=FAILED but training succeeded; model_final.pt + history.json on AFS</td></tr><tr><td>V1 model checkpoint</td><td>logs/V1_trajectory_head/model_final.pt (7.8 GB; LoRA r=8 + scene heads + 2 trajectory heads)</td></tr><tr><td>V1 eval predictions</td><td>logs/V1_trajectory_head/eval_subject01/, eval_s1_test_idx0/, eval_s1_test_idx2/</td></tr><tr><td>Anchor</td><td>logs/BASELINE_frozen_3lever/ — pt-ivn0p7l0; ckpt + 3 fullseq evals + renders</td></tr><tr><td>Published pages</td><td>v1-trajectory-vs-baseline (12 MP4s, full detail), all-experiments-cross-comparison (10-job master table)</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>V1.1</td><td><span class="badge badge-p0">P0</span></td><td>Multi-subject manifest expansion — re-run V1 architecture on all 10 DexYCB subjects (~1000 seq) to break the 60mm s1_test obj-L2 spec bar</td></tr><tr><td>T13</td><td><span class="badge badge-p2">P2</span></td><td>Delete legacy 4-head files (hand_geom/obj_geom/obj_motion/combined_motion/load_4rc_motion_init/hand_motion). Gated on V1.1 multi-subject success per plan §13.</td></tr><tr><td>M1</td><td><span class="badge badge-p2">P2</span></td><td>Acquire MANO_RIGHT.pkl on debug container at /mnt/afs/haonan/hoi3r/checkpoints/mano/ to unblock V1 vertex-L2 eval (post-fit MPVPE).</td></tr><tr><td>M2</td><td><span class="badge badge-p2">P2</span></td><td>Enrich manifest schema with explicit ycb_id field per entry, so --filter-symmetric-ycb stops being a no-op.</td></tr><tr><td>ACP</td><td><span class="badge badge-p1">P1</span></td><td>Fix ACP startup_script for next submit: drop the `tee logs/SUBDIR/train.log` line, or `mkdir -p logs/SUBDIR` before tee. Avoids spurious FAILED state on succeeded jobs.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>ACP HMAC submission requires an existing template job to clone (pt-05jjn033 used here); pure scratch payloads need full subscription/rg/zone/workspace path knowledge. Memory feedback_acp_hmac_permission_scope warned that HMAC was scoped out, but it works for current AKID — re-confirm before each new template change.</li><li>GitHub push from the debug container fails (no creds + network blocked). Use the Mac bundle-and-push fallback: `git bundle create /tmp/x.bundle &lt;base&gt;..&lt;head&gt;` on remote, scp to Mac, fetch into a temp clone with token-auth remote URL, push.</li><li>DexYCB subject07 manifest entries 1, 3, 4 fail with HandNotTrackedError (untracked-hand frames inside the tracked range). Only idx 0 and 2 succeed — s1_test mean is computed over those 2.</li><li>manifests/dexycb_subject01_manifest.json entries lack ycb_id; --filter-symmetric-ycb soft-warns and skips. Enrich the manifest schema before v1.1 multi-subject runs.</li><li>MANO_RIGHT.pkl is missing on debug container (/mnt/afs/haonan/hoi3r/checkpoints/mano/ doesn&#x27;t exist), so V1 vertex-L2 metric (post-fit MPVPE) is blocked. Hand metric stays at joint-L2 vs joint-L2 only until the weight is staged.</li></ul>
+</section>
+
+<section><h2>Memory entries written this session</h2>
+<ul><li><code>project_v1_trajectory_head_status.md</code></li><li><code>feedback_acp_tee_logdir.md</code></li><li><code>feedback_kabsch_autocast_disable.md</code></li><li><code>feedback_legacy_vs_v1_metric.md</code></li><li><code>reference_baseline_frozen_3lever_path.md</code></li><li><code>feedback_v1_filter_symmetric_no_op.md</code></li></ul>
+</section>
+
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-v1-trajectory-eval-results.json
+and continue from tasks_pending[0] (V1.1 [P0]: Multi-subject manifest expansion — re-run V1 architecture on all 10 DexYCB subjects (~1000 seq) to break the 60mm s1_test obj-L2 spec bar).
+Context: branch feat/dcf@2cc4e11; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-04-26-trajectory-head-v1-design.md, docs/superpowers/plans/2026-04-26-trajectory-head-v1.md.</pre></section>
+</div></body></html>
