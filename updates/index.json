@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-26 \u00b7 All experiments cross-comparison (10 jobs, train + s1_test)",
+    "date": "2026-04-26",
+    "status": "done",
+    "summary": "Single table comparing all 10 experiments: Stage-1 baselines, motion-grounding 4-way ablation, frozen 3-lever anchor, V1 trajectory. V1 is first cell with measured s1_test improvement.",
+    "path": "updates/2026-04-26-all-experiments-cross-comparison.html",
+    "file": "updates/2026-04-26-all-experiments-cross-comparison.html",
+    "sidecar": "updates/2026-04-26-all-experiments-cross-comparison.json"
+  },
+  {
     "title": "2026-04-26 \u00b7 V1 trajectory head vs frozen 4-head baseline (pt-wlapue0u)",
     "date": "2026-04-26",
     "status": "done",

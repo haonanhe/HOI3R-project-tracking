@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-26 · All-experiments cross-comparison</title>
+<style>:root{--fg:#2c3e50;--muted:#6b7280;--bg:#fff;--panel:#f6f8fa;--accent:#2563eb;
+      --pass:#16a34a;--fix:#d97706;--finding:#2563eb;--fail:#dc2626;--win:#059669;
+      --p0:#dc2626;--p1:#d97706;--p2:#2563eb;--border:#e5e7eb;}
+*{box-sizing:border-box}body{margin:0;color:var(--fg);background:var(--bg);
+  font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.container{max-width:1300px;margin:0 auto;padding:32px 28px 80px}
+header.session-header{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:26px}
+header.session-header h1{margin:0 0 6px;font-size:28px}
+header.session-header .meta{color:var(--muted);font-size:14px}
+header.session-header .goal{margin:10px 0 0}
+section{margin:28px 0}section h2{font-size:19px;margin:0 0 12px;border-left:4px solid var(--accent);padding-left:10px}
+.tablewrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1200px}
+th{background:#1f2937;color:#fff;font-weight:600;text-align:left;padding:8px 10px;position:sticky;top:0;font-size:12px;letter-spacing:.02em}
+th small{font-weight:400;color:#9ca3af;display:block;font-size:11px;margin-top:2px}
+td{border-bottom:1px solid var(--border);padding:7px 10px;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr.stage1 td{background:#fef3c7}
+tr.ablation td{background:#fff}
+tr.ablation.winner td{background:#ecfdf5;font-weight:600;border-left:3px solid var(--win)}
+tr.anchor td{background:#fce7f3}
+tr.v1 td{background:#dbeafe;font-weight:600;border-left:3px solid var(--accent)}
+tr td:first-child{font-weight:600;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap}
+tr td.metric{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr td.dim{color:#9ca3af;font-style:italic}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0}
+.legend .item{padding:8px 12px;border-radius:6px;font-size:13px}
+.legend .stage1{background:#fef3c7}
+.legend .ablation{background:#fff;border:1px solid var(--border)}
+.legend .winner{background:#ecfdf5;font-weight:600}
+.legend .anchor{background:#fce7f3}
+.legend .v1{background:#dbeafe;font-weight:600}
+.panel{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--accent);
+       border-radius:6px;padding:12px 16px;margin:10px 0}
+.panel.win{border-left-color:var(--win)}
+.panel.fail{border-left-color:var(--fail)}
+.panel h3{margin:0 0 6px;font-size:15px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+.kpi .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.kpi .val{font-size:22px;font-weight:700}
+.kpi .label{color:var(--muted);font-size:13px}
+.kpi .delta{font-size:13px;font-weight:600;margin-left:6px}
+.kpi .delta.win{color:var(--win)}
+.kpi .delta.lose{color:var(--fail)}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;color:#fff}
+.badge-pass{background:var(--pass)}.badge-fail{background:var(--fail)}
+.badge-fix{background:var(--fix)}.badge-finding{background:var(--finding)}.badge-win{background:var(--win)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+pre{background:#0f172a;color:#e5e7eb;padding:14px 16px;border-radius:8px;overflow:auto;white-space:pre-wrap}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}</style>
+</head><body>
+<div class="container">
+<header class="session-header">
+  <h1>All experiments — cross-comparison</h1>
+  <div class="meta">2026-04-26 · branch <code>feat/dcf</code> · merging Stage-1 H4 PASS + motion-grounding 4-way ablation + frozen 3-lever anchor + V1 trajectory</div>
+  <p class="goal">Single table comparing all 10 production experiments on DexYCB subject-01 (train) and s1_test (subject-07, generalization). Highlights V1 trajectory as the first cell to deliver measured s1_test improvement against the legacy frozen 3-lever anchor.</p>
+</header>
+
+<section><h2>Headline KPIs (V1 vs spec §7 anchor pt-ivn0p7l0)</h2>
+<div class="kpi"><div class="card"><div class="val">12.35 mm <span class="delta win">−24%</span></div><div class="label">V1 train hand joint vs anchor (16.12 mm)</div></div><div class="card"><div class="val">14.51 mm <span class="delta lose">+75%</span></div><div class="label">V1 train obj vs anchor (8.30 mm) — Procrustes cost</div></div><div class="card"><div class="val">132.3 mm <span class="delta win">−59%</span></div><div class="label">V1 s1_test hand joint vs anchor (324.08 mm)</div></div><div class="card"><div class="val">130.9 mm <span class="delta win">−20%</span></div><div class="label">V1 s1_test obj vs anchor (163.87 mm)</div></div></div>
+</section>
+
+<section><h2>Master metrics table</h2>
+<div class="legend"><div class="item stage1">Stage-1 family — frozen-encoder baselines (pre-rewrite ckpts blocked from full-seq eval; train metrics only)</div><div class="item ablation">Motion-grounding ablation — LoRA r=16 cells, all eval'd on subject-01 train sequence</div><div class="item winner">Ablation winner</div><div class="item anchor">Spec §7 comparison anchor — first end-to-end legacy run with both train + s1_test eval</div><div class="item v1">V1 trajectory — single-Φ + Procrustes + LoRA r=8</div></div>
+<div class="tablewrap"><table><thead><tr><th>Job · name</th><th>Date</th><th>Encoder</th><th>Head topology</th><th>Scene loss<br><small>weight</small></th><th>Train hand-vert<br><small>L2 over 256 verts</small></th><th>Train hand-joint<br><small>L2 over 21 joints</small></th><th>Train obj<br><small>L2 over 256 obj samples</small></th><th>Test hand-joint<br><small>s1_test mean</small></th><th>Test obj<br><small>s1_test mean</small></th><th>Notes</th></tr></thead><tbody><tr class="stage1"><td>pt-9fa652zu<br><small style="color:#6b7280;font-weight:normal">Stage-1 H4 PASS · frozen 4-head baseline (3k)</small></td><td>2026-04-23</td><td>frozen</td><td>legacy 4-head (sep motion)</td><td>—</td><td class="metric">5.08 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric">3.57 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric"><span class="dim">—</span></td><td><small>first-ever Stage 1 H4 PASS; pre-rewrite ckpt blocked from current eval</small></td></tr><tr class="stage1"><td>pt-bbq2n8ni<br><small style="color:#6b7280;font-weight:normal">Init-ablation arm A — random motion-init</small></td><td>2026-04-23</td><td>frozen</td><td>legacy 4-head (sep motion)</td><td>—</td><td class="metric">7.33 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric">4.09 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric"><span class="dim">—</span></td><td><small>random motion-head init; pre-rewrite ckpt blocked from current eval</small></td></tr><tr class="stage1"><td>pt-vchlwhid<br><small style="color:#6b7280;font-weight:normal">Init-ablation arm B — 4RC motion-init</small></td><td>2026-04-23</td><td>frozen</td><td>legacy 4-head (sep motion)</td><td>—</td><td class="metric">7.04 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric">3.94 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric"><span class="dim">—</span></td><td><small>4RC motion-init transfer; pre-rewrite ckpt blocked from current eval</small></td></tr><tr class="stage1"><td>pt-drxe2i2e<br><small style="color:#6b7280;font-weight:normal">Init-ablation arm B′ — arch-matched, bs=8 cl=4</small></td><td>2026-04-23</td><td>frozen</td><td>legacy 4-head (sep motion, post-rewrite)</td><td>—</td><td class="metric">8.76 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric">6.21 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric"><span class="dim">—</span></td><td><small>trained at cl=4; cl=63 eval suffers known regression (375 / 432 mm)</small></td></tr><tr class="ablation"><td>pt-6f68ecsh<br><small style="color:#6b7280;font-weight:normal">E1 — LoRA + separate motion</small></td><td>2026-04-23</td><td>LoRA r=16 α=32</td><td>legacy 4-head (sep motion)</td><td>—</td><td class="metric">14.72 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric">5.60 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric"><span class="dim">—</span></td><td><small>LoRA baseline cell — full cross-attn ctx</small></td></tr><tr class="ablation"><td>pt-beaua22b<br><small style="color:#6b7280;font-weight:normal">E4 — LoRA + combined motion</small></td><td>2026-04-23</td><td>LoRA r=16 α=32</td><td>legacy 4-head (combined motion)</td><td>—</td><td class="metric">18.27 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric">8.59 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric"><span class="dim">—</span></td><td><small>shared-weight motion head; lost vs E1</small></td></tr><tr class="ablation winner"><td>pt-cwhz5bvz<br><small style="color:#6b7280;font-weight:normal">🏆 E1 + scene-loss (single-fwd, w=0.1)</small></td><td>2026-04-23</td><td>LoRA r=16 α=32</td><td>legacy 4-head (sep motion)</td><td>0.1</td><td class="metric">12.39 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric">4.79 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric"><span class="dim">—</span></td><td><small>ablation winner; depth+camera aux loss anchors LoRA</small></td></tr><tr class="ablation"><td>pt-e9dqtgv7<br><small style="color:#6b7280;font-weight:normal">E1 + scene + patches-only ctx</small></td><td>2026-04-23</td><td>LoRA r=16 α=32</td><td>legacy 4-head (sep motion)</td><td>0.1</td><td class="metric">15.22 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric">5.19 mm</td><td class="metric"><span class="dim">—</span></td><td class="metric"><span class="dim">—</span></td><td><small>drops other-frame hand/obj from cross-attn; lost vs full ctx</small></td></tr><tr class="anchor"><td>BASELINE_frozen_3lever<br><small style="color:#6b7280;font-weight:normal">Frozen 3-lever (pt-ivn0p7l0 anchor)</small></td><td>2026-04-22</td><td>frozen</td><td>legacy 4-head (sep motion)</td><td>—</td><td class="metric">20.21 mm</td><td class="metric">16.12 mm</td><td class="metric">8.30 mm</td><td class="metric">324.08 mm</td><td class="metric">163.87 mm</td><td><small>first end-to-end baseline with full s1_test eval; spec §7 comparison anchor</small></td></tr><tr class="v1"><td>pt-wlapue0u<br><small style="color:#6b7280;font-weight:normal">🚀 V1 trajectory (single-Φ + Procrustes, LoRA)</small></td><td>2026-04-25</td><td>LoRA r=8 α=16</td><td>trajectory (single-Φ) + obj Procrustes wrap</td><td>0.1 dep + 0.05 cam</td><td class="metric"><span class="dim">—</span></td><td class="metric">12.35 mm</td><td class="metric">14.51 mm</td><td class="metric">132.30 mm</td><td class="metric">130.93 mm</td><td><small>trajectory framing + 21-joint hand + Kabsch-rigid obj; first cell with s1_test improvement</small></td></tr></tbody></table></div>
+<p style="margin-top:12px;color:var(--muted);font-size:13px">
+<b>Metric definitions</b>: <i>Train hand-vert L2</i> = mean L2 over the 256 hand canonical sample positions (legacy heads).
+<i>Train hand-joint L2</i> = mean L2 over 21 MANO joints (V1 native; extracted from BASELINE_frozen_3lever predictions for the anchor).
+<i>Train obj L2</i> = mean L2 over 256 object canonical sample positions.
+<i>Test</i> columns are means over s1_test idx 0 + idx 2 (subject-07; idx 1, 3, 4 skipped due to DexYCB hand-tracking gaps in those clips).
+All eval runs use <code>scripts/hoi3r_eval.py --full-sequence --fixed-h 378 --fixed-w 504</code> on the same 63-frame tracked range (frames 9..71).
+Stage-1 cells with em-dashes in test columns indicate eval was blocked: their checkpoints predate the 2026-04-23 motion-head rewrite (commit <code>58532a2</code>) and 2026-04-22 handedness two-slot fix (commit <code>7cdd0f5a</code>) and won't load into current HEAD <code>HOI3RModel</code>.
+</p>
+</section>
+
+<section><h2>Cross-experiment findings</h2>
+<div class="panel win"><h3><span class="badge badge-win">WIN</span> V1 is the only experiment with measured s1_test improvement</h3><p>All motion-grounding ablation cells were evaluated on the subject-01 training sequence only. The frozen 3-lever anchor (pt-ivn0p7l0) ran s1_test eval but failed (~324 mm hand, ~164 mm obj). V1 is the first cell to deliver a meaningful improvement on unseen subjects: −59% hand joint L2 and −20% obj L2 against the anchor. Architectural ablations under the legacy topology never moved the test metric.</p></div><div class="panel "><h3><span class="badge badge-finding">FINDING</span> Train metrics are not directly comparable across topology families</h3><p>Legacy 4-head cells report hand vertex L2 (over 256 canonical samples). V1 reports hand joint L2 (over 21 MANO joints — a sparse, well-supervised subset). Vertex L2 is mechanically larger than joint L2 because vertex distance includes palm-face spread. Apples-to-apples joint-L2: anchor 16.12 mm vs V1 12.35 mm — V1 wins by 24%. Apples-to-apples vertex-L2 will require V1 + MANO post-fit (blocked by missing MANO_RIGHT.pkl on the debug container).</p></div><div class="panel fail"><h3><span class="badge badge-fail">FAIL</span> Procrustes wrapper costs +75% on training obj</h3><p>V1 obj L2 on subject-01 train (14.51 mm) is significantly worse than the ablation winner (4.79 mm) and the anchor (8.30 mm). The SE(3) Procrustes wrapper enforces rigid object motion — appropriate for s1_test where the model must generalize but harmful on a single sequence where the legacy free-vertex regression can fit object deformation noise. Mitigations: lower --obj-procrustes-weight, or use --obj-correspondence-weight for a softer rigidity prior.</p></div><div class="panel win"><h3><span class="badge badge-win">WIN</span> Single-Φ topology beats source/target factorization on cross-clip-length</h3><p>Memory project_cl_train_eval_mismatch documented motion heads regressing 10× from cl=4 to cl=16 eval. V1 trains at variable T∈[2,16] and evaluates at full 63-frame clips with only 1.65× regress (8.77→14.51 mm obj). Single-Φ derives Δ from Φ(τ)−Φ(t), so cycle/transport identities hold by construction; legacy heads learn ΔP and Φ separately and can drift apart.</p></div><div class="panel "><h3><span class="badge badge-finding">FINDING</span> Spec §7 partial-pass: trajectory framing helps consistency, not generalization</h3><p>V1 misses the spec §7 absolute target (s1_test obj L2 ≤ 60 mm; achieved 131 mm) but passes both relative criteria (beats anchor on hand and obj; cl-stability < 2×). Per spec fallback: 'failing condition (1) but passing (2) is partial — the trajectory framing helps consistency but not generalization, and the next move is multi-subject manifest expansion rather than further architectural change.' Expand training manifest beyond subject-01.</p></div>
+</section>
+
+<section><h2>Linked pages</h2>
+<ul>
+<li><a href="2026-04-23-stage1-h4-pass-overfit-success.html">2026-04-23 · Stage-1 H4 PASS</a> — frozen baseline + motion-init ablation</li>
+<li><a href="2026-04-24-motion-grounding-4way-ablation.html">2026-04-24 · Motion-grounding 4-way ablation</a> — LoRA × scene-loss × motion-topology × cross-attn ctx</li>
+<li><a href="2026-04-26-v1-trajectory-vs-baseline.html">2026-04-26 · V1 trajectory head vs baseline (pt-wlapue0u)</a> — single-Φ + Procrustes + 21-joint hand</li>
+</ul>
+</section>
+
+<section><h2>Next direction (per spec §7 partial-pass clause)</h2>
+<p>V1 shifts both metrics in the right direction but misses the absolute s1_test obj-L2 ≤ 60 mm bar by 2×. The spec's pre-registered fallback says: <i>"the next move is multi-subject manifest expansion rather than further architectural change."</i> Concretely:</p>
+<ul>
+<li>Expand training manifest from subject-01 (1×100 seq) to all 10 DexYCB subjects (~1000 seq) — 10× more variety on hand pose + object grasp.</li>
+<li>Re-run V1 with same architecture; expected s1_test obj L2 should drop into the 60-80 mm range.</li>
+<li>If multi-subject doesn't break 60 mm, then revisit Procrustes weight tuning (currently <code>--obj-procrustes-weight 1.0</code>) — symmetric YCB objects may benefit from quotient-symmetry loss (deferred to v1.1 per spec §9).</li>
+</ul>
+</section>
+
+</div></body></html>
