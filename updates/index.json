@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-26 · Conclude HOI3R v2 Plan 1: 20-task implementation + 2 ACP runs (full + cached encoder) + eval + viz published. Full path passes §4.1 P1→P2 gate.",
+    "date": "2026-04-26",
+    "status": "converged",
+    "summary": "Conclude HOI3R v2 Plan 1: 20-task implementation + 2 ACP runs (full + cached encoder) + eval + viz published. Full path passes §4.1 P1→P2 gate.",
+    "path": "updates/2026-04-26-session-summary-hoi3rv2-plan1-complete.html",
+    "file": "updates/2026-04-26-session-summary-hoi3rv2-plan1-complete.html",
+    "sidecar": "updates/2026-04-26-session-summary-hoi3rv2-plan1-complete.json"
+  },
+  {
     "title": "2026-04-26 · HOI3R v2 P1 single-sequence overfit — full and cached-encoder runs both converge to ~0.033 total training loss; cached path skips the frozen 4RC forward and saves ~10 percent wall-clock per step, but eval reveals a ~16x metric gap on the cached run vs the full run when re-running with a live encoder.",
     "date": "2026-04-26",
     "status": "wip",

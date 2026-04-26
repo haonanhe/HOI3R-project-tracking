@@ -1,0 +1,284 @@
+{
+  "date": "2026-04-26",
+  "topic": "hoi3rv2-plan1-complete",
+  "branch": "feat/dcf",
+  "head_sha": "26ede82",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-26-hoi3r-framework-v2-plan1-core-p1.md",
+  "goal": "Conclude HOI3R v2 Plan 1: 20-task implementation + 2 ACP runs (full + cached encoder) + eval + viz published. Full path passes §4.1 P1→P2 gate.",
+  "status": "converged",
+  "headline_stats": [
+    {
+      "label": "Hand joint L2 (mm)",
+      "value": "4.15"
+    },
+    {
+      "label": "Obj ADD-S (mm)",
+      "value": "2.29"
+    },
+    {
+      "label": "Plan-1 commits",
+      "value": "20"
+    },
+    {
+      "label": "Tests passing",
+      "value": "42/42"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "T1-T19",
+      "sha": "a81988f...3d22685",
+      "summary": "Plan-1 core architecture + P1 standalone trainer (17 commits)"
+    },
+    {
+      "id": "T20-launch",
+      "sha": "7ea34c8",
+      "summary": "P1 ACP launch script (8/2/1 GPU configurable)"
+    },
+    {
+      "id": "cache-fast-path",
+      "sha": "ea85d53,7c3e3e3",
+      "summary": "Encoder feat cache + p1_train_cached + frame-id passthrough"
+    },
+    {
+      "id": "P1-full-run",
+      "sha": "pt-awm4jd36",
+      "summary": "2 GPU bs=8, 4000 steps, 6h03m. Eval: hand_joint 4.15 mm, ADD-S 2.29 mm — gate-passed."
+    },
+    {
+      "id": "P1-cached-run",
+      "sha": "pt-4zct5j85",
+      "summary": "1 GPU bs=8 cached, 4000 steps, 6h41m. Train loss matches full (0.034) but eval broken (67/57 mm)."
+    },
+    {
+      "id": "eval-saves-predictions",
+      "sha": "d62875a",
+      "summary": "p1_eval.py saves predictions.pt for offline rendering"
+    },
+    {
+      "id": "publish",
+      "sha": "17ea88b (tracking)",
+      "summary": "Results page published: 2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.html"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P1-fix-hand-point-loss",
+      "priority": "P0",
+      "summary": "hand_point_loss is a placeholder — FPS-128 GT idx vs random MANO sample idx don't align. Hand_vert L2 stays at 52.7 mm; joint L2 (4.15) carries actual signal. Fix before Plan 2 multi-seq."
+    },
+    {
+      "id": "P1-investigate-cache-eval-gap",
+      "priority": "P0",
+      "summary": "Cached fp16 pyramid trains identically but evals 16× worse against live fp32 encoder. Cache fp32, OR eval via cached path, OR don't cache. See feedback_cached_pyramid_eval_gap."
+    },
+    {
+      "id": "P1-enable-contact-loss",
+      "priority": "P2",
+      "summary": "Contact loss returns 0 in P1 trainer (warmup-at-500 design + plumbing not finalized). Re-enable + validate after step 500."
+    },
+    {
+      "id": "Plan-2-write",
+      "priority": "P1",
+      "summary": "Plan 2 (P2 single-subject multi-seq, P3 DexYCB s1 train, P4 multi-dataset, ablation grid) needs writing — depends on P1 passing gate (DONE)."
+    },
+    {
+      "id": "Plan-3-write",
+      "priority": "P2",
+      "summary": "Plan 3 ((iv) SAM-3D-Objects cross-object demo) — depends on P3 checkpoint."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fix",
+      "title": "ArcEncoderWrapper d_kv = 3072, not 1024",
+      "body": "Encoder concats local+global at 2×HIDDEN per pyramid layer; cross-attn into encoder feats must use d_kv=3072 or first forward crashes. Also: encoder.forward requires q_hand/q_obj args (zero-fill if only feats are needed)."
+    },
+    {
+      "badge": "fix",
+      "title": "smplx-MANO returns 16 joints, not 21",
+      "body": "vertex_joint_selector commented out in the bundled smplx; body.joints[0].shape == (16,3). Append fingertip vertex IDs [320,443,672,555,744] in smplx-mano slot order to reach 21."
+    },
+    {
+      "badge": "finding",
+      "title": "Cached encoder pyramid: trains fine, eval broken",
+      "body": "Both runs converged to ~0.033 final loss. But the cached-run checkpoint, when re-evaluated against a live fp32 encoder forward, drops 16× (joint 67 vs 4.15 mm). Model overfit to fp16 quantization noise that doesn't survive a fresh forward. Train and eval MUST use the same feat path."
+    },
+    {
+      "badge": "finding",
+      "title": "57% end-to-end speedup from feat caching (training only)",
+      "body": "Local 3-step single-GPU smoke: full=128.1s vs cached=55.4s. Per-step gain larger since startup is amortized. But — see eval-gap finding above — speedup is moot if eval breaks."
+    },
+    {
+      "badge": "fix",
+      "title": "Plan deviation: skipped Hydra/Lightning bolt-on",
+      "body": "Wrote standalone scripts/hoi3r_v2/p1_train.py modeled on hoi3r_stage1_overfit.py. Argparse + DDP-aware. Skipped EMA. GT R/t derived per-frame via differentiable Kabsch from obj_canonical_samples → obj_posed_gt."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "a81988f",
+      "type": "feat",
+      "subject": "SE(3) utilities — rot6d_to_R, build_se3, geodesic_so3_distance"
+    },
+    {
+      "sha": "c28b153",
+      "type": "feat",
+      "subject": "GPS Laplacian eigvec buffer for MANO 778 vertices"
+    },
+    {
+      "sha": "051b18d",
+      "type": "feat",
+      "subject": "hand query builder — random per-step sampling + GPS + two-slot handedness"
+    },
+    {
+      "sha": "589defb",
+      "type": "feat",
+      "subject": "MultiLayerCrossAttnBlock"
+    },
+    {
+      "sha": "1f738e0",
+      "type": "feat",
+      "subject": "TemporalSelfAttnBlock"
+    },
+    {
+      "sha": "c3a9e8b",
+      "type": "feat",
+      "subject": "PointNet++ shape encoder (random-init, SA2 trainable for P1)"
+    },
+    {
+      "sha": "349cc38",
+      "type": "feat",
+      "subject": "HandDecoder — 4× cross-attn + late temporal + heads"
+    },
+    {
+      "sha": "81d5036",
+      "type": "feat",
+      "subject": "ObjectPoseDecoder — 6D-rot SE(3) head"
+    },
+    {
+      "sha": "45e00ad",
+      "type": "feat",
+      "subject": "hand losses — point/joint/edge/temporal"
+    },
+    {
+      "sha": "0010f9f",
+      "type": "feat",
+      "subject": "object losses — rot Huber, trans L1, ADD-S, temporal"
+    },
+    {
+      "sha": "950deea",
+      "type": "feat",
+      "subject": "contact + total loss + λ_C warmup at step 500"
+    },
+    {
+      "sha": "191172f",
+      "type": "feat",
+      "subject": "DexYCBCADLoader — FPS-1024 + YCB-V symmetry"
+    },
+    {
+      "sha": "5ae6af6",
+      "type": "feat",
+      "subject": "CAD augmentor (off for P1)"
+    },
+    {
+      "sha": "d4ee0ad",
+      "type": "feat",
+      "subject": "Hoi3rV2Model — top-level wiring + transform_cad_to_pred"
+    },
+    {
+      "sha": "9d4497d",
+      "type": "feat",
+      "subject": "contact-pair precomputer (standalone)"
+    },
+    {
+      "sha": "3d22685",
+      "type": "feat",
+      "subject": "P1 standalone trainer + eval; 1-step smoke passing"
+    },
+    {
+      "sha": "7ea34c8",
+      "type": "feat",
+      "subject": "P1 ACP launch script"
+    },
+    {
+      "sha": "ea85d53",
+      "type": "feat",
+      "subject": "expose actual frame indices per-clip for cache lookup"
+    },
+    {
+      "sha": "7c3e3e3",
+      "type": "feat",
+      "subject": "cached encoder pyramid + p1_train_cached + precompute"
+    },
+    {
+      "sha": "d62875a",
+      "type": "feat",
+      "subject": "p1_eval saves predictions.pt for offline rendering"
+    },
+    {
+      "sha": "26ede82",
+      "type": "docs",
+      "subject": "Wan2.2-TI2V-5B feature swap A/B vs 4RC spec (next-up follow-on)"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Branch / HEAD",
+      "state": "feat/dcf @ 26ede82 (20 v2 commits + Wan2.2 spec)"
+    },
+    {
+      "aspect": "Tests",
+      "state": "42 unit + integration tests passing on remote"
+    },
+    {
+      "aspect": "Trainers",
+      "state": "scripts/hoi3r_v2/p1_train.py (full encoder), scripts/hoi3r_v2/p1_train_cached.py (cached)"
+    },
+    {
+      "aspect": "Eval",
+      "state": "scripts/hoi3r_v2/p1_eval.py — full-sequence chunked T=16, saves eval.json + predictions.pt"
+    },
+    {
+      "aspect": "ACP launch",
+      "state": "scripts/acp_jobs/hoi3r_v2/{P1_overfit.sh, P1_overfit_cached.sh}"
+    },
+    {
+      "aspect": "Cache file",
+      "state": "/mnt/afs/haonan/hoi3r/cache/hoi3r_v2_feats/anchor_seq.pt — 2.0 GB fp16, 4 layers × 63 frames × 1369 patches × 3072. EVAL-MISMATCHED, do not reuse for production."
+    },
+    {
+      "aspect": "Tag",
+      "state": "plan1-baseline @ ae18292 (pre-implementation snapshot)"
+    },
+    {
+      "aspect": "Best checkpoint",
+      "state": "logs/hoi3r_v2_p1/seed0/final.pt (313 MB) — pt-awm4jd36 final"
+    },
+    {
+      "aspect": "Results page",
+      "state": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.html"
+    }
+  ],
+  "memory_entries_written": [
+    "project_v2_p1_results.md",
+    "feedback_cached_pyramid_eval_gap.md",
+    "reference_arc_encoder_v2_integration.md",
+    "feedback_smplx_mano_returns_16_joints.md",
+    "reference_publish_session_assets_dir.md",
+    "project_v2_plan1_status.md (updated to SUPERSEDED)"
+  ],
+  "caveats": [
+    "Hand point loss is a placeholder — pred-vs-GT idx mismatch. hand_vert L2 reads 52.7 mm but joint L2 (4.15) and edge/temp_h losses carry the actual hand signal. Fix is P0 before Plan 2.",
+    "Cached encoder pyramid fp16 train+live-eval cross is broken (16× regression). Fix is P0 before any cached-path scale-up.",
+    "Effective batch differs between the two ACP runs (16 vs 8) due to p1 quota — comparison is wall-clock + final loss, not a perfectly controlled A/B.",
+    "Contact loss disabled in P1 (warmup-at-500 + plumbing placeholder). Doesn't affect P1 results since warmup never engages in single-seq runs at this scale.",
+    "smplx-MANO canonical joints differ from manopth-MANO posed joints (memory says up to 53 mm at fingertips). V2 uses smplx for canonical tokens, dataloader uses manopth for GT. P1 still hit 4.15 mm joint L2 because canonical tokens feed only into a learned MLP, but should be audited for Plan 2."
+  ],
+  "extra_html": "<section class=\"panel info\"><h2>Companion experiment-results page</h2><p>The full eval table, loss curves, viz MP4s, and interactive Plotly 3D scatter for the two ACP runs were already published earlier in this session as a dedicated results page:</p><p><a href=\"https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.html\"><strong>2026-04-26 hoi3rv2-p1-overfit-cached-vs-noncached</strong></a></p><p>This conclude page captures memory entries + pending tasks for handoff; the linked page has the visualizations.</p></section>",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-hoi3rv2-plan1-complete.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-hoi3rv2-plan1-complete.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-hoi3rv2-plan1-complete.json\nand continue from tasks_pending[0] (P1-fix-hand-point-loss [P0]: hand_point_loss is a placeholder — FPS-128 GT idx vs random MANO sample idx don't align. Hand_vert L2 stays at 52.7 mm; joint L2 (4.15) carries actual signal. Fix before Plan 2 multi-seq.).\nContext: branch feat/dcf@26ede82; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md, docs/superpowers/plans/2026-04-26-hoi3r-framework-v2-plan1-core-p1.md."
+}

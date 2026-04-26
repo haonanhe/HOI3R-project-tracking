@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-26 · hoi3rv2-plan1-complete</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Hoi3Rv2 Plan1 Complete</h1>
+  <div class="meta">2026-04-26 · <code>feat/dcf</code> · <code>@26ede82</code> · spec: <code>docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md</code> · plan: <code>docs/superpowers/plans/2026-04-26-hoi3r-framework-v2-plan1-core-p1.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Conclude HOI3R v2 Plan 1: 20-task implementation + 2 ACP runs (full + cached encoder) + eval + viz published. Full path passes §4.1 P1→P2 gate.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">4.15</div><div class="label">Hand joint L2 (mm)</div></div><div class="stat"><div class="val">2.29</div><div class="label">Obj ADD-S (mm)</div></div><div class="stat"><div class="val">20</div><div class="label">Plan-1 commits</div></div><div class="stat"><div class="val">42/42</div><div class="label">Tests passing</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>T1-T19</td><td><span class="badge badge-pass">PASS</span></td><td>a81988f...3d22685</td><td>Plan-1 core architecture + P1 standalone trainer (17 commits)</td></tr><tr><td>T20-launch</td><td><span class="badge badge-pass">PASS</span></td><td>7ea34c8</td><td>P1 ACP launch script (8/2/1 GPU configurable)</td></tr><tr><td>cache-fast-path</td><td><span class="badge badge-pass">PASS</span></td><td>ea85d53,7c3e3e3</td><td>Encoder feat cache + p1_train_cached + frame-id passthrough</td></tr><tr><td>P1-full-run</td><td><span class="badge badge-pass">PASS</span></td><td>pt-awm4jd36</td><td>2 GPU bs=8, 4000 steps, 6h03m. Eval: hand_joint 4.15 mm, ADD-S 2.29 mm — gate-passed.</td></tr><tr><td>P1-cached-run</td><td><span class="badge badge-pass">PASS</span></td><td>pt-4zct5j85</td><td>1 GPU bs=8 cached, 4000 steps, 6h41m. Train loss matches full (0.034) but eval broken (67/57 mm).</td></tr><tr><td>eval-saves-predictions</td><td><span class="badge badge-pass">PASS</span></td><td>d62875a</td><td>p1_eval.py saves predictions.pt for offline rendering</td></tr><tr><td>publish</td><td><span class="badge badge-pass">PASS</span></td><td>17ea88b (tracking)</td><td>Results page published: 2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.html</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> ArcEncoderWrapper d_kv = 3072, not 1024</h3><p>Encoder concats local+global at 2×HIDDEN per pyramid layer; cross-attn into encoder feats must use d_kv=3072 or first forward crashes. Also: encoder.forward requires q_hand/q_obj args (zero-fill if only feats are needed).</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> smplx-MANO returns 16 joints, not 21</h3><p>vertex_joint_selector commented out in the bundled smplx; body.joints[0].shape == (16,3). Append fingertip vertex IDs [320,443,672,555,744] in smplx-mano slot order to reach 21.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Cached encoder pyramid: trains fine, eval broken</h3><p>Both runs converged to ~0.033 final loss. But the cached-run checkpoint, when re-evaluated against a live fp32 encoder forward, drops 16× (joint 67 vs 4.15 mm). Model overfit to fp16 quantization noise that doesn&#x27;t survive a fresh forward. Train and eval MUST use the same feat path.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> 57% end-to-end speedup from feat caching (training only)</h3><p>Local 3-step single-GPU smoke: full=128.1s vs cached=55.4s. Per-step gain larger since startup is amortized. But — see eval-gap finding above — speedup is moot if eval breaks.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> Plan deviation: skipped Hydra/Lightning bolt-on</h3><p>Wrote standalone scripts/hoi3r_v2/p1_train.py modeled on hoi3r_stage1_overfit.py. Argparse + DDP-aware. Skipped EMA. GT R/t derived per-frame via differentiable Kabsch from obj_canonical_samples → obj_posed_gt.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>a81988f</td><td>feat</td><td>SE(3) utilities — rot6d_to_R, build_se3, geodesic_so3_distance</td></tr><tr><td>c28b153</td><td>feat</td><td>GPS Laplacian eigvec buffer for MANO 778 vertices</td></tr><tr><td>051b18d</td><td>feat</td><td>hand query builder — random per-step sampling + GPS + two-slot handedness</td></tr><tr><td>589defb</td><td>feat</td><td>MultiLayerCrossAttnBlock</td></tr><tr><td>1f738e0</td><td>feat</td><td>TemporalSelfAttnBlock</td></tr><tr><td>c3a9e8b</td><td>feat</td><td>PointNet++ shape encoder (random-init, SA2 trainable for P1)</td></tr><tr><td>349cc38</td><td>feat</td><td>HandDecoder — 4× cross-attn + late temporal + heads</td></tr><tr><td>81d5036</td><td>feat</td><td>ObjectPoseDecoder — 6D-rot SE(3) head</td></tr><tr><td>45e00ad</td><td>feat</td><td>hand losses — point/joint/edge/temporal</td></tr><tr><td>0010f9f</td><td>feat</td><td>object losses — rot Huber, trans L1, ADD-S, temporal</td></tr><tr><td>950deea</td><td>feat</td><td>contact + total loss + λ_C warmup at step 500</td></tr><tr><td>191172f</td><td>feat</td><td>DexYCBCADLoader — FPS-1024 + YCB-V symmetry</td></tr><tr><td>5ae6af6</td><td>feat</td><td>CAD augmentor (off for P1)</td></tr><tr><td>d4ee0ad</td><td>feat</td><td>Hoi3rV2Model — top-level wiring + transform_cad_to_pred</td></tr><tr><td>9d4497d</td><td>feat</td><td>contact-pair precomputer (standalone)</td></tr><tr><td>3d22685</td><td>feat</td><td>P1 standalone trainer + eval; 1-step smoke passing</td></tr><tr><td>7ea34c8</td><td>feat</td><td>P1 ACP launch script</td></tr><tr><td>ea85d53</td><td>feat</td><td>expose actual frame indices per-clip for cache lookup</td></tr><tr><td>7c3e3e3</td><td>feat</td><td>cached encoder pyramid + p1_train_cached + precompute</td></tr><tr><td>d62875a</td><td>feat</td><td>p1_eval saves predictions.pt for offline rendering</td></tr><tr><td>26ede82</td><td>docs</td><td>Wan2.2-TI2V-5B feature swap A/B vs 4RC spec (next-up follow-on)</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Branch / HEAD</td><td>feat/dcf @ 26ede82 (20 v2 commits + Wan2.2 spec)</td></tr><tr><td>Tests</td><td>42 unit + integration tests passing on remote</td></tr><tr><td>Trainers</td><td>scripts/hoi3r_v2/p1_train.py (full encoder), scripts/hoi3r_v2/p1_train_cached.py (cached)</td></tr><tr><td>Eval</td><td>scripts/hoi3r_v2/p1_eval.py — full-sequence chunked T=16, saves eval.json + predictions.pt</td></tr><tr><td>ACP launch</td><td>scripts/acp_jobs/hoi3r_v2/{P1_overfit.sh, P1_overfit_cached.sh}</td></tr><tr><td>Cache file</td><td>/mnt/afs/haonan/hoi3r/cache/hoi3r_v2_feats/anchor_seq.pt — 2.0 GB fp16, 4 layers × 63 frames × 1369 patches × 3072. EVAL-MISMATCHED, do not reuse for production.</td></tr><tr><td>Tag</td><td>plan1-baseline @ ae18292 (pre-implementation snapshot)</td></tr><tr><td>Best checkpoint</td><td>logs/hoi3r_v2_p1/seed0/final.pt (313 MB) — pt-awm4jd36 final</td></tr><tr><td>Results page</td><td>https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.html</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>P1-fix-hand-point-loss</td><td><span class="badge badge-p0">P0</span></td><td>hand_point_loss is a placeholder — FPS-128 GT idx vs random MANO sample idx don&#x27;t align. Hand_vert L2 stays at 52.7 mm; joint L2 (4.15) carries actual signal. Fix before Plan 2 multi-seq.</td></tr><tr><td>P1-investigate-cache-eval-gap</td><td><span class="badge badge-p0">P0</span></td><td>Cached fp16 pyramid trains identically but evals 16× worse against live fp32 encoder. Cache fp32, OR eval via cached path, OR don&#x27;t cache. See feedback_cached_pyramid_eval_gap.</td></tr><tr><td>P1-enable-contact-loss</td><td><span class="badge badge-p2">P2</span></td><td>Contact loss returns 0 in P1 trainer (warmup-at-500 design + plumbing not finalized). Re-enable + validate after step 500.</td></tr><tr><td>Plan-2-write</td><td><span class="badge badge-p1">P1</span></td><td>Plan 2 (P2 single-subject multi-seq, P3 DexYCB s1 train, P4 multi-dataset, ablation grid) needs writing — depends on P1 passing gate (DONE).</td></tr><tr><td>Plan-3-write</td><td><span class="badge badge-p2">P2</span></td><td>Plan 3 ((iv) SAM-3D-Objects cross-object demo) — depends on P3 checkpoint.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>Hand point loss is a placeholder — pred-vs-GT idx mismatch. hand_vert L2 reads 52.7 mm but joint L2 (4.15) and edge/temp_h losses carry the actual hand signal. Fix is P0 before Plan 2.</li><li>Cached encoder pyramid fp16 train+live-eval cross is broken (16× regression). Fix is P0 before any cached-path scale-up.</li><li>Effective batch differs between the two ACP runs (16 vs 8) due to p1 quota — comparison is wall-clock + final loss, not a perfectly controlled A/B.</li><li>Contact loss disabled in P1 (warmup-at-500 + plumbing placeholder). Doesn&#x27;t affect P1 results since warmup never engages in single-seq runs at this scale.</li><li>smplx-MANO canonical joints differ from manopth-MANO posed joints (memory says up to 53 mm at fingertips). V2 uses smplx for canonical tokens, dataloader uses manopth for GT. P1 still hit 4.15 mm joint L2 because canonical tokens feed only into a learned MLP, but should be audited for Plan 2.</li></ul>
+</section>
+
+<section><h2>Memory entries written this session</h2>
+<ul><li><code>project_v2_p1_results.md</code></li><li><code>feedback_cached_pyramid_eval_gap.md</code></li><li><code>reference_arc_encoder_v2_integration.md</code></li><li><code>feedback_smplx_mano_returns_16_joints.md</code></li><li><code>reference_publish_session_assets_dir.md</code></li><li><code>project_v2_plan1_status.md (updated to SUPERSEDED)</code></li></ul>
+</section>
+
+<section class="panel info"><h2>Companion experiment-results page</h2><p>The full eval table, loss curves, viz MP4s, and interactive Plotly 3D scatter for the two ACP runs were already published earlier in this session as a dedicated results page:</p><p><a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.html"><strong>2026-04-26 hoi3rv2-p1-overfit-cached-vs-noncached</strong></a></p><p>This conclude page captures memory entries + pending tasks for handoff; the linked page has the visualizations.</p></section>
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-hoi3rv2-plan1-complete.json
+and continue from tasks_pending[0] (P1-fix-hand-point-loss [P0]: hand_point_loss is a placeholder — FPS-128 GT idx vs random MANO sample idx don&#x27;t align. Hand_vert L2 stays at 52.7 mm; joint L2 (4.15) carries actual signal. Fix before Plan 2 multi-seq.).
+Context: branch feat/dcf@26ede82; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md, docs/superpowers/plans/2026-04-26-hoi3r-framework-v2-plan1-core-p1.md.</pre></section>
+</div></body></html>
