@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-26 · HOI3R v2 P1 single-sequence overfit — full and cached-encoder runs both converge to ~0.033 total training loss; cached path skips the frozen 4RC forward and saves ~10 percent wall-clock per step, but eval reveals a ~16x metric gap on the cached run vs the full run when re-running with a live encoder.",
+    "date": "2026-04-26",
+    "status": "wip",
+    "summary": "HOI3R v2 P1 single-sequence overfit — full and cached-encoder runs both converge to ~0.033 total training loss; cached path skips the frozen 4RC forward and saves ~10 percent wall-clock per step, but eval reveals a ~16x metric gap on the cached run vs the full run when re-running with a live encoder.",
+    "path": "updates/2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.html",
+    "file": "updates/2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.html",
+    "sidecar": "updates/2026-04-26-session-summary-hoi3rv2-p1-overfit-cached-vs-noncached.json"
+  },
+  {
     "title": "2026-04-23 · Continue 2026-04-22 pipeline-WIP: restore torch in MagicHOI env, drive diag to trainer.fit + camera.json, advance Task 4 (FP+HaWoR) and stage HaWoR weights.",
     "date": "2026-04-23",
     "status": "wip",
