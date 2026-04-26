@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-26 · Brainstorm HOI3R v2 framework + write spec + write Plan 1 (core architecture + P1 single-seq overfit)",
+    "date": "2026-04-26",
+    "status": "converged",
+    "summary": "Brainstorm HOI3R v2 framework + write spec + write Plan 1 (core architecture + P1 single-seq overfit)",
+    "path": "updates/2026-04-26-session-summary-v2-framework-design-and-plan1.html",
+    "file": "updates/2026-04-26-session-summary-v2-framework-design-and-plan1.html",
+    "sidecar": "updates/2026-04-26-session-summary-v2-framework-design-and-plan1.json"
+  },
+  {
     "title": "2026-04-26 · Implement trajectory-head v1 (T2-T12), train via ACP, evaluate on subject-01 train + s1_test, render visualizations, publish two cross-experiment pages.",
     "date": "2026-04-26",
     "status": "converged",

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-26 · v2-framework-design-and-plan1</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>V2 Framework Design And Plan1</h1>
+  <div class="meta">2026-04-26 · <code>feat/dcf</code> · <code>@2cc4e11</code> · spec: <code>docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md</code> · plan: <code>docs/superpowers/plans/2026-04-26-hoi3r-framework-v2-plan1-core-p1.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Brainstorm HOI3R v2 framework + write spec + write Plan 1 (core architecture + P1 single-seq overfit)</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">7/7 (§0–§6 + appendices)</div><div class="label">Spec sections</div></div><div class="stat"><div class="val">20/20 written</div><div class="label">Plan 1 tasks</div></div><div class="stat"><div class="val">3 new</div><div class="label">Memory entries</div></div><div class="stat"><div class="val">0 (local-only, user-chosen option c)</div><div class="label">Code commits</div></div><div class="stat"><div class="val">(iii) DexYCB s1_test + (iv) cross-object zero-shot</div><div class="label">Paper claim target</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>B1</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Brainstorm v2 architecture from math doc + V1 eval results; converge on Framework B + β++ multi-layer cross-attn</td></tr><tr><td>B2</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Write design spec (7 sections, §0–§6 + 3 appendices) at docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md</td></tr><tr><td>B3</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Spec self-review pass — fixed 4 inline issues (P2 seed count, contact-F1 def, sampler def, scale-prior wording)</td></tr><tr><td>B4</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Decompose into 3 plans (Plan 1 = core+P1; Plan 2 = P2-P4 + ablations; Plan 3 = SAM-3D demo)</td></tr><tr><td>B5</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Write Plan 1 (20 TDD tasks, T1 pre-flight → T20 ACP submit + publish)</td></tr><tr><td>B6</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Plan-1 self-review — fixed d_kv mismatches in T8/T9 tests, added mano_edges_buf builder to T17, replaced T18 eval-script placeholders, expanded T15 collate to also produce CAD + sym_group</td></tr><tr><td>B7</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Wrote 3 durable memory entries: project_v2_framework_design, feedback_frozen_vs_lora_contested, project_v2_plan1_status</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Math doc and V1 evidence converge on hand+object asymmetry</h3><p>Hand has shared canonical manifold across MANO topology; object has no shared dense point identity across mug/banana/scissors. V1&#x27;s predict-points-then-Procrustes hides train regression. Right answer per math doc: hand = NLF canonical-trajectory, object = shape-conditioned SE(3) trajectory. This is the core architectural delta in v2.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> β++ multi-layer cross-attn resolves the frozen-vs-LoRA dilemma</h3><p>Pure-frozen starves queries (validated by pt-ivn0p7l0 &gt; pt-6ttdqgom on 2026-04-26). Pure LoRA pollutes patch tokens. β++ exposes 4 encoder layers (out_layers=[19,27,33,39], already wired per reference_arc_encoder_wrapper_feats) to query decoders via one-way cross-attn — frozen weights, multi-depth access, no pollution risk. LoRA stays as ablation row 7.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> 4-phase curriculum (P1→P4) maps cleanly to paper claim ladder</h3><p>P1 single-seq (validates architecture; reproduces V1 12.35/9.2 anchor); P2 within-subject (closes historical multi-seq regression); P3 DexYCB s1 (the (iii) primary cross-subject result); P4 multi-dataset (DexYCB ∪ HO3D ∪ H2O3D ∪ H2O ∪ HOT3D, requires bimanual unlock). Each phase has a calibrated metric gate to the next.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> (iv) cross-object zero-shot is supported via SAM-3D-Objects + scale prior</h3><p>At test, SAM-3D-Objects produces a mesh from a single best-frame; PCA-aligned + scale-rectified to a per-category prior; pose decoder treats it as another CAD source. Per-category scale prior is a documented limitation (truly scale-free needs monocular metric depth). Plan-B fallback: TripoSR / TRELLIS / InstantMesh.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> feedback_frozen_vs_lora_contested supersedes simple framing</h3><p>Earlier project_motion_grounding_ablation_results read as &#x27;frozen wins&#x27; on a 4-cell ablation. Newer bundled-vs-frozen-3-lever (pt-ivn0p7l0 vs pt-6ttdqgom) shows bundled-LoRA-stack wins on subject-01 single-seq overfit. Don&#x27;t quote the earlier finding as decisive.</p></div>
+
+</section>
+
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Spec</td><td>Converged + self-reviewed. 7 sections (§0–§6) + 3 appendices. Locked architecture: frozen 4RC + multi-layer cross-attn pyramid (β++) + NLF hand canonical-point trajectory + shape-conditioned object SE(3) + contact-distance loss; all in frame-0-cam coordinates.</td></tr><tr><td>Plan 1 (Core + P1)</td><td>Written + self-reviewed. 20 TDD tasks, ready for subagent-driven execution. Target: reproduce V1 anchor (≤13 mm hand_joint, ≤12 mm obj ADD-S on subject-01/20200709_141754).</td></tr><tr><td>Plan 2 (P2-P4 scale-up + ablations)</td><td>Outlined in 3-plan decomposition; not written. Depends on Plan 1 results to refine task list.</td></tr><tr><td>Plan 3 ((iv) SAM-3D-Objects demo)</td><td>Outlined in 3-plan decomposition; not written. Independent of Plan 2; depends only on Plan 1 checkpoint.</td></tr><tr><td>Spec deviations in Plan 1 (auditable)</td><td>PointNet++ random-init with last-SA-layer trainable at LR 1e-5 for P1 (spec §2.2 default &#x27;ShapeNet-pretrained, frozen&#x27; restored in Plan 2). Documented in plan front-matter.</td></tr><tr><td>Code state</td><td>feat/dcf @ 2cc4e11 unchanged; no new commits this session. Spec + Plan 1 files are local-only at /Users/hnhe/Downloads/SLAI/hoi3r/docs/superpowers/{specs,plans}/. User chose option (c) — defer git commit until implementation starts.</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>P1-EXEC</td><td><span class="badge badge-p0">P0</span></td><td>Execute Plan 1 — start at T1 pre-flight (codebase audit), then T2-T20 in TDD order. Recommended via subagent-driven-development.</td></tr><tr><td>PLAN-2</td><td><span class="badge badge-p1">P1</span></td><td>Write Plan 2 (P2-P4 training scale-up + 9 ablation rows) — depends on P1 results</td></tr><tr><td>PLAN-3</td><td><span class="badge badge-p1">P1</span></td><td>Write Plan 3 ((iv) SAM-3D-Objects demo pipeline) — depends on Plan 1; can run in parallel with Plan 2</td></tr><tr><td>MANO-RIGHT-PKL</td><td><span class="badge badge-p0">P0</span></td><td>Verify MANO_RIGHT.pkl loadable on remote before any P-run (V1 page flagged as missing)</td></tr><tr><td>POINTNET2-WEIGHTS</td><td><span class="badge badge-p1">P1</span></td><td>Source PyTorch ShapeNet-pretrained PointNet++ weights for Plan 2 (Plan 1 ships random-init)</td></tr><tr><td>BIMANUAL-EXTENSION</td><td><span class="badge badge-p2">P2</span></td><td>Extend hand decoder to bimanual mode for P4 (lift exactly-one-active-slot assertion)</td></tr><tr><td>SAM3D-INTEGRATION</td><td><span class="badge badge-p2">P2</span></td><td>Wire Grounding-DINO + SAM2 + SAM-3D-Objects pipeline for (iv); commit Plan-B fallback (TripoSR/TRELLIS/InstantMesh) 14 days before deadline</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>Spec + Plan 1 files are LOCAL-only; not yet pushed to remote feat/dcf branch. User explicitly chose to defer git commit until implementation starts (option c).</li><li>Plan 1 PointNet++ deviation: random-init with last-SA-layer trainable at LR 1e-5 for P1 only (because PyTorch ShapeNet-pretrained PointNet++ checkpoints aren&#x27;t readily available). Plan 2 must source pretrained weights before P3.</li><li>MANO_RIGHT.pkl status flagged as missing on the V1 trajectory eval page — must verify loadable on remote before any P-run.</li><li>(iv) demo requires a per-category scale prior; documented limitation. Truly scale-free pipeline would need monocular metric depth.</li><li>Plan 3 SAM-3D-Objects integration is uncosted (2-7 days estimated); Plan-B fallback (TripoSR/TRELLIS/InstantMesh) committed 14 days before NeurIPS deadline if SAM-3D unstable.</li><li>P4 multi-dataset training requires bimanual hand-decoder extension (lift exactly-one-active-slot assertion from project_hoi3r_handedness_two_slot_decision).</li></ul>
+</section>
+
+<section><h2>Memory entries written this session</h2>
+<ul><li><code>project_v2_framework_design.md</code></li><li><code>feedback_frozen_vs_lora_contested.md</code></li><li><code>project_v2_plan1_status.md</code></li></ul>
+</section>
+
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-v2-framework-design-and-plan1.json
+and continue from tasks_pending[0] (P1-EXEC [P0]: Execute Plan 1 — start at T1 pre-flight (codebase audit), then T2-T20 in TDD order. Recommended via subagent-driven-development.).
+Context: branch feat/dcf@2cc4e11; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md, docs/superpowers/plans/2026-04-26-hoi3r-framework-v2-plan1-core-p1.md.</pre></section>
+</div></body></html>

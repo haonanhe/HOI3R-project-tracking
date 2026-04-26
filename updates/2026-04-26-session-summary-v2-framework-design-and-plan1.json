@@ -1,0 +1,170 @@
+{
+  "date": "2026-04-26",
+  "topic": "v2-framework-design-and-plan1",
+  "branch": "feat/dcf",
+  "head_sha": "2cc4e11",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-26-hoi3r-framework-v2-plan1-core-p1.md",
+  "goal": "Brainstorm HOI3R v2 framework + write spec + write Plan 1 (core architecture + P1 single-seq overfit)",
+  "status": "converged",
+  "headline_stats": [
+    {
+      "label": "Spec sections",
+      "value": "7/7 (§0–§6 + appendices)"
+    },
+    {
+      "label": "Plan 1 tasks",
+      "value": "20/20 written"
+    },
+    {
+      "label": "Memory entries",
+      "value": "3 new"
+    },
+    {
+      "label": "Code commits",
+      "value": "0 (local-only, user-chosen option c)"
+    },
+    {
+      "label": "Paper claim target",
+      "value": "(iii) DexYCB s1_test + (iv) cross-object zero-shot"
+    }
+  ],
+  "commits": [],
+  "tasks_completed": [
+    {
+      "id": "B1",
+      "summary": "Brainstorm v2 architecture from math doc + V1 eval results; converge on Framework B + β++ multi-layer cross-attn"
+    },
+    {
+      "id": "B2",
+      "summary": "Write design spec (7 sections, §0–§6 + 3 appendices) at docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md"
+    },
+    {
+      "id": "B3",
+      "summary": "Spec self-review pass — fixed 4 inline issues (P2 seed count, contact-F1 def, sampler def, scale-prior wording)"
+    },
+    {
+      "id": "B4",
+      "summary": "Decompose into 3 plans (Plan 1 = core+P1; Plan 2 = P2-P4 + ablations; Plan 3 = SAM-3D demo)"
+    },
+    {
+      "id": "B5",
+      "summary": "Write Plan 1 (20 TDD tasks, T1 pre-flight → T20 ACP submit + publish)"
+    },
+    {
+      "id": "B6",
+      "summary": "Plan-1 self-review — fixed d_kv mismatches in T8/T9 tests, added mano_edges_buf builder to T17, replaced T18 eval-script placeholders, expanded T15 collate to also produce CAD + sym_group"
+    },
+    {
+      "id": "B7",
+      "summary": "Wrote 3 durable memory entries: project_v2_framework_design, feedback_frozen_vs_lora_contested, project_v2_plan1_status"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P1-EXEC",
+      "priority": "P0",
+      "summary": "Execute Plan 1 — start at T1 pre-flight (codebase audit), then T2-T20 in TDD order. Recommended via subagent-driven-development."
+    },
+    {
+      "id": "PLAN-2",
+      "priority": "P1",
+      "summary": "Write Plan 2 (P2-P4 training scale-up + 9 ablation rows) — depends on P1 results"
+    },
+    {
+      "id": "PLAN-3",
+      "priority": "P1",
+      "summary": "Write Plan 3 ((iv) SAM-3D-Objects demo pipeline) — depends on Plan 1; can run in parallel with Plan 2"
+    },
+    {
+      "id": "MANO-RIGHT-PKL",
+      "priority": "P0",
+      "summary": "Verify MANO_RIGHT.pkl loadable on remote before any P-run (V1 page flagged as missing)"
+    },
+    {
+      "id": "POINTNET2-WEIGHTS",
+      "priority": "P1",
+      "summary": "Source PyTorch ShapeNet-pretrained PointNet++ weights for Plan 2 (Plan 1 ships random-init)"
+    },
+    {
+      "id": "BIMANUAL-EXTENSION",
+      "priority": "P2",
+      "summary": "Extend hand decoder to bimanual mode for P4 (lift exactly-one-active-slot assertion)"
+    },
+    {
+      "id": "SAM3D-INTEGRATION",
+      "priority": "P2",
+      "summary": "Wire Grounding-DINO + SAM2 + SAM-3D-Objects pipeline for (iv); commit Plan-B fallback (TripoSR/TRELLIS/InstantMesh) 14 days before deadline"
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "Math doc and V1 evidence converge on hand+object asymmetry",
+      "body": "Hand has shared canonical manifold across MANO topology; object has no shared dense point identity across mug/banana/scissors. V1's predict-points-then-Procrustes hides train regression. Right answer per math doc: hand = NLF canonical-trajectory, object = shape-conditioned SE(3) trajectory. This is the core architectural delta in v2."
+    },
+    {
+      "badge": "finding",
+      "title": "β++ multi-layer cross-attn resolves the frozen-vs-LoRA dilemma",
+      "body": "Pure-frozen starves queries (validated by pt-ivn0p7l0 > pt-6ttdqgom on 2026-04-26). Pure LoRA pollutes patch tokens. β++ exposes 4 encoder layers (out_layers=[19,27,33,39], already wired per reference_arc_encoder_wrapper_feats) to query decoders via one-way cross-attn — frozen weights, multi-depth access, no pollution risk. LoRA stays as ablation row 7."
+    },
+    {
+      "badge": "finding",
+      "title": "4-phase curriculum (P1→P4) maps cleanly to paper claim ladder",
+      "body": "P1 single-seq (validates architecture; reproduces V1 12.35/9.2 anchor); P2 within-subject (closes historical multi-seq regression); P3 DexYCB s1 (the (iii) primary cross-subject result); P4 multi-dataset (DexYCB ∪ HO3D ∪ H2O3D ∪ H2O ∪ HOT3D, requires bimanual unlock). Each phase has a calibrated metric gate to the next."
+    },
+    {
+      "badge": "finding",
+      "title": "(iv) cross-object zero-shot is supported via SAM-3D-Objects + scale prior",
+      "body": "At test, SAM-3D-Objects produces a mesh from a single best-frame; PCA-aligned + scale-rectified to a per-category prior; pose decoder treats it as another CAD source. Per-category scale prior is a documented limitation (truly scale-free needs monocular metric depth). Plan-B fallback: TripoSR / TRELLIS / InstantMesh."
+    },
+    {
+      "badge": "fix",
+      "title": "feedback_frozen_vs_lora_contested supersedes simple framing",
+      "body": "Earlier project_motion_grounding_ablation_results read as 'frozen wins' on a 4-cell ablation. Newer bundled-vs-frozen-3-lever (pt-ivn0p7l0 vs pt-6ttdqgom) shows bundled-LoRA-stack wins on subject-01 single-seq overfit. Don't quote the earlier finding as decisive."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Spec",
+      "state": "Converged + self-reviewed. 7 sections (§0–§6) + 3 appendices. Locked architecture: frozen 4RC + multi-layer cross-attn pyramid (β++) + NLF hand canonical-point trajectory + shape-conditioned object SE(3) + contact-distance loss; all in frame-0-cam coordinates."
+    },
+    {
+      "aspect": "Plan 1 (Core + P1)",
+      "state": "Written + self-reviewed. 20 TDD tasks, ready for subagent-driven execution. Target: reproduce V1 anchor (≤13 mm hand_joint, ≤12 mm obj ADD-S on subject-01/20200709_141754)."
+    },
+    {
+      "aspect": "Plan 2 (P2-P4 scale-up + ablations)",
+      "state": "Outlined in 3-plan decomposition; not written. Depends on Plan 1 results to refine task list."
+    },
+    {
+      "aspect": "Plan 3 ((iv) SAM-3D-Objects demo)",
+      "state": "Outlined in 3-plan decomposition; not written. Independent of Plan 2; depends only on Plan 1 checkpoint."
+    },
+    {
+      "aspect": "Spec deviations in Plan 1 (auditable)",
+      "state": "PointNet++ random-init with last-SA-layer trainable at LR 1e-5 for P1 (spec §2.2 default 'ShapeNet-pretrained, frozen' restored in Plan 2). Documented in plan front-matter."
+    },
+    {
+      "aspect": "Code state",
+      "state": "feat/dcf @ 2cc4e11 unchanged; no new commits this session. Spec + Plan 1 files are local-only at /Users/hnhe/Downloads/SLAI/hoi3r/docs/superpowers/{specs,plans}/. User chose option (c) — defer git commit until implementation starts."
+    }
+  ],
+  "memory_entries_written": [
+    "project_v2_framework_design.md",
+    "feedback_frozen_vs_lora_contested.md",
+    "project_v2_plan1_status.md"
+  ],
+  "caveats": [
+    "Spec + Plan 1 files are LOCAL-only; not yet pushed to remote feat/dcf branch. User explicitly chose to defer git commit until implementation starts (option c).",
+    "Plan 1 PointNet++ deviation: random-init with last-SA-layer trainable at LR 1e-5 for P1 only (because PyTorch ShapeNet-pretrained PointNet++ checkpoints aren't readily available). Plan 2 must source pretrained weights before P3.",
+    "MANO_RIGHT.pkl status flagged as missing on the V1 trajectory eval page — must verify loadable on remote before any P-run.",
+    "(iv) demo requires a per-category scale prior; documented limitation. Truly scale-free pipeline would need monocular metric depth.",
+    "Plan 3 SAM-3D-Objects integration is uncosted (2-7 days estimated); Plan-B fallback (TripoSR/TRELLIS/InstantMesh) committed 14 days before NeurIPS deadline if SAM-3D unstable.",
+    "P4 multi-dataset training requires bimanual hand-decoder extension (lift exactly-one-active-slot assertion from project_hoi3r_handedness_two_slot_decision)."
+  ],
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-v2-framework-design-and-plan1.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-v2-framework-design-and-plan1.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-26-session-summary-v2-framework-design-and-plan1.json\nand continue from tasks_pending[0] (P1-EXEC [P0]: Execute Plan 1 — start at T1 pre-flight (codebase audit), then T2-T20 in TDD order. Recommended via subagent-driven-development.).\nContext: branch feat/dcf@2cc4e11; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-04-26-hoi3r-framework-design.md, docs/superpowers/plans/2026-04-26-hoi3r-framework-v2-plan1-core-p1.md."
+}
