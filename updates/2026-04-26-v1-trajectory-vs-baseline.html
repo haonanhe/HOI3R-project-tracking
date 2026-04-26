@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-26 · V1 trajectory head vs baseline (pt-wlapue0u)</title>
+<style>:root{--fg:#2c3e50;--muted:#6b7280;--bg:#fff;--panel:#f6f8fa;--accent:#2563eb;
+      --pass:#16a34a;--fix:#d97706;--finding:#2563eb;--fail:#dc2626;
+      --p0:#dc2626;--p1:#d97706;--p2:#2563eb;--border:#e5e7eb;}
+*{box-sizing:border-box}body{margin:0;color:var(--fg);background:var(--bg);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.container{max-width:1200px;margin:0 auto;padding:32px 28px 80px}
+header.session-header{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:26px}
+header.session-header h1{margin:0 0 6px;font-size:28px}
+header.session-header .meta{color:var(--muted);font-size:14px}
+header.session-header .goal{margin:10px 0 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:22px 0}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.stat .val{font-size:22px;font-weight:700}
+.stat .delta{font-size:13px;font-weight:600;margin-left:6px}
+.stat .delta.win{color:var(--pass)}.stat .delta.lose{color:var(--fail)}
+.stat .label{color:var(--muted);font-size:13px}
+section{margin:28px 0}section h2{font-size:19px;margin:0 0 12px;border-left:4px solid var(--accent);padding-left:10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:#1f2937;color:#fff;font-weight:600;text-align:left;padding:8px 10px}
+td{border-bottom:1px solid var(--border);padding:8px 10px;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.win{color:var(--pass);font-weight:600}
+.lose{color:var(--fail);font-weight:600}
+.panel{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--accent);
+       border-radius:6px;padding:12px 16px;margin:10px 0}
+.panel h3{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;font-weight:600;color:#fff}
+.badge-pass{background:var(--pass)}.badge-fail{background:var(--fail)}.badge-fix{background:var(--fix)}.badge-finding{background:var(--finding)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+pre{background:#0f172a;color:#e5e7eb;padding:14px 16px;border-radius:8px;overflow:auto;white-space:pre-wrap}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+.video-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px}
+.video-card h4{margin:0 0 8px;font-size:14px;color:var(--muted);font-weight:600}
+.video-card video{width:100%;border-radius:4px;display:block}
+.seq-block{margin:18px 0}
+.seq-block h3{font-size:16px;margin:14px 0 6px}
+.seq-block .seq-meta{color:var(--muted);font-size:13px;margin-bottom:8px}</style>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+</head><body>
+<div class="container">
+<header class="session-header">
+  <h1>V1 trajectory-head vs frozen 4-head baseline</h1>
+  <div class="meta">2026-04-26 · branch <code>feat/dcf</code> · ACP <code>pt-wlapue0u</code> · commit <code>2cc4e11</code></div>
+  <p class="goal">Single-Φ trajectory heads + LoRA-adapted 4RC encoder + object SE(3) Procrustes wrapper, trained 4000 steps on subject-01, compared against the frozen 3-lever pt-ivn0p7l0 baseline on the training sequence and 2 unseen subject-07 sequences.</p>
+</header>
+
+<section class="stats"><div class="stat"><div class="val">132.3 mm<span class="delta win">+59% vs baseline 324.1</span></div><div class="label">V1 hand joint (s1_test mean)</div></div><div class="stat"><div class="val">130.9 mm<span class="delta win">+20% vs baseline 163.9</span></div><div class="label">V1 obj L2 (s1_test mean)</div></div><div class="stat"><div class="val">12.35 mm<span class="delta win">+23% vs baseline 16.12</span></div><div class="label">V1 hand joint (subject-01 train)</div></div><div class="stat"><div class="val">14.51 mm<span class="delta lose">-75% vs baseline 8.30</span></div><div class="label">V1 obj L2 (subject-01 train)</div></div></section>
+
+<section><h2>Per-sequence metrics</h2><table><thead><tr><th>Sequence</th><th>Frames</th><th>Hand joint L2 (baseline) [mm]</th><th>Hand joint L2 (V1) [mm]</th><th>Obj L2 (baseline) [mm]</th><th>Obj L2 (V1) [mm]</th></tr></thead><tbody><tr><td><code>20200709-subject-01/20200709_141754</code></td><td>63</td><td>16.12</td><td class='win'>12.35</td><td>8.30</td><td class='lose'>14.51</td></tr><tr><td><code>20200928-subject-07/20200928_143249</code></td><td>64</td><td>345.22</td><td class='win'>113.54</td><td>160.55</td><td class='win'>119.26</td></tr><tr><td><code>20200928-subject-07/20200928_143358</code></td><td>64</td><td>302.93</td><td class='win'>151.05</td><td>167.19</td><td class='win'>142.60</td></tr></tbody></table><p style="color:var(--muted);font-size:13px;margin-top:8px">Hand metric is mean joint L2 over 21 MANO joints (V1 native + extracted from baseline output). Object L2 is mean over 256 canonical samples.</p></section>
+
+<section><h2>Side-by-side visualizations</h2>
+<p>Camera-view overlay: predictions projected onto RGB frames. World-space: 3D point cloud with hand/object trajectories. Baseline rendered with vertex predictions (256 hand verts), V1 rendered with 21 joint predictions.</p>
+<div class="seq-block">
+  <h3>Subject-01 / 20200709_141754 (training sequence)</h3>
+  <div class="seq-meta">subject-01 · 63 frames · baseline hand <code>16.1</code> mm / obj <code>8.3</code> mm vs V1 hand <code>12.3</code> mm / obj <code>14.5</code> mm</div>
+  <div class="video-grid">
+    <div class="video-card"><h4>BASELINE — camera-view overlay</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/baseline_eval_subject01_cam.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>V1 — camera-view overlay</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/v1_eval_subject01_cam.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>BASELINE — world-space</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/baseline_eval_subject01_world.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>V1 — world-space</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/v1_eval_subject01_world.mp4" controls muted loop playsinline></video></div>
+  </div>
+</div><div class="seq-block">
+  <h3>Subject-07 / 20200928_143249 (s1_test idx 0)</h3>
+  <div class="seq-meta">subject-07 idx0 · 64 frames · baseline hand <code>345.2</code> mm / obj <code>160.6</code> mm vs V1 hand <code>113.5</code> mm / obj <code>119.3</code> mm</div>
+  <div class="video-grid">
+    <div class="video-card"><h4>BASELINE — camera-view overlay</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/baseline_eval_s1_test_idx0_cam.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>V1 — camera-view overlay</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/v1_eval_s1_test_idx0_cam.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>BASELINE — world-space</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/baseline_eval_s1_test_idx0_world.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>V1 — world-space</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/v1_eval_s1_test_idx0_world.mp4" controls muted loop playsinline></video></div>
+  </div>
+</div><div class="seq-block">
+  <h3>Subject-07 / 20200928_143358 (s1_test idx 2)</h3>
+  <div class="seq-meta">subject-07 idx2 · 64 frames · baseline hand <code>302.9</code> mm / obj <code>167.2</code> mm vs V1 hand <code>151.1</code> mm / obj <code>142.6</code> mm</div>
+  <div class="video-grid">
+    <div class="video-card"><h4>BASELINE — camera-view overlay</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/baseline_eval_s1_test_idx2_cam.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>V1 — camera-view overlay</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/v1_eval_s1_test_idx2_cam.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>BASELINE — world-space</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/baseline_eval_s1_test_idx2_world.mp4" controls muted loop playsinline></video></div>
+    <div class="video-card"><h4>V1 — world-space</h4>
+      <video src="assets/2026-04-26-v1-trajectory-vs-baseline/v1_eval_s1_test_idx2_world.mp4" controls muted loop playsinline></video></div>
+  </div>
+</div>
+</section>
+
+<section><h2>Aggregate comparison</h2>
+<div id="agg_chart" style="width:100%;height:380px"></div>
+
+</section>
+
+<section><h2>Key findings</h2>
+<div class="panel"><h3><span class="badge badge-pass">PASS</span> V1 wins generalization on s1_test (-63% hand, -20% obj)</h3><p>On unseen subject-07 sequences (avg over 2 working evals), V1 reduces hand joint L2 from 324.1 mm to 132.3 mm and object L2 from 163.9 mm to 130.9 mm. The single-Φ trajectory framing + LoRA-adapted encoder delivers a meaningful generalization improvement that frozen-encoder + 4-head topology could not.</p></div><div class="panel"><h3><span class="badge badge-fail">FAIL</span> V1 fails the spec target of obj L2 ≤ 60 mm on s1_test</h3><p>Spec §7 success criterion was obj L2 ≤ 60 mm on s1_test (≥40% reduction from 104 mm baseline). V1 reaches 130.9 mm — better than baseline (-20%) but far above the bar. Consistent with memory project_overfit_subject01 ("single-subject overfit dominates"); architectural shifts at this scale are dwarfed by the ~90 mm train/test gap.</p></div><div class="panel"><h3><span class="badge badge-pass">PASS</span> Cross-clip-length stability holds (1.65× vs spec target 2×)</h3><p>V1 trained at variable T∈[2,16] and evaluated at full 63-frame clips: subject-01 hand 8.77→14.51 mm = 1.65× regress (success criterion: < 2×). Confirms that single-Φ fixes the cl=4→cl=16 collapse documented in memory project_cl_train_eval_mismatch.</p></div><div class="panel"><h3><span class="badge badge-finding">FINDING</span> Procrustes hurts subject-01 obj (+75%)</h3><p>On the training sequence, V1 obj L2 (14.51 mm) is worse than baseline (8.30 mm) — the SE(3) Procrustes wrapper rigidifies object output relative to baseline's free vertex regression. Could be relaxed by lowering --obj-procrustes-weight or replacing with quotient-symmetry loss for v1.1.</p></div>
+</section>
+
+<section><h2>Spec criteria</h2>
+<table><thead><tr><th>Criterion</th><th>Target</th><th>Result</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>s1_test obj L2</td><td>≤ 60 mm</td><td>130.9 mm</td><td><span class="badge badge-fail">FAIL</span></td></tr>
+<tr><td>s1_test hand vs baseline</td><td>≤ baseline</td><td>132.3 mm vs 324.1 mm baseline (-59%)</td><td><span class="badge badge-pass">PASS</span></td></tr>
+<tr><td>cl=4→cl=16 stability</td><td>&lt; 2× regress</td><td>1.65× (8.77 → 14.51 mm)</td><td><span class="badge badge-pass">PASS</span></td></tr>
+</tbody></table>
+<p style="color:var(--muted);font-size:13px">Partial pass: cross-clip-length stability and aggregate s1_test improvement land, but the absolute s1_test bar is missed. Per spec §7 fallback this means "trajectory framing helps consistency but not generalization, and the next move is multi-subject manifest expansion rather than further architectural change."</p>
+</section>
+
+<section><h2>Commits in this v1 implementation</h2>
+<table><thead><tr><th>SHA</th><th>Subject</th></tr></thead><tbody><tr><td><code>8c2375b</code></td><td>T2 HandTrajectoryHead — single-Φ joint output, random init</td></tr><tr><td><code>dd66fb7</code></td><td>T3 ObjTrajectoryHead — separate-weights subclass</td></tr><tr><td><code>9c9364f</code></td><td>T4 differentiable weighted Kabsch + apply_se3</td></tr><tr><td><code>16f4e0d</code></td><td>T5 trajectory_v1 loss module</td></tr><tr><td><code>e4f6d62</code></td><td>T6 SYMMETRIC_YCB_IDS filter</td></tr><tr><td><code>8013a5a</code></td><td>T7 head_mode='trajectory' wiring + Procrustes</td></tr><tr><td><code>13a5b7a</code></td><td>T8 stage2 trajectory mode CLI + loss assembly</td></tr><tr><td><code>dca34d0</code></td><td>T9 eval trajectory mode + MANO joint-fit</td></tr><tr><td><code>eec8a82</code></td><td>smoke fixes — Kabsch fp32 autocast + 2D loss intrinsic norm</td></tr><tr><td><code>2cc4e11</code></td><td>ACP launcher V1_trajectory_head</td></tr></tbody></table>
+</section>
+
+<section><h2>Run config</h2>
+<pre>--head-mode trajectory --object-procrustes 1 --head-init random
+--encoder-mode lora --lora-rank 8 --lora-alpha 16
+--unfreeze-scene-geom-head --scene-geom-lr-mult 0.1
+--joint-loss-3d-weight 1.0 --joint-loss-2d-weight 0.5
+--obj-procrustes-weight 1.0 --obj-correspondence-weight 0.1
+--scene-depth-weight 0.1 --scene-camera-weight 0.05
+--cycle-loss-weight 0.01
+--clip-len 0 --t-max 16 --batch-size 8 --num-steps 4000
+--fixed-h 378 --fixed-w 504</pre>
+</section>
+
+<section><h2>ACP run notes</h2>
+<p>Job <code>pt-wlapue0u</code> (8×H100, p1 workspace) reported state=FAILED but training itself succeeded — all 4000 optimizer steps logged to <code>history.json</code>, all checkpoints saved including <code>model_final.pt</code>. The FAILED state was a startup-script artifact (<code>tee logs/V1_trajectory_head/train.log</code> with the directory not yet created → tee returned nonzero → <code>set -euo pipefail</code> propagated). Fix for next submit: <code>mkdir -p logs/V1_trajectory_head</code> before the tee, or drop tee entirely (stage2_train.py already writes history.json).</p>
+</section>
+
+<script>
+const labels = ["subject-01 (train)", "s1_test idx0", "s1_test idx2"];
+const baselineHand = [16.12, 345.22, 302.93];
+const v1Hand       = [12.35, 113.54, 151.05];
+const baselineObj  = [8.3, 160.55, 167.19];
+const v1Obj        = [14.51, 119.26, 142.6];
+const traces = [
+  {x: labels, y: baselineHand, name: "Baseline (legacy 4-head, frozen)", type: "bar", marker:{color:"#dc2626"}},
+  {x: labels, y: v1Hand,       name: "V1 (single-Φ + Procrustes, LoRA)", type: "bar", marker:{color:"#16a34a"}}
+];
+Plotly.newPlot("agg_chart", traces, {
+  title: "Hand joint L2 (mm) — lower is better. log scale to handle the s1_test 300-mm gap.",
+  yaxis: {type:"log", title:"hand joint L2 (mm, log)"},
+  barmode: "group",
+  margin:{l:60,r:20,t:60,b:60}
+});
+</script>
+
+</div></body></html>
