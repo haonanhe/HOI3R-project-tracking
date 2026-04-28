@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-28 · Wan2.2 + Temporal-PE: pt-b35ydgie vs pt-6pa0b3dj",
+    "date": "2026-04-28",
+    "status": "results",
+    "summary": "Wan2.2 + Temporal-PE: pt-b35ydgie vs pt-6pa0b3dj",
+    "path": "updates/2026-04-28-session-summary-wan22-pe-fix-pt-b35ydgie.html",
+    "file": "updates/2026-04-28-session-summary-wan22-pe-fix-pt-b35ydgie.html",
+    "sidecar": "updates/2026-04-28-session-summary-wan22-pe-fix-pt-b35ydgie.json"
+  },
+  {
     "title": "2026-04-28 · Train HOI3R v2 P2 on Wan2.2-TI2V-5B cached pyramid features (8×H100, 50-seq subject-01 manifest) and characterize vs the 4RC live anchor pt-wr11kin9.",
     "date": "2026-04-28",
     "status": "results",
