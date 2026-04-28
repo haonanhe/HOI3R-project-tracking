@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-28 · Train HOI3R v2 P2 on Wan2.2-TI2V-5B cached pyramid features (8×H100, 50-seq subject-01 manifest) and characterize vs the 4RC live anchor pt-wr11kin9.",
+    "date": "2026-04-28",
+    "status": "results",
+    "summary": "Train HOI3R v2 P2 on Wan2.2-TI2V-5B cached pyramid features (8×H100, 50-seq subject-01 manifest) and characterize vs the 4RC live anchor pt-wr11kin9.",
+    "path": "updates/2026-04-28-session-summary-wan22-p2-multiseq-pt6pa0b3dj.html",
+    "file": "updates/2026-04-28-session-summary-wan22-p2-multiseq-pt6pa0b3dj.html",
+    "sidecar": "updates/2026-04-28-session-summary-wan22-p2-multiseq-pt6pa0b3dj.json"
+  },
+  {
     "title": "2026-04-26 · Conclude HOI3R v2 Plan 1: 20-task implementation + 2 ACP runs (full + cached encoder) + eval + viz published. Full path passes §4.1 P1→P2 gate.",
     "date": "2026-04-26",
     "status": "converged",
