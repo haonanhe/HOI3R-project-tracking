@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-28 · Land THFM-LoRA v1 (16-task plan), audit + fix paper-misalignments (M1/M2/M3), add v2-anatomical (arm D), submit A vs D ablation on ACP.",
+    "date": "2026-04-28",
+    "status": "wip",
+    "summary": "Land THFM-LoRA v1 (16-task plan), audit + fix paper-misalignments (M1/M2/M3), add v2-anatomical (arm D), submit A vs D ablation on ACP.",
+    "path": "updates/2026-04-28-session-summary-thfm-v2-ablate-arm-d-prep.html",
+    "file": "updates/2026-04-28-session-summary-thfm-v2-ablate-arm-d-prep.html",
+    "sidecar": "updates/2026-04-28-session-summary-thfm-v2-ablate-arm-d-prep.json"
+  },
+  {
     "title": "2026-04-28 · Wan2.2 + Temporal-PE: pt-b35ydgie vs pt-6pa0b3dj",
     "date": "2026-04-28",
     "status": "results",

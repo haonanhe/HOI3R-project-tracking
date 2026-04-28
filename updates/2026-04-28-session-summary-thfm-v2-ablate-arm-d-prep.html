@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-28 · thfm-v2-ablate-arm-d-prep</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Thfm V2 Ablate Arm D Prep</h1>
+  <div class="meta">2026-04-28 · <code>feat/dcf</code> · <code>@31d7081</code> · spec: <code>docs/superpowers/specs/2026-04-28-hoi3r-thfm-lora-design.md</code> · plan: <code>docs/superpowers/plans/2026-04-28-hoi3r-thfm-lora-plan.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Land THFM-LoRA v1 (16-task plan), audit + fix paper-misalignments (M1/M2/M3), add v2-anatomical (arm D), submit A vs D ablation on ACP.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">19 on feat/dcf</div><div class="label">Commits this session</div></div><div class="stat"><div class="val">all live</div><div class="label">M1/M2/M3 fixes</div></div><div class="stat"><div class="val">pt-9bgc1jqw RUNNING</div><div class="label">Arm A round 4</div></div><div class="stat"><div class="val">blocked on quota (1/4 cards)</div><div class="label">Arm D round 4</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>v1-plan-T1..T16</td><td><span class="badge badge-pass">PASS</span></td><td>859290e</td><td>16-task THFM-LoRA plan executed end-to-end; QueryBank/LoRA/Heads/forward_with_queries/VAE-cache/p2_train wiring + 1-GPU smoke green at HEAD 859290e</td></tr><tr><td>audit-vs-paper</td><td><span class="badge badge-pass">PASS</span></td><td>30d5e99</td><td>Two parallel general-purpose agents audited the v1 implementation against arXiv 2603.25892; flagged M1 (rope-on-extras dead code), M2 (noised t=749 input), M3 (no grad-drop) as MUST-FIX</td></tr><tr><td>M1-rope-on-extras</td><td><span class="badge badge-pass">PASS</span></td><td>30d5e99</td><td>Monkey-patch wan.modules.model.rope_apply (idempotent + ContextVar-based) so spliced query tokens get continuous-position 3D RoPE. Smoke verifies spatial_logits.grad nonzero (192 vs 190 trainable param count)</td></tr><tr><td>M2-clean-input-t0</td><td><span class="badge badge-pass">PASS</span></td><td>30d5e99</td><td>Switched from add_flow_match_noise(t=749) to clean z_0 with timestep=0 (paper&#x27;s noise-free input at end of schedule). CLI-overridable via --no-thfm-clean-input / --thfm-timestep</td></tr><tr><td>M3-grad-drop</td><td><span class="badge badge-pass">PASS</span></td><td>30d5e99</td><td>Added gradient dropping: skip optimizer.step() when pre-clip grad norm exceeds --grad-drop-norm. Default bumped 5.0 -&gt; 100.0 (B=1 LoRA early-step norms run 10-200)</td></tr><tr><td>v2-D-anatomical</td><td><span class="badge badge-pass">PASS</span></td><td>538d56b</td><td>AnatomicalQueryBank with 4 token groups (16x21 hand_joint + 16xN_mesh hand_mesh + 16 obj_frame + 1 obj_shape via PointNet++); GPS additive bias on hand groups; PerTokenPointHead decoders; compute_thfm_losses_anatomical bundle (joint+point+edge_joint+rot+trans+add_s)</td></tr><tr><td>manifest-replicate-flag</td><td><span class="badge badge-pass">PASS</span></td><td>3aa3770</td><td>Diagnosed r1 &#x27;SUCCEEDED in 4 min with no step JSON&#x27; as DataLoader-yields-zero-batches under DDP (len(ds)=1 &lt; B*world*2). Added --manifest-replicate N to multiply size-capped manifest</td></tr><tr><td>empty-cache-flag</td><td><span class="badge badge-pass">PASS</span></td><td>31d7081</td><td>Diagnosed r2 OOMs (A step 70, D step 11) as fragmentation under &#x27;expandable_segments not supported&#x27; image. Added --empty-cache-every (default 25) to flush fragmentation</td></tr><tr><td>hmac-url-fix</td><td><span class="badge badge-pass">PASS</span></td><td>(memory only)</td><td>Long-standing &#x27;HMAC submit returns 403&#x27; was a URL bug — path needs workspace NAME literal, not UUID. Now successfully submits via local sensecore_hmac_request.py</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Per-frame extras get NO RoPE in stock Wan2.2</h3><p>rope_apply in wan/modules/model.py:40 only rotates the first F*H*W tokens via x_i = torch.cat([x_i, x[i, seq_len:]]) — anything appended past the video grid is bare. Fix: monkey-patch via ContextVar so the splice receives continuous-position rotation.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> HMAC URL: workspace NAME, not UUID</h3><p>Prior &#x27;feedback_acp_hmac_permission_scope&#x27; said HMAC submit was permission-scoped out. Empirically wrong — substituting workspace UUID 019d9523-... in URL returns 403; substituting the literal name p1-video-world-model-for-robot-learning returns 200. Memory updated.</p></div>
+<div class="panel"><h3><span class="badge badge-fail">FAIL</span> round-1 jobs SUCCEEDED with zero training</h3><p>pt-njuem6ta and pt-jbdxz0er finished in 4 min each, ACP marked SUCCEEDED, final.pt saved — but inner train loop never iterated. len(ds)=1 + 4-rank DDP + drop_last=True yields 0 batches. Trap: &#x27;SUCCEEDED&#x27; from ACP doesn&#x27;t mean training succeeded; always verify per-step JSON in train.log.</p></div>
+<div class="panel"><h3><span class="badge badge-fail">FAIL</span> round-2 OOM at step 11 (D) and 70 (A)</h3><p>Both jobs printed &#x27;expandable_segments not supported on this platform&#x27; at startup. Allocator fragmented under fp64-complex128 RoPE temps until process held 79.04/79.18 GiB and a 200 MiB allocation failed. Lower B helps but doesn&#x27;t stop the slow leak; periodic torch.cuda.empty_cache() does.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> arm A r2 had clean overfit signal pre-OOM</h3><p>70 steps of pt-4bqjo86s shows joint 0.12 -&gt; 0.05, add_s 0.88 -&gt; 0.075, total 1.31 -&gt; 0.17 — strong evidence the v1 paper-faithful path actually works once memory is stable. r4 with --empty-cache-every 25 should reach the full 2000 steps.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>fd81c2c</td><td>feat</td><td>wan22: add THFM-style QueryBank with position-interpolated temporal RoPE</td></tr><tr><td>d973cee</td><td>feat</td><td>wan22: add LoRA adapter + recursive injection over DiT blocks</td></tr><tr><td>683297b</td><td>feat</td><td>wan22: add HandHead and ObjectHead MLPs for query-token decode</td></tr><tr><td>1740a9e</td><td>feat</td><td>wan22: add forward_with_queries for THFM-style token injection</td></tr><tr><td>fe13579</td><td>feat</td><td>wan22: add VAE-only precompute for THFM-LoRA live forward</td></tr><tr><td>d96dd3b</td><td>feat</td><td>p2: add --encoder-mode thfm-lora CLI surface</td></tr><tr><td>8aebb33</td><td>feat</td><td>p2: wire thfm-lora forward, two-group AdamW, dropped losses</td></tr><tr><td>0787b5a</td><td>feat</td><td>p2_eval: mirror thfm-lora forward in mini-eval</td></tr><tr><td>b19c29e</td><td>feat</td><td>acp: add THFM-LoRA launcher anchored on pt-6pa0b3dj envelope</td></tr><tr><td>24d97dc</td><td>fix</td><td>p2 thfm: add missing torch.nn import + ACP submission body</td></tr><tr><td>859290e</td><td>fix</td><td>p2 thfm: move dit to device after LoRA injection (smoke now green)</td></tr><tr><td>30d5e99</td><td>fix</td><td>thfm: apply 3D RoPE to extras (M1) + clean input @ t=0 (M2) + grad-drop (M3)</td></tr><tr><td>b529360</td><td>fix</td><td>thfm M3: bump --grad-drop-norm default 5.0 -&gt; 100.0</td></tr><tr><td>538d56b</td><td>feat</td><td>thfm v2-anatomical: add arm-D layout (per-joint + per-vert + PointNet++ shape)</td></tr><tr><td>d7cbf65</td><td>feat</td><td>hoi3r_v2: per-frame temporal PE on queries (THFM-style fix for staircase)</td></tr><tr><td>4239963</td><td>fix</td><td>thfm anatomical: --n-mesh CLI; mesh-pred reshape uses n_mesh not 128</td></tr><tr><td>1f4265a</td><td>tune</td><td>v2ablate: bump batch sizes by trading mesh density</td></tr><tr><td>3aa3770</td><td>fix</td><td>v2ablate: --manifest-replicate so single-seq overfit yields &gt;0 batches</td></tr><tr><td>31d7081</td><td>fix</td><td>thfm: periodic empty_cache to fight fragmentation when expandable_segments unsupported</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>branch / HEAD</td><td>feat/dcf @ 31d7081</td></tr><tr><td>v1 (frame layout)</td><td>code green; smoke green; round-2 reached step 70 with strong overfit; r4 (pt-9bgc1jqw) RUNNING</td></tr><tr><td>v2 anatomical (arm D)</td><td>code green; smoke green @ n_mesh=8; round-2 reached step 11 then OOM; r4 build at B=2 N_MESH=64 ready, blocked on workspace quota</td></tr><tr><td>ACP submission via HMAC</td><td>fully working; URL needs workspace NAME literal; bodies stored at /tmp/submit_A_r4.json + /tmp/submit_D_r4.json</td></tr><tr><td>VAE cache</td><td>50/50 sequences precomputed at /mnt/afs/haonan/hoi3r/cache/wan22_vae_subject01_right/</td></tr><tr><td>anchor pt-6pa0b3dj</td><td>frozen at logs/anchors/pt-6pa0b3dj/ + EXTRACTED_METRICS.txt (final step=8200 total=0.114)</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>P0-arm-D-resubmit</td><td><span class="badge badge-p0">P0</span></td><td>When workspace_aec2_total quota frees (currently 1 GPU available, need 4), POST /tmp/submit_D_r4.json again. Body is ready; same path/headers as the successful arm-A r4 submit</td></tr><tr><td>P0-watch-arm-A-pt-9bgc1jqw</td><td><span class="badge badge-p0">P0</span></td><td>Tail logs/v2ablate/seed0_A/train.log; expected to reach step 2000 with empty_cache_every=25 keeping memory bounded. Compare add_s and joint trajectory to D r4 once both finish</td></tr><tr><td>P1-comparison-page</td><td><span class="badge badge-p1">P1</span></td><td>After both A and D r4 finish, build comparison sidecar (final-step joint/point/edge/rot/trans/add_s) and publish to https://haonanhe.github.io/HOI3R-project-tracking/. Spec is in docs/superpowers/specs/2026-04-28-hoi3r-thfm-lora-design.md §10</td></tr><tr><td>P2-v1-full-50seq</td><td><span class="badge badge-p2">P2</span></td><td>If arm A overfits cleanly (add_s &lt; 5 mm on the single seq), run the full 50-seq v1 ACP submission via scripts/acp_jobs/hoi3r_v2/P2_thfm_lora.sh. Body at acp_thfm_lora.json. This is the actual pt-6pa0b3dj-comparable run</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>Round-2 final.pt files (pt-c9wajk3l + pt-4bqjo86s) are unrecoverable — output dirs reused by r4. The encouraging step-70 add_s=0.075 from arm A r2 cannot be re-evaluated.</li><li>Arm A r4 was just submitted as pt-9bgc1jqw; needs ~3-4 hours wall-clock for 2000 steps. Tail logs/v2ablate/seed0_A/train.log to verify it advances past step 70 (where r2 OOMed).</li><li>Arm D r4 requires 4 GPU; quota was 1/4 at submit time. Other tenants&#x27; jobs (~10 in workspace) will eventually release. Resubmit /tmp/submit_D_r4.json (preserved on Mac) when quota frees.</li><li>Position-interpolated 3D RoPE on extras is now LIVE per the paper; spatial_logits gradients are nonzero (verified at smoke). Comparison vs paper-baseline (no-RoPE-extras) would require a separate ablation arm and is out of scope for v2-A vs v2-D.</li><li>n_mesh=64 (vs paper&#x27;s 128 spec) is a memory-driven concession; the per-(frame, vert) prior is intact but FPS density is lower. If D r4 metrics underwhelm, n_mesh=128 + B=1 + grad-checkpointing is the next escalation.</li></ul>
+</section>
+
+<section><h2>Memory entries written this session</h2>
+<ul><li><code>feedback_acp_hmac_permission_scope.md</code></li><li><code>feedback_acp_image_no_expandable_segments.md</code></li><li><code>feedback_single_seq_overfit_manifest_replicate.md</code></li><li><code>project_thfm_v2_anatomical_design.md</code></li><li><code>project_thfm_v2ablate_running.md</code></li><li><code>project_thfm_lora_v1_status.md</code></li></ul>
+</section>
+
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-28-session-summary-thfm-v2-ablate-arm-d-prep.json
+and continue from tasks_pending[0] (P0-arm-D-resubmit [P0]: When workspace_aec2_total quota frees (currently 1 GPU available, need 4), POST /tmp/submit_D_r4.json again. Body is ready; same path/headers as the successful arm-A r4 submit).
+Context: branch feat/dcf@31d7081; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-04-28-hoi3r-thfm-lora-design.md, docs/superpowers/plans/2026-04-28-hoi3r-thfm-lora-plan.md.</pre></section>
+</div></body></html>
