@@ -138,8 +138,10 @@
     }
   ],
   "memory_entries_written": [
+    "project_wan22_vs_4rc_p2_eval_results.md",
+    "feedback_4rc_cold_start_270mm_offset.md",
     "feedback_acp_submission_make_submission_aliasing.md",
-    "project_wan22_vs_4rc_p2_eval_results.md"
+    "reference_eval_with_predictions_driver.md"
   ],
   "caveats": [
     "Single-subject training (50 sub-01 right-hand sequences). The OOT eval is on 5 sub-07 sequences — small N; treat the magnitudes as a directional signal, not a precise generalization measurement.",
