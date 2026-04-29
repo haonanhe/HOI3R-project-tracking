@@ -1,0 +1,155 @@
+{
+  "checkpoint": "logs/hoi3r_v2_p2_4rc_cached/seed0/final.pt",
+  "encoder": "arc-vit-g-14",
+  "manifest": "manifests/dexycb_subject07_test_fixed.json",
+  "feat_cache": "/mnt/afs/haonan/hoi3r/cache/hoi3r_v2_feats_4rc_subject07_test",
+  "gt_cache": "/mnt/afs/haonan/hoi3r/cache/hoi3r_v2_gt_subject07_test",
+  "clip_len": 16,
+  "indices": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "window_starts": [
+    -1
+  ],
+  "n_windows": 5,
+  "per_window": [
+    {
+      "sequence": "20200928-subject-07/20200928_143249",
+      "object_id": 1,
+      "object_class": "002_master_chef_can",
+      "hand_side": "right",
+      "tracked_start": 7,
+      "tracked_end": 73,
+      "window_start": 25,
+      "clip_len": 16,
+      "n_avail": 67,
+      "hand_vert_l2_mm": 316.2220458984375,
+      "hand_joint_l2_mm": 344.257568359375,
+      "obj_add_mm": 142.73013305664062,
+      "obj_add_s_mm": 142.73013305664062,
+      "obj_add_s_simple_mm": 143.09173583984375,
+      "obj_rot_err_deg": 29.858327865600586,
+      "obj_trans_err_mm": 142.6379233598709
+    },
+    {
+      "sequence": "20200928-subject-07/20200928_143328",
+      "object_id": 1,
+      "object_class": "002_master_chef_can",
+      "hand_side": "right",
+      "tracked_start": 11,
+      "tracked_end": 73,
+      "window_start": 23,
+      "clip_len": 16,
+      "n_avail": 63,
+      "hand_vert_l2_mm": 426.3943176269531,
+      "hand_joint_l2_mm": 451.69696044921875,
+      "obj_add_mm": 213.9958038330078,
+      "obj_add_s_mm": 211.4805908203125,
+      "obj_add_s_simple_mm": 222.8911895751953,
+      "obj_rot_err_deg": 74.4189682006836,
+      "obj_trans_err_mm": 218.82279217243195
+    },
+    {
+      "sequence": "20200928-subject-07/20200928_143358",
+      "object_id": 1,
+      "object_class": "002_master_chef_can",
+      "hand_side": "left",
+      "tracked_start": 9,
+      "tracked_end": 73,
+      "window_start": 24,
+      "clip_len": 16,
+      "n_avail": 65,
+      "hand_vert_l2_mm": 953.1486206054688,
+      "hand_joint_l2_mm": 1284.3359375,
+      "obj_add_mm": 156.7612762451172,
+      "obj_add_s_mm": 153.89422607421875,
+      "obj_add_s_simple_mm": 147.35487365722656,
+      "obj_rot_err_deg": 170.81222534179688,
+      "obj_trans_err_mm": 95.74203938245773
+    },
+    {
+      "sequence": "20200928-subject-07/20200928_143425",
+      "object_id": 1,
+      "object_class": "002_master_chef_can",
+      "hand_side": "left",
+      "tracked_start": 13,
+      "tracked_end": 71,
+      "window_start": 21,
+      "clip_len": 16,
+      "n_avail": 59,
+      "hand_vert_l2_mm": 873.24365234375,
+      "hand_joint_l2_mm": 1174.9716796875,
+      "obj_add_mm": 143.99937438964844,
+      "obj_add_s_mm": 132.39202880859375,
+      "obj_add_s_simple_mm": 135.0556640625,
+      "obj_rot_err_deg": 158.60382080078125,
+      "obj_trans_err_mm": 93.64285320043564
+    },
+    {
+      "sequence": "20200928-subject-07/20200928_143500",
+      "object_id": 1,
+      "object_class": "002_master_chef_can",
+      "hand_side": "left",
+      "tracked_start": 17,
+      "tracked_end": 73,
+      "window_start": 20,
+      "clip_len": 16,
+      "n_avail": 57,
+      "hand_vert_l2_mm": 1023.6982421875,
+      "hand_joint_l2_mm": 1345.276611328125,
+      "obj_add_mm": 223.4702606201172,
+      "obj_add_s_mm": 215.04208374023438,
+      "obj_add_s_simple_mm": 214.32391357421875,
+      "obj_rot_err_deg": 76.06033325195312,
+      "obj_trans_err_mm": 204.24394309520721
+    }
+  ],
+  "aggregate": {
+    "hand_vert_l2_mm": {
+      "mean": 718.5413757324219,
+      "std": 289.5875734896366,
+      "min": 316.2220458984375,
+      "max": 1023.6982421875
+    },
+    "hand_joint_l2_mm": {
+      "mean": 920.1077514648438,
+      "std": 431.1376706648287,
+      "min": 344.257568359375,
+      "max": 1345.276611328125
+    },
+    "obj_add_mm": {
+      "mean": 176.19136962890624,
+      "std": 35.207886100086554,
+      "min": 142.73013305664062,
+      "max": 223.4702606201172
+    },
+    "obj_add_s_mm": {
+      "mean": 171.1078125,
+      "std": 35.10183349564304,
+      "min": 132.39202880859375,
+      "max": 215.04208374023438
+    },
+    "obj_add_s_simple_mm": {
+      "mean": 172.54347534179686,
+      "std": 37.91491515603904,
+      "min": 135.0556640625,
+      "max": 222.8911895751953
+    },
+    "obj_rot_err_deg": {
+      "mean": 101.95073509216309,
+      "std": 53.994635353974346,
+      "min": 29.858327865600586,
+      "max": 170.81222534179688
+    },
+    "obj_trans_err_mm": {
+      "mean": 151.0179102420807,
+      "std": 52.627095372704595,
+      "min": 93.64285320043564,
+      "max": 218.82279217243195
+    }
+  }
+}
