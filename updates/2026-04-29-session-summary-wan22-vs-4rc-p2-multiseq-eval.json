@@ -6,182 +6,182 @@
   "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
   "spec_path": "docs/superpowers/specs/2026-04-26-thfm-style-token-injection-design.md",
   "plan_path": "docs/superpowers/plans/2026-04-28-wan22-feature-swap-v2.md",
-  "goal": "Pull pt-b35ydgie (wan22-pe) and pt-8rqkny4k (4rc-cached) results, evaluate cl=16 in-train (subject-01) and out-of-train (subject-07), publish. UPDATED 2026-04-29: 4rc-cached numbers re-run with --temporal-pe off after INVEST-1 root-caused a checkpoint/code mismatch.",
-  "status": "finding",
+  "goal": "Final canonical comparison: wan22-pe vs 4rc-cached on cl=16 chunk-aligned non-overlapping windows (cl=train_cl, drop trailing partial). For both models: in-train (sub-01 indices 0/25/49) + OOT (sub-07 5 seqs, hand-side disaggregated). 4rc-cached uses --temporal-pe off per the d7cbf65 trap (INVEST-1).",
+  "status": "done",
   "headline_stats": [
     {
-      "label": "wan22 in-train (hand-joint mm)",
-      "value": "23.07"
+      "label": "wan22-pe in-train hand_vert (mm)",
+      "value": "23.60"
     },
     {
-      "label": "wan22 OOT (hand-joint mm)",
-      "value": "368.12"
+      "label": "4rc-cached in-train hand_vert (mm)",
+      "value": "42.83"
     },
     {
-      "label": "4rc in-train (hand-joint mm) — CORRECTED",
-      "value": "34.29 (was 296.90)"
+      "label": "wan22-pe in-train obj ADD-S (mm)",
+      "value": "9.10"
     },
     {
-      "label": "4rc OOT all-5 (hand-joint mm) — CORRECTED",
-      "value": "642.4 (was 920.11)"
+      "label": "4rc-cached in-train obj ADD-S (mm)",
+      "value": "8.50"
     },
     {
-      "label": "4rc OOT right-only (hand-joint mm)",
-      "value": "117.6"
+      "label": "wan22-pe OOT right-only hand_vert (mm)",
+      "value": "161.45"
     },
     {
-      "label": "wan22 in-train (obj ADD-S mm)",
-      "value": "8.82"
+      "label": "4rc-cached OOT right-only hand_vert (mm)",
+      "value": "159.10"
     },
     {
-      "label": "4rc in-train (obj ADD-S mm) — CORRECTED",
-      "value": "8.76 (was 120.87)"
+      "label": "wan22-pe OOT right-only obj ADD-S (mm)",
+      "value": "158.15"
     },
     {
-      "label": "4rc OOT all-5 (obj ADD-S mm) — CORRECTED",
-      "value": "123.0 (was 171.0)"
+      "label": "4rc-cached OOT right-only obj ADD-S (mm)",
+      "value": "137.77"
     }
   ],
   "module_state": [
     {
       "aspect": "wan22-pe ckpt",
-      "state": "logs/wan22_pe_pt_b35ydgie/seed0/final.pt (78M head, ~11.9k steps) — trained AFTER d7cbf65 with temporal_pe=True; metrics unaffected by INVEST-1"
+      "state": "logs/wan22_pe_pt_b35ydgie/seed0/final.pt — trained AFTER d7cbf65 with temporal_pe=True; eval --temporal-pe auto"
     },
     {
       "aspect": "4rc-cached ckpt",
-      "state": "logs/hoi3r_v2_p2_4rc_cached/seed0/final.pt (78M head, ~11.9k steps) — trained BEFORE d7cbf65 (started 2026-04-28 07:36 UTC, commit at 11:55); MUST be loaded with --temporal-pe off"
+      "state": "logs/hoi3r_v2_p2_4rc_cached/seed0/final.pt — trained BEFORE d7cbf65; eval REQUIRES --temporal-pe off (INVEST-1 trap)"
     },
     {
       "aspect": "Eval driver",
-      "state": "scratch/eval_with_predictions.py + render_pred_only.py; eval_with_predictions.py now exposes --temporal-pe {auto,on,off}"
+      "state": "scratch/eval_with_predictions.py with new --chunk-aligned + --temporal-pe flags"
+    },
+    {
+      "aspect": "Protocol",
+      "state": "cl=16 non-overlapping windows starting at tracked_start; drop trailing partial. Aggregate is per-window mean. NEVER feed model T != train_cl."
     },
     {
       "aspect": "subject-07 manifest",
-      "state": "manifests/dexycb_subject07_test_fixed.json (5 seqs; 2 right-hand + 3 left-hand — see OOT-LEFT-HAND task)"
+      "state": "manifests/dexycb_subject07_test_fixed.json — 5 seqs, 2 right-hand (seq00 seq01) + 3 left-hand (seq02 seq03 seq04). Training is right-hand only; left-only OOT is OOD-by-handedness, not a real generalisation signal."
     },
     {
-      "aspect": "Caches",
-      "state": "/mnt/afs/haonan/hoi3r/cache/hoi3r_v2_{gt,feats_4rc,feats_wan22}_subject07_test built fresh"
-    },
-    {
-      "aspect": "Corrected eval dirs",
-      "state": "logs/hoi3r_v2_p2_4rc_cached/seed0/eval_in_train_peoff/ + eval_oot_subject07_peoff/ (broken pre-fix dirs preserved as record)"
+      "aspect": "Eval dirs",
+      "state": "logs/{wan22_pe_pt_b35ydgie,hoi3r_v2_p2_4rc_cached}/seed0/eval_{in_train,oot_subject07}_chunkaligned/"
     }
   ],
   "tasks_completed": [
     {
-      "id": "EVAL-1",
-      "sha": "pt-1xrqjmtn",
-      "summary": "wan22-pe in-train cl=16 (9 windows): hand_vert 24.2 mm, hand_joint 23.1 mm, ADD-S 8.8 mm"
-    },
-    {
-      "id": "EVAL-2",
-      "sha": "pt-2rv8491f",
-      "summary": "wan22-pe out-of-train cl=16 (5 sub-07 seqs, center): hand_vert 341.0 mm, hand_joint 368.1 mm, ADD-S 151.9 mm — 14× gap"
-    },
-    {
-      "id": "EVAL-3",
-      "sha": "pt-1xrqjmtn",
-      "summary": "4rc-cached in-train cl=16 (broken — pre-fix): hand_vert 279.9 mm, hand_joint 296.9 mm, ADD-S 121.0 mm. SUPERSEDED — see EVAL-3-CORRECTED."
-    },
-    {
-      "id": "EVAL-3-CORRECTED",
+      "id": "EVAL-WAN22-IN",
       "sha": "f15f520",
-      "summary": "4rc-cached in-train cl=16 PE-off (sub-01, 3 seqs × 3 windows = 9): hand_vert 41.81 mm, hand_joint 34.29 mm, obj ADD-S 8.76 mm, obj rot 0.58 deg, obj trans 8.72 mm. logs/hoi3r_v2_p2_4rc_cached/seed0/eval_in_train_peoff/aggregate.json"
+      "summary": "wan22-pe in-train (sub-01 idx 0/25/49 chunk-aligned, 11 windows): hand_vert 23.60, hand_joint 22.92, obj ADD-S 9.10 mm, obj rot 1.05 deg, obj trans 8.88 mm."
     },
     {
-      "id": "EVAL-4",
-      "sha": "pt-1xrqjmtn",
-      "summary": "4rc-cached out-of-train (broken — pre-fix): hand_vert 718.5 mm, hand_joint 920.1 mm, ADD-S 171.0 mm. SUPERSEDED — see EVAL-4-CORRECTED."
-    },
-    {
-      "id": "EVAL-4-CORRECTED",
+      "id": "EVAL-WAN22-OOT-ALL",
       "sha": "f15f520",
-      "summary": "4rc-cached OOT cl=16 PE-off (sub-07, 5 seqs, auto-center): all-5 mean hand_vert 561.9 mm, hand_joint 642.4 mm, obj ADD-S 123.0 mm. 3 of 5 sub-07 seqs are LEFT-hand (training was right-only). Right-only mean (seq00 + seq01): hand_vert 146.5 mm, hand_joint 117.6 mm, obj ADD-S 130.1 mm."
+      "summary": "wan22-pe OOT all-5 (sub-07 chunk-aligned, 17 windows): hand_vert 357.39, hand_joint 381.00, obj ADD-S 152.49 mm, obj rot 115.34 deg, obj trans 131.73 mm. Dominated by 3 OOD-by-handedness left-hand seqs."
+    },
+    {
+      "id": "EVAL-WAN22-OOT-RIGHT",
+      "sha": "f15f520",
+      "summary": "wan22-pe OOT right-only (sub-07 seq00+seq01, 7 windows): hand_vert 161.45, hand_joint 158.13, obj ADD-S 158.15 mm, obj rot 108.90 deg, obj trans 151.47 mm. THIS is the meaningful cross-subject signal."
+    },
+    {
+      "id": "EVAL-WAN22-OOT-LEFT",
+      "sha": "f15f520",
+      "summary": "wan22-pe OOT left-only (sub-07 seq02+seq03+seq04, 10 windows): hand_vert 494.55, hand_joint 536.99 mm. OOD-by-handedness; model never trained on left hand."
+    },
+    {
+      "id": "EVAL-4RC-IN",
+      "sha": "f15f520",
+      "summary": "4rc-cached --temporal-pe off in-train (sub-01 idx 0/25/49 chunk-aligned, 11 windows): hand_vert 42.83, hand_joint 36.71, obj ADD-S 8.50 mm, obj rot 0.59 deg, obj trans 8.46 mm."
+    },
+    {
+      "id": "EVAL-4RC-OOT-ALL",
+      "sha": "f15f520",
+      "summary": "4rc-cached --temporal-pe off OOT all-5 (sub-07 chunk-aligned, 17 windows): hand_vert 576.48, hand_joint 656.72, obj ADD-S 132.59 mm, obj rot 84.23 deg, obj trans 118.61 mm."
+    },
+    {
+      "id": "EVAL-4RC-OOT-RIGHT",
+      "sha": "f15f520",
+      "summary": "4rc-cached --temporal-pe off OOT right-only (sub-07 seq00+seq01, 7 windows): hand_vert 159.10, hand_joint 139.15, obj ADD-S 137.77 mm, obj rot 81.11 deg, obj trans 126.65 mm."
+    },
+    {
+      "id": "EVAL-4RC-OOT-LEFT",
+      "sha": "f15f520",
+      "summary": "4rc-cached --temporal-pe off OOT left-only (sub-07 seq02+seq03+seq04, 10 windows): hand_vert 868.65, hand_joint 1019.02 mm. OOD-by-handedness."
     },
     {
       "id": "INVEST-1",
       "sha": "f15f520",
-      "summary": "RESOLVED: d7cbf65 inline temporal_pe trap. Trainer-style replay (8 batches × B=8, n_pt=256, head.train(), random stride/start) with PE off reproduces trainer-logged values within 10% (point=2.10 vs 1.93 mm; joint=1.43 vs 1.51; trans=1.69 vs 2.01; rot 4.4e-5 vs 7.5e-5). Single chunk-aligned cl=16 also collapses 137→29 mm. Memory: feedback_temporal_pe_inline_flag_trap.md."
+      "summary": "RESOLVED: d7cbf65 inline temporal_pe trap. Re-running 4rc-cached with --temporal-pe off (added to eval_with_predictions.py) collapses the 70x train/eval gap. Memory: feedback_temporal_pe_inline_flag_trap.md."
     },
     {
-      "id": "VIZ-1",
-      "sha": "pt-1xrqjmtn / pt-2rv8491f",
-      "summary": "MP4 + Plotly + per-frame error chart for one window per condition (4 conditions total) — based on pre-fix forward; 4rc visualisations should be regenerated with PE-off forwards."
+      "id": "EVAL-DRIVER-EXTEND",
+      "sha": "f15f520",
+      "summary": "scratch/eval_with_predictions.py gains --chunk-aligned flag (auto-enumerate non-overlapping cl-windows per sequence) plus --temporal-pe {auto,on,off}; --indices is now optional (defaults to all manifest entries when --chunk-aligned)."
+    },
+    {
+      "id": "VIZ-PERFRAME",
+      "sha": "f15f520",
+      "summary": "Per-frame error plots (mean ± std vs frame-in-window 0..15) generated for both models × {in_train, OOT-all, OOT-right, OOT-left} = 8 PNGs. Plus 4rc in-train + OOT-right MP4s."
     }
   ],
   "tasks_pending": [
     {
       "id": "INVEST-2",
       "priority": "P1",
-      "summary": "Window staircase fix for wan22-pe. Sliding-window inference with overlap-averaging (50% stride 8 instead of 16) tested on indices 0/25/49: hand_vert mean 23.05 → 21.96 mm (−4.7%), hand boundary_jump 4.74 → 4.08 mm (−14%), obj ADD-S 9.88 → 8.72 mm (−12%) BUT obj boundary_jump regressed +14.6% (likely SE(3)-averaging math bug — translation on rotated CAD doesn't commute with rotation averaging). Decision rule (boundary ↓50% AND mean ↓10%) NOT met → A+C real but not dominant; B (Wan2.2 4× temporal compression, only 4 distinct latents per cl=16) likely a real floor. Driver at scratch/wan22_overlap_eval.py. Next sub-cases: stride=4 monotonicity check + hand-only overlap (clean test of obj math). If gains saturate → escalate to denser-grained encoder."
+      "summary": "Window staircase fix for wan22-pe — partially mitigated. Stride=8 overlap-averaging on indices 0/25/49 gave hand_vert −5%, hand boundary_jump −14%, obj ADD-S −12% but obj boundary_jump regressed +15% (likely SE(3) averaging math bug). Decision rule (boundary ↓50% AND mean ↓10%) NOT met. Per-frame plots from this canonical eval show within-window cold-start spike + drift even at cl=16 train cl=16 eval. THFM paper (arXiv 2603.25892) has NO solution to this — they only ever ran 1 window per video at fixed T. B (Wan2.2 4× temporal compression → 4 distinct latents per cl=16) likely a real floor. Sub-cases TODO: stride=4 monotonicity, hand-only overlap (clean test of obj math)."
     },
     {
       "id": "INVEST-3",
       "priority": "P0",
-      "summary": "Re-enable mini-eval for cached-encoder runs in p2_mini_eval.py (currently shorts to NaN whenever encoder_mode='cached'; the 4rc-cached cold-start failure was invisible during training and the FAILURE_PROTOCOL gate never fired)."
+      "summary": "Re-enable mini-eval for cached-encoder runs in p2_mini_eval.py. The 4rc-cached cold-start failure was invisible during training; the FAILURE_PROTOCOL gate (kill at step 6000 if hand_joint > 6.2 mm) never fired. With INVEST-1 fixed the actual training-time loss was good — but a runtime mini-eval would have caught the d7cbf65 architectural drift independently."
     },
     {
       "id": "INVEST-4",
       "priority": "P1",
-      "summary": "Multi-subject training manifest. The wan22 14× and corrected 4rc 3.5× (right-only) train→OOT gaps both confirm 50 sub-01 right-hand sequences is too narrow. Build manifests/dexycb_s1train_multi_subject.json (sub-01..06 right-hand, ~250+ sequences, drop sub-07 + sub-08 = s1_test split). Re-train wan22-pe; expect right-only OOT to drop substantially if subject diversity is the missing ingredient."
+      "summary": "Multi-subject training manifest. Right-only cross-subject gaps for both models: wan22 in-train 23.60 → OOT 161.45 mm hand_vert (6.8x); 4rc 42.83 → 159.10 mm (3.7x). Both confirm 50 sub-01 right-hand sequences is too narrow. Build manifests/dexycb_s1train_multi_subject.json (sub-01..06 right-hand, drop sub-07 + sub-08 = s1_test). Re-train wan22-pe; expect right-only OOT to halve."
     },
     {
       "id": "INVEST-5",
       "priority": "P2",
-      "summary": "Variable-T training a la Stage 2 paper recipe (memory project_stage2_paper_recipe_validated). cl=16 eval on a cl=16-trained model already shows RoPE-locality artifacts (35 mm at cl=16 → 259 mm at cl=63). Variable T∈[2,18] training during P2 should enable cl-arbitrary inference."
+      "summary": "Variable-T training a la Stage 2 paper recipe. Current cl=16 train + cl=16 eval is consistent at the PE level; but cl != 16 eval (cl=32/48/63 → 138/210/259 mm hand_vert observed in earlier wan22 sweep) breaks because position_interp PE coords run from [0, 3] at train to [0, T_lat-1] at eval. Variable T ∈ [2, 18] training would cover wider PE range."
     },
     {
       "id": "OPT-B",
       "priority": "P0",
-      "summary": "Durable fix for the inline-flag trap: write arch_meta = {temporal_pe: ..., ...} into every checkpoint at save time and have temporal_pe_from_ckpt(..., override='auto') consume it. Eliminates the silent-load failure mode permanently. Requires small change in p2_train.py save block + the helper in stream3r/heads/hoi3r_v2/temporal_pe.py."
+      "summary": "Durable fix for the inline-flag trap: write arch_meta = {temporal_pe: bool, ...} into every checkpoint at save time and have temporal_pe_from_ckpt(..., override='auto') consume it. Eliminates the silent-load failure mode permanently. Edit scope: scripts/hoi3r_v2/p2_train.py save block + temporal_pe.py helper."
     },
     {
       "id": "WIRE-PE-FLAG",
       "priority": "P2",
-      "summary": "Wire --temporal-pe / TEMPORAL_PE flags into the remaining eval scripts: scratch/wan22_cl16_eval.py, scratch/wan22_full_seq_eval.py, scratch/diagnose_train_eval_gap.py. Currently only scratch/eval_with_predictions.py and scratch/repro_4rc_eval.py have the toggle."
-    },
-    {
-      "id": "WAN22-PE-CROSSCHECK",
-      "priority": "P2",
-      "summary": "Sanity-run wan22-pe in-train eval with --temporal-pe off and confirm metrics WORSEN. Confirms PE was actually learned during training (vs an inert default flag). 3-min job on the existing 9-window setup."
+      "summary": "Wire --temporal-pe / TEMPORAL_PE flag into the remaining eval scripts: scratch/wan22_cl16_eval.py, scratch/wan22_full_seq_eval.py, scratch/diagnose_train_eval_gap.py, scratch/wan22_overlap_eval.py."
     },
     {
       "id": "OOT-LEFT-HAND",
       "priority": "P2",
-      "summary": "Either rebuild the sub-07 OOT manifest as right-hand only (drop seq02/seq03/seq04) for clean cross-subject signal, or expand training to include left-hand sequences. Currently the all-5 OOT mean (561.9 mm hand_vert) is dominated by 3 OOD-by-handedness sequences (left-only mean 838.8 mm); right-only mean (146.5 mm) is the meaningful number."
+      "summary": "Either rebuild dexycb_subject07_test_fixed.json as right-hand only (drop seq02/seq03/seq04) or expand training to include left-hand sequences. Left-only OOT means (494/869 mm hand_vert) are OOD-by-handedness, not a real generalisation signal."
     }
   ],
   "discoveries": [
     {
-      "badge": "fix",
-      "title": "INVEST-1 resolved: d7cbf65 inline temporal_pe trap fully explained the 4rc-cached 70× train/eval gap",
-      "body": "Commit d7cbf65 (Apr 28 11:55 UTC) added an inline additive sinusoidal temporal PE on queries inside HandDecoder / ObjectPoseDecoder / TemporalSelfAttnBlock, defaulting to temporal_pe=True. The PE is computed inline from clip-position 0..15 and the flag is a plain Python bool — neither parameter nor persistent buffer. Loading state_dict reports miss=0 unexpected=0 even though the saved weights were trained against a different setting. The 4rc-cached training process started at 07:36 UTC (before the 11:55 commit) and ran with PE=False; final.pt was saved at 20:47 with the trained weights. Every subsequent offline eval (eval_with_predictions.py, repro_4rc_eval.py) loaded the ckpt into the post-d7cbf65 head and silently got temporal_pe=True, injecting a PE term the weights never saw. Effect: training-style replay drops from 0.140 m L1 (broken) to 0.0021 m L1 (matches trainer-logged 0.00193 within 10%). Chunk-aligned single-clip drops 137 mm → 29 mm. Object rotation error drops 173.7° → 0.46°. All four eval metrics (point/joint/rot/trans) match trainer log to ≤ 16% after the fix. Fix shipped as Option A: scratch/eval_with_predictions.py exposes --temporal-pe {auto,on,off}; scratch/repro_4rc_eval.py honors TEMPORAL_PE env var; helper apply_temporal_pe_setting() + temporal_pe_from_ckpt() in stream3r/heads/hoi3r_v2/temporal_pe.py. Memory: feedback_temporal_pe_inline_flag_trap.md. Durable fix (Option B, OPT-B in pending) writes arch_meta into the checkpoint to make the auto path actually auto."
+      "badge": "finding",
+      "title": "Canonical chunk-aligned protocol: head-to-head wan22-pe vs 4rc-cached",
+      "body": "Under the canonical eval protocol (cl=16 non-overlapping windows starting at tracked_start, drop trailing partial — the same length the model was trained at), both models are basically TIED on cross-subject OOT despite very different in-train numbers. wan22-pe is ~1.8x better in-train (23.60 vs 42.83 mm hand_vert) but the OOT right-only gap collapses to <2 mm (161.45 vs 159.10 mm). 4rc-cached is even slightly better on OOT right-only object ADD-S (137.77 vs 158.15 mm). Implication: wan22's in-train edge is overfit, not learned generalisation. The encoder choice is not the bottleneck for cross-subject generalisation; subject diversity in training is (INVEST-4)."
     },
     {
       "badge": "finding",
-      "title": "wan22-pe inter-window staircase is partially mitigatable but B (Wan2.2 4× compression) is the floor",
-      "body": "Per-frame errors within a single cl=16 window for sub-01 seq00: frame 1=33.8 mm, frame 2=54.5 mm (cold-start spike), frames 3–5 settle to ~30 mm, then drift between 23–36 mm for the remaining 12 frames. Window boundaries show 3–5 mm jumps. Overlap-averaging (stride=8 sliding window) on indices 0/25/49 gives modest improvements: hand_vert mean 23.05 → 21.96 mm (−4.7%), hand boundary_jump 4.74 → 4.08 mm (−14%), obj ADD-S 9.88 → 8.72 mm (−12%); object boundary_jump regressed +14.6% (likely SE(3)-averaging math bug). Decision rule (boundary ↓50% AND mean ↓10%) NOT met. Pattern most consistent with Wan2.2's 4× temporal compression (only 4 distinct latents per cl=16 window) being a real floor; PE breaks intra-block degeneracy but the underlying signal is still ×4 downsampled. Recommendation: do not land overlap-averaging in production driver as-is; first run stride=4 monotonicity check + hand-only overlap to disambiguate. If gains saturate → escalate to denser-grained encoder. Driver: scratch/wan22_overlap_eval.py. Output: logs/wan22_pe_pt_b35ydgie/seed0/overlap_eval/."
-    },
-    {
-      "badge": "finding",
-      "title": "OOT signal: right-hand-only model evaluated against 3-out-of-5 left-hand sequences",
-      "body": "The corrected 4rc-cached OOT mean is 561.9 mm hand_vert across 5 sequences, but disaggregating by hand_side reveals: right-hand (seq00, seq01) mean = 146.5 mm; left-hand (seq02, seq03, seq04) mean = 838.8 mm. Training manifest dexycb_subject01_right_manifest.json contains only right-hand sequences, so the left-hand evaluations are out-of-distribution by handedness, not just by subject. The right-only OOT signal (146.5 mm hand_vert, 117.6 mm hand_joint, 130.1 mm obj ADD-S) is the meaningful generalization gap: 41.8 → 146.5 mm hand_vert is a 3.5× cross-subject overfit, comparable to v1 trajectory-head's pattern. The 720/920 mm numbers in the original page were a compound of the d7cbf65 trap AND the OOD-handedness contamination."
-    },
-    {
-      "badge": "finding",
-      "title": "Neither model generalizes cross-subject — but the magnitude after correction is much smaller for 4rc",
-      "body": "Single-subject training (50 sub-01 right-hand sequences) shows train→OOT gaps for both encoders. wan22 in-train hand_vert 24 mm → OOT 341 mm (14×). 4rc-cached after PE-fix: in-train hand_vert 41.8 mm → OOT right-only 146.5 mm (3.5×). Object pose follows the same pattern — wan22 ADD-S 8.8 → 151.9 mm (17×); 4rc ADD-S 8.76 → 130.1 mm (15×). Object pose has a much larger relative cross-subject gap than hand pose for both encoders. 50-seq single-subject is too narrow regardless of encoder. INVEST-4 (multi-subject manifest) targets this directly."
+      "title": "Object pose degrades 17x cross-subject; hand only 6.8x",
+      "body": "wan22-pe: in-train obj ADD-S 9.10 → OOT right-only 158.15 mm (17.4x); hand_vert 23.60 → 161.45 mm (6.8x). 4rc-cached: 8.50 → 137.77 mm (16.2x); 42.83 → 159.10 mm (3.7x). Object pose head's cross-subject overfit is much worse than the hand head's — consistent across both encoders. Hypothesis: object trajectories are more grasp-specific (per-subject grip strategy + per-object-instance contact) while hand pose has stronger MANO-shape priors that transfer better. Confirms object pose head needs the multi-subject manifest expansion (INVEST-4) more urgently than the hand head."
     },
     {
       "badge": "fix",
-      "title": "subject-07 manifest had stale tracked-start values",
-      "body": "manifests/dexycb_subject07_test.json declared tracked_start=5 for all 5 sequences, but DexYCB's joint_3d sentinel-check rejects frames 0..6/10/8/12/16. precompute_gt_cache.py and precompute_4rc_feats.py raised HandNotTrackedError. Patched to the longest contiguous tracked window in manifests/dexycb_subject07_test_fixed.json (lengths 67/63/65/59/57) and used by all evals."
+      "title": "INVEST-1 fully resolved + canonical protocol locked in",
+      "body": "Commit d7cbf65 added an inline temporal_pe flag to HandDecoder/ObjectPoseDecoder/TemporalSelfAttnBlock that is invisible to state_dict (Python bool, no buffer/parameter). Pre-d7cbf65 4rc-cached ckpt loaded into post-d7cbf65 head silently runs the wrong forward → 137 mm L1 vs 1.93 mm trainer-logged (70x). Option A fix shipped: scratch/eval_with_predictions.py + scratch/repro_4rc_eval.py expose the toggle. Option B (durable arch_meta in checkpoint) tracked as OPT-B in tasks_pending. The canonical protocol — cl=16 non-overlapping chunk-aligned windows, drop trailing — is now codified as scratch/eval_with_predictions.py --chunk-aligned and IS the only protocol used in this report. Train cl == eval cl is the invariant: never feed the model T != train_cl."
     },
     {
       "badge": "finding",
-      "title": "Mini-eval was no-op'd during cached training",
-      "body": "p2_mini_eval.run_mini_eval shorts to NaN whenever encoder_mode='cached'. Both runs logged 'mini_eval_skipped reason=encoder=wan22_cached' every 2k steps. So the 4rc-cached cold-start failure was completely invisible during training — the FAILURE_PROTOCOL gate (kill at step 6000 if hand_joint > 6.2 mm) never fired because no eval ever ran. Re-enabling mini-eval for cached encoders is INVEST-3."
+      "title": "Per-frame error within a cl=16 window shows cold-start + boundary structure",
+      "body": "Per-frame plots (averaged across all chunk-aligned windows) reveal: (a) wan22-pe in-train: roughly flat 18-30 mm with a slight peak near frames 1-2 (cold-start), boundary jumps ~3-5 mm; (b) 4rc-cached in-train: monotonically descending from ~52 mm (frame 0) to ~25 mm (frame 15) — strong cold-start signature, no flat region; (c) wan22-pe OOT-right: flat-ish ~150 mm with high variance, no clear cold-start because the OOT signal already saturates; (d) 4rc-cached OOT-right similar but lower-mean. The cold-start slope is much sharper for 4rc than for wan22 in-train, possibly because wan22's PE sees clip-position 0 distinctly while 4rc has no PE signal at all. THFM paper has no solution to within-window cold-start (they fix T at train+eval, never investigate). INVEST-2 partial sub-cases (stride-4, hand-only-overlap) and INVEST-5 (variable-T training) are the two paths forward."
     }
   ],
   "memory_entries_written": [
@@ -190,16 +190,14 @@
     "feedback_temporal_pe_inline_flag_trap.md"
   ],
   "caveats": [
-    "The 4rc-cached numbers in this page have been UPDATED 2026-04-29 after INVEST-1. Original (broken) numbers are preserved in EVAL-3 / EVAL-4 entries with explicit 'broken — pre-fix' tags so the page tells the full story. Corrected numbers are tagged '— CORRECTED' in headline_stats and in EVAL-3-CORRECTED / EVAL-4-CORRECTED entries.",
-    "wan22-pe numbers (24.2 / 23.1 / 8.8 mm in-train; 341.0 / 368.1 / 151.9 mm OOT) are unaffected — that run trained AFTER d7cbf65 with temporal_pe=True. Cross-check by running --temporal-pe off on it and confirming metrics WORSEN is captured as WAN22-PE-CROSSCHECK in tasks_pending.",
-    "The original 'cold-start CoM monotonic decrease' analysis (327 → 207 mm across cl=16) was an artefact of the d7cbf65 PE-injection bug, not a real causal-decoder phenomenon. The corrected per-window error pattern for 4rc-cached is consistent with sequence-position effects (~52 → 39 → 23 mm across windows 0/16/32 of seq00), not a 270 mm rigid offset.",
-    "OOT all-5 mean is dominated by 3 left-hand sequences (838.8 mm hand_vert vs 146.5 mm right-only). Use the right-only mean for cross-subject signal interpretation until OOT-LEFT-HAND lands.",
-    "Single-subject training (50 sub-01 right-hand sequences). The OOT eval is on 5 sub-07 sequences — small N; treat the magnitudes as a directional signal, not a precise generalization measurement.",
-    "ADD-S uses sym-min over the YCB-V symmetry group on a 1024-pt CAD; the older logs/wan22_pe_pt_b35ydgie/seed0/eval_cl16/aggregate.json used a 256-pt FPS-only subset and reported simpler aligned ADD-S — those numbers (8.80 mm) are cross-checked here as obj_add_s_simple.",
-    "Each condition runs a single forward at fp32 with seed=0; no MANO post-fit. Numerical noise within the seed-0 sampling explains <0.5 mm differences across re-runs.",
-    "pt-swhtyb0b accidentally executed JOB_B's body because make_submission shallow-copied the template (both submissions ended up sharing roles[0]). pt-1xrqjmtn (correct Job B) re-ran the same body and overwrote pt-swhtyb0b's outputs; pt-2rv8491f delivered the missing wan22 OOT pipeline. Final aggregates (pre-PE-fix) were from pt-1xrqjmtn + pt-2rv8491f; corrected 4rc aggregates were re-run locally on the debug container post-INVEST-1."
+    "Canonical eval protocol = cl=16 non-overlapping windows (--chunk-aligned in scratch/eval_with_predictions.py). All numbers in headline_stats use this protocol; older numbers in this page's history (the original 280/297/121 broken set, the centred-window 561.9 set) are SUPERSEDED.",
+    "wan22-pe trained AFTER d7cbf65 with temporal_pe=True; uses --temporal-pe auto (resolves to on). 4rc-cached trained BEFORE d7cbf65; REQUIRES --temporal-pe off — without it metrics regress 70x (INVEST-1 trap).",
+    "OOT all-5 means are dominated by 3 left-hand sequences (494-869 mm hand_vert) which are OOD-by-handedness, not real cross-subject signal. Use OOT right-only (seq00 + seq01) for the meaningful comparison.",
+    "Per-frame plots: y-axis is mean per-frame L2 mm averaged across all chunk-aligned windows hitting that frame-in-window position; std band is across windows.",
+    "wan22 OOT obj ADD-S 158 mm and 4rc OOT obj ADD-S 138 mm are both catastrophic (~17x degradation from in-train). The encoder doesn't matter for cross-subject — subject diversity in training does.",
+    "Per-frame error JSONs save only hand_vert / hand_joint / obj_add_s; per-frame rot/trans NOT saved. Plots show only the 3 metrics."
   ],
   "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.html",
   "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.json",
-  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.json\nand continue from tasks_pending[0] (INVEST-2 [P1]: Window staircase fix for wan22-pe. Sliding-window inference with overlap-averaging (50% stride 8 instead of 16) tested on indices 0/25/49: hand_vert mean 23.05 → 21.96 mm (−4.7%), hand boundary_jump 4.74 → 4.08 mm (−14%), obj ADD-S 9.88 → 8.72 mm (−12%) BUT obj boundary_jump regressed +14.6% (likely SE(3)-averaging math bug — translation on rotated CAD doesn't commute with rotation averaging). Decision rule (boundary ↓50% AND mean ↓10%) NOT met → A+C real but not dominant; B (Wan2.2 4× temporal compression, only 4 distinct latents per cl=16) likely a real floor. Driver at scratch/wan22_overlap_eval.py. Next sub-cases: stride=4 monotonicity check + hand-only overlap (clean test of obj math). If gains saturate → escalate to denser-grained encoder.).\nContext: branch feat/dcf@f15f520; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-04-26-thfm-style-token-injection-design.md, docs/superpowers/plans/2026-04-28-wan22-feature-swap-v2.md."
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.json\nand continue from tasks_pending[0] (INVEST-2 [P1]: Window staircase fix for wan22-pe — partially mitigated. Stride=8 overlap-averaging on indices 0/25/49 gave hand_vert −5%, hand boundary_jump −14%, obj ADD-S −12% but obj boundary_jump regressed +15% (likely SE(3) averaging math bug). Decision rule (boundary ↓50% AND mean ↓10%) NOT met. Per-frame plots from this canonical eval show within-window cold-start spike + drift even at cl=16 train cl=16 eval. THFM paper (arXiv 2603.25892) has NO solution to this — they only ever ran 1 window per video at fixed T. B (Wan2.2 4× temporal compression → 4 distinct latents per cl=16) likely a real floor. Sub-cases TODO: stride=4 monotonicity, hand-only overlap (clean test of obj math).).\nContext: branch feat/dcf@f15f520; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-04-26-thfm-style-token-injection-design.md, docs/superpowers/plans/2026-04-28-wan22-feature-swap-v2.md."
 }

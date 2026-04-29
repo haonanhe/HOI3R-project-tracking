@@ -1,9 +1,9 @@
 [
   {
-    "title": "2026-04-29 · Pull pt-b35ydgie (wan22-pe) and pt-8rqkny4k (4rc-cached) results, evaluate cl=16 in-train (subject-01) and out-of-train (subject-07), publish. UPDATED 2026-04-29: 4rc-cached numbers re-run with --temporal-pe off after INVEST-1 root-caused a checkpoint/code mismatch.",
+    "title": "2026-04-29 · Final canonical comparison: wan22-pe vs 4rc-cached on cl=16 chunk-aligned non-overlapping windows (cl=train_cl, drop trailing partial). For both models: in-train (sub-01 indices 0/25/49) + OOT (sub-07 5 seqs, hand-side disaggregated). 4rc-cached uses --temporal-pe off per the d7cbf65 trap (INVEST-1).",
     "date": "2026-04-29",
-    "status": "finding",
-    "summary": "Pull pt-b35ydgie (wan22-pe) and pt-8rqkny4k (4rc-cached) results, evaluate cl=16 in-train (subject-01) and out-of-train (subject-07), publish. UPDATED 2026-04-29: 4rc-cached numbers re-run with --temporal-pe off after INVEST-1 root-caused a checkpoint/code mismatch.",
+    "status": "done",
+    "summary": "Final canonical comparison: wan22-pe vs 4rc-cached on cl=16 chunk-aligned non-overlapping windows (cl=train_cl, drop trailing partial). For both models: in-train (sub-01 indices 0/25/49) + OOT (sub-07 5 seqs, hand-side disaggregated). 4rc-cached uses --temporal-pe off per the d7cbf65 trap (INVEST-1).",
     "path": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.html",
     "file": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.html",
     "sidecar": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.json"
