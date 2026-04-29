@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-29 · Pull pt-b35ydgie (wan22-pe) and pt-8rqkny4k (4rc-cached) results, evaluate cl=16 in-train (subject-01) and out-of-train (subject-07), publish. UPDATED 2026-04-29: 4rc-cached numbers re-run with --temporal-pe off after INVEST-1 root-caused a checkpoint/code mismatch.",
+    "date": "2026-04-29",
+    "status": "finding",
+    "summary": "Pull pt-b35ydgie (wan22-pe) and pt-8rqkny4k (4rc-cached) results, evaluate cl=16 in-train (subject-01) and out-of-train (subject-07), publish. UPDATED 2026-04-29: 4rc-cached numbers re-run with --temporal-pe off after INVEST-1 root-caused a checkpoint/code mismatch.",
+    "path": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.html",
+    "file": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.html",
+    "sidecar": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.json"
+  },
+  {
     "title": "2026-04-29 · INVEST-1 closed: re-run 4rc-cached cl=16 evals with --temporal-pe off and supersede the broken 2026-04-29 page",
     "date": "2026-04-29",
     "status": "wip",
@@ -7,15 +16,6 @@
     "path": "updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.html",
     "file": "updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.html",
     "sidecar": "updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.json"
-  },
-  {
-    "title": "2026-04-29 · Pull pt-b35ydgie (wan22-pe) and pt-8rqkny4k (4rc-cached) results, evaluate cl=16 in-train (subject-01) and out-of-train (subject-07), publish.",
-    "date": "2026-04-29",
-    "status": "finding",
-    "summary": "Pull pt-b35ydgie (wan22-pe) and pt-8rqkny4k (4rc-cached) results, evaluate cl=16 in-train (subject-01) and out-of-train (subject-07), publish.",
-    "path": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.html",
-    "file": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.html",
-    "sidecar": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.json"
   },
   {
     "title": "2026-04-28 · Land THFM-LoRA v1 (16-task plan), audit + fix paper-misalignments (M1/M2/M3), add v2-anatomical (arm D), submit A vs D ablation on ACP.",
