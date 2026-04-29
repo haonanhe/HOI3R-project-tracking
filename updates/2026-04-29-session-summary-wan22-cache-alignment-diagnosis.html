@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-04-29 · wan22-cache-alignment-diagnosis</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Wan22 Cache Alignment Diagnosis</h1>
+  <div class="meta">2026-04-29 · <code>main</code> · <code>@4198137</code> · spec: <code>docs/superpowers/specs/2026-04-29-wan22-tracked-start-aligned-cache-design.md</code> · plan: <code>docs/superpowers/plans/2026-04-29-wan22-tracked-start-aligned-cache.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Diagnose why pt_b35ydgie shows period-4 obj oscillation + U-shape hand error within cl=16 windows, and design + plan the cached-pyramid retrain that aligns precompute, sampler, and eval at each sequence&#x27;s tracked_start.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">eb79ce3 + 4198137</div><div class="label">Spec + plan committed</div></div><div class="stat"><div class="val">15 / 15</div><div class="label">Plan tasks pending</div></div><div class="stat"><div class="val">23.60 mm</div><div class="label">wan22-pe in-train hand_vert (anchor)</div></div><div class="stat"><div class="val">12.6 mm</div><div class="label">wan22-pe obj period-4 amplitude (anchor)</div></div><div class="stat"><div class="val">≤ 6.3 mm (50% reduction)</div><div class="label">Decision: obj amplitude target</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>DIAG-1</td><td><span class="badge badge-pass">PASS</span></td><td>—</td><td>Per-frame error analysis across all 11 in-train windows of pt_b35ydgie. Aggregate: hand_vert U-shape (f00=25.9, f01=29.8, mid≈21, f15=26.5); hand_joint U-shape (f00=30.1 → mid 19 → f15=32.2); obj_add_s period-4 (f00=10.4, f04=10.7, f08=11.0, f15=17.0; troughs at f02=4.4, f06=5.0).</td></tr><tr><td>DIAG-2</td><td><span class="badge badge-pass">PASS</span></td><td>—</td><td>Confirmed cache schema is per-frame post-up-replication anchored at sequence frame 0: pyramid list[4] of (n_frames, 225, 3072) with target_t_chunk=16. Precompute loop at precompute_wan22_feats.py:135 uses range(0, n_frames, 16) — sequence-anchored, last partial zero-padded.</td></tr><tr><td>DIAG-3</td><td><span class="badge badge-pass">PASS</span></td><td>—</td><td>Confirmed training sampler (_sample_frame_indices) uses random ref_pos ∈ [tracked_start, tracked_end] + random stride 1-4 with video_prob=1.0. Cache lookup MultiSeqPyramidCache.gather (p2_train.py:155-184) directly indexes pyramid by frame_indices. Result: every training and eval window misaligned with cache chunk boundaries by tracked_start mod 16.</td></tr><tr><td>DIAG-4</td><td><span class="badge badge-pass">PASS</span></td><td>—</td><td>Confirmed 4RC has identical precompute chunking pattern (precompute_4rc_feats.py:98) and same random-sampler consumption. Symptom is much milder — 4RC has 1× compression so per-frame features are distinct; 4rc-cached eval shows monotonic cold-start (52→25 mm hand_vert), NO period-4.</td></tr><tr><td>ARCH-1</td><td><span class="badge badge-pass">PASS</span></td><td>—</td><td>Verified HOI3R v2 head architecture: HandDecoder (256 mesh-points + 21 joints, 4 cross-attn pyramid blocks + 1 TemporalSelfAttn + 2 linear heads); ObjectPoseDecoder (1 learnable token + PointNet++ shape memory, 4× video-cross + 4× shape-cross + 1 TemporalSelfAttn + Linear→R6+t). All PE is **additive sinusoidal on Q only** (3 callsites, position_interp=True, scale (T_lat-1)/(T-1)); KV side has no PE; nn.MultiheadAttention throughout, no RoPE.</td></tr><tr><td>ARCH-2</td><td><span class="badge badge-pass">PASS</span></td><td>—</td><td>Verified Wan2.2 latent up-replication mapping at encoder_wrapper.py:115-138 produces asymmetric block sizes [1, 4, 4, 7] for cl=16 (frame 0 alone in lat 0; frames 9-15 ALL share lat 3 due to min(T_lat-1, ...) clamp). Sets a structural floor on within-block discrimination that PE alone cannot fix.</td></tr><tr><td>DESIGN-1</td><td><span class="badge badge-pass">PASS</span></td><td>eb79ce3</td><td>Wrote spec docs/superpowers/specs/2026-04-29-wan22-tracked-start-aligned-cache-design.md (253 lines). Option 2a: tracked-start-anchored cache + chunk_aligned_sampling=True (stride=1, ref ∈ {tracked_start + 16k}) + retrain from scratch on pt_b35ydgie envelope. Mini-eval disabled per user.</td></tr><tr><td>PLAN-1</td><td><span class="badge badge-pass">PASS</span></td><td>4198137</td><td>Wrote 15-task implementation plan docs/superpowers/plans/2026-04-29-wan22-tracked-start-aligned-cache.md (1175 lines, 6 phases). Phase 0 anchor lock; Phase 1 sampler TDD; Phase 2 precompute helper TDD; Phase 3 cache build; Phase 4 1-GPU smoke; Phase 5 ACP launcher + submit; Phase 6 final eval + decision-criterion + publish. Each step ≤5 min with concrete code/commands.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> pt_b35ydgie&#x27;s period-4 obj + U-shape hand are signatures of 3-way cache misalignment</h3><p>Per-frame error decomposition across 11 in-train windows reveals two distinct patterns: (a) mild U-shape on hand (f0=25.9, f01=29.8, middle ~21, f15=26.5 mm hand_vert) and (b) period-4 oscillation on obj_add_s with peaks at f04 (10.7), f08 (11.0), f15 (17.0) and troughs at f02 (4.4), f06 (5.0). Per-window analysis shows the period-4 amplitude varies systematically by sequence — driven by chunk-offset (= tracked_start mod 16): seq00 offset 9 puts window-frame-0 on chunk-floor&#x27;s 7-frame lat-3 block; seq25 offset 3 on lat-1; seq49 offset 1 on lat-1. Each sequence has different latent-block-vs-PE mismatch geometry, but all consume cache at chunk-misaligned positions.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Three independent contributors at the head&#x27;s PE-anchored output positions</h3><p>(1) Wan2.2 4× temporal compression + asymmetric up-replication [1,4,4,7] — frames 9-15 ALL share lat 3, capping within-block discrimination. (2) Precompute chunks at sequence frame 0 (precompute_wan22_feats.py:135) but consumption (training + eval) starts at tracked_start. (3) Random training sampler picks ref_pos uniformly from [tracked_start, tracked_end] with stride 1-4 — head was trained on chaotic mixes, not stable structure. The head&#x27;s additive sinusoidal PE applies rope=0 to window-frame-0 unconditionally, fighting the actual cache geometry on every consumed window.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> Option 2a — tracked-start-aligned cache + chunk-aligned sampler + retrain (spec written, plan ready)</h3><p>Spec docs/superpowers/specs/2026-04-29-wan22-tracked-start-aligned-cache-design.md (eb79ce3) + 15-task plan docs/superpowers/plans/2026-04-29-wan22-tracked-start-aligned-cache.md (4198137). Re-precompute with --chunk-anchor tracked-start (chunks start at tracked_start, drop trailing partial); add chunk_aligned_sampling=True to _sample_frame_indices (stride=1, ref ∈ {tracked_start + 16k}); retrain from scratch on the same pt_b35ydgie 8×H100 / 50-seq sub-01-right / 15k-step envelope. No mini-eval per user 2026-04-29. Decision: hand_vert ≤ 23.60 mm AND obj period-4 amplitude ↓ ≥ 50%.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> 4RC has the same precompute pattern but milder symptom — don&#x27;t extend 2a to 4rc this iteration</h3><p>scripts/hoi3r_v2/precompute_4rc_feats.py:98 uses identical sequence-anchored stride-16 chunking; 4rc-cached training uses the same random-ref + random-stride sampler. But 4RC has 1× compression: each input frame produces ONE distinct feature token, no within-block content sharing. Cross-chunk effect on 4rc-cached is temporal-context flavour shift (each frame&#x27;s feature inherited context from its own clip&#x27;s neighbors), not content jumps. Manifests as monotonic cold-start (52→25 mm hand_vert), no period-4. Recommendation: gate any 4rc-aligned retrain on the wan22-aligned outcome — if wan22 wins, 4rc-aligned is a follow-up; if wan22 loses, 4rc-aligned was unlikely to either.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>eb79ce3</td><td>docs(spec)</td><td>tracked-start-aligned cache + chunk-aligned sampler for wan22-pe retrain</td></tr><tr><td>4198137</td><td>docs(plan)</td><td>wan22 tracked-start aligned cache — 15-task implementation plan</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>wan22-pe ckpt</td><td>logs/wan22_pe_pt_b35ydgie/seed0/final.pt — trained AFTER d7cbf65 with temporal_pe=True; cache=hoi3r_v2_feats_wan22_multiseq (sequence-anchored, untouched as comparison anchor)</td></tr><tr><td>4rc-cached ckpt</td><td>logs/hoi3r_v2_p2_4rc_cached/seed0/final.pt — same precompute alignment pattern, milder symptom; not in 2a scope</td></tr><tr><td>Spec</td><td>docs/superpowers/specs/2026-04-29-wan22-tracked-start-aligned-cache-design.md @ eb79ce3 — 253 lines, decision criteria locked</td></tr><tr><td>Plan</td><td>docs/superpowers/plans/2026-04-29-wan22-tracked-start-aligned-cache.md @ 4198137 — 15 tasks across 6 phases, every step has concrete code/commands</td></tr><tr><td>Anchor launcher</td><td>scripts/acp_jobs/hoi3r_v2/P2_multiseq_wan22.sh — pt_b35ydgie envelope (8×H100, batch 16, 15k steps, ema 0.999, manifests/dexycb_subject01_right_manifest.json 50 seqs). New launcher P2_wan22_aligned.sh defined in plan Phase 5.</td></tr><tr><td>New cache target dir</td><td>/mnt/afs/haonan/hoi3r/cache/hoi3r_v2_feats_wan22_multiseq_aligned/ — does not yet exist; built in plan Phase 3</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>IMPL-1</td><td><span class="badge badge-p1">P1</span></td><td>Plan Tasks 2-5: chunk_aligned_sampling sampler branch + tests (failing test → impl → pass → commit), thread through DexYCB16FrameClip, --chunk-aligned-sampling CLI in p2_train.py.</td></tr><tr><td>IMPL-2</td><td><span class="badge badge-p1">P1</span></td><td>Plan Tasks 6-7: compute_chunk_starts pure helper + unit tests; wire into precompute_wan22_feats.py with --chunk-anchor {sequence-start, tracked-start} CLI.</td></tr><tr><td>IMPL-3</td><td><span class="badge badge-p0">P0</span></td><td>Plan Tasks 8-9: build new aligned cache for sub-01 manifest at /mnt/afs/haonan/hoi3r/cache/hoi3r_v2_feats_wan22_multiseq_aligned/ (~25 min, nohup&#x27;d).</td></tr><tr><td>IMPL-4</td><td><span class="badge badge-p1">P1</span></td><td>Plan Task 10: build aligned sub-07 OOT cache at hoi3r_v2_feats_wan22_subject07_aligned/ (~5 min).</td></tr><tr><td>IMPL-5</td><td><span class="badge badge-p1">P1</span></td><td>Plan Task 11: 1-GPU 50-step pipeline smoke; loss-decreases gate; verify dataloader emits chunk-aligned frame_indices.</td></tr><tr><td>IMPL-6</td><td><span class="badge badge-p1">P1</span></td><td>Plan Tasks 12-13: create scripts/acp_jobs/hoi3r_v2/P2_wan22_aligned.sh launcher (mirrors P2_multiseq_wan22.sh envelope, mini-eval flags removed); operator submits via HMAC tooling per feedback_acp_hmac_permission_scope; record assigned ACP job id.</td></tr><tr><td>IMPL-7</td><td><span class="badge badge-p1">P1</span></td><td>Plan Tasks 14-15: post-training canonical eval (in-train + OOT-right-only, --chunk-aligned --temporal-pe auto), per-frame plots, decision-criterion check vs spec §7 (Win/Mixed/Loss), publish comparison page.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>The alignment hypothesis is UNVERIFIED. Period-4 amplitude reduction ≥ 50% is the proof; it could fail. If it does, spec § 7 mandates pivot to 2b (THFM-LoRA, separate spec at docs/superpowers/specs/2026-04-28-hoi3r-thfm-lora-design.md).</li><li>4RC retrain is intentionally NOT included in 2a. If wan22-aligned wins, 4rc-aligned is a follow-up; if it loses, 4rc-aligned is unlikely to win either.</li><li>chunk_aligned_sampling hard-codes stride=1 and num_views==chunk_size==16. Variable-T training (INVEST-5) needs separate spec extension if revisited.</li><li>Training sample diversity drops from random-ref + random-stride to ~150 unique (sequence, chunk_start) clips manifest-wide. Each clip will be presented ~12 800 times across 15k steps × global batch 128. This may overfit harder than pt_b35ydgie; canonical-point random-seed shuffle inside the head + CAD-aug provide remaining token-level diversity.</li><li>Trailing-partial drop: sequences whose tracked range is not a multiple of 16 lose up to 15 frames at the end. Bounded; no manifest entries are &lt; 16 frames.</li><li>ACP submission requires the operator&#x27;s HMAC tooling per feedback_acp_hmac_permission_scope — assistant cannot submit directly. Plan Task 13 surfaces the launcher to the operator.</li><li>Per memory project_cl16_d_r5_train_eval_gap.md the THFM-LoRA team independently observed the same cl=16 random-stride bug (10× train-eval gap) and shipped an 81-frame fixed-window fix at 35b7330. Our 2a is the cached-pyramid path&#x27;s analogue.</li></ul>
+</section>
+
+<section><h2>Memory entries written this session</h2>
+<ul><li><code>project_wan22_cache_alignment_diagnosis.md</code></li><li><code>reference_hoi3r_v2_head_pe_architecture.md</code></li><li><code>reference_wan22_latent_up_replication_asymmetry.md</code></li><li><code>feedback_4rc_vs_wan22_alignment_severity.md</code></li></ul>
+</section>
+
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-wan22-cache-alignment-diagnosis.json
+and continue from tasks_pending[0] (IMPL-1 [P1]: Plan Tasks 2-5: chunk_aligned_sampling sampler branch + tests (failing test → impl → pass → commit), thread through DexYCB16FrameClip, --chunk-aligned-sampling CLI in p2_train.py.).
+Context: branch main@4198137; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-04-29-wan22-tracked-start-aligned-cache-design.md, docs/superpowers/plans/2026-04-29-wan22-tracked-start-aligned-cache.md.</pre></section>
+</div></body></html>

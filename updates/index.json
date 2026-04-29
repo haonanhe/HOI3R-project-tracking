@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-29 · Diagnose why pt_b35ydgie shows period-4 obj oscillation + U-shape hand error within cl=16 windows, and design + plan the cached-pyramid retrain that aligns precompute, sampler, and eval at each sequence's tracked_start.",
+    "date": "2026-04-29",
+    "status": "wip",
+    "summary": "Diagnose why pt_b35ydgie shows period-4 obj oscillation + U-shape hand error within cl=16 windows, and design + plan the cached-pyramid retrain that aligns precompute, sampler, and eval at each sequence's tracked_start.",
+    "path": "updates/2026-04-29-session-summary-wan22-cache-alignment-diagnosis.html",
+    "file": "updates/2026-04-29-session-summary-wan22-cache-alignment-diagnosis.html",
+    "sidecar": "updates/2026-04-29-session-summary-wan22-cache-alignment-diagnosis.json"
+  },
+  {
     "title": "2026-04-29 · Land DiffSynth grad-ckpt+offload, fix THFM 81-frame clip bug + ContextVar leak, ship cl=81 r5 runs (A+D), eval D r5 cl=16 to expose the train/eval gap.",
     "date": "2026-04-29",
     "status": "finding",
