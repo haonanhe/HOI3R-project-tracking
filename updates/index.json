@@ -1,9 +1,9 @@
 [
   {
-    "title": "2026-04-29 · Evaluate pt-npwu0we6 (THFM-LoRA arm A, cl=81 single-seq overfit) in-train + OOT at the trained clip length to characterise memorization vs generalization.",
+    "title": "2026-04-29 · Evaluate pt-npwu0we6 (THFM-LoRA arm A, cl=81 single-seq overfit) in-train + OOT at the trained clip length, then diagnose why the in-train number is 47 mm despite training joint_l1 ≈ 5 mm/coord.",
     "date": "2026-04-29",
     "status": "finding",
-    "summary": "Evaluate pt-npwu0we6 (THFM-LoRA arm A, cl=81 single-seq overfit) in-train + OOT at the trained clip length to characterise memorization vs generalization.",
+    "summary": "Evaluate pt-npwu0we6 (THFM-LoRA arm A, cl=81 single-seq overfit) in-train + OOT at the trained clip length, then diagnose why the in-train number is 47 mm despite training joint_l1 ≈ 5 mm/coord.",
     "path": "updates/2026-04-29-session-summary-A-cl81-thfm-lora-eval.html",
     "file": "updates/2026-04-29-session-summary-A-cl81-thfm-lora-eval.html",
     "sidecar": "updates/2026-04-29-session-summary-A-cl81-thfm-lora-eval.json"

@@ -1,0 +1,81 @@
+{
+  "config": {
+    "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/logs/v2ablate/seed0_A_cl81/final.pt",
+    "manifest": "manifests/dexycb_subject01_right_manifest.json",
+    "n_sequences": 1,
+    "n_windows": 5,
+    "clip_len": 81,
+    "token_layout": "frame",
+    "sampler": "train",
+    "sampler_num_samples": 5
+  },
+  "overall": {
+    "hand_joint_l2_mm": {
+      "per_frame": {
+        "mean": 11.876385688781738,
+        "median": 8.447030067443848,
+        "p5": 4.346475601196289,
+        "p95": 30.53406524658203,
+        "n": 405
+      },
+      "per_window": {
+        "mean": 11.876384735107422,
+        "median": 10.769946098327637,
+        "n": 5
+      }
+    },
+    "obj_add_s_mm": {
+      "per_frame": {
+        "mean": 6.782212257385254,
+        "median": 3.796952486038208,
+        "p5": 1.486112356185913,
+        "p95": 25.195274353027344,
+        "n": 405
+      },
+      "per_window": {
+        "mean": 6.782212257385254,
+        "median": 5.430695533752441,
+        "n": 5
+      }
+    },
+    "obj_rot_deg": {
+      "per_frame": {
+        "mean": 0.6710467338562012,
+        "median": 0.4805127680301666,
+        "p5": 0.1312212347984314,
+        "p95": 1.858694314956665,
+        "n": 405
+      },
+      "per_window": {
+        "mean": 0.6710467338562012,
+        "median": 0.5918715596199036,
+        "n": 5
+      }
+    },
+    "obj_trans_mm": {
+      "per_frame": {
+        "mean": 6.721205711364746,
+        "median": 3.695050001144409,
+        "p5": 1.4254422187805176,
+        "p95": 25.385894775390625,
+        "n": 405
+      },
+      "per_window": {
+        "mean": 6.721205711364746,
+        "median": 5.337586402893066,
+        "n": 5
+      }
+    }
+  },
+  "per_sequence": {
+    "20200709-subject-01/20200709_141754": {
+      "hand_joint_l2_mm": 11.876385688781738,
+      "obj_add_s_mm": 6.782212257385254,
+      "obj_rot_deg": 0.6710467338562012,
+      "obj_trans_mm": 6.721205711364746,
+      "n_windows": 5,
+      "n_frames": 405,
+      "n_real_frames": 315
+    }
+  }
+}
