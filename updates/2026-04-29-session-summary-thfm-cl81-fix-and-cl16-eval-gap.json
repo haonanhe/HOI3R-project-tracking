@@ -1,0 +1,227 @@
+{
+  "date": "2026-04-29",
+  "topic": "thfm-cl81-fix-and-cl16-eval-gap",
+  "branch": "feat/dcf",
+  "head_sha": "b255e5a",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-28-hoi3r-thfm-lora-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-28-hoi3r-thfm-lora-plan.md",
+  "goal": "Land DiffSynth grad-ckpt+offload, fix THFM 81-frame clip bug + ContextVar leak, ship cl=81 r5 runs (A+D), eval D r5 cl=16 to expose the train/eval gap.",
+  "status": "finding",
+  "headline_stats": [
+    {
+      "label": "Commits today",
+      "value": "8 on feat/dcf"
+    },
+    {
+      "label": "D r5 cl=16 train final total",
+      "value": "0.112"
+    },
+    {
+      "label": "D r5 cl=16 eval (non-overlap windows) joint L2",
+      "value": "82.2 mm mean / 73.0 mm median"
+    },
+    {
+      "label": "Train→eval gap",
+      "value": "~10× — the cl=16 sampling bug demonstrated"
+    },
+    {
+      "label": "cl=81 r5 jobs in flight",
+      "value": "pt-npwu0we6 (A) + pt-v9h8pfvl (D)"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "f15f520",
+      "type": "chore",
+      "subject": "acp: v2ablate_A.sh respects OUT_DIR env override"
+    },
+    {
+      "sha": "35b7330",
+      "type": "fix",
+      "subject": "thfm: paper-faithful 81-frame clips with pad-or-clip dataloader"
+    },
+    {
+      "sha": "1fe6d78",
+      "type": "chore",
+      "subject": "acp: v2ablate_D.sh OUT_DIR env override (parity with A)"
+    },
+    {
+      "sha": "1e479f3",
+      "type": "chore",
+      "subject": "acp: GRAD_CKPT_OFFLOAD env toggle in v2ablate launchers"
+    },
+    {
+      "sha": "3400b16",
+      "type": "fix",
+      "subject": "acp: GRAD_CKPT_FLAGS test must use if/then to survive set -e on false"
+    },
+    {
+      "sha": "4da8752",
+      "type": "fix",
+      "subject": "acp: re-apply v2ablate_D.sh OUT_DIR override (lost in commit 1e479f3 scp)"
+    },
+    {
+      "sha": "a967884",
+      "type": "fix",
+      "subject": "thfm: capture+restore THFM extras-coords ContextVar across checkpoint recompute"
+    },
+    {
+      "sha": "b255e5a",
+      "type": "feat",
+      "subject": "eval: add THFM-LoRA cl=16 window eval driver"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "T-grad-ckpt-offload",
+      "sha": "bc3aa21 (yesterday) + a967884 (today)",
+      "summary": "DiffSynth-Studio gradient_checkpoint_forward(use_gradient_checkpointing_offload=True) ported to native Wan2.2 forward; ContextVar capture+restore added so the bwd recompute matches forward (CheckpointError fixed)."
+    },
+    {
+      "id": "T-thfm-81frame",
+      "sha": "35b7330",
+      "summary": "DexYCBGTCachedClip(thfm_pad_clip=True) deterministic [ts..ts+T-1] window with last-frame pad; VAECacheLoader.slice_clip pads cached z_0 to target T_lat. Threaded from --encoder-mode thfm-lora."
+    },
+    {
+      "id": "T-launcher-env-toggles",
+      "sha": "1e479f3 + 3400b16 + 4da8752",
+      "summary": "v2ablate_*.sh accept USE_GRAD_CKPT, GRAD_CKPT_OFFLOAD, OUT_DIR, CLIP_LEN env vars. Must use if/then/fi (not [ ] && cmd) to survive set -e on false test."
+    },
+    {
+      "id": "T-cl81-memprobes",
+      "sha": "n/a (ACP)",
+      "summary": "pt-qpyst86i (A 1-GPU cl=81 with offload) PASS. pt-jvb4y60w (D 1-GPU cl=81 N=64 NO offload, ContextVar fix) PASS. Both 30 steps clean, validated cl=81 path for both arms."
+    },
+    {
+      "id": "T-cl81-r5-submitted",
+      "sha": "n/a (ACP)",
+      "summary": "pt-npwu0we6 (A 4-GPU cl=81 noOff) + pt-v9h8pfvl (D 4-GPU cl=81 N=64 noOff) submitted; both running at session end. ETA ~6 hr each."
+    },
+    {
+      "id": "T-d-cl16-eval-driver",
+      "sha": "b255e5a",
+      "summary": "scripts/hoi3r_v2/p2_eval_thfm_lora.py — non-overlapping cl=N windows over manifest; mirrors trainer's anatomical forward; produces predictions.pt + per-frame metrics.json. Validated on D r5 cl=16 (198 windows, ~30 min on 1×H100)."
+    },
+    {
+      "id": "T-d-cl16-eval-results",
+      "sha": "n/a",
+      "summary": "D r5 cl=16 (pt-sbekujs4) eval landed: hand_joint_l2_mm mean=82.2/median=73.0; hand_mesh_l2_mm mean=81.2/median=73.1; obj_add_s_mm mean=55.4/median=38.3. Headline finding: 10× gap vs training final total=0.11."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P0-publish-d-r5-cl16-page",
+      "priority": "P0",
+      "summary": "Render viz for one representative sequence from experiments/2026-04-29-D-r5-cl16-b4n64/eval/predictions.pt and publish session-summary HTML. Lead with the cl=16 random-stride bug-demo finding; do NOT bury it. Render+publish was interrupted at session end."
+    },
+    {
+      "id": "P0-watch-cl81-r5-jobs",
+      "priority": "P0",
+      "summary": "Watch pt-npwu0we6 (A cl=81) and pt-v9h8pfvl (D cl=81). On terminal SUCCEEDED, run p2_eval_thfm_lora.py --clip-len 81 against each final.pt; render viz; publish a paper-faithful comparison page. Verify final.pt before reacting to ACP 'FAILED' (post-train teardown false positive)."
+    },
+    {
+      "id": "P1-watch-a-r5-cl16",
+      "priority": "P1",
+      "summary": "pt-4p4q04wu (A r5 cl=16 4-GPU B=8 frame) running at session end (step ~1700/2000). Will likely complete ~21:30 UTC. Eval with p2_eval_thfm_lora.py --clip-len 16 --token-layout frame; add to the bug-demo page alongside D r5 cl=16."
+    },
+    {
+      "id": "P2-launcher-pipestatus-fix",
+      "priority": "P2",
+      "summary": "v2ablate_*.sh: capture ${PIPESTATUS[0]} after 'python ... | tee train.log' and treat 'non-zero exit but final.pt exists' as success. Stops the auto-resubmit-on-FP-FAILED churn we hit today (pt-vh7439r8 spurious B=2 fallback)."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "cl=16 random-stride sampling overfits the training distribution",
+      "body": "D r5 cl=16 trained to total=0.11 then eval at non-overlapping cl=16 windows = joint L2 mean=82mm. 10× gap proves the model didn't learn the actual frame-window function — it learned the random-stride sampling artefact. THFM paper recipe (cl=81 fixed-window) is the fix; cl=81 r5 runs in flight will be the real baselines."
+    },
+    {
+      "badge": "fix",
+      "title": "THFM 81-frame fixed-window dataloader",
+      "body": "_select_frame_indices_thfm: deterministic [ts, ts+1, ..., ts+T-1], pad with te when span<T. VAECacheLoader.slice_clip pads cached z_0 with last latent frame. Threaded from --encoder-mode thfm-lora. Commit 35b7330. Memprobed at cl=81 B=1 on both arm-A frame and arm-D anatomical layouts."
+    },
+    {
+      "badge": "fix",
+      "title": "ContextVar capture+restore across torch.utils.checkpoint recompute",
+      "body": "set_thfm_extras_coords ContextVar leaks across use_reentrant=False recompute boundary; the patched rope_apply takes a different code path during bwd → CheckpointError 'different number of tensors saved during fwd vs recomputation'. Fix: capture _THFM_EXTRAS_COORDS.get() at fwd time, re-set inside the per-block closure. Commit a967884 (encoder_wrapper.py forward_with_queries / forward_with_extras)."
+    },
+    {
+      "badge": "fail",
+      "title": "save_on_cpu(pin_memory=True) overflows 208 GB ACP container at cl=81 anatomical density",
+      "body": "OS pinned-memory limit is much smaller than container RAM. cl=81 N=64 anatomical seq=13267 tokens × 40 blocks of saved tensors crosses the budget → kernel OOM-killer (exit -9 SIGKILL). Workaround: GRAD_CKPT_OFFLOAD=0 keeps activations on GPU; fits because checkpointing means only ~one block's worth at peak. Validated on pt-jvb4y60w."
+    },
+    {
+      "badge": "fail",
+      "title": "ACP marks job FAILED on post-train NCCL teardown non-zero exit",
+      "body": "pt-sbekujs4 trained 2000 steps and saved final.pt cleanly, but ACP marked it FAILED. Cause: DDP NCCL teardown emits non-zero exit code even after dist.destroy_process_group(); bash launcher's set -euo pipefail catches it. The auto-resubmit watcher we had armed for the B=2 fallback fired spuriously and we had to DELETE the redundant submission. Future: launchers must capture PIPESTATUS[0] and treat 'non-zero exit + final.pt exists' as success."
+    },
+    {
+      "badge": "fail",
+      "title": "[ test ] && cmd dies under set -e; use if/then/fi",
+      "body": "v2ablate_*.sh GRAD_CKPT_FLAGS pattern with [ \"${GRAD_CKPT_OFFLOAD:-1}\" = \"1\" ] && GRAD_CKPT_FLAGS+=(...) — when test is false, the compound returns 1, set -e exits before mkdir -p runs, log dir doesn't exist, failure is hard to diagnose. Always if/then/fi for boolean toggles in strict-mode bash. Commit 3400b16."
+    },
+    {
+      "badge": "fail",
+      "title": "scp from /tmp clobbers in-place edits made on remote",
+      "body": "Pulled launcher to /tmp/hoi3r_edit/ early in session, sed-fixed it on remote (commit 1fe6d78), then later edited /tmp copy and scp'd back — silently reverted the on-remote sed (broke OUT_DIR override on D launcher). Caused multiple failed memprobes before diagnosis. Recovery commit 4da8752. Rule: pull-before-edit-and-push, or sed-on-remote-only — never both for the same file."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "branch / HEAD",
+      "state": "feat/dcf @ b255e5a"
+    },
+    {
+      "aspect": "THFM 81-frame dataloader",
+      "state": "live; thfm_pad_clip=True activated by --encoder-mode thfm-lora; VAE cache pad on slice_clip"
+    },
+    {
+      "aspect": "Activation ckpt + offload",
+      "state": "live; env-toggleable via USE_GRAD_CKPT/GRAD_CKPT_OFFLOAD; ContextVar capture+restore in encoder_wrapper.py"
+    },
+    {
+      "aspect": "THFM-LoRA eval driver",
+      "state": "live at scripts/hoi3r_v2/p2_eval_thfm_lora.py; non-overlapping cl=N windows; produces predictions.pt + metrics.json"
+    },
+    {
+      "aspect": "D r5 cl=16 final.pt",
+      "state": "logs/v2ablate/seed0_D_r5_b4n64_complete/ on remote; 165 MB; eval done; viz+publish pending"
+    },
+    {
+      "aspect": "A r5 cl=16 (pt-4p4q04wu)",
+      "state": "RUNNING at step ~1700/2000 at session end"
+    },
+    {
+      "aspect": "A r5 cl=81 (pt-npwu0we6) noOff",
+      "state": "RUNNING; 4-GPU; ETA ~6 hr; output logs/v2ablate/seed0_A_cl81/"
+    },
+    {
+      "aspect": "D r5 cl=81 (pt-v9h8pfvl) noOff N=64",
+      "state": "RUNNING; 4-GPU; ETA ~6 hr; output logs/v2ablate/seed0_D_cl81/"
+    }
+  ],
+  "memory_entries_written": [
+    "feedback_thfm_save_on_cpu_pinmem_ceiling.md",
+    "feedback_thfm_contextvar_recompute_bug.md",
+    "feedback_thfm_81frame_paper_recipe.md",
+    "feedback_acp_failed_post_train_false_positive.md",
+    "feedback_scp_clobber_in_place_edit.md",
+    "reference_thfm_lora_eval_driver.md",
+    "reference_grad_ckpt_offload_env_toggle.md",
+    "project_cl16_d_r5_train_eval_gap.md",
+    "project_cl81_r5_jobs_in_flight.md",
+    "project_pending_publishes.md"
+  ],
+  "caveats": [
+    "Render+publish for D r5 cl=16 was interrupted at session end — predictions.pt + metrics.json are on remote, but no viz or session-summary HTML yet. The next agent should pick up from project_pending_publishes.md.",
+    "A r5 cl=16 (pt-4p4q04wu) was still running at session end. Expect ACP to report FAILED via the post-train teardown false positive; verify final.pt before reacting.",
+    "cl=81 r5 jobs (pt-npwu0we6, pt-v9h8pfvl) are 6-hour runs — won't land in this session. Watch them, then run the eval driver with --clip-len 81 once final.pt lands.",
+    "Today's commits include an scp-clobber back-and-forth (1fe6d78 then 1e479f3 reverted, then 4da8752 re-applied) — git log shows the dance even though the net effect is correct. Don't be surprised reading the commit history.",
+    "The published session page for this conclude IS the bug-demo / fix narrative; the *result* page for D r5 cl=16 (with viz + per-sample metrics) is a separate publish that the next session must do."
+  ],
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-thfm-cl81-fix-and-cl16-eval-gap.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-thfm-cl81-fix-and-cl16-eval-gap.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-thfm-cl81-fix-and-cl16-eval-gap.json\nand continue from tasks_pending[0] (P0-publish-d-r5-cl16-page [P0]: Render viz for one representative sequence from experiments/2026-04-29-D-r5-cl16-b4n64/eval/predictions.pt and publish session-summary HTML. Lead with the cl=16 random-stride bug-demo finding; do NOT bury it. Render+publish was interrupted at session end.).\nContext: branch feat/dcf@b255e5a; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-04-28-hoi3r-thfm-lora-design.md, docs/superpowers/plans/2026-04-28-hoi3r-thfm-lora-plan.md."
+}

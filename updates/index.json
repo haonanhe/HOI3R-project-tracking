@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-29 · Land DiffSynth grad-ckpt+offload, fix THFM 81-frame clip bug + ContextVar leak, ship cl=81 r5 runs (A+D), eval D r5 cl=16 to expose the train/eval gap.",
+    "date": "2026-04-29",
+    "status": "finding",
+    "summary": "Land DiffSynth grad-ckpt+offload, fix THFM 81-frame clip bug + ContextVar leak, ship cl=81 r5 runs (A+D), eval D r5 cl=16 to expose the train/eval gap.",
+    "path": "updates/2026-04-29-session-summary-thfm-cl81-fix-and-cl16-eval-gap.html",
+    "file": "updates/2026-04-29-session-summary-thfm-cl81-fix-and-cl16-eval-gap.html",
+    "sidecar": "updates/2026-04-29-session-summary-thfm-cl81-fix-and-cl16-eval-gap.json"
+  },
+  {
     "title": "2026-04-29 · Final canonical comparison: wan22-pe vs 4rc-cached on cl=16 chunk-aligned non-overlapping windows (cl=train_cl, drop trailing partial). For both models: in-train (sub-01 indices 0/25/49) + OOT (sub-07 5 seqs, hand-side disaggregated). 4rc-cached uses --temporal-pe off per the d7cbf65 trap (INVEST-1).",
     "date": "2026-04-29",
     "status": "converged",
