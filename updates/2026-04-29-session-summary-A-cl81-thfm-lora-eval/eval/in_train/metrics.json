@@ -1,0 +1,115 @@
+{
+  "config": {
+    "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/logs/v2ablate/seed0_A_cl81/final.pt",
+    "manifest": "manifests/dexycb_subject01_right_manifest.json",
+    "n_sequences": 5,
+    "n_windows": 5,
+    "clip_len": 81,
+    "token_layout": "frame"
+  },
+  "overall": {
+    "hand_joint_l2_mm": {
+      "per_frame": {
+        "mean": 115.68001556396484,
+        "median": 113.81001281738281,
+        "p5": 7.052342414855957,
+        "p95": 279.31634521484375,
+        "n": 405
+      },
+      "per_window": {
+        "mean": 115.68000793457031,
+        "median": 105.66706085205078,
+        "n": 5
+      }
+    },
+    "obj_add_s_mm": {
+      "per_frame": {
+        "mean": 76.65815734863281,
+        "median": 50.42128372192383,
+        "p5": 2.344602346420288,
+        "p95": 267.6485595703125,
+        "n": 405
+      },
+      "per_window": {
+        "mean": 76.65815734863281,
+        "median": 62.915679931640625,
+        "n": 5
+      }
+    },
+    "obj_rot_deg": {
+      "per_frame": {
+        "mean": 8.43758773803711,
+        "median": 6.059645652770996,
+        "p5": 0.41268759965896606,
+        "p95": 21.61891746520996,
+        "n": 405
+      },
+      "per_window": {
+        "mean": 8.43758773803711,
+        "median": 10.824646949768066,
+        "n": 5
+      }
+    },
+    "obj_trans_mm": {
+      "per_frame": {
+        "mean": 76.44049835205078,
+        "median": 51.9594612121582,
+        "p5": 2.204282760620117,
+        "p95": 269.4759521484375,
+        "n": 405
+      },
+      "per_window": {
+        "mean": 76.44050598144531,
+        "median": 63.14162063598633,
+        "n": 5
+      }
+    }
+  },
+  "per_sequence": {
+    "20200709-subject-01/20200709_141754": {
+      "hand_joint_l2_mm": 47.40328598022461,
+      "obj_add_s_mm": 37.27297592163086,
+      "obj_rot_deg": 2.6938133239746094,
+      "obj_trans_mm": 37.31772232055664,
+      "n_windows": 1,
+      "n_frames": 81,
+      "n_real_frames": 63
+    },
+    "20200709-subject-01/20200709_141841": {
+      "hand_joint_l2_mm": 105.66706085205078,
+      "obj_add_s_mm": 128.57496643066406,
+      "obj_rot_deg": 12.380453109741211,
+      "obj_trans_mm": 129.8870086669922,
+      "n_windows": 1,
+      "n_frames": 81,
+      "n_real_frames": 61
+    },
+    "20200709-subject-01/20200709_142123": {
+      "hand_joint_l2_mm": 222.08815002441406,
+      "obj_add_s_mm": 62.915679931640625,
+      "obj_rot_deg": 4.340386390686035,
+      "obj_trans_mm": 63.14162063598633,
+      "n_windows": 1,
+      "n_frames": 81,
+      "n_real_frames": 71
+    },
+    "20200709-subject-01/20200709_142211": {
+      "hand_joint_l2_mm": 90.345458984375,
+      "obj_add_s_mm": 51.267372131347656,
+      "obj_rot_deg": 11.948638916015625,
+      "obj_trans_mm": 49.643798828125,
+      "n_windows": 1,
+      "n_frames": 81,
+      "n_real_frames": 72
+    },
+    "20200709-subject-01/20200709_142240": {
+      "hand_joint_l2_mm": 112.89607238769531,
+      "obj_add_s_mm": 103.25981140136719,
+      "obj_rot_deg": 10.824646949768066,
+      "obj_trans_mm": 102.21235656738281,
+      "n_windows": 1,
+      "n_frames": 81,
+      "n_real_frames": 69
+    }
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "splits": {
+    "train_seq": {
+      "per_record": [
+        {
+          "record_idx": 0,
+          "sequence": "20200709-subject-01/20200709_141754",
+          "n_frames": 81,
+          "n_real_frames": 63,
+          "padded": true,
+          "hand_joint_l2_mm": 47.40328598022461,
+          "obj_add_s_mm": 37.27297592163086,
+          "obj_rot_deg": 2.6938133239746094,
+          "obj_trans_mm": 37.31772232055664
+        }
+      ],
+      "mean": {
+        "hand_joint_l2_mm": 47.40328598022461,
+        "obj_add_s_mm": 37.27297592163086,
+        "obj_rot_deg": 2.6938133239746094,
+        "obj_trans_mm": 37.31772232055664
+      },
+      "median": {
+        "hand_joint_l2_mm": 47.40328598022461,
+        "obj_add_s_mm": 37.27297592163086,
+        "obj_rot_deg": 2.6938133239746094,
+        "obj_trans_mm": 37.31772232055664
+      },
+      "n": 1
+    },
+    "in_dist_held_out": {
+      "per_record": [
+        {
+          "record_idx": 1,
+          "sequence": "20200709-subject-01/20200709_141841",
+          "n_frames": 81,
+          "n_real_frames": 61,
+          "padded": true,
+          "hand_joint_l2_mm": 105.66706085205078,
+          "obj_add_s_mm": 128.57496643066406,
+          "obj_rot_deg": 12.380453109741211,
+          "obj_trans_mm": 129.8870086669922
+        },
+        {
+          "record_idx": 2,
+          "sequence": "20200709-subject-01/20200709_142123",
+          "n_frames": 81,
+          "n_real_frames": 71,
+          "padded": true,
+          "hand_joint_l2_mm": 222.08815002441406,
+          "obj_add_s_mm": 62.915679931640625,
+          "obj_rot_deg": 4.340386390686035,
+          "obj_trans_mm": 63.14162063598633
+        },
+        {
+          "record_idx": 3,
+          "sequence": "20200709-subject-01/20200709_142211",
+          "n_frames": 81,
+          "n_real_frames": 72,
+          "padded": true,
+          "hand_joint_l2_mm": 90.345458984375,
+          "obj_add_s_mm": 51.267372131347656,
+          "obj_rot_deg": 11.948638916015625,
+          "obj_trans_mm": 49.643798828125
+        },
+        {
+          "record_idx": 4,
+          "sequence": "20200709-subject-01/20200709_142240",
+          "n_frames": 81,
+          "n_real_frames": 69,
+          "padded": true,
+          "hand_joint_l2_mm": 112.89607238769531,
+          "obj_add_s_mm": 103.25981140136719,
+          "obj_rot_deg": 10.824646949768066,
+          "obj_trans_mm": 102.21235656738281
+        }
+      ],
+      "mean": {
+        "hand_joint_l2_mm": 132.7491855621338,
+        "obj_add_s_mm": 86.50445747375488,
+        "obj_rot_deg": 9.873531341552734,
+        "obj_trans_mm": 86.22119617462158
+      },
+      "median": {
+        "hand_joint_l2_mm": 109.28156661987305,
+        "obj_add_s_mm": 83.0877456665039,
+        "obj_rot_deg": 11.386642932891846,
+        "obj_trans_mm": 82.67698860168457
+      },
+      "n": 4
+    },
+    "oot_test": {
+      "per_record": [
+        {
+          "record_idx": 0,
+          "sequence": "20200928-subject-07/20200928_143249",
+          "n_frames": 81,
+          "n_real_frames": 67,
+          "padded": true,
+          "hand_joint_l2_mm": 196.96934509277344,
+          "obj_add_s_mm": 82.59271240234375,
+          "obj_rot_deg": 29.838117599487305,
+          "obj_trans_mm": 85.64163970947266
+        },
+        {
+          "record_idx": 1,
+          "sequence": "20200928-subject-07/20200928_143328",
+          "n_frames": 81,
+          "n_real_frames": 63,
+          "padded": true,
+          "hand_joint_l2_mm": 171.521240234375,
+          "obj_add_s_mm": 133.876220703125,
+          "obj_rot_deg": 84.09890747070312,
+          "obj_trans_mm": 120.41250610351562
+        },
+        {
+          "record_idx": 2,
+          "sequence": "20200928-subject-07/20200928_143358",
+          "n_frames": 81,
+          "n_real_frames": 65,
+          "padded": true,
+          "hand_joint_l2_mm": 196.9451141357422,
+          "obj_add_s_mm": 97.856201171875,
+          "obj_rot_deg": 39.766693115234375,
+          "obj_trans_mm": 89.47086334228516
+        },
+        {
+          "record_idx": 3,
+          "sequence": "20200928-subject-07/20200928_143425",
+          "n_frames": 81,
+          "n_real_frames": 59,
+          "padded": true,
+          "hand_joint_l2_mm": 99.03589630126953,
+          "obj_add_s_mm": 96.68090057373047,
+          "obj_rot_deg": 89.70885467529297,
+          "obj_trans_mm": 92.09574890136719
+        },
+        {
+          "record_idx": 4,
+          "sequence": "20200928-subject-07/20200928_143500",
+          "n_frames": 81,
+          "n_real_frames": 57,
+          "padded": true,
+          "hand_joint_l2_mm": 146.81517028808594,
+          "obj_add_s_mm": 146.97813415527344,
+          "obj_rot_deg": 80.7118911743164,
+          "obj_trans_mm": 135.36972045898438
+        }
+      ],
+      "mean": {
+        "hand_joint_l2_mm": 162.25735321044922,
+        "obj_add_s_mm": 111.59683380126953,
+        "obj_rot_deg": 64.82489280700683,
+        "obj_trans_mm": 104.598095703125
+      },
+      "median": {
+        "hand_joint_l2_mm": 171.521240234375,
+        "obj_add_s_mm": 97.856201171875,
+        "obj_rot_deg": 80.7118911743164,
+        "obj_trans_mm": 92.09574890136719
+      },
+      "n": 5
+    }
+  },
+  "representative_record_indices": {
+    "train_seq": [
+      0
+    ],
+    "in_dist_held_out": [
+      4,
+      2
+    ],
+    "oot_test": [
+      1,
+      0
+    ]
+  },
+  "config": {
+    "in_train_predictions": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/experiments/2026-04-29-A-cl81-thfm-lora/eval/in_train/predictions.pt",
+    "oot_test_predictions": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/experiments/2026-04-29-A-cl81-thfm-lora/eval/oot_test/predictions.pt",
+    "n_records_train_manifest": 5,
+    "n_records_oot_test": 5
+  }
+}

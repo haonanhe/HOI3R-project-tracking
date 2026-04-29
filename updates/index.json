@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-29 · Evaluate pt-npwu0we6 (THFM-LoRA arm A, cl=81 single-seq overfit) in-train + OOT at the trained clip length to characterise memorization vs generalization.",
+    "date": "2026-04-29",
+    "status": "finding",
+    "summary": "Evaluate pt-npwu0we6 (THFM-LoRA arm A, cl=81 single-seq overfit) in-train + OOT at the trained clip length to characterise memorization vs generalization.",
+    "path": "updates/2026-04-29-session-summary-A-cl81-thfm-lora-eval.html",
+    "file": "updates/2026-04-29-session-summary-A-cl81-thfm-lora-eval.html",
+    "sidecar": "updates/2026-04-29-session-summary-A-cl81-thfm-lora-eval.json"
+  },
+  {
     "title": "2026-04-29 · Diagnose why pt_b35ydgie shows period-4 obj oscillation + U-shape hand error within cl=16 windows, and design + plan the cached-pyramid retrain that aligns precompute, sampler, and eval at each sequence's tracked_start.",
     "date": "2026-04-29",
     "status": "wip",
