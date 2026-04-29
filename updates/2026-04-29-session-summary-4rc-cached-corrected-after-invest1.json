@@ -1,0 +1,147 @@
+{
+  "date": "2026-04-29",
+  "topic": "4rc-cached-corrected-after-invest1",
+  "goal": "INVEST-1 closed: re-run 4rc-cached cl=16 evals with --temporal-pe off and supersede the broken 2026-04-29 page",
+  "branch": "feat/dcf",
+  "head_sha": "f15f520",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-04-26-thfm-style-token-injection-design.md",
+  "plan_path": "docs/superpowers/plans/2026-04-28-wan22-feature-swap-v2.md",
+  "status": "wip",
+  "supersedes": "updates/2026-04-29-session-summary-wan22-vs-4rc-p2-multiseq-eval.html",
+  "headline_stats": [
+    {
+      "label": "4rc in-train hand_vert (mm)",
+      "value": "41.8 (was 279.9)"
+    },
+    {
+      "label": "4rc in-train hand_joint (mm)",
+      "value": "34.3 (was 296.9)"
+    },
+    {
+      "label": "4rc in-train obj ADD-S (mm)",
+      "value": "8.76 (was 121.0)"
+    },
+    {
+      "label": "4rc in-train obj rot (deg)",
+      "value": "0.58"
+    },
+    {
+      "label": "4rc in-train obj trans (mm)",
+      "value": "8.72"
+    },
+    {
+      "label": "4rc OOT all-5 hand_vert (mm)",
+      "value": "561.9 (was 718.5)"
+    },
+    {
+      "label": "4rc OOT right-only hand_vert (mm)",
+      "value": "146.5"
+    },
+    {
+      "label": "4rc OOT all-5 obj ADD-S (mm)",
+      "value": "123.0 (was 171.0)"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "INVEST-1",
+      "sha": "f15f520",
+      "summary": "RESOLVED: d7cbf65 inline temporal_pe trap. Re-ran 4rc-cached in-train cl=16 (3 seqs x 3 windows = 9) with --temporal-pe off: hand_vert 279.9 -> 41.8 mm (-85%), hand_joint 296.9 -> 34.3 mm (-88%), ADD-S 121.0 -> 8.76 mm (-93%). Plus matching OOT eval below."
+    },
+    {
+      "id": "EVAL-3-CORRECTED",
+      "sha": "f15f520",
+      "summary": "4rc-cached in-train cl=16 PE-off (sub-01, 3 seqs, windows 0/16/32): hand_vert 41.81 mm, hand_joint 34.29 mm, obj ADD-S 8.76 mm, obj rot 0.58 deg, obj trans 8.72 mm. logs/.../eval_in_train_peoff/aggregate.json"
+    },
+    {
+      "id": "EVAL-4-CORRECTED",
+      "sha": "f15f520",
+      "summary": "4rc-cached OOT cl=16 PE-off (sub-07, 5 seqs, auto-center): all-5 mean hand_vert 561.9 mm, hand_joint 642.4 mm, obj ADD-S 123.0 mm. BUT 3 of the 5 sub-07 sequences are LEFT-hand (training was right-only). Right-only mean (seq00 + seq01): hand_vert 146.5 mm, hand_joint 117.6 mm, obj ADD-S 130.1 mm. Left-only mean: hand_vert 838.8 mm — model has not seen a left hand."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fix",
+      "title": "INVEST-1 root cause: d7cbf65 inline temporal_pe trap",
+      "body": "The 2026-04-29 published 4rc-cached numbers (in-train 280/297/121, OOT 718/920/171) were corrupt. Root cause: HandDecoder/ObjectPoseDecoder/TemporalSelfAttnBlock store an inline temporal-PE behind a Python bool flag (post commit d7cbf65, 2026-04-28 11:55 UTC). The flag has no representation in state_dict, so loading the pre-d7cbf65 4rc-cached checkpoint into the post-d7cbf65 head reported `missing=0 unexpected=0` and silently applied a transform the trained weights never saw. Fix: scratch/eval_with_predictions.py now exposes --temporal-pe {auto,on,off} via apply_temporal_pe_setting() and stamps `temporal_pe=False applied to 4 modules` in stdout. Re-running with PE off drops in-train hand_vert from 279.9 to 41.8 mm (6.7x), hand_joint from 296.9 to 34.3 mm (8.7x), and obj ADD-S from 121.0 to 8.76 mm (13.8x). The 4rc-cached run is no longer broken on its own train data."
+    },
+    {
+      "badge": "finding",
+      "title": "OOT signal: right-hand-only model evaluated against 3-out-of-5 left-hand sequences",
+      "body": "The corrected OOT mean is 561.9 mm hand_vert across 5 sequences, but disaggregating by hand_side reveals: right-hand (seq00, seq01) mean = 146.5 mm; left-hand (seq02, seq03, seq04) mean = 838.8 mm. Training manifest dexycb_subject01_right_manifest.json contains only right-hand sequences, so the left-hand evaluations are out-of-distribution by handedness, not just by subject. The right-only OOT signal (146.5 mm) is the meaningful generalization gap: 41.8 (in-train) -> 146.5 (OOT, same handedness) is a 3.5x gap, comparable to v1 trajectory-head's overfit pattern. Future OOT manifests for this checkpoint should filter to right-hand only or include a left-hand training sweep."
+    },
+    {
+      "badge": "finding",
+      "title": "wan22-pe numbers are NOT affected by the trap",
+      "body": "wan22-pe (pt-6pa0b3dj) trained AFTER d7cbf65 with temporal_pe=True so its 2026-04-29 published metrics (in-train 24.2/23.1/8.8, OOT 341.0/368.1/151.9) are valid. Cross-check: running scratch/eval_with_predictions.py against the wan22-pe checkpoint with --temporal-pe off would WORSEN metrics (PE was actually used in training). Wan22 numbers stand."
+    },
+    {
+      "badge": "finding",
+      "title": "OOT object ADD-S still degraded after fix",
+      "body": "Even after PE-off, OOT obj ADD-S is 123.0 mm overall (right-only 130.1 mm, left-only 117.9 mm), vs in-train 8.76 mm — a 14x gap, similar in shape to the wan22 pattern (8.8 -> 151.9). This is a real cross-subject generalization signal, not a bug: the object pose head overfits to subject-01's grasp distribution. Same conclusion as the original 2026-04-29 page on this point: 50-seq single-subject training is too narrow."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "INVEST-2",
+      "priority": "P1",
+      "summary": "Re-publish wan22-pe page using the same --temporal-pe off cross-check (expect metrics to WORSEN, confirming PE was learned). Sanity-check no other heads have the inline-flag pattern."
+    },
+    {
+      "id": "INVEST-3",
+      "priority": "P0",
+      "summary": "Re-enable mini-eval for cached-encoder runs in p2_mini_eval.py (currently shorts to NaN whenever encoder_mode='cached', so the 4rc-cached cold-start failure was invisible during training and the FAILURE_PROTOCOL gate never fired)."
+    },
+    {
+      "id": "INVEST-4",
+      "priority": "P1",
+      "summary": "Implement Option B durable fix: write arch_meta = {temporal_pe: ..., ...} into every checkpoint at save time and have temporal_pe_from_ckpt(..., override='auto') consume it. Eliminates the silent-load failure mode permanently."
+    },
+    {
+      "id": "INVEST-5",
+      "priority": "P2",
+      "summary": "Wire --temporal-pe / TEMPORAL_PE flags into the remaining eval scripts: scratch/wan22_cl16_eval.py, scratch/wan22_full_seq_eval.py, scratch/diagnose_train_eval_gap.py."
+    },
+    {
+      "id": "OOT-LEFT-HAND",
+      "priority": "P2",
+      "summary": "Either rebuild the sub-07 OOT manifest as right-hand only (drop seq02/seq03/seq04) for clean cross-subject signal, or expand training to include left-hand sequences."
+    }
+  ],
+  "caveats": [
+    "wan22-pe numbers (24.2/23.1/8.8 in-train; 341.0/368.1/151.9 OOT) are unaffected — that run trained AFTER d7cbf65 with temporal_pe=True. Only the 4rc-cached checkpoint, trained 2026-04-28 07:36-20:47 UTC (started before the 11:55 UTC commit), was caught by the trap.",
+    "OOT mean is dominated by 3 left-hand sequences (838.8 mm hand_vert). Training was right-hand only; the right-only OOT mean (146.5 mm) is the real generalization signal.",
+    "Object ADD-S OOT degradation (8.76 -> 123.0 mm, ~14x) is a real cross-subject overfit signal independent of the PE trap — same pattern as the original 2026-04-29 finding, just with corrected baselines.",
+    "Per-window CoM monotonic-decrease symptom from the original 2026-04-29 'cold-start' analysis was an artifact of the PE bug, not a real causal-decoder phenomenon. The correct in-train per-window error pattern (e.g. 52.7 -> 39.5 -> 22.9 mm across windows 0/16/32 of seq00) is consistent with sequence-position effects, not a 270 mm rigid offset."
+  ],
+  "memory_entries_written": [
+    "feedback_temporal_pe_inline_flag_trap.md"
+  ],
+  "commits": [],
+  "module_state": [
+    {
+      "aspect": "branch",
+      "state": "feat/dcf @ f15f520 (with uncommitted Option-A patch in stream3r/heads/hoi3r_v2/temporal_pe.py + scratch/eval_with_predictions.py --temporal-pe flag)"
+    },
+    {
+      "aspect": "checkpoint",
+      "state": "logs/hoi3r_v2_p2_4rc_cached/seed0/final.pt — pre-d7cbf65 weights, must always be loaded with --temporal-pe off"
+    },
+    {
+      "aspect": "in-train eval",
+      "state": "logs/hoi3r_v2_p2_4rc_cached/seed0/eval_in_train_peoff/ (9 windows, hand_vert 41.81 / hand_joint 34.29 / obj ADD-S 8.76)"
+    },
+    {
+      "aspect": "OOT eval",
+      "state": "logs/hoi3r_v2_p2_4rc_cached/seed0/eval_oot_subject07_peoff/ (5 windows, all-5 hand_vert 561.9 / right-only 146.5)"
+    },
+    {
+      "aspect": "broken evals",
+      "state": "logs/hoi3r_v2_p2_4rc_cached/seed0/eval_in_train/ + eval_oot_subject07/ kept as record (DO NOT DELETE — they are the bug evidence)"
+    }
+  ],
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.json\nand continue from tasks_pending[0] (INVEST-2 [P1]: Re-publish wan22-pe page using the same --temporal-pe off cross-check (expect metrics to WORSEN, confirming PE was learned). Sanity-check no other heads have the inline-flag pattern.).\nContext: branch feat/dcf@f15f520; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-04-26-thfm-style-token-injection-design.md, docs/superpowers/plans/2026-04-28-wan22-feature-swap-v2.md."
+}

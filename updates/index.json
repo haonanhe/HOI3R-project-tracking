@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-29 · INVEST-1 closed: re-run 4rc-cached cl=16 evals with --temporal-pe off and supersede the broken 2026-04-29 page",
+    "date": "2026-04-29",
+    "status": "wip",
+    "summary": "INVEST-1 closed: re-run 4rc-cached cl=16 evals with --temporal-pe off and supersede the broken 2026-04-29 page",
+    "path": "updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.html",
+    "file": "updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.html",
+    "sidecar": "updates/2026-04-29-session-summary-4rc-cached-corrected-after-invest1.json"
+  },
+  {
     "title": "2026-04-29 · Pull pt-b35ydgie (wan22-pe) and pt-8rqkny4k (4rc-cached) results, evaluate cl=16 in-train (subject-01) and out-of-train (subject-07), publish.",
     "date": "2026-04-29",
     "status": "finding",
