@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-04-30 · Retrain pt-npwu0we6 / pt-v9h8pfvl arm-A and arm-D cl=81 single-seq overfits with the train↔eval sampler bug + MANO dataloader bottleneck both fixed. Confirm trained-clip joint_l2 drops from 47 mm to ~5 mm and that wall-clock drops from ~3 hr to ~30 min.",
+    "date": "2026-04-30",
+    "status": "converged",
+    "summary": "Retrain pt-npwu0we6 / pt-v9h8pfvl arm-A and arm-D cl=81 single-seq overfits with the train↔eval sampler bug + MANO dataloader bottleneck both fixed. Confirm trained-clip joint_l2 drops from 47 mm to ~5 mm and that wall-clock drops from ~3 hr to ~30 min.",
+    "path": "updates/2026-04-30-session-summary-armAD-cl81-cached-retrain.html",
+    "file": "updates/2026-04-30-session-summary-armAD-cl81-cached-retrain.html",
+    "sidecar": "updates/2026-04-30-session-summary-armAD-cl81-cached-retrain.json"
+  },
+  {
     "title": "2026-04-29 · Evaluate pt-npwu0we6 (THFM-LoRA arm A, cl=81 single-seq overfit) in-train + OOT at the trained clip length, then diagnose why the in-train number is 47 mm despite training joint_l1 ≈ 5 mm/coord.",
     "date": "2026-04-29",
     "status": "finding",
