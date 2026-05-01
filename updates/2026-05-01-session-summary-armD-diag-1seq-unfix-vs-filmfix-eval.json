@@ -1,0 +1,122 @@
+{
+  "date": "2026-05-01",
+  "topic": "armD-diag-1seq-unfix-vs-filmfix-eval",
+  "branch": "feat/dcf",
+  "head_sha": "6c38f0d",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "goal": "Empirically test the sub-agent's claim that the NLF rank-1 separable mesh-content path is the root cause of pt-ai6maj5f's joint-loss plateau. Two 1-seq overfits (8×H100, 2000 steps each) on subject-01-right (20200709_141754, cam 836212060125): pt-djlwgvt5 with the UNFIXED bank, pt-cczx8e9t with a FiLM modulation fix that restores rank-≥2 in (t, m). Eval both at M=778 chunk=32 (matched to M_train=32) and compare against the prior arm-D 50-seq cached anchor pt-eh1b7upj (joint=2.61 mm, mesh=3.92 mm at M=32).",
+  "headline_stats": [
+    {
+      "value": "5.08 mm",
+      "label": "pt-djlwgvt5 joint_l2 (UNFIXED, matched eval)"
+    },
+    {
+      "value": "7.97 mm",
+      "label": "pt-djlwgvt5 mesh_l2 (full 778 verts)"
+    },
+    {
+      "value": "6.63 mm",
+      "label": "pt-cczx8e9t joint_l2 (FILMFIX, matched eval)"
+    },
+    {
+      "value": "14.11 mm",
+      "label": "pt-cczx8e9t mesh_l2 (full 778 verts)"
+    },
+    {
+      "value": "39.0 → 5.08 mm",
+      "label": "M-mismatch artifact when eval chunk=128 vs 32"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "Submit pt-djlwgvt5",
+      "sha": "pt-djlwgvt5",
+      "summary": "UNFIXED bank, 8×H100, BS=1, cl=81, M_train=32, 2000 steps, manifest_replicate=64. SUCCEEDED 58 min. final.pt at logs/v2ablate/diag_1seq_armD/seed0/."
+    },
+    {
+      "id": "Submit pt-cczx8e9t",
+      "sha": "pt-cczx8e9t",
+      "summary": "FILMFIX bank (time_to_hidden Linear + outer-product modulation, std=0.02 init, zero bias), otherwise identical recipe. SUCCEEDED 58 min."
+    },
+    {
+      "id": "Discover M-mismatch eval bug",
+      "sha": "scratch only",
+      "summary": "Default eval (M=778, chunk=128) inflated joint_l2 7× (39.0 mm vs training 0.003 L1 ≈4–6 mm L2). Root: DiT extras sequence length T·J+T·M+T+1 differs between train (4,375) and default eval (12,029); joint head drifts under length shift. Fix: pass --n-mesh-chunk 32 at eval to match M_train."
+    },
+    {
+      "id": "Re-eval at matched chunk",
+      "sha": "scratch only",
+      "summary": "M=778 chunk=32 on both ckpts. UNFIXED 5.08/7.97 mm joint/mesh; FILMFIX 6.63/14.11 mm. Both order-of-magnitude consistent with reference pt-eh1b7upj (2.61/3.92 mm)."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fail",
+      "title": "Sub-agent rank-1 verdict empirically falsified",
+      "body": "The sub-agent claimed (~85% confidence) that the NLF mesh-content sum tokens_mesh_frame[T,H] + token_mlp_mesh(gps)[M,H] is rank-1 separable in (t,m) and that this is the root cause of pt-ai6maj5f's flat joint loss. Empirically, the UNFIXED bank converged 1-seq overfit to joint=5.08 mm in 2000 steps. The FILMFIX bank designed to add rank-≥2 modulation is uniformly WORSE at this scale (joint +1.55 mm, mesh +6.14 mm). Architecture is fine; the multi-cam plateau in pt-ai6maj5f is therefore scale/LR driven, not structural — returning to the original resume-prompt's hypothesis."
+    },
+    {
+      "badge": "finding",
+      "title": "Eval-time M-mismatch produces ~7× joint inflation",
+      "body": "The bank is M-agnostic at parameter level, but the DiT extras-sequence length depends on M. Training with M_train=32 yields extras length 4,375; default eval with M_eval=778 chunk=128 yields 12,029 (2.7× longer). The joint head, supervised on a fixed extras context size during training, drifts when the context grows. Fix is one-line: --n-mesh-chunk 32. Mesh predictions stay at full 778 verts (chunked across multiple bank.build calls), joint stays at training-distribution context."
+    },
+    {
+      "badge": "fix",
+      "title": "FiLM modulation does not break the architecture",
+      "body": "Forward+backward smoke (matrix shapes, gradients, M=32 ↔ M=778) all pass. Trained checkpoint pt-cczx8e9t was self-consistent end-to-end. The fix is harmless; it just doesn't help on a 1-seq budget. Whether it helps multi-cam at 40k steps is the next test (pt-d5spft6j, LR=2.8e-4 × 40k FiLM bank)."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "branch",
+      "state": "feat/dcf @ 6c38f0d (uncommitted: bank refactor + FiLM fix; train-script NLF routing; eval driver cached path)"
+    },
+    {
+      "aspect": "anatomical_query_bank.py",
+      "state": "FILMFIX restored on remote; backup at /tmp/bank_filmfix.py.bak / .bak2 in case mid-session evals need to revert again."
+    },
+    {
+      "aspect": "pt-djlwgvt5 ckpt",
+      "state": "logs/v2ablate/diag_1seq_armD/seed0/final.pt (also ckpt_step000500/001000/001500.pt)"
+    },
+    {
+      "aspect": "pt-cczx8e9t ckpt",
+      "state": "logs/v2ablate/diag_1seq_armD_filmfix/seed0/final.pt (matching schedule of mid-ckpts)"
+    },
+    {
+      "aspect": "pt-d5spft6j (P0 retrain)",
+      "state": "RUNNING since 09:25:52Z UTC; FiLM bank, LR=2.8e-4, 40k steps. ETA ~18–20 h."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "Track pt-d5spft6j",
+      "priority": "P0",
+      "summary": "FiLM-bank P0 retrain on full DexYCB s1 multicam. If joint loss descends below ~0.05 (≈50 mm L2) by step 20k it confirms the multi-cam plateau was LR/steps driven."
+    },
+    {
+      "id": "Optional: pt-djlwgvt5+ longer schedule",
+      "priority": "P1",
+      "summary": "Run a UNFIXED 4000-step 1-seq overfit to confirm the FILMFIX 6.63 mm joint will close the gap to UNFIXED 5.08 mm given more steps. If yes, FiLM is parameter-cost-no-benefit at this scale; if no, FiLM may have a real disadvantage."
+    },
+    {
+      "id": "Eval driver default",
+      "priority": "P2",
+      "summary": "Document that --n-mesh-chunk should match --n-mesh-train on any thfm-lora ckpt; consider auto-loading M_train from the checkpoint args bundle in p2_eval_thfm_lora.py."
+    }
+  ],
+  "caveats": [
+    "Both 1-seq runs are seed=0; no variance estimate.",
+    "FILMFIX uses small init (std=0.02 / bias=0) so modulation ≈ identity at step 0; with more steps the FiLM weights may train and behavior may differ. 2000-step verdict only.",
+    "Joint training loss reported during run was 0.003 (L1 frame-0-rel mean over (B,T,J,3)). The naive 39 mm joint_l2 at M=778/chunk=128 contains the M-mismatch artifact — NOT a model failure.",
+    "The reference pt-eh1b7upj numbers (2.61/3.92 mm) were on the OLD bank (M=32 baked into parameters). Order-of-magnitude consistent with our 5/8 mm but not directly comparable."
+  ],
+  "memory_entries_written": [
+    "feedback_nlf_bank_rank1_flaw.md (SUPERSEDED)",
+    "feedback_eval_M_mismatch.md (TODO)"
+  ],
+  "extra_html": "\n<section class=\"panel\">\n  <h2>Eval comparison: same ckpt, three eval setups</h2>\n  <p class=\"meta\">Both 1-seq overfit runs trained 2000 steps × 8×H100 BS=1 on subject-01-right (20200709_141754, cam 836212060125), cl=81, M_train=32. Reference: <a href=\"https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-04-30-session-summary-armAD-cl81-cached-retrain.html\">pt-eh1b7upj (old bank, M=32)</a> reached joint=2.61 mm, mesh=3.92 mm.</p>\n  <table style=\"border-collapse:collapse;width:100%;margin-top:12px\">\n    <thead>\n      <tr style=\"background:#1f2937;color:#fff\">\n        <th style=\"padding:8px;text-align:left\">Run</th>\n        <th style=\"padding:8px;text-align:left\">Bank</th>\n        <th style=\"padding:8px;text-align:left\">Eval (M_eval, chunk)</th>\n        <th style=\"padding:8px\">joint_l2 (mm)</th>\n        <th style=\"padding:8px\">mesh_l2 (mm)</th>\n        <th style=\"padding:8px\">add_s (mm)</th>\n        <th style=\"padding:8px\">rot (°)</th>\n        <th style=\"padding:8px\">trans (mm)</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr><td style=\"padding:8px\">pt-djlwgvt5</td><td style=\"padding:8px\">UNFIXED (NLF)</td><td style=\"padding:8px;color:#dc2626\">M=778, chunk=128 (default; bug)</td><td style=\"padding:8px;text-align:center\">39.0</td><td style=\"padding:8px;text-align:center\">40.4</td><td style=\"padding:8px;text-align:center\">14.5</td><td style=\"padding:8px;text-align:center\">1.07</td><td style=\"padding:8px;text-align:center\">14.5</td></tr>\n      <tr style=\"background:#f3f4f6\"><td style=\"padding:8px\">pt-djlwgvt5</td><td style=\"padding:8px\">UNFIXED (NLF)</td><td style=\"padding:8px;color:#16a34a\">M=778, chunk=32 (matched)</td><td style=\"padding:8px;text-align:center\"><b>5.08</b></td><td style=\"padding:8px;text-align:center\"><b>7.97</b></td><td style=\"padding:8px;text-align:center\">2.80</td><td style=\"padding:8px;text-align:center\">0.50</td><td style=\"padding:8px;text-align:center\">2.70</td></tr>\n      <tr><td style=\"padding:8px\">pt-cczx8e9t</td><td style=\"padding:8px\">FILMFIX (rank-≥2)</td><td style=\"padding:8px;color:#16a34a\">M=778, chunk=32 (matched)</td><td style=\"padding:8px;text-align:center\"><b>6.63</b></td><td style=\"padding:8px;text-align:center\"><b>14.11</b></td><td style=\"padding:8px;text-align:center\">3.32</td><td style=\"padding:8px;text-align:center\">0.81</td><td style=\"padding:8px;text-align:center\">3.27</td></tr>\n    </tbody>\n  </table>\n  <p style=\"margin-top:12px\">The 39 mm artifact in row 1 is NOT a metric calculation bug — it is an <b>M-mismatch</b> at eval time. The bank is M-agnostic at the parameter level, but the DiT extras-sequence length scales linearly with M (T·J + T·M + T + 1). Trained at extras-len ≈ 4,375 (M_train=32), the joint head behaves consistently when eval also runs M=32 chunks; at M=128 the extras-len jumps to 12,029 and the joint output drifts ~7×. Fix: pass <code>--n-mesh-chunk 32</code> at eval to match the training M.</p>\n  <p>FILMFIX is <b>uniformly worse</b> than UNFIXED at this 1-seq overfit (joint +1.55 mm, mesh +6.14 mm). This <b>further falsifies</b> the sub-agent's \"rank-1 separable in (t,m) is the bottleneck\" verdict — UNFIXED converges fine; the FiLM modulation only adds parameters that haven't yet caught up at 2,000 steps. The original \"pt-ai6maj5f failed at full multi-cam scale\" story is therefore <b>scale/LR driven</b>, not architectural — the long-running pt-d5spft6j (LR=2.8e-4 × 40k FiLM-bank) will tell whether bumping LR + steps recovers training-distribution joint loss.</p>\n</section>\n\n<section class=\"panel\">\n  <h3 style=\"margin:0 0 4px;color:#dc2626\">BUG demo — pt-djlwgvt5 (UNFIXED) M=778 chunk=128 (default)</h3>\n  <p class=\"meta\">joint=39.0 mm &nbsp; mesh(778)=40.4 mm &nbsp; add_s=14.5 mm &nbsp; rot=1.07° &nbsp; trans=14.5 mm &nbsp; — joint inflated 7× by extras-len mismatch, NOT model error</p>\n  <img src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/bug_M778chunk128/metrics_per_frame.png\" style=\"width:100%;max-width:880px\">\n  <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\">\n    <video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/bug_M778chunk128/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video>\n    <video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/bug_M778chunk128/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video>\n  </div>\n  <p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/bug_M778chunk128/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p>\n</section>\n\n<section class=\"panel\">\n  <h3 style=\"margin:0 0 4px;color:#16a34a\">pt-djlwgvt5 — UNFIXED bank, eval M=778 chunk=32 (matched)</h3>\n  <p class=\"meta\">joint=5.08 mm &nbsp; mesh(778)=7.97 mm &nbsp; add_s=2.80 mm &nbsp; rot=0.50° &nbsp; trans=2.70 mm &nbsp; — matches reference order-of-magnitude</p>\n  <img src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/unfixed/metrics_per_frame.png\" style=\"width:100%;max-width:880px\">\n  <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\">\n    <video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/unfixed/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video>\n    <video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/unfixed/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video>\n  </div>\n  <p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/unfixed/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p>\n</section>\n\n<section class=\"panel\">\n  <h3 style=\"margin:0 0 4px;color:#1d4ed8\">pt-cczx8e9t — FILMFIX bank, eval M=778 chunk=32 (matched)</h3>\n  <p class=\"meta\">joint=6.63 mm &nbsp; mesh(778)=14.11 mm &nbsp; add_s=3.32 mm &nbsp; rot=0.81° &nbsp; trans=3.27 mm &nbsp; — rank-≥2 modulation does NOT help on 1-seq</p>\n  <img src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/filmfix/metrics_per_frame.png\" style=\"width:100%;max-width:880px\">\n  <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\">\n    <video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/filmfix/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video>\n    <video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/filmfix/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video>\n  </div>\n  <p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval/filmfix/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p>\n</section>\n",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-01-session-summary-armD-diag-1seq-unfix-vs-filmfix-eval.json\nand continue from tasks_pending[0] (Track pt-d5spft6j [P0]: FiLM-bank P0 retrain on full DexYCB s1 multicam. If joint loss descends below ~0.05 (≈50 mm L2) by step 20k it confirms the multi-cam plateau was LR/steps driven.).\nContext: branch feat/dcf@6c38f0d; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf."
+}
