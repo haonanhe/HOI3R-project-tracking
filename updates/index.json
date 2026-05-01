@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-01 · First arm-D (anatomical) training on the FULL DexYCB s1_train multi-camera set (6,400 entries; 8 subjects × 100 seqs × 8 cams). NLF-style M-agnostic mesh queries (random M=32 subset per step from 778 MANO verts). 8× H100, BS=1, 20k steps. Eval & visualize on 3 train + 3 test sequences.",
+    "date": "2026-05-01",
+    "status": "wip",
+    "summary": "First arm-D (anatomical) training on the FULL DexYCB s1_train multi-camera set (6,400 entries; 8 subjects × 100 seqs × 8 cams). NLF-style M-agnostic mesh queries (random M=32 subset per step from 778 MANO verts). 8× H100, BS=1, 20k steps. Eval & visualize on 3 train + 3 test sequences.",
+    "path": "updates/2026-05-01-session-summary-armD-full-dexycb-multicam-20k.html",
+    "file": "updates/2026-05-01-session-summary-armD-full-dexycb-multicam-20k.html",
+    "sidecar": "updates/2026-05-01-session-summary-armD-full-dexycb-multicam-20k.json"
+  },
+  {
     "title": "2026-04-30 · Retrain pt-npwu0we6 / pt-v9h8pfvl arm-A and arm-D cl=81 single-seq overfits with the train↔eval sampler bug + MANO dataloader bottleneck both fixed. Confirm trained-clip joint_l2 drops from 47 mm to ~5 mm and that wall-clock drops from ~3 hr to ~30 min.",
     "date": "2026-04-30",
     "status": "converged",

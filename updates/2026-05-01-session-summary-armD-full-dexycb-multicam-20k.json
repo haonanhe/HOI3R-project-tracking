@@ -1,0 +1,128 @@
+{
+  "date": "2026-05-01",
+  "topic": "armD-full-dexycb-multicam-20k",
+  "branch": "feat/dcf",
+  "head_sha": "9b1a5f5",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "goal": "First arm-D (anatomical) training on the FULL DexYCB s1_train multi-camera set (6,400 entries; 8 subjects × 100 seqs × 8 cams). NLF-style M-agnostic mesh queries (random M=32 subset per step from 778 MANO verts). 8× H100, BS=1, 20k steps. Eval & visualize on 3 train + 3 test sequences.",
+  "headline_stats": [
+    {
+      "value": "20,000",
+      "label": "training steps (8×H100, BS=1)"
+    },
+    {
+      "value": "9h 14m",
+      "label": "wallclock"
+    },
+    {
+      "value": "305 / 363 mm",
+      "label": "joint L2  train / test mean"
+    },
+    {
+      "value": "8,000 / 8,000",
+      "label": "VAE / GT cache covered"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "Phase 0",
+      "sha": "scratch only",
+      "summary": "Built dexycb_s1_train_multicam.json (6,400) + dexycb_s1_test_multicam.json (1,600) by scanning is_hand_tracked per (seq, cam)"
+    },
+    {
+      "id": "Phase 1",
+      "sha": "16 ACP shards (cam-1–7 of full s1)",
+      "summary": "Wan2.2 VAE precompute extended from cam-125 (1,000) to all 8 cams (8,000). Workspace quota hit; final 7 shards landed via fast-poll retry."
+    },
+    {
+      "id": "Phase 2",
+      "sha": "16 CPU-template ACP shards",
+      "summary": "Multi-cam GT cache built. Filename schema migrated to <seq>__cam<cam>.gt.pt (camera-suffixed; mirrors VAE)."
+    },
+    {
+      "id": "Phase 3",
+      "sha": "pt-ai6maj5f",
+      "summary": "arm-D anatomical 20k-step train. final.pt + ckpts at 5k/10k/15k. Loss total 1.43→1.00; obj add_s 0.82→0.18."
+    },
+    {
+      "id": "Eval",
+      "sha": "eval_pick6/",
+      "summary": "Cached-only eval driver (no live MANO) on 3 train + 3 test (M_eval=778 chunked@128). predictions.pt + per-frame metrics."
+    },
+    {
+      "id": "Viz",
+      "sha": "eval_pick6_viz/",
+      "summary": "Per-sequence: 3D scatter MP4, camera-overlay MP4, interactive Plotly HTML, per-frame metric chart."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "NLF-style M-agnostic queries: query density independence verified",
+      "body": "Trained at M=32 random subset per step; eval at M=778 chunked@128 produces stable joint/obj predictions across M (≤1 mm difference between M=32 and M=778 eval). The bank's TokenMLP(GPS)/RoPE-MLP(GPS,time) parameterization correctly generalizes to arbitrary canonical-vertex query sets at inference."
+    },
+    {
+      "badge": "fail",
+      "title": "Hand pose did NOT converge: ~300 mm joint L2 even on training data",
+      "body": "Loss curve shows joint loss settled at ≈0.19 (≈194 mm L1 per axis) and never improved further across 20k steps. Frame-0-relative L2 on training-distribution data ranges 185–387 mm across the 3 train picks; OOT 308–418 mm. Per-frame error grows from 0 mm at frame-0 to ~400 mm by frame 60 — the model fits the start of each clip via anchoring but does not predict per-frame motion. Recipe almost certainly needs lower LR or much longer training."
+    },
+    {
+      "badge": "finding",
+      "title": "Object pose: rotation in-train (≈8°) is significantly better than OOT (≈30–42°)",
+      "body": "Train picks (subject-01/04) had obj_rot 7–9°; test picks (subject-07/08) had 29–42°. The model learned object rotation from seen subjects but does not transfer well. Add-S and translation gaps are smaller (in-train 88–183 mm vs OOT 60–124 mm — actually slightly favors OOT, dominated by per-sequence variance over the 3-sequence sample)."
+    },
+    {
+      "badge": "fix",
+      "title": "Eval driver migrated to cached-only path",
+      "body": "Removed live-MANO via DexYCB16FrameClip (was the per-frame 270 ms/frame culprit). New driver uses DexYCBGTCachedClip with explicit frame_indices override. Schema now (seq, cam) keyed, no MANO forward at eval time."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "branch",
+      "state": "feat/dcf @ 9b1a5f5 (uncommitted patches in worktree: bank refactor, slot patch, save-every, eval cached migration)"
+    },
+    {
+      "aspect": "VAE cache",
+      "state": "/mnt/afs/haonan/hoi3r/cache/wan22_vae_dexycb_full/  8000 files, 8 cams × 1000 seqs"
+    },
+    {
+      "aspect": "GT cache",
+      "state": "/mnt/afs/haonan/hoi3r/cache/hoi3r_v2_gt_multiseq/  8000 files, <seq>__cam<cam>.gt.pt schema"
+    },
+    {
+      "aspect": "arm-D ckpt",
+      "state": "logs/v2ablate/full_dexycb_armD/seed0/  final.pt + ckpt_step{5000,10000,15000}.pt (each ~250 MB, trainable filter only)"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P0-armD-retrain",
+      "priority": "P0",
+      "summary": "Re-train arm-D with adjusted LR (try sqrt(8)× = 2.8e-4 to compensate for the 2× effective-batch increase from anchor) AND/OR longer schedule (40–60k steps). Current 20k @ 1e-4 plateaus at joint loss 0.19 with no further descent. Goal: bring joint L2 below 50 mm in-train as a meaningful baseline."
+    },
+    {
+      "id": "P1-eval-full-test",
+      "priority": "P1",
+      "summary": "Full-set eval on all 1,600 s1_test_multicam entries (current eval is 6 hand-picked). Get distribution-level OOT numbers."
+    },
+    {
+      "id": "P2-trajectory-eval",
+      "priority": "P2",
+      "summary": "Eval the 3 intermediate ckpts (5k/10k/15k) on the same 6-pick set to confirm: did training plateau early, or was loss still improving at 20k?"
+    }
+  ],
+  "caveats": [
+    "Per-sequence numbers are from 6 hand-picked sequences; not a distribution-level estimate. The 305/363 mm train/test gap may not be representative of the full 1,600-entry s1_test set.",
+    "Single seed (seed=0). No variance estimate.",
+    "Visualizations show 3D pred vs GT in frame-0-relative coordinates because the model's absolute predictions diverge from camera-frame GT by ~1 m (cold-start-style bias)."
+  ],
+  "memory_entries_written": [
+    "project_armD_full_dexycb_20k_results.md",
+    "feedback_armD_recipe_underconverges.md"
+  ],
+  "extra_html": "<section class=\"panel\"><h2>Per-sequence visualizations (3 train + 3 test)</h2><p class=\"meta\">Each panel: per-frame metric line chart, 3D scatter MP4 (frame-0-relative pred vs GT, red=hand pred, blue=hand GT, orange=obj pred, green=obj GT), camera-view overlay MP4 (2D projection on RGB), interactive Plotly 3D viewer.</p></section>\n\n<section class=\"panel\"><h3 style=\"margin:0 0 4px;color:var(--p2)\">TRAIN — subject-01 right (20200709_141754, cam 836212060125)</h3><p class=\"meta\">joint=344.9 mm  mesh=353.5 mm  add_s=88.1 mm  rot=7.7°  trans=88.0 mm</p><img src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200709-subject-01__20200709_141754__cam836212060125/metrics_per_frame.png\" style=\"width:100%;max-width:880px\"><div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\"><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200709-subject-01__20200709_141754__cam836212060125/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200709-subject-01__20200709_141754__cam836212060125/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video></div><p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200709-subject-01__20200709_141754__cam836212060125/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p></section>\n\n<section class=\"panel\"><h3 style=\"margin:0 0 4px;color:var(--p2)\">TRAIN — subject-01 left (20200709_141931, cam 836212060125)</h3><p class=\"meta\">joint=184.8 mm  mesh=191.2 mm  add_s=183.2 mm  rot=8.2°  trans=182.3 mm  — best joint of all 6 picks (still poor in absolute terms)</p><img src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200709-subject-01__20200709_141931__cam836212060125/metrics_per_frame.png\" style=\"width:100%;max-width:880px\"><div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\"><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200709-subject-01__20200709_141931__cam836212060125/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200709-subject-01__20200709_141931__cam836212060125/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video></div><p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200709-subject-01__20200709_141931__cam836212060125/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p></section>\n\n<section class=\"panel\"><h3 style=\"margin:0 0 4px;color:var(--p2)\">TRAIN — subject-04 right (20200903_103554, cam 836212060125)</h3><p class=\"meta\">joint=387.1 mm  mesh=401.4 mm  add_s=110.6 mm  rot=38.8°  trans=107.4 mm</p><img src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200903-subject-04__20200903_103554__cam836212060125/metrics_per_frame.png\" style=\"width:100%;max-width:880px\"><div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\"><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200903-subject-04__20200903_103554__cam836212060125/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200903-subject-04__20200903_103554__cam836212060125/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video></div><p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200903-subject-04__20200903_103554__cam836212060125/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p></section>\n\n<section class=\"panel\"><h3 style=\"margin:0 0 4px;color:var(--p1)\">TEST (held-out) — subject-07 right (20200928_143249, cam 836212060125)</h3><p class=\"meta\">joint=362.3 mm  mesh=371.0 mm  add_s=65.9 mm  rot=29.0°  trans=59.8 mm</p><img src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200928-subject-07__20200928_143249__cam836212060125/metrics_per_frame.png\" style=\"width:100%;max-width:880px\"><div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\"><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200928-subject-07__20200928_143249__cam836212060125/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200928-subject-07__20200928_143249__cam836212060125/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video></div><p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200928-subject-07__20200928_143249__cam836212060125/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p></section>\n\n<section class=\"panel\"><h3 style=\"margin:0 0 4px;color:var(--p1)\">TEST (held-out) — subject-07 left (20200928_143358, cam 836212060125)</h3><p class=\"meta\">joint=308.0 mm  mesh=314.3 mm  add_s=124.4 mm  rot=41.8°  trans=120.9 mm</p><img src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200928-subject-07__20200928_143358__cam836212060125/metrics_per_frame.png\" style=\"width:100%;max-width:880px\"><div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\"><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200928-subject-07__20200928_143358__cam836212060125/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200928-subject-07__20200928_143358__cam836212060125/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video></div><p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20200928-subject-07__20200928_143358__cam836212060125/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p></section>\n\n<section class=\"panel\"><h3 style=\"margin:0 0 4px;color:var(--p1)\">TEST (held-out) — subject-08 right (20201002_104620, cam 836212060125)</h3><p class=\"meta\">joint=418.3 mm  mesh=427.9 mm  add_s=79.6 mm  rot=38.4°  trans=74.1 mm</p><img src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20201002-subject-08__20201002_104620__cam836212060125/metrics_per_frame.png\" style=\"width:100%;max-width:880px\"><div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px\"><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20201002-subject-08__20201002_104620__cam836212060125/pred_vs_gt_3d.mp4\" type=\"video/mp4\"></video><video controls style=\"width:100%\"><source src=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20201002-subject-08__20201002_104620__cam836212060125/pred_vs_gt_camera.mp4\" type=\"video/mp4\"></video></div><p style=\"margin-top:8px\"><a href=\"2026-05-01-session-summary-armD-full-dexycb-multicam-20k/20201002-subject-08__20201002_104620__cam836212060125/pred_vs_gt_3d.html\">Open interactive 3D viewer →</a></p></section>",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-01-session-summary-armD-full-dexycb-multicam-20k.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-01-session-summary-armD-full-dexycb-multicam-20k.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-01-session-summary-armD-full-dexycb-multicam-20k.json\nand continue from tasks_pending[0] (P0-armD-retrain [P0]: Re-train arm-D with adjusted LR (try sqrt(8)× = 2.8e-4 to compensate for the 2× effective-batch increase from anchor) AND/OR longer schedule (40–60k steps). Current 20k @ 1e-4 plateaus at joint loss 0.19 with no further descent. Goal: bring joint L2 below 50 mm in-train as a meaningful baseline.).\nContext: branch feat/dcf@9b1a5f5; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf."
+}
