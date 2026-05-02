@@ -1,0 +1,104 @@
+{
+  "date": "2026-05-03",
+  "topic": "detr-multihand-dt5-dt9-conclude",
+  "branch": "main",
+  "head_sha": "9993eaf03fd0a4bf89fa8658a0d8d3f7f9ea3631",
+  "repo_path": "/Users/hnhe/Downloads/SLAI/hoi3r",
+  "remote_branch": "feat/dcf",
+  "remote_head_sha": "87c5048b314addda85fdc70eacb7dffb863fd99e",
+  "remote_repo_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_paths": [
+    "docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md"
+  ],
+  "plan_paths": [
+    "docs/superpowers/plans/2026-05-01-DETR-multihand-HANDOFF.md",
+    "docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md"
+  ],
+  "commits": [
+    {
+      "sha": "87c5048",
+      "type": "fix",
+      "subject": "fix(eval): align DETR head checkpoint loading"
+    },
+    {
+      "sha": "5f0068b",
+      "type": "ops",
+      "subject": "ops(acp): add DT9 arm-E 1seq overfit launcher"
+    },
+    {
+      "sha": "6fcfec3",
+      "type": "ops",
+      "subject": "ops(acp): add arm-E full DexYCB DETR launcher"
+    },
+    {
+      "sha": "9993eaf",
+      "type": "docs",
+      "subject": "docs(progress): publish detr-multihand checkpoint summary"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "DT5-submit",
+      "summary": "Verified remote GT cache v3.5 completion: 8000 cache files match 8000 manifest entries and sampled schema checks passed."
+    },
+    {
+      "id": "SCO",
+      "summary": "Installed and configured ~/.sco/bin/sco plus acp/aec2/cms/ws components for ACP log extraction."
+    },
+    {
+      "id": "DT9-eval-fix",
+      "summary": "Fixed eval checkpoint loading for DETR head mid_dim and right_head key compatibility; remote commit 87c5048."
+    },
+    {
+      "id": "DT9-eval",
+      "summary": "Generated eval_final metrics and predictions for the 1-seq overfit checkpoint."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "DT9",
+      "summary": "Diagnose and rerun the 1-seq overfit until PA-MPJPE <= 6 mm and mesh L2 <= 9 mm.",
+      "priority": "P0"
+    },
+    {
+      "id": "DT10",
+      "summary": "Submit full DexYCB s1 multicam 40k retrain only after DT9 passes and user approves.",
+      "priority": "P1"
+    },
+    {
+      "id": "DT11",
+      "summary": "Add HOT3D zero-shot emergent eval after a valid DT10 checkpoint exists.",
+      "priority": "P1"
+    }
+  ],
+  "key_files": [
+    "docs/session-handoffs/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.md",
+    "docs/session-handoffs/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.json",
+    "docs/session-handoffs/2026-05-03-session-summary-detr-multihand-dt5-dt9-gate-check.json",
+    "docs/PROGRESS_LOG.md",
+    "docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md",
+    "docs/superpowers/plans/2026-05-01-DETR-multihand-HANDOFF.md",
+    "docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md",
+    "scripts/hoi3r_v2/p2_eval_thfm_lora.py",
+    "logs/v2ablate/diag_1seq_armE_detr/seed0/eval_final/metrics.json",
+    "logs/v2ablate/diag_1seq_armE_detr/seed0/eval_final/predictions.pt"
+  ],
+  "metrics": {
+    "dt5_cache_files": 8000,
+    "dt5_manifest_entries": 8000,
+    "dt9_pa_mpjpe_frame0rel_mm": 37.563987731933594,
+    "dt9_raw_joint_l2_mm": 45.21733474731445,
+    "dt9_mesh_l2_mm": 20.244674682617188,
+    "dt9_detection_f1": 1.0,
+    "dt9_hand_side_accuracy": 1.0
+  },
+  "caveats": [
+    "DT10 is blocked because DT9 did not meet the numeric exit bar.",
+    "Local main is dirty with unrelated pre-existing files; only explicit handoff/progress files should be staged.",
+    "Remote feat/dcf is the code source of truth; local main is docs and coordination state.",
+    "The failed ACP eval jobs pt-l7xhchho and pt-factaaoj were startup/config failures, not model metric failures."
+  ],
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.json\nand continue from tasks_pending[0] (DT9 [P0]: Diagnose and rerun the 1-seq overfit until PA-MPJPE <= 6 mm and mesh L2 <= 9 mm.).\nContext: branch main@9993eaf03fd0a4bf89fa8658a0d8d3f7f9ea3631.",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.json"
+}

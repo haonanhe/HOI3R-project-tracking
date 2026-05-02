@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-03 · detr-multihand-dt5-dt9-conclude",
+    "date": "2026-05-03",
+    "status": "wip",
+    "summary": "",
+    "path": "updates/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.html",
+    "file": "updates/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.html",
+    "sidecar": "updates/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.json"
+  },
+  {
     "title": "2026-05-02 · DETR multi-hand DT1-DT8 checkpoint",
     "date": "2026-05-02",
     "status": "wip",

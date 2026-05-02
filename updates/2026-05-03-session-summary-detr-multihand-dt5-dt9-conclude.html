@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-03 · detr-multihand-dt5-dt9-conclude</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Detr Multihand Dt5 Dt9 Conclude</h1>
+  <div class="meta">2026-05-03 · <code>main</code> · <code>@9993eaf03fd0a4bf89fa8658a0d8d3f7f9ea3631</code></div>
+  
+</header>
+
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>DT5-submit</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Verified remote GT cache v3.5 completion: 8000 cache files match 8000 manifest entries and sampled schema checks passed.</td></tr><tr><td>SCO</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Installed and configured ~/.sco/bin/sco plus acp/aec2/cms/ws components for ACP log extraction.</td></tr><tr><td>DT9-eval-fix</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Fixed eval checkpoint loading for DETR head mid_dim and right_head key compatibility; remote commit 87c5048.</td></tr><tr><td>DT9-eval</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Generated eval_final metrics and predictions for the 1-seq overfit checkpoint.</td></tr></tbody></table>
+</section>
+
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>87c5048</td><td>fix</td><td>fix(eval): align DETR head checkpoint loading</td></tr><tr><td>5f0068b</td><td>ops</td><td>ops(acp): add DT9 arm-E 1seq overfit launcher</td></tr><tr><td>6fcfec3</td><td>ops</td><td>ops(acp): add arm-E full DexYCB DETR launcher</td></tr><tr><td>9993eaf</td><td>docs</td><td>docs(progress): publish detr-multihand checkpoint summary</td></tr></tbody></table>
+</section>
+
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>DT9</td><td><span class="badge badge-p0">P0</span></td><td>Diagnose and rerun the 1-seq overfit until PA-MPJPE &lt;= 6 mm and mesh L2 &lt;= 9 mm.</td></tr><tr><td>DT10</td><td><span class="badge badge-p1">P1</span></td><td>Submit full DexYCB s1 multicam 40k retrain only after DT9 passes and user approves.</td></tr><tr><td>DT11</td><td><span class="badge badge-p1">P1</span></td><td>Add HOT3D zero-shot emergent eval after a valid DT10 checkpoint exists.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>DT10 is blocked because DT9 did not meet the numeric exit bar.</li><li>Local main is dirty with unrelated pre-existing files; only explicit handoff/progress files should be staged.</li><li>Remote feat/dcf is the code source of truth; local main is docs and coordination state.</li><li>The failed ACP eval jobs pt-l7xhchho and pt-factaaoj were startup/config failures, not model metric failures.</li></ul>
+</section>
+
+
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-03-session-summary-detr-multihand-dt5-dt9-conclude.json
+and continue from tasks_pending[0] (DT9 [P0]: Diagnose and rerun the 1-seq overfit until PA-MPJPE &lt;= 6 mm and mesh L2 &lt;= 9 mm.).
+Context: branch main@9993eaf03fd0a4bf89fa8658a0d8d3f7f9ea3631.</pre></section>
+</div></body></html>
