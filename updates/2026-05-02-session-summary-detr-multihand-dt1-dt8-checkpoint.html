@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2026-05-02 · DETR Multi-Hand DT1-DT8 Checkpoint</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5d6872; --line:#d7dee5; --bg:#f6f8fa; --panel:#ffffff; --accent:#0f766e; --warn:#a16207; }
+    body { margin:0; font:16px/1.55 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color:var(--ink); background:var(--bg); }
+    main { max-width:1120px; margin:0 auto; padding:40px 22px 64px; }
+    header { border-bottom:3px solid var(--ink); padding-bottom:22px; margin-bottom:24px; }
+    h1 { font-size:clamp(30px,4vw,48px); line-height:1.05; margin:0 0 12px; }
+    h2 { margin:34px 0 12px; font-size:22px; }
+    .meta, .muted { color:var(--muted); }
+    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin:22px 0; }
+    .stat { background:var(--panel); border:1px solid var(--line); padding:14px 16px; }
+    .stat strong { display:block; font-size:26px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+    .panel { background:var(--panel); border:1px solid var(--line); padding:18px; }
+    table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--line); }
+    th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { background:#eef3f5; }
+    code { background:#edf2f4; padding:2px 5px; border-radius:3px; }
+    .status-done { color:var(--accent); font-weight:700; }
+    .status-pending { color:var(--warn); font-weight:700; }
+    pre { white-space:pre-wrap; background:#172026; color:#f7fafc; padding:16px; overflow:auto; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="meta">2026-05-02 · HOI3R · remote <code>feat/dcf@a3309dc</code> · local <code>main@0868e7b</code></p>
+    <h1>DETR Multi-Hand DT1-DT8 Checkpoint</h1>
+    <p>Session handoff for the DETR-style multi-hand MANO recovery path. Remote code reached DT1-DT8; compute and final eval tasks remain.</p>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><strong>8</strong><span>implementation tasks landed remotely</span></div>
+    <div class="stat"><strong>15</strong><span>smoke tests passed</span></div>
+    <div class="stat"><strong>4</strong><span>pending task groups</span></div>
+    <div class="stat"><strong>0</strong><span>verified ACP job IDs for DT5 in this closeout</span></div>
+  </section>
+
+  <h2>Tasks</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Status</th><th>Summary</th></tr></thead>
+    <tbody>
+      <tr><td>DT1-DT3</td><td class="status-done">landed</td><td>366-token bank, per-component heads, Hungarian matching, DETR MANO BCE losses.</td></tr>
+      <tr><td>DT4-DT6</td><td class="status-done">landed</td><td>GT cache v3.5 builder, ACP submitter files, and padded loader outputs.</td></tr>
+      <tr><td>DT7-DT8</td><td class="status-done">landed</td><td>DETR multihand THFM MANO training and evaluation paths.</td></tr>
+      <tr><td>DT5-submit</td><td class="status-pending">pending</td><td>Actual ACP cache submission and cache schema verification.</td></tr>
+      <tr><td>DT9</td><td class="status-pending">pending</td><td>1-step train smoke and 1-seq overfit to PA-MPJPE <= 6 mm.</td></tr>
+      <tr><td>DT10</td><td class="status-pending">pending</td><td>Full DexYCB s1 multicam 40k ACP launcher/submitter plus user approval gate.</td></tr>
+      <tr><td>DT11</td><td class="status-pending">pending</td><td>HOT3D zero-shot emergent eval and final experiment publication.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Commits</h2>
+  <table>
+    <thead><tr><th>SHA</th><th>Subject</th></tr></thead>
+    <tbody>
+      <tr><td><code>7fa7eaa</code></td><td>docs(handoff): execution guide for DETR multi-hand DT1-DT11 tasks</td></tr><tr><td><code>a3309dc</code></td><td>feat(train): add DETR multihand THFM MANO training path</td></tr><tr><td><code>ee7ee78</code></td><td>feat(eval): add DETR multihand THFM evaluation path</td></tr><tr><td><code>a7f488c</code></td><td>fix(data): add canonical MANO param GT to v3.5 cache</td></tr><tr><td><code>fe543a9</code></td><td>ops(acp): add GT cache v3.5 shard submitter</td></tr><tr><td><code>8c7acfa</code></td><td>feat(data): add v3.5 cached loader DETR padding outputs</td></tr><tr><td><code>9daf352</code></td><td>feat(cache): add GT cache v3.5 builder</td></tr><tr><td><code>93de70e</code></td><td>feat(loss): add Hungarian and DETR MANO BCE losses</td></tr><tr><td><code>5b5ba03</code></td><td>feat(heads): add per-component DETR MANO heads</td></tr><tr><td><code>57282fe</code></td><td>fix(bank): clarify target_t semantics and device-safe outputs</td></tr><tr><td><code>bcc5dc9</code></td><td>refactor(bank): DETR-style multi-hand 366-token layout</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Discoveries And Caveats</h2>
+  <div class="grid">
+    <div class="panel"><h3>Verified</h3><p>Remote smoke command passed: <code>15 passed, 1 warning in 27.58s</code>.</p></div>
+    <div class="panel"><h3>Source Of Truth</h3><p>Remote <code>feat/dcf@a3309dc</code> is the code source of truth. Local <code>main@0868e7b</code> is the docs and handoff index.</p></div>
+    <div class="panel"><h3>Dirty Worktrees</h3><p>Both local and remote worktrees contain unrelated existing dirty files. Only explicit checkpoint paths were committed.</p></div>
+    <div class="panel"><h3>GitHub Sync</h3><p><code>git ls-remote origin feat/dcf</code> could not be re-verified from the debug shell because noninteractive HTTPS credentials were unavailable there.</p></div>
+  </div>
+
+  <h2>Resume</h2>
+  <pre>Read the sidecar JSON: https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.json
+Then read:
+1. docs/superpowers/plans/2026-05-01-DETR-multihand-HANDOFF.md
+2. docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md
+3. docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md
+Start with DT5 actual GT cache v3.5 ACP submission/verification, then DT9.</pre>
+</main>
+</body>
+</html>
