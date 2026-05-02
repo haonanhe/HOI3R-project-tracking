@@ -1,0 +1,167 @@
+{
+  "date": "2026-05-02",
+  "topic": "detr-multihand-dt1-dt8-checkpoint",
+  "branch": "main",
+  "head_sha": "7fa7eaa625c7b160e0b4bcc7d52a05527d340a62",
+  "repo_path": "/Users/hnhe/Downloads/SLAI/hoi3r",
+  "remote_branch": "feat/dcf",
+  "remote_head_sha": "a3309dc0c476ce87ceecf0109709c07b9fdc9459",
+  "remote_repo_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_paths": [
+    "docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md"
+  ],
+  "plan_paths": [
+    "docs/superpowers/plans/2026-05-01-DETR-multihand-HANDOFF.md",
+    "docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md"
+  ],
+  "commits": [
+    {
+      "sha": "7fa7eaa",
+      "type": "docs",
+      "subject": "docs(handoff): execution guide for DETR multi-hand DT1-DT11 tasks"
+    },
+    {
+      "sha": "a3309dc",
+      "type": "feat",
+      "subject": "feat(train): add DETR multihand THFM MANO training path"
+    },
+    {
+      "sha": "ee7ee78",
+      "type": "feat",
+      "subject": "feat(eval): add DETR multihand THFM evaluation path"
+    },
+    {
+      "sha": "a7f488c",
+      "type": "fix",
+      "subject": "fix(data): add canonical MANO param GT to v3.5 cache"
+    },
+    {
+      "sha": "fe543a9",
+      "type": "ops",
+      "subject": "ops(acp): add GT cache v3.5 shard submitter"
+    },
+    {
+      "sha": "8c7acfa",
+      "type": "feat",
+      "subject": "feat(data): add v3.5 cached loader DETR padding outputs"
+    },
+    {
+      "sha": "9daf352",
+      "type": "feat",
+      "subject": "feat(cache): add GT cache v3.5 builder"
+    },
+    {
+      "sha": "93de70e",
+      "type": "feat",
+      "subject": "feat(loss): add Hungarian and DETR MANO BCE losses"
+    },
+    {
+      "sha": "5b5ba03",
+      "type": "feat",
+      "subject": "feat(heads): add per-component DETR MANO heads"
+    },
+    {
+      "sha": "57282fe",
+      "type": "fix",
+      "subject": "fix(bank): clarify target_t semantics and device-safe outputs"
+    },
+    {
+      "sha": "bcc5dc9",
+      "type": "refactor",
+      "subject": "refactor(bank): DETR-style multi-hand 366-token layout"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "DT1",
+      "summary": "Remote bank refactor landed: DETR-style multi-hand 366-token layout."
+    },
+    {
+      "id": "DT2",
+      "summary": "Remote per-component MANO heads landed."
+    },
+    {
+      "id": "DT3",
+      "summary": "Remote Hungarian matching and DETR MANO BCE losses landed."
+    },
+    {
+      "id": "DT4",
+      "summary": "Remote GT cache v3.5 builder landed."
+    },
+    {
+      "id": "DT5-code",
+      "summary": "Remote GT cache v3.5 ACP launcher and submitter files landed; actual ACP submission not verified."
+    },
+    {
+      "id": "DT6",
+      "summary": "Remote v3.5 cached loader DETR padding outputs landed."
+    },
+    {
+      "id": "DT7",
+      "summary": "Remote DETR multihand THFM MANO training path landed."
+    },
+    {
+      "id": "DT8",
+      "summary": "Remote DETR multihand THFM evaluation path landed."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "DT5-submit",
+      "summary": "Verify or submit GT cache v3.5 ACP build and confirm completed cache schema.",
+      "priority": "P0"
+    },
+    {
+      "id": "DT9",
+      "summary": "Add 1-step train smoke test and run 1-seq overfit to best-active-slot PA-MPJPE <= 6 mm.",
+      "priority": "P0"
+    },
+    {
+      "id": "DT10",
+      "summary": "Add full DexYCB s1 multicam 40k ACP launcher/submitter and pause for user approval before submission.",
+      "priority": "P1"
+    },
+    {
+      "id": "DT11",
+      "summary": "Add HOT3D zero-shot emergent eval and publish final experiment node after metrics exist.",
+      "priority": "P1"
+    }
+  ],
+  "key_files": [
+    "docs/session-handoffs/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.md",
+    "docs/session-handoffs/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.json",
+    "docs/PROGRESS_LOG.md",
+    "docs/superpowers/plans/2026-05-01-DETR-multihand-HANDOFF.md",
+    "docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md",
+    "docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md",
+    "hoi3r/models/wan22/anatomical_query_bank.py",
+    "hoi3r/models/wan22/heads.py",
+    "hoi3r/models/wan22/mano_losses.py",
+    "hoi3r/data/dexycb_gt_cached_clip.py",
+    "scripts/hoi3r_v2/precompute_gt_cache_v3_5.py",
+    "scripts/acp_jobs/hoi3r_v2/precompute_gt_cache_v3_5.sh",
+    "scripts/acp_jobs/hoi3r_v2/precompute_gt_cache_v3_5_submit.py",
+    "scripts/hoi3r_v2/p2_train.py",
+    "scripts/hoi3r_v2/p2_eval_thfm_lora.py"
+  ],
+  "verification": [
+    {
+      "command": "conda run -n human3r pytest tests/smoke/test_anatomical_bank_v2_detr.py tests/smoke/test_per_component_heads.py tests/smoke/test_hungarian_match.py tests/smoke/test_thfm_mano_loss_detr.py tests/smoke/test_dexycb_v35_loader.py -q",
+      "location": "remote feat/dcf worktree",
+      "result": "15 passed, 1 warning in 27.58s"
+    }
+  ],
+  "caveats": [
+    "Remote code source of truth is feat/dcf at a3309dc; local main is only the docs/spec/plan index.",
+    "Remote worktree has unrelated dirty files from older experiments; only explicit checkpoint paths should be staged.",
+    "DT5 ACP submitter exists, but actual GT cache v3.5 ACP submission and cache completion were not verified.",
+    "DT9-DT11 files are not present yet.",
+    "GitHub remote sync could not be re-verified with git ls-remote because HTTPS credentials were unavailable in the noninteractive shell.",
+    "No tracking HTML/JSON was published because no standalone tracking repo with updates/index.json was found locally."
+  ],
+  "resume_prompt": "Read docs/session-handoffs/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.json, then read the 2026-05-01 DETR handoff/spec/plan. Treat remote feat/dcf@a3309dc as the code source of truth. Start with DT5 actual GT cache v3.5 ACP submission/verification, then DT9.",
+  "published_at": "2026-05-02T08:53:35.068599+00:00",
+  "published_html_path": "updates/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.html",
+  "published_json_path": "updates/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.json",
+  "published_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.html"
+}
