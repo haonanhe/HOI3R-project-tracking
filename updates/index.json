@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-02 · DETR multi-hand DT1-DT8 checkpoint",
+    "date": "2026-05-02",
+    "status": "wip",
+    "summary": "Remote feat/dcf reached DT1-DT8 for DETR-style multi-hand MANO recovery; DT5 cache submission verification and DT9-DT11 remain pending.",
+    "path": "updates/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.html",
+    "file": "updates/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.html",
+    "sidecar": "updates/2026-05-02-session-summary-detr-multihand-dt1-dt8-checkpoint.json"
+  },
+  {
     "title": "2026-05-01 · Empirically test the sub-agent's claim that the NLF rank-1 separable mesh-content path is the root cause of pt-ai6maj5f's joint-loss plateau. Two 1-seq overfits (8×H100, 2000 steps each) on subject-01-right (20200709_141754, cam 836212060125): pt-djlwgvt5 with the UNFIXED bank, pt-cczx8e9t with a FiLM modulation fix that restores rank-≥2 in (t, m). Eval both at M=778 chunk=32 (matched to M_train=32) and compare against the prior arm-D 50-seq cached anchor pt-eh1b7upj (joint=2.61 mm, mesh=3.92 mm at M=32).",
     "date": "2026-05-01",
     "status": "wip",
