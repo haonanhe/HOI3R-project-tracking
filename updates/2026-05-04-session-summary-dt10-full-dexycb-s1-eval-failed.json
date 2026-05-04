@@ -1,0 +1,109 @@
+{
+  "date": "2026-05-04",
+  "topic": "dt10-full-dexycb-s1-eval-failed",
+  "status": "fail",
+  "branch": "feat/dcf",
+  "head_sha": "7525fd0",
+  "goal": "DT10 full DexYCB arm-E DETR G4 checkpoint: train succeeded, full DexYCB s1 test eval failed and was published with visualizations.",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "spec_path": "docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md",
+  "plan_path": "docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md",
+  "headline_stats": [
+    {
+      "label": "train step",
+      "value": "40000"
+    },
+    {
+      "label": "s1 joint L2 mean",
+      "value": "438.9 mm"
+    },
+    {
+      "label": "s1 mesh L2 mean",
+      "value": "437.5 mm"
+    },
+    {
+      "label": "detection F1",
+      "value": "0.401"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "DT10-TRAIN",
+      "sha": "7525fd0",
+      "summary": "ACP job pt-tk4h1q92 completed 40k-step quota-limited 4-GPU full DexYCB training and wrote final.pt."
+    },
+    {
+      "id": "DT10-DEXYCB-S1-EVAL",
+      "sha": "7525fd0",
+      "summary": "Ran full DexYCB s1 test eval over 1600 windows with clip_len=81 and n_max=4."
+    },
+    {
+      "id": "DT10-VIS",
+      "summary": "Generated train curves, eval distribution plots, and best/median/worst pred-vs-GT mesh/object visualizations."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fail",
+      "title": "Full s1 test eval failed",
+      "body": "hand_joint_l2=438.93 mm, hand_mesh_l2=437.53 mm, obj_add_s=175.92 mm."
+    },
+    {
+      "badge": "finding",
+      "title": "Detection over-activates slots",
+      "body": "The eval counted 6400 detected slots for 1600 GT hands; precision=0.2511, recall=0.9995, F1=0.4014."
+    },
+    {
+      "badge": "finding",
+      "title": "Side classifier is near chance",
+      "body": "hand_side_acc=0.4988 (798/1600)."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "7525fd0",
+      "type": "remote-code",
+      "subject": "fix(cache): convert DexYCB pose_m[3:48] PCA-45 -> AA-45"
+    },
+    {
+      "sha": "8af64f3",
+      "type": "local-docs",
+      "subject": "current local docs mirror before DT10 eval publish"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Remote eval command",
+      "state": "p2_eval_thfm_lora.py --ckpt final.pt --manifest manifests/dexycb_s1_test_multicam.json --dataset dexycb --clip-len 81 --n-max 4"
+    },
+    {
+      "aspect": "Remote outputs",
+      "state": "logs/v2ablate/full_dexycb_armE_detr_g4/seed0/eval_s1_test_final / metrics.json / predictions.pt / publish_assets"
+    },
+    {
+      "aspect": "Verdict",
+      "state": "FAILED: DexYCB s1 test eval did not meet useful reconstruction quality; errors are hundreds of mm and detection precision is low."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "DT10-FAILURE-DIAGNOSIS",
+      "priority": "P0",
+      "summary": "Diagnose why full DexYCB generalization failed despite DT9 1-seq overfit passing; start with active-slot threshold/calibration and train-vs-eval distribution mismatch."
+    },
+    {
+      "id": "DT11-HOT3D-ZERO-SHOT-EVAL",
+      "priority": "P1",
+      "summary": "Defer HOT3D zero-shot eval until the DexYCB s1 failure is understood or the user explicitly wants a failure-mode HOT3D run."
+    }
+  ],
+  "caveats": [
+    "This page publishes a failed eval result, not a successful experiment.",
+    "predictions.pt is 7.2GB and remains on the remote worktree; only small plots and JSON summaries are uploaded.",
+    "Remote worktree had modified p2_train.py and p2_eval_thfm_lora.py before this session; no remote commit was made here."
+  ],
+  "extra_html": "\n<section>\n  <h2>DT10 Verdict</h2>\n  <div class=\"panel\" style=\"border-left-color:#dc2626\">\n    <h3><span class=\"badge badge-fail\">FAIL</span> DexYCB s1 test did not validate the DT10 checkpoint</h3>\n    <p>The quota-limited 4-GPU training run reached 40k steps and wrote <code>final.pt</code>, but full DexYCB s1 test eval shows reconstruction-quality failure: hand joint and mesh errors are hundreds of millimeters, detection precision is low, and side classification is near chance.</p>\n  </div>\n</section>\n<section>\n  <h2>Eval Metrics</h2>\n  <table>\n    <thead><tr><th>Metric</th><th>Mean</th><th>Median</th><th>P5</th><th>P95</th><th>N</th></tr></thead>\n    <tbody>\n      <tr><td>hand_joint_l2_mm</td><td>438.93</td><td>448.24</td><td>130.71</td><td>698.40</td><td>129600</td></tr>\n      <tr><td>hand_mesh_l2_mm</td><td>437.53</td><td>447.23</td><td>130.00</td><td>695.31</td><td>129600</td></tr>\n      <tr><td>obj_add_s_mm</td><td>175.92</td><td>170.35</td><td>17.43</td><td>394.17</td><td>129600</td></tr>\n      <tr><td>obj_rot_deg</td><td>74.28</td><td>70.96</td><td>0.71</td><td>174.84</td><td>129600</td></tr>\n      <tr><td>obj_trans_mm</td><td>170.84</td><td>159.86</td><td>17.18</td><td>389.37</td><td>129600</td></tr>\n    </tbody>\n  </table>\n  <p>Detection: precision 0.2511, recall 0.9995, F1 0.4014; side accuracy 0.4988 (798/1600).</p>\n</section>\n<section>\n  <h2>Training And Eval Plots</h2>\n  <p><img src=\"2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/train_curves.png\" alt=\"training curves\" style=\"max-width:100%;border:1px solid var(--border);border-radius:6px\"></p>\n  <p><img src=\"2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/eval_distributions.png\" alt=\"eval metric distributions\" style=\"max-width:100%;border:1px solid var(--border);border-radius:6px\"></p>\n</section>\n<section>\n  <h2>Pred Vs GT Visualizations</h2>\n  <p>Green = GT hand mesh, red = predicted hand mesh, teal = GT object, orange = predicted object. Predictions are frame-0 aligned to GT for visual comparability, matching the frame-0-relative evaluation contract.</p>\n  <h3>Best window</h3>\n  <p><img src=\"2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/viz_best_pred_vs_gt.png\" alt=\"best pred vs gt\" style=\"max-width:100%;border:1px solid var(--border);border-radius:6px\"></p>\n  <h3>Median window</h3>\n  <p><img src=\"2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/viz_median_pred_vs_gt.png\" alt=\"median pred vs gt\" style=\"max-width:100%;border:1px solid var(--border);border-radius:6px\"></p>\n  <h3>Worst window</h3>\n  <p><img src=\"2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/viz_worst_pred_vs_gt.png\" alt=\"worst pred vs gt\" style=\"max-width:100%;border:1px solid var(--border);border-radius:6px\"></p>\n</section>\n<section>\n  <h2>Artifacts</h2>\n  <ul>\n    <li><a href=\"2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/metrics.json\">metrics.json</a> — full eval metrics including per-sequence aggregates.</li>\n    <li><a href=\"2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/dt10_eval_publish_summary.json\">dt10_eval_publish_summary.json</a> — compact publish summary.</li>\n    <li>Remote eval dir: <code>logs/v2ablate/full_dexycb_armE_detr_g4/seed0/eval_s1_test_final</code></li>\n    <li>Remote predictions artifact: <code>logs/v2ablate/full_dexycb_armE_detr_g4/seed0/eval_s1_test_final/predictions.pt</code> (7.2GB, intentionally not uploaded to Pages).</li>\n  </ul>\n</section>\n",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed.json\nand continue from tasks_pending[0] (DT10-FAILURE-DIAGNOSIS [P0]: Diagnose why full DexYCB generalization failed despite DT9 1-seq overfit passing; start with active-slot threshold/calibration and train-vs-eval distribution mismatch.).\nContext: branch feat/dcf@7525fd0; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.\nAlso read: docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md, docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md."
+}

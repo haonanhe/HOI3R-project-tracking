@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-04 · DT10 full DexYCB arm-E DETR G4 checkpoint: train succeeded, full DexYCB s1 test eval failed and was published with visualizations.",
+    "date": "2026-05-04",
+    "status": "fail",
+    "summary": "DT10 full DexYCB arm-E DETR G4 checkpoint: train succeeded, full DexYCB s1 test eval failed and was published with visualizations.",
+    "path": "updates/2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed.html",
+    "file": "updates/2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed.html",
+    "sidecar": "updates/2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed.json"
+  },
+  {
     "title": "2026-05-03 · detr-multihand-dt5-dt9-conclude",
     "date": "2026-05-03",
     "status": "wip",

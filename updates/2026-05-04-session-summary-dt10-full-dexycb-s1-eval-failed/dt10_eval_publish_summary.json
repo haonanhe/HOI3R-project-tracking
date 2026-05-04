@@ -1,0 +1,116 @@
+{
+  "run_dir": "logs/v2ablate/full_dexycb_armE_detr_g4/seed0",
+  "eval_dir": "logs/v2ablate/full_dexycb_armE_detr_g4/seed0/eval_s1_test_final",
+  "train_summary": {
+    "metric_rows": 4004,
+    "nan_rows": 0,
+    "first_step": 0,
+    "last_step": 39990
+  },
+  "eval_config": {
+    "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/logs/v2ablate/full_dexycb_armE_detr_g4/seed0/final.pt",
+    "manifest": "manifests/dexycb_s1_test_multicam.json",
+    "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_5",
+    "n_sequences": 1600,
+    "n_windows": 1600,
+    "clip_len": 81,
+    "n_max": 4,
+    "train_step": 40000
+  },
+  "overall_detection": {
+    "tp": 129533,
+    "fp": 386341,
+    "fn": 67,
+    "precision": 0.2510942594509512,
+    "recall": 0.9994830246913581,
+    "f1": 0.4013577618928106,
+    "n_gt_hands": 1600,
+    "n_detected_slots": 6400,
+    "n_matched_hands": 1600
+  },
+  "overall_hand_side_acc": {
+    "overall": 0.49875,
+    "correct": 798,
+    "total": 1600,
+    "per_window": {
+      "mean": 0.4987500011920929,
+      "median": 0.0,
+      "p5": 0.0,
+      "p95": 1.0,
+      "n": 1600
+    }
+  },
+  "overall_metrics_per_frame": {
+    "hand_joint_l2_mm": {
+      "mean": 438.9281311035156,
+      "median": 448.2414855957031,
+      "p5": 130.70864868164062,
+      "p95": 698.3998413085938,
+      "n": 129600
+    },
+    "hand_mesh_l2_mm": {
+      "mean": 437.5333557128906,
+      "median": 447.2319641113281,
+      "p5": 130.00152587890625,
+      "p95": 695.307373046875,
+      "n": 129600
+    },
+    "obj_add_s_mm": {
+      "mean": 175.91639709472656,
+      "median": 170.3461151123047,
+      "p5": 17.42759132385254,
+      "p95": 394.1745300292969,
+      "n": 129600
+    },
+    "obj_rot_deg": {
+      "mean": 74.27857971191406,
+      "median": 70.96051788330078,
+      "p5": 0.7072058916091919,
+      "p95": 174.8395233154297,
+      "n": 129600
+    },
+    "obj_trans_mm": {
+      "mean": 170.8419647216797,
+      "median": 159.8574676513672,
+      "p5": 17.17803382873535,
+      "p95": 389.3746032714844,
+      "n": 129600
+    }
+  },
+  "selected_visualizations": [
+    {
+      "tag": "best",
+      "record_index": 742,
+      "mean_hand_joint_l2_mm": 124.04849243164062,
+      "sequence": "20200928-subject-07/20200928_155735",
+      "camera": "932122061900",
+      "window_idx": 0,
+      "artifact": "viz_best_pred_vs_gt.png",
+      "pred_slot": 1,
+      "gt_slot": 0
+    },
+    {
+      "tag": "median",
+      "record_index": 429,
+      "mean_hand_joint_l2_mm": 445.51763916015625,
+      "sequence": "20200928-subject-07/20200928_153925",
+      "camera": "932122060861",
+      "window_idx": 0,
+      "artifact": "viz_median_pred_vs_gt.png",
+      "pred_slot": 1,
+      "gt_slot": 0
+    },
+    {
+      "tag": "worst",
+      "record_index": 334,
+      "mean_hand_joint_l2_mm": 745.7479248046875,
+      "sequence": "20200928-subject-07/20200928_145523",
+      "camera": "932122061900",
+      "window_idx": 0,
+      "artifact": "viz_worst_pred_vs_gt.png",
+      "pred_slot": 3,
+      "gt_slot": 1
+    }
+  ],
+  "verdict": "FAILED: DexYCB s1 test eval did not meet useful reconstruction quality; errors are hundreds of mm and detection precision is low."
+}

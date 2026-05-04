@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-04 · dt10-full-dexycb-s1-eval-failed</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Dt10 Full Dexycb S1 Eval Failed</h1>
+  <div class="meta">2026-05-04 · <code>feat/dcf</code> · <code>@7525fd0</code> · spec: <code>docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md</code> · plan: <code>docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">DT10 full DexYCB arm-E DETR G4 checkpoint: train succeeded, full DexYCB s1 test eval failed and was published with visualizations.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">40000</div><div class="label">train step</div></div><div class="stat"><div class="val">438.9 mm</div><div class="label">s1 joint L2 mean</div></div><div class="stat"><div class="val">437.5 mm</div><div class="label">s1 mesh L2 mean</div></div><div class="stat"><div class="val">0.401</div><div class="label">detection F1</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>DT10-TRAIN</td><td><span class="badge badge-pass">PASS</span></td><td>7525fd0</td><td>ACP job pt-tk4h1q92 completed 40k-step quota-limited 4-GPU full DexYCB training and wrote final.pt.</td></tr><tr><td>DT10-DEXYCB-S1-EVAL</td><td><span class="badge badge-pass">PASS</span></td><td>7525fd0</td><td>Ran full DexYCB s1 test eval over 1600 windows with clip_len=81 and n_max=4.</td></tr><tr><td>DT10-VIS</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Generated train curves, eval distribution plots, and best/median/worst pred-vs-GT mesh/object visualizations.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-fail">FAIL</span> Full s1 test eval failed</h3><p>hand_joint_l2=438.93 mm, hand_mesh_l2=437.53 mm, obj_add_s=175.92 mm.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Detection over-activates slots</h3><p>The eval counted 6400 detected slots for 1600 GT hands; precision=0.2511, recall=0.9995, F1=0.4014.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Side classifier is near chance</h3><p>hand_side_acc=0.4988 (798/1600).</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>7525fd0</td><td>remote-code</td><td>fix(cache): convert DexYCB pose_m[3:48] PCA-45 -&gt; AA-45</td></tr><tr><td>8af64f3</td><td>local-docs</td><td>current local docs mirror before DT10 eval publish</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Remote eval command</td><td>p2_eval_thfm_lora.py --ckpt final.pt --manifest manifests/dexycb_s1_test_multicam.json --dataset dexycb --clip-len 81 --n-max 4</td></tr><tr><td>Remote outputs</td><td>logs/v2ablate/full_dexycb_armE_detr_g4/seed0/eval_s1_test_final / metrics.json / predictions.pt / publish_assets</td></tr><tr><td>Verdict</td><td>FAILED: DexYCB s1 test eval did not meet useful reconstruction quality; errors are hundreds of mm and detection precision is low.</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>DT10-FAILURE-DIAGNOSIS</td><td><span class="badge badge-p0">P0</span></td><td>Diagnose why full DexYCB generalization failed despite DT9 1-seq overfit passing; start with active-slot threshold/calibration and train-vs-eval distribution mismatch.</td></tr><tr><td>DT11-HOT3D-ZERO-SHOT-EVAL</td><td><span class="badge badge-p1">P1</span></td><td>Defer HOT3D zero-shot eval until the DexYCB s1 failure is understood or the user explicitly wants a failure-mode HOT3D run.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>This page publishes a failed eval result, not a successful experiment.</li><li>predictions.pt is 7.2GB and remains on the remote worktree; only small plots and JSON summaries are uploaded.</li><li>Remote worktree had modified p2_train.py and p2_eval_thfm_lora.py before this session; no remote commit was made here.</li></ul>
+</section>
+
+
+
+<section>
+  <h2>DT10 Verdict</h2>
+  <div class="panel" style="border-left-color:#dc2626">
+    <h3><span class="badge badge-fail">FAIL</span> DexYCB s1 test did not validate the DT10 checkpoint</h3>
+    <p>The quota-limited 4-GPU training run reached 40k steps and wrote <code>final.pt</code>, but full DexYCB s1 test eval shows reconstruction-quality failure: hand joint and mesh errors are hundreds of millimeters, detection precision is low, and side classification is near chance.</p>
+  </div>
+</section>
+<section>
+  <h2>Eval Metrics</h2>
+  <table>
+    <thead><tr><th>Metric</th><th>Mean</th><th>Median</th><th>P5</th><th>P95</th><th>N</th></tr></thead>
+    <tbody>
+      <tr><td>hand_joint_l2_mm</td><td>438.93</td><td>448.24</td><td>130.71</td><td>698.40</td><td>129600</td></tr>
+      <tr><td>hand_mesh_l2_mm</td><td>437.53</td><td>447.23</td><td>130.00</td><td>695.31</td><td>129600</td></tr>
+      <tr><td>obj_add_s_mm</td><td>175.92</td><td>170.35</td><td>17.43</td><td>394.17</td><td>129600</td></tr>
+      <tr><td>obj_rot_deg</td><td>74.28</td><td>70.96</td><td>0.71</td><td>174.84</td><td>129600</td></tr>
+      <tr><td>obj_trans_mm</td><td>170.84</td><td>159.86</td><td>17.18</td><td>389.37</td><td>129600</td></tr>
+    </tbody>
+  </table>
+  <p>Detection: precision 0.2511, recall 0.9995, F1 0.4014; side accuracy 0.4988 (798/1600).</p>
+</section>
+<section>
+  <h2>Training And Eval Plots</h2>
+  <p><img src="2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/train_curves.png" alt="training curves" style="max-width:100%;border:1px solid var(--border);border-radius:6px"></p>
+  <p><img src="2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/eval_distributions.png" alt="eval metric distributions" style="max-width:100%;border:1px solid var(--border);border-radius:6px"></p>
+</section>
+<section>
+  <h2>Pred Vs GT Visualizations</h2>
+  <p>Green = GT hand mesh, red = predicted hand mesh, teal = GT object, orange = predicted object. Predictions are frame-0 aligned to GT for visual comparability, matching the frame-0-relative evaluation contract.</p>
+  <h3>Best window</h3>
+  <p><img src="2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/viz_best_pred_vs_gt.png" alt="best pred vs gt" style="max-width:100%;border:1px solid var(--border);border-radius:6px"></p>
+  <h3>Median window</h3>
+  <p><img src="2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/viz_median_pred_vs_gt.png" alt="median pred vs gt" style="max-width:100%;border:1px solid var(--border);border-radius:6px"></p>
+  <h3>Worst window</h3>
+  <p><img src="2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/viz_worst_pred_vs_gt.png" alt="worst pred vs gt" style="max-width:100%;border:1px solid var(--border);border-radius:6px"></p>
+</section>
+<section>
+  <h2>Artifacts</h2>
+  <ul>
+    <li><a href="2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/metrics.json">metrics.json</a> — full eval metrics including per-sequence aggregates.</li>
+    <li><a href="2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed/dt10_eval_publish_summary.json">dt10_eval_publish_summary.json</a> — compact publish summary.</li>
+    <li>Remote eval dir: <code>logs/v2ablate/full_dexycb_armE_detr_g4/seed0/eval_s1_test_final</code></li>
+    <li>Remote predictions artifact: <code>logs/v2ablate/full_dexycb_armE_detr_g4/seed0/eval_s1_test_final/predictions.pt</code> (7.2GB, intentionally not uploaded to Pages).</li>
+  </ul>
+</section>
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-04-session-summary-dt10-full-dexycb-s1-eval-failed.json
+and continue from tasks_pending[0] (DT10-FAILURE-DIAGNOSIS [P0]: Diagnose why full DexYCB generalization failed despite DT9 1-seq overfit passing; start with active-slot threshold/calibration and train-vs-eval distribution mismatch.).
+Context: branch feat/dcf@7525fd0; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.
+Also read: docs/superpowers/specs/2026-05-01-mano-regression-head-wan22-design.md, docs/superpowers/plans/2026-05-01-mano-detr-multi-hand-impl.md.</pre></section>
+</div></body></html>
