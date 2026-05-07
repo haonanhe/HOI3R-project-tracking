@@ -3,7 +3,7 @@
   "topic": "dt10-ckpt7000-lora1e4-one-seq-eval",
   "status": "wip",
   "branch": "feat/dcf",
-  "head_sha": "d8f73f1",
+  "head_sha": "3df31ce",
   "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
   "goal": "Evaluate DT10 post-phi-geodesic LoRA LR=1e-4 ckpt_step007000 on one DexYCB train sequence and one test sequence while the 10k ACP job continues running.",
   "headline_stats": [
@@ -48,6 +48,10 @@
     {
       "id": "rgb-overlay-videos",
       "summary": "Added train/test original-RGB overlay videos with pred/GT hand and object point clouds."
+    },
+    {
+      "id": "world-space-anchor-fix",
+      "summary": "Fixed 3D world-space visualization to add the frame-0 MANO hand anchor and compose frame0-relative object predictions with the GT frame-0 object pose."
     }
   ],
   "discoveries": [
@@ -60,6 +64,11 @@
       "badge": "finding",
       "title": "Object metrics are materially better than hand geometry",
       "body": "Object ADD-S is 60.5 mm on the train sequence and 43.5 mm on the test sequence, while hand detection F1 remains below 0.45."
+    },
+    {
+      "badge": "fix",
+      "title": "World-space visualization mixed frame0-relative hands with absolute objects",
+      "body": "Before the fix, the train/test first-window world visualization inflated hand pred-vs-GT mesh L2 to about 987/884 mm at frame 0. After applying the same absolute scene contract as RGB overlay, frame-0 L2 is about 107/67 mm and mid-window L2 is about 81/120 mm."
     }
   ],
   "module_state": [
@@ -73,7 +82,7 @@
     },
     {
       "aspect": "Visualization",
-      "state": "Videos use first eval window per split and anchor predictions to GT frame-0 centroids for visual comparability."
+      "state": "RGB overlays and world-space videos now use the same absolute scene contract: frame0-relative hands are translated by the frame-0 MANO anchor, and frame0-relative object predictions are composed with the GT frame-0 object pose."
     }
   ],
   "tasks_pending": [
@@ -92,14 +101,19 @@
     "This is a checkpoint probe, not a completed experiment acceptance result.",
     "Visualization conversion had to reconstruct GT object points from obj_R_gt/obj_t_gt/obj_canon because predictions.pt no longer stores obj_posed directly.",
     "The 10k training job was intentionally left running.",
-    "2026-05-07 refresh: visualization MP4s were regenerated after fixing build_viz_pred.py to export only the Hungarian-matched hand slot as (T,778,3) and to apply one scene-level prediction offset.",
+    "2026-05-07 refresh: world-space MP4s were regenerated again after fixing frame-0 anchoring; build_viz_pred.py now emits absolute-scene hand/object point clouds consistent with RGB projection.",
     "2026-05-07 refresh: added original-RGB point-cloud overlay videos. Hand overlay is the primary reliable signal; object pred overlay composes frame0-relative pred pose with GT frame0 object pose for visualization."
   ],
-  "extra_html": "\n<section><h2>Evaluation Setup</h2>\n<table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>\n<tr><td>Checkpoint</td><td><code>pt-rj3s0a6b ckpt_step007000.pt</code></td></tr>\n<tr><td>Training config match</td><td><code>VAE_SOURCE=cache</code>, <code>clip_len=81</code>, <code>n_max=2</code>, <code>head_mid_dim=256</code>, <code>lora_rank=16</code>, <code>lora_alpha=32</code></td></tr>\n<tr><td>Train sequence</td><td><code>20200709-subject-01/20200709_141754</code>, 8 cameras, 8 eval windows</td></tr>\n<tr><td>Test sequence</td><td><code>20200928-subject-07/20200928_143249</code>, 8 cameras, 8 eval windows</td></tr>\n<tr><td>Important caveat</td><td>Metrics are one-sequence probes, not full DexYCB s1 train/test acceptance.</td></tr>\n</tbody></table></section>\n<section><h2>Metrics</h2>\n<table><thead><tr><th>Split</th><th>Hand joint L2</th><th>Hand mesh L2</th><th>Detection F1</th><th>Side acc</th><th>Obj ADD-S</th><th>Obj rot</th><th>Obj trans</th></tr></thead><tbody>\n<tr><td>train one-seq</td><td>302.0 mm</td><td>296.6 mm</td><td>0.449</td><td>0.750</td><td>60.5 mm</td><td>8.7 deg</td><td>60.1 mm</td></tr>\n<tr><td>test one-seq</td><td>322.5 mm</td><td>316.9 mm</td><td>0.429</td><td>0.625</td><td>43.5 mm</td><td>29.3 deg</td><td>37.6 mm</td></tr>\n</tbody></table>\n<p>Raw JSON: <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train_metrics.json\">train metrics</a>, <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test_metrics.json\">test metrics</a>, <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/loss_summary.json\">loss summary</a>.</p>\n</section>\n<section><h2>Visualizations</h2>\n<h3>Train one-sequence window 0</h3>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train/world_multiframe.mp4\"></video>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train/world_rotating.mp4\"></video>\n<h3>Test one-sequence window 0</h3>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test/world_multiframe.mp4\"></video>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test/world_rotating.mp4\"></video>\n</section>\n<section><h2>RGB Point-Cloud Overlays</h2>\n<p>Projected point-cloud overlays on the original DexYCB RGB frames. Blue = pred hand, green = GT hand, orange = pred object, gray = GT object. The hand overlay uses the Hungarian-matched pred slot and adds the frame-0 MANO translation anchor before projection.</p>\n<h3>Train one-sequence window 0</h3>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train-rgb-overlay/rgb-overlay.mp4\"></video>\n<p>Overlay metadata: <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train-rgb-overlay/rgb-overlay-summary.json\">train rgb_overlay_summary.json</a></p>\n<h3>Test one-sequence window 0</h3>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test-rgb-overlay/rgb-overlay.mp4\"></video>\n<p>Overlay metadata: <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test-rgb-overlay/rgb-overlay-summary.json\">test rgb_overlay_summary.json</a></p>\n</section>\n<section><h2>Training Loss Context</h2>\n<p>At capture time, the running job had logged through step 7200. Best logged geometry before eval was mesh 0.05205 and joint 0.02626 at step 6190; ckpt7000 eval remains much worse in mm metrics.</p>\n<img src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/loss_curves_pt-rj3s0a6b.png\" style=\"max-width:100%;height:auto\" />\n<img src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/critical_losses_roll25_pt-rj3s0a6b.png\" style=\"max-width:100%;height:auto\" />\n</section>\n",
+  "extra_html": "\n<section><h2>Evaluation Setup</h2>\n<table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>\n<tr><td>Checkpoint</td><td><code>pt-rj3s0a6b ckpt_step007000.pt</code></td></tr>\n<tr><td>Training config match</td><td><code>VAE_SOURCE=cache</code>, <code>clip_len=81</code>, <code>n_max=2</code>, <code>head_mid_dim=256</code>, <code>lora_rank=16</code>, <code>lora_alpha=32</code></td></tr>\n<tr><td>Train sequence</td><td><code>20200709-subject-01/20200709_141754</code>, 8 cameras, 8 eval windows</td></tr>\n<tr><td>Test sequence</td><td><code>20200928-subject-07/20200928_143249</code>, 8 cameras, 8 eval windows</td></tr>\n<tr><td>Important caveat</td><td>Metrics are one-sequence probes, not full DexYCB s1 train/test acceptance.</td></tr>\n</tbody></table></section>\n<section><h2>Metrics</h2>\n<table><thead><tr><th>Split</th><th>Hand joint L2</th><th>Hand mesh L2</th><th>Detection F1</th><th>Side acc</th><th>Obj ADD-S</th><th>Obj rot</th><th>Obj trans</th></tr></thead><tbody>\n<tr><td>train one-seq</td><td>302.0 mm</td><td>296.6 mm</td><td>0.449</td><td>0.750</td><td>60.5 mm</td><td>8.7 deg</td><td>60.1 mm</td></tr>\n<tr><td>test one-seq</td><td>322.5 mm</td><td>316.9 mm</td><td>0.429</td><td>0.625</td><td>43.5 mm</td><td>29.3 deg</td><td>37.6 mm</td></tr>\n</tbody></table>\n<p>Raw JSON: <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train_metrics.json\">train metrics</a>, <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test_metrics.json\">test metrics</a>, <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/loss_summary.json\">loss summary</a>.</p>\n</section>\n<section><h2>Visualizations</h2>\n<p><strong>2026-05-07 world-space refresh:</strong> these four 3D videos were regenerated after fixing frame-0 anchoring. Hand point clouds are translated by the frame-0 MANO anchor; object predictions are composed with the GT frame-0 object pose before rendering.</p>\n<h3>Train one-sequence window 0</h3>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train/world_multiframe.mp4\"></video>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train/world_rotating.mp4\"></video>\n<h3>Test one-sequence window 0</h3>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test/world_multiframe.mp4\"></video>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test/world_rotating.mp4\"></video>\n</section>\n<section><h2>RGB Point-Cloud Overlays</h2>\n<p>Projected point-cloud overlays on the original DexYCB RGB frames. Blue = pred hand, green = GT hand, orange = pred object, gray = GT object. The hand overlay uses the Hungarian-matched pred slot and adds the frame-0 MANO translation anchor before projection.</p>\n<h3>Train one-sequence window 0</h3>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train-rgb-overlay/rgb-overlay.mp4\"></video>\n<p>Overlay metadata: <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train-rgb-overlay/rgb-overlay-summary.json\">train rgb_overlay_summary.json</a></p>\n<h3>Test one-sequence window 0</h3>\n<video controls width=\"760\" src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test-rgb-overlay/rgb-overlay.mp4\"></video>\n<p>Overlay metadata: <a href=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test-rgb-overlay/rgb-overlay-summary.json\">test rgb_overlay_summary.json</a></p>\n</section>\n<section><h2>Training Loss Context</h2>\n<p>At capture time, the running job had logged through step 7200. Best logged geometry before eval was mesh 0.05205 and joint 0.02626 at step 6190; ckpt7000 eval remains much worse in mm metrics.</p>\n<img src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/loss_curves_pt-rj3s0a6b.png\" style=\"max-width:100%;height:auto\" />\n<img src=\"2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/critical_losses_roll25_pt-rj3s0a6b.png\" style=\"max-width:100%;height:auto\" />\n</section>\n",
   "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval.html",
   "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval.json",
-  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval.json\nand continue from tasks_pending[0] (monitor-final-10k [P0]: Monitor pt-rj3s0a6b to completion, then evaluate final and best-loss checkpoints, especially around step 4780/6190 and final.).\nContext: branch feat/dcf@d8f73f1; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval.json\nand continue from tasks_pending[0] (monitor-final-10k [P0]: Monitor pt-rj3s0a6b to completion, then evaluate final and best-loss checkpoints, especially around step 4780/6190 and final.).\nContext: branch feat/dcf@3df31ce; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.",
   "commits": [
+    {
+      "sha": "3df31ce",
+      "type": "fix",
+      "subject": "Fix DT10 world-space visualization anchoring"
+    },
     {
       "sha": "d8f73f1",
       "type": "fix",
