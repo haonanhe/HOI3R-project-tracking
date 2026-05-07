@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-07 · Evaluate DT10 post-phi-geodesic LoRA LR=1e-4 ckpt_step007000 on one DexYCB train sequence and one test sequence while the 10k ACP job continues running.",
+    "date": "2026-05-07",
+    "status": "wip",
+    "summary": "Evaluate DT10 post-phi-geodesic LoRA LR=1e-4 ckpt_step007000 on one DexYCB train sequence and one test sequence while the 10k ACP job continues running.",
+    "path": "updates/2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval.html",
+    "file": "updates/2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval.html",
+    "sidecar": "updates/2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval.json"
+  },
+  {
     "title": "2026-05-04 · DT10 full DexYCB arm-E DETR G4 checkpoint: train succeeded, full DexYCB s1 test eval failed and was published with visualizations.",
     "date": "2026-05-04",
     "status": "fail",

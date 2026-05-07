@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-07 · dt10-ckpt7000-lora1e4-one-seq-eval</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Dt10 Ckpt7000 Lora1E4 One Seq Eval</h1>
+  <div class="meta">2026-05-07 · <code>feat/dcf</code> · <code>@01cc7c3d048435724d23529bbde1ded49b65b706</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf</code></div>
+  <p class="goal">Evaluate DT10 post-phi-geodesic LoRA LR=1e-4 ckpt_step007000 on one DexYCB train sequence and one test sequence while the 10k ACP job continues running.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">302.0 mm</div><div class="label">train hand joint L2</div></div><div class="stat"><div class="val">322.5 mm</div><div class="label">test hand joint L2</div></div><div class="stat"><div class="val">0.449</div><div class="label">train F1</div></div><div class="stat"><div class="val">0.429</div><div class="label">test F1</div></div><div class="stat"><div class="val">step 7000</div><div class="label">ckpt</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>eval-contract-check</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Matched eval settings to training: cached Wan2.2 VAE, clip_len=81, n_max=2, head_mid_dim=256, LoRA rank/alpha 16/32.</td></tr><tr><td>train-one-seq-eval</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Evaluated ckpt_step007000 on train sequence 20200709-subject-01/20200709_141754 across 8 cameras.</td></tr><tr><td>test-one-seq-eval</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Evaluated ckpt_step007000 on test sequence 20200928-subject-07/20200928_143249 across 8 cameras.</td></tr><tr><td>visualization</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Rendered pred-vs-GT world-space multiframe and rotating videos for the first window of each split.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Checkpoint has low training-loss moments but poor eval geometry</h3><p>Train one-sequence hand joint/mesh L2 is 302.0/296.6 mm; test one-sequence is 322.5/316.9 mm, so ckpt_step007000 is not a quality pass despite useful loss minima.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Object metrics are materially better than hand geometry</h3><p>Object ADD-S is 60.5 mm on the train sequence and 43.5 mm on the test sequence, while hand detection F1 remains below 0.45.</p></div>
+
+</section>
+
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>ACP training job</td><td>pt-rj3s0a6b remains running; this eval used ckpt_step007000 and did not stop or modify the job.</td></tr><tr><td>Eval scope</td><td>One sequence per split, 8 cameras each; not a full s1 acceptance eval.</td></tr><tr><td>Visualization</td><td>Videos use first eval window per split and anchor predictions to GT frame-0 centroids for visual comparability.</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>monitor-final-10k</td><td><span class="badge badge-p0">P0</span></td><td>Monitor pt-rj3s0a6b to completion, then evaluate final and best-loss checkpoints, especially around step 4780/6190 and final.</td></tr><tr><td>diagnose-train-eval-gap</td><td><span class="badge badge-p0">P0</span></td><td>Explain why low train loss around step 6190 still yields poor one-sequence hand L2 at ckpt7000.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>This is a checkpoint probe, not a completed experiment acceptance result.</li><li>Visualization conversion had to reconstruct GT object points from obj_R_gt/obj_t_gt/obj_canon because predictions.pt no longer stores obj_posed directly.</li><li>The 10k training job was intentionally left running.</li></ul>
+</section>
+
+
+
+<section><h2>Evaluation Setup</h2>
+<table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>
+<tr><td>Checkpoint</td><td><code>pt-rj3s0a6b ckpt_step007000.pt</code></td></tr>
+<tr><td>Training config match</td><td><code>VAE_SOURCE=cache</code>, <code>clip_len=81</code>, <code>n_max=2</code>, <code>head_mid_dim=256</code>, <code>lora_rank=16</code>, <code>lora_alpha=32</code></td></tr>
+<tr><td>Train sequence</td><td><code>20200709-subject-01/20200709_141754</code>, 8 cameras, 8 eval windows</td></tr>
+<tr><td>Test sequence</td><td><code>20200928-subject-07/20200928_143249</code>, 8 cameras, 8 eval windows</td></tr>
+<tr><td>Important caveat</td><td>Metrics are one-sequence probes, not full DexYCB s1 train/test acceptance.</td></tr>
+</tbody></table></section>
+<section><h2>Metrics</h2>
+<table><thead><tr><th>Split</th><th>Hand joint L2</th><th>Hand mesh L2</th><th>Detection F1</th><th>Side acc</th><th>Obj ADD-S</th><th>Obj rot</th><th>Obj trans</th></tr></thead><tbody>
+<tr><td>train one-seq</td><td>302.0 mm</td><td>296.6 mm</td><td>0.449</td><td>0.750</td><td>60.5 mm</td><td>8.7 deg</td><td>60.1 mm</td></tr>
+<tr><td>test one-seq</td><td>322.5 mm</td><td>316.9 mm</td><td>0.429</td><td>0.625</td><td>43.5 mm</td><td>29.3 deg</td><td>37.6 mm</td></tr>
+</tbody></table>
+<p>Raw JSON: <a href="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train_metrics.json">train metrics</a>, <a href="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test_metrics.json">test metrics</a>, <a href="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/loss_summary.json">loss summary</a>.</p>
+</section>
+<section><h2>Visualizations</h2>
+<h3>Train one-sequence window 0</h3>
+<video controls width="760" src="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train/world_multiframe.mp4"></video>
+<video controls width="760" src="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/train/world_rotating.mp4"></video>
+<h3>Test one-sequence window 0</h3>
+<video controls width="760" src="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test/world_multiframe.mp4"></video>
+<video controls width="760" src="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/test/world_rotating.mp4"></video>
+</section>
+<section><h2>Training Loss Context</h2>
+<p>At capture time, the running job had logged through step 7200. Best logged geometry before eval was mesh 0.05205 and joint 0.02626 at step 6190; ckpt7000 eval remains much worse in mm metrics.</p>
+<img src="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/loss_curves_pt-rj3s0a6b.png" style="max-width:100%;height:auto" />
+<img src="2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval/loss_curves/critical_losses_roll25_pt-rj3s0a6b.png" style="max-width:100%;height:auto" />
+</section>
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-07-session-summary-dt10-ckpt7000-lora1e4-one-seq-eval.json
+and continue from tasks_pending[0] (monitor-final-10k [P0]: Monitor pt-rj3s0a6b to completion, then evaluate final and best-loss checkpoints, especially around step 4780/6190 and final.).
+Context: branch feat/dcf@01cc7c3d048435724d23529bbde1ded49b65b706; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf.</pre></section>
+</div></body></html>
