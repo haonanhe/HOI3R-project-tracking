@@ -63,7 +63,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 </section>
 
 <section><h2>Caveats</h2>
-<ul><li>This is a checkpoint probe, not a completed experiment acceptance result.</li><li>Visualization conversion had to reconstruct GT object points from obj_R_gt/obj_t_gt/obj_canon because predictions.pt no longer stores obj_posed directly.</li><li>The 10k training job was intentionally left running.</li></ul>
+<ul><li>This is a checkpoint probe, not a completed experiment acceptance result.</li><li>Visualization conversion had to reconstruct GT object points from obj_R_gt/obj_t_gt/obj_canon because predictions.pt no longer stores obj_posed directly.</li><li>The 10k training job was intentionally left running.</li><li>2026-05-07 refresh: visualization MP4s were regenerated after fixing build_viz_pred.py to export only the Hungarian-matched hand slot as (T,778,3) and to apply one scene-level prediction offset.</li></ul>
 </section>
 
 
