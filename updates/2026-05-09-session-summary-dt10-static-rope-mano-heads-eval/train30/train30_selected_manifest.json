@@ -1,0 +1,212 @@
+[
+  {
+    "sequence": "20200709-subject-01/20200709_141754",
+    "camera": "836212060125",
+    "tracked_start": 9,
+    "tracked_end": 71,
+    "n_tracked": 63
+  },
+  {
+    "sequence": "20200709-subject-01/20200709_143747",
+    "camera": "932122060861",
+    "tracked_start": 0,
+    "tracked_end": 71,
+    "n_tracked": 72
+  },
+  {
+    "sequence": "20200709-subject-01/20200709_150243",
+    "camera": "839512060362",
+    "tracked_start": 5,
+    "tracked_end": 71,
+    "n_tracked": 67
+  },
+  {
+    "sequence": "20200709-subject-01/20200709_152240",
+    "camera": "932122061900",
+    "tracked_start": 3,
+    "tracked_end": 73,
+    "n_tracked": 71
+  },
+  {
+    "sequence": "20200813-subject-02/20200813_145951",
+    "camera": "841412060263",
+    "tracked_start": 0,
+    "tracked_end": 69,
+    "n_tracked": 70
+  },
+  {
+    "sequence": "20200813-subject-02/20200813_152107",
+    "camera": "932122062010",
+    "tracked_start": 0,
+    "tracked_end": 71,
+    "n_tracked": 72
+  },
+  {
+    "sequence": "20200813-subject-02/20200813_153839",
+    "camera": "932122060857",
+    "tracked_start": 1,
+    "tracked_end": 71,
+    "n_tracked": 71
+  },
+  {
+    "sequence": "20200813-subject-02/20200813_155553",
+    "camera": "839512060362",
+    "tracked_start": 0,
+    "tracked_end": 71,
+    "n_tracked": 72
+  },
+  {
+    "sequence": "20200820-subject-03/20200820_140425",
+    "camera": "932122060861",
+    "tracked_start": 9,
+    "tracked_end": 71,
+    "n_tracked": 63
+  },
+  {
+    "sequence": "20200820-subject-03/20200820_142129",
+    "camera": "840412060917",
+    "tracked_start": 13,
+    "tracked_end": 73,
+    "n_tracked": 61
+  },
+  {
+    "sequence": "20200820-subject-03/20200820_143850",
+    "camera": "932122062010",
+    "tracked_start": 9,
+    "tracked_end": 71,
+    "n_tracked": 63
+  },
+  {
+    "sequence": "20200903-subject-04/20200903_103749",
+    "camera": "841412060263",
+    "tracked_start": 13,
+    "tracked_end": 69,
+    "n_tracked": 57
+  },
+  {
+    "sequence": "20200903-subject-04/20200903_105238",
+    "camera": "836212060125",
+    "tracked_start": 13,
+    "tracked_end": 71,
+    "n_tracked": 59
+  },
+  {
+    "sequence": "20200903-subject-04/20200903_111828",
+    "camera": "932122060861",
+    "tracked_start": 13,
+    "tracked_end": 71,
+    "n_tracked": 59
+  },
+  {
+    "sequence": "20200903-subject-04/20200903_113335",
+    "camera": "839512060362",
+    "tracked_start": 13,
+    "tracked_end": 71,
+    "n_tracked": 59
+  },
+  {
+    "sequence": "20200908-subject-05/20200908_144034",
+    "camera": "932122061900",
+    "tracked_start": 1,
+    "tracked_end": 69,
+    "n_tracked": 69
+  },
+  {
+    "sequence": "20200908-subject-05/20200908_145539",
+    "camera": "840412060917",
+    "tracked_start": 3,
+    "tracked_end": 71,
+    "n_tracked": 69
+  },
+  {
+    "sequence": "20200908-subject-05/20200908_151001",
+    "camera": "932122062010",
+    "tracked_start": 9,
+    "tracked_end": 73,
+    "n_tracked": 65
+  },
+  {
+    "sequence": "20200908-subject-05/20200908_152643",
+    "camera": "932122060857",
+    "tracked_start": 9,
+    "tracked_end": 71,
+    "n_tracked": 63
+  },
+  {
+    "sequence": "20200918-subject-06/20200918_114030",
+    "camera": "836212060125",
+    "tracked_start": 13,
+    "tracked_end": 71,
+    "n_tracked": 59
+  },
+  {
+    "sequence": "20200918-subject-06/20200918_115248",
+    "camera": "932122060861",
+    "tracked_start": 7,
+    "tracked_end": 71,
+    "n_tracked": 65
+  },
+  {
+    "sequence": "20200918-subject-06/20200918_120513",
+    "camera": "840412060917",
+    "tracked_start": 15,
+    "tracked_end": 73,
+    "n_tracked": 59
+  },
+  {
+    "sequence": "20201015-subject-09/20201015_142940",
+    "camera": "932122061900",
+    "tracked_start": 0,
+    "tracked_end": 73,
+    "n_tracked": 74
+  },
+  {
+    "sequence": "20201015-subject-09/20201015_144341",
+    "camera": "841412060263",
+    "tracked_start": 0,
+    "tracked_end": 73,
+    "n_tracked": 74
+  },
+  {
+    "sequence": "20201015-subject-09/20201015_145827",
+    "camera": "836212060125",
+    "tracked_start": 0,
+    "tracked_end": 71,
+    "n_tracked": 72
+  },
+  {
+    "sequence": "20201015-subject-09/20201015_151146",
+    "camera": "932122060857",
+    "tracked_start": 0,
+    "tracked_end": 71,
+    "n_tracked": 72
+  },
+  {
+    "sequence": "20201022-subject-10/20201022_111459",
+    "camera": "839512060362",
+    "tracked_start": 17,
+    "tracked_end": 71,
+    "n_tracked": 55
+  },
+  {
+    "sequence": "20201022-subject-10/20201022_112621",
+    "camera": "932122061900",
+    "tracked_start": 11,
+    "tracked_end": 71,
+    "n_tracked": 61
+  },
+  {
+    "sequence": "20201022-subject-10/20201022_113819",
+    "camera": "840412060917",
+    "tracked_start": 19,
+    "tracked_end": 73,
+    "n_tracked": 55
+  },
+  {
+    "sequence": "20201022-subject-10/20201022_114909",
+    "camera": "932122062010",
+    "tracked_start": 17,
+    "tracked_end": 71,
+    "n_tracked": 55
+  }
+]

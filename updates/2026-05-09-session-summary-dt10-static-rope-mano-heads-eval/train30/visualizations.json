@@ -1,0 +1,158 @@
+[
+  {
+    "sequence": "20200709-subject-01/20200709_141754",
+    "camera": "836212060125",
+    "frame_indices": [
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69
+    ],
+    "overlay": {
+      "frames": [
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_000.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_001.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_002.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_003.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_004.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_005.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_006.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_007.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_008.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_009.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_010.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_011.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_012.png"
+      ],
+      "video": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/overlay.mp4",
+      "video_error": null
+    },
+    "joints3d_png": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/joints3d.png"
+  },
+  {
+    "sequence": "20200709-subject-01/20200709_143747",
+    "camera": "932122060861",
+    "frame_indices": [
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61
+    ],
+    "overlay": {
+      "frames": [
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_000.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_001.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_002.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_003.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_004.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_005.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_006.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_007.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_008.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_009.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_010.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_011.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_012.png"
+      ],
+      "video": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/overlay.mp4",
+      "video_error": null
+    },
+    "joints3d_png": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/joints3d.png"
+  },
+  {
+    "sequence": "20200709-subject-01/20200709_150243",
+    "camera": "839512060362",
+    "frame_indices": [
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60
+    ],
+    "overlay": {
+      "frames": [
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_000.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_001.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_002.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_003.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_004.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_005.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_006.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_007.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_008.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_009.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_010.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_011.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_012.png"
+      ],
+      "video": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/overlay.mp4",
+      "video_error": null
+    },
+    "joints3d_png": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/joints3d.png"
+  },
+  {
+    "sequence": "20200709-subject-01/20200709_152240",
+    "camera": "932122061900",
+    "frame_indices": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54
+    ],
+    "overlay": {
+      "frames": [
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_000.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_001.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_002.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_003.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_004.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_005.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_006.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_007.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_008.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_009.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_010.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_011.png",
+        "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_012.png"
+      ],
+      "video": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/overlay.mp4",
+      "video_error": null
+    },
+    "joints3d_png": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/joints3d.png"
+  }
+]

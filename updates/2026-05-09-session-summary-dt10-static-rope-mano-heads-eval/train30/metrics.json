@@ -1,0 +1,1491 @@
+{
+  "config": {
+    "run_name": "static_rope_mano_heads",
+    "split_name": "train30",
+    "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/logs/v2ablate/dt10_mano_split_direct_fulltrain_10k_20260509_1077137/static_rope/final.pt",
+    "train_step": 10000,
+    "source_manifest": "manifests/dexycb_s1_train_multicam.json",
+    "selected_manifest": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/train30_selected_manifest.json",
+    "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6",
+    "clip_len": 13,
+    "n_max": 2,
+    "vae_source": "online",
+    "vae_target_size": 480,
+    "thfm_clip_mode": "random",
+    "thfm_start_offset": 32,
+    "mano_token_layout": "split_direct_latent",
+    "hand_target_mode": "mano",
+    "direct_aux": false,
+    "hand_slot_spatial_mode": "static",
+    "n_entries": 30,
+    "elapsed_sec": 36.63707160949707
+  },
+  "overall": {
+    "metrics": {
+      "detected_mano_joint_l2_mm": {
+        "mean": 125.9444351196289,
+        "median": 100.96421813964844,
+        "n": 29
+      },
+      "detected_mano_mesh_l2_mm": {
+        "mean": 125.70648193359375,
+        "median": 100.2077865600586,
+        "n": 29
+      },
+      "oracle_mano_joint_l2_mm": {
+        "mean": 109.05592346191406,
+        "median": 92.45231628417969,
+        "n": 30
+      },
+      "oracle_mano_mesh_l2_mm": {
+        "mean": 108.85360717773438,
+        "median": 92.62798309326172,
+        "n": 30
+      },
+      "oracle_direct_joint3d_l2_mm": {
+        "mean": null,
+        "median": null,
+        "n": 0
+      },
+      "oracle_direct_kp2d_norm_l2": {
+        "mean": null,
+        "median": null,
+        "n": 0
+      },
+      "obj_trans_mm": {
+        "mean": 34.37912368774414,
+        "median": 33.230384826660156,
+        "n": 30
+      }
+    },
+    "detection": {
+      "tp": 341,
+      "fp": 184,
+      "fn": 49,
+      "precision": 0.6495238095238095,
+      "recall": 0.8743589743589744,
+      "f1": 0.7453551912568305,
+      "hand_side_acc": 1.0,
+      "hand_side_correct": 30,
+      "hand_side_total": 30
+    }
+  },
+  "records": [
+    {
+      "sequence": "20200709-subject-01/20200709_141754",
+      "camera": "836212060125",
+      "frame_indices": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 145.98829298753006,
+        "detected_mano_mesh_l2_mm": 146.14440331092248,
+        "oracle_mano_joint_l2_mm": 145.98829298753006,
+        "oracle_mano_mesh_l2_mm": 146.14440331092248,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 11.720962524414062
+      }
+    },
+    {
+      "sequence": "20200709-subject-01/20200709_143747",
+      "camera": "932122060861",
+      "frame_indices": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {},
+      "detection": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 13,
+        "n_detected_slots": 0,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": null,
+        "detected_mano_mesh_l2_mm": null,
+        "oracle_mano_joint_l2_mm": 72.98314079871544,
+        "oracle_mano_mesh_l2_mm": 72.8629487844614,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 15.597330093383789
+      }
+    },
+    {
+      "sequence": "20200709-subject-01/20200709_150243",
+      "camera": "839512060362",
+      "frame_indices": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 93.77744762714093,
+        "detected_mano_mesh_l2_mm": 93.17076169527493,
+        "oracle_mano_joint_l2_mm": 78.41556607759915,
+        "oracle_mano_mesh_l2_mm": 77.96653512807993,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 40.66428756713867
+      }
+    },
+    {
+      "sequence": "20200709-subject-01/20200709_152240",
+      "camera": "932122061900",
+      "frame_indices": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 11,
+        "fp": 13,
+        "fn": 2,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 95.34759404109074,
+        "detected_mano_mesh_l2_mm": 95.11271491417519,
+        "oracle_mano_joint_l2_mm": 95.34759404109074,
+        "oracle_mano_mesh_l2_mm": 95.11271491417519,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 37.893497467041016
+      }
+    },
+    {
+      "sequence": "20200813-subject-02/20200813_145951",
+      "camera": "841412060263",
+      "frame_indices": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 9,
+        "fp": 13,
+        "fn": 4,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 275.8774907038762,
+        "detected_mano_mesh_l2_mm": 275.45675893930286,
+        "oracle_mano_joint_l2_mm": 275.8774907038762,
+        "oracle_mano_mesh_l2_mm": 275.45675893930286,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 8.963485717773438
+      }
+    },
+    {
+      "sequence": "20200813-subject-02/20200813_152107",
+      "camera": "932122062010",
+      "frame_indices": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 12,
+        "fn": 0,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 100.96421931340144,
+        "detected_mano_mesh_l2_mm": 100.2077889075646,
+        "oracle_mano_joint_l2_mm": 100.96421931340144,
+        "oracle_mano_mesh_l2_mm": 100.2077889075646,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 22.90332794189453
+      }
+    },
+    {
+      "sequence": "20200813-subject-02/20200813_153839",
+      "camera": "932122060857",
+      "frame_indices": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 9,
+        "fp": 13,
+        "fn": 4,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 95.27064983661359,
+        "detected_mano_mesh_l2_mm": 94.27445807823769,
+        "oracle_mano_joint_l2_mm": 95.27064983661359,
+        "oracle_mano_mesh_l2_mm": 94.27445807823769,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 51.59894943237305
+      }
+    },
+    {
+      "sequence": "20200813-subject-02/20200813_155553",
+      "camera": "839512060362",
+      "frame_indices": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 13,
+        "fn": 0,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 95.97892819918118,
+        "detected_mano_mesh_l2_mm": 96.5504150390625,
+        "oracle_mano_joint_l2_mm": 95.97892819918118,
+        "oracle_mano_mesh_l2_mm": 96.5504150390625,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 33.68007278442383
+      }
+    },
+    {
+      "sequence": "20200820-subject-03/20200820_140425",
+      "camera": "932122060861",
+      "frame_indices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 8,
+        "fp": 13,
+        "fn": 5,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 93.9883323082557,
+        "detected_mano_mesh_l2_mm": 93.39827493520883,
+        "oracle_mano_joint_l2_mm": 93.9883323082557,
+        "oracle_mano_mesh_l2_mm": 93.39827493520883,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 22.68430519104004
+      }
+    },
+    {
+      "sequence": "20200820-subject-03/20200820_142129",
+      "camera": "840412060917",
+      "frame_indices": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 11,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 155.00015376164362,
+        "detected_mano_mesh_l2_mm": 153.3975337101863,
+        "oracle_mano_joint_l2_mm": 92.45231628417969,
+        "oracle_mano_mesh_l2_mm": 92.62798133263222,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 39.12520217895508
+      }
+    },
+    {
+      "sequence": "20200820-subject-03/20200820_143850",
+      "camera": "932122062010",
+      "frame_indices": [
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 145.02103952261118,
+        "detected_mano_mesh_l2_mm": 144.38050255408655,
+        "oracle_mano_joint_l2_mm": 145.02103952261118,
+        "oracle_mano_mesh_l2_mm": 144.38050255408655,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 5.894573211669922
+      }
+    },
+    {
+      "sequence": "20200903-subject-04/20200903_103749",
+      "camera": "841412060263",
+      "frame_indices": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 159.8368412898137,
+        "detected_mano_mesh_l2_mm": 159.78098825307993,
+        "oracle_mano_joint_l2_mm": 78.1282460139348,
+        "oracle_mano_mesh_l2_mm": 78.00304060715895,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 21.24710464477539
+      }
+    },
+    {
+      "sequence": "20200903-subject-04/20200903_105238",
+      "camera": "836212060125",
+      "frame_indices": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 48.49774976877066,
+        "detected_mano_mesh_l2_mm": 48.28416486886832,
+        "oracle_mano_joint_l2_mm": 48.49774976877066,
+        "oracle_mano_mesh_l2_mm": 48.28416486886832,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 33.230384826660156
+      }
+    },
+    {
+      "sequence": "20200903-subject-04/20200903_111828",
+      "camera": "932122060861",
+      "frame_indices": [
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 11,
+        "fp": 12,
+        "fn": 2,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 75.89039905254657,
+        "detected_mano_mesh_l2_mm": 75.94150191086989,
+        "oracle_mano_joint_l2_mm": 75.89039905254657,
+        "oracle_mano_mesh_l2_mm": 75.94150191086989,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 82.93467712402344
+      }
+    },
+    {
+      "sequence": "20200903-subject-04/20200903_113335",
+      "camera": "839512060362",
+      "frame_indices": [
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 10,
+        "fp": 13,
+        "fn": 3,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 305.1147061861478,
+        "detected_mano_mesh_l2_mm": 305.3448415902945,
+        "oracle_mano_joint_l2_mm": 305.1147061861478,
+        "oracle_mano_mesh_l2_mm": 305.3448415902945,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 17.785486221313477
+      }
+    },
+    {
+      "sequence": "20200908-subject-05/20200908_144034",
+      "camera": "932122061900",
+      "frame_indices": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 13,
+        "fn": 0,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 73.59954335139348,
+        "detected_mano_mesh_l2_mm": 73.40717256986179,
+        "oracle_mano_joint_l2_mm": 73.59954335139348,
+        "oracle_mano_mesh_l2_mm": 73.40717256986179,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 21.02729606628418
+      }
+    },
+    {
+      "sequence": "20200908-subject-05/20200908_145539",
+      "camera": "840412060917",
+      "frame_indices": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 13,
+        "fn": 0,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 88.33774860088641,
+        "detected_mano_mesh_l2_mm": 87.50228881835938,
+        "oracle_mano_joint_l2_mm": 88.33774860088641,
+        "oracle_mano_mesh_l2_mm": 87.50228881835938,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 26.2119140625
+      }
+    },
+    {
+      "sequence": "20200908-subject-05/20200908_151001",
+      "camera": "932122062010",
+      "frame_indices": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 13,
+        "fn": 0,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 49.23173625652607,
+        "detected_mano_mesh_l2_mm": 49.29321054311899,
+        "oracle_mano_joint_l2_mm": 49.23173625652607,
+        "oracle_mano_mesh_l2_mm": 49.29321054311899,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 34.3594856262207
+      }
+    },
+    {
+      "sequence": "20200908-subject-05/20200908_152643",
+      "camera": "932122060857",
+      "frame_indices": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 106.62657635028546,
+        "detected_mano_mesh_l2_mm": 107.28356170654297,
+        "oracle_mano_joint_l2_mm": 78.11033630371094,
+        "oracle_mano_mesh_l2_mm": 78.3671869131235,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 35.37279510498047
+      }
+    },
+    {
+      "sequence": "20200918-subject-06/20200918_114030",
+      "camera": "836212060125",
+      "frame_indices": [
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 154.2192629300631,
+        "detected_mano_mesh_l2_mm": 153.84983943058893,
+        "oracle_mano_joint_l2_mm": 154.2192629300631,
+        "oracle_mano_mesh_l2_mm": 153.84983943058893,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 42.4980354309082
+      }
+    },
+    {
+      "sequence": "20200918-subject-06/20200918_115248",
+      "camera": "932122060861",
+      "frame_indices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 9,
+        "fp": 4,
+        "fn": 4,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 110.54754169170673,
+        "detected_mano_mesh_l2_mm": 110.35242344782903,
+        "oracle_mano_joint_l2_mm": 110.54754169170673,
+        "oracle_mano_mesh_l2_mm": 110.35242344782903,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 42.65563201904297
+      }
+    },
+    {
+      "sequence": "20200918-subject-06/20200918_120513",
+      "camera": "840412060917",
+      "frame_indices": [
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 295.8834674541767,
+        "detected_mano_mesh_l2_mm": 295.0122516338642,
+        "oracle_mano_joint_l2_mm": 173.20828129695013,
+        "oracle_mano_mesh_l2_mm": 172.3333775446965,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 6.1725077629089355
+      }
+    },
+    {
+      "sequence": "20201015-subject-09/20201015_142940",
+      "camera": "932122061900",
+      "frame_indices": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 12,
+        "fp": 0,
+        "fn": 1,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 114.11759420541617,
+        "detected_mano_mesh_l2_mm": 114.4773448063777,
+        "oracle_mano_joint_l2_mm": 114.11759420541617,
+        "oracle_mano_mesh_l2_mm": 114.4773448063777,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 53.69431686401367
+      }
+    },
+    {
+      "sequence": "20201015-subject-09/20201015_144341",
+      "camera": "841412060263",
+      "frame_indices": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 189.3395737868089,
+        "detected_mano_mesh_l2_mm": 189.2435549222506,
+        "oracle_mano_joint_l2_mm": 83.07673909113957,
+        "oracle_mano_mesh_l2_mm": 82.75359579233023,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 46.2718620300293
+      }
+    },
+    {
+      "sequence": "20201015-subject-09/20201015_145827",
+      "camera": "836212060125",
+      "frame_indices": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 153.53313387357272,
+        "detected_mano_mesh_l2_mm": 153.4062300461989,
+        "oracle_mano_joint_l2_mm": 131.21013523982123,
+        "oracle_mano_mesh_l2_mm": 130.88291637714093,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 8.378432273864746
+      }
+    },
+    {
+      "sequence": "20201015-subject-09/20201015_151146",
+      "camera": "932122060857",
+      "frame_indices": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 0
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 13,
+        "fn": 0,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 187.51417424128607,
+        "detected_mano_mesh_l2_mm": 187.4983884371244,
+        "oracle_mano_joint_l2_mm": 187.51417424128607,
+        "oracle_mano_mesh_l2_mm": 187.4983884371244,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 4.440594673156738
+      }
+    },
+    {
+      "sequence": "20201022-subject-10/20201022_111459",
+      "camera": "839512060362",
+      "frame_indices": [
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 13,
+        "fn": 0,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 53.312943972074066,
+        "detected_mano_mesh_l2_mm": 53.48677591177133,
+        "oracle_mano_joint_l2_mm": 53.312943972074066,
+        "oracle_mano_mesh_l2_mm": 53.48677591177133,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 18.228845596313477
+      }
+    },
+    {
+      "sequence": "20201022-subject-10/20201022_112621",
+      "camera": "932122061900",
+      "frame_indices": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 13,
+        "fn": 0,
+        "n_detected_slots": 2,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 69.6393934396597,
+        "detected_mano_mesh_l2_mm": 69.42664249126727,
+        "oracle_mano_joint_l2_mm": 69.6393934396597,
+        "oracle_mano_mesh_l2_mm": 69.42664249126727,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 108.55542755126953
+      }
+    },
+    {
+      "sequence": "20201022-subject-10/20201022_113819",
+      "camera": "840412060917",
+      "frame_indices": [
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "oracle_assignment": {
+        "0": 0
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 69.57686468271109,
+        "detected_mano_mesh_l2_mm": 69.56927930391751,
+        "oracle_mano_joint_l2_mm": 55.27820763221154,
+        "oracle_mano_mesh_l2_mm": 55.186900212214546,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 69.8608169555664
+      }
+    },
+    {
+      "sequence": "20201022-subject-10/20201022_114909",
+      "camera": "932122062010",
+      "frame_indices": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ],
+      "oracle_assignment": {
+        "0": 1
+      },
+      "detected_assignment": {
+        "0": 1
+      },
+      "detection": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_detected_slots": 1,
+        "hand_side_correct": 1,
+        "hand_side_total": 1
+      },
+      "metrics": {
+        "detected_mano_joint_l2_mm": 50.355365166297325,
+        "detected_mano_mesh_l2_mm": 50.23378078754131,
+        "oracle_mano_joint_l2_mm": 50.355365166297325,
+        "oracle_mano_mesh_l2_mm": 50.23378078754131,
+        "oracle_direct_joint3d_l2_mm": null,
+        "oracle_direct_kp2d_norm_l2": null,
+        "obj_trans_mm": 67.7220458984375
+      }
+    }
+  ],
+  "visualizations": [
+    {
+      "sequence": "20200709-subject-01/20200709_141754",
+      "camera": "836212060125",
+      "frame_indices": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ],
+      "overlay": {
+        "frames": [
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_000.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_001.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_002.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_003.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_004.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_005.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_006.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_007.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_008.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_009.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_010.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_011.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/frame_012.png"
+        ],
+        "video": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/overlay_frames/overlay.mp4",
+        "video_error": null
+      },
+      "joints3d_png": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/00_20200709-subject-01__20200709_141754_cam836212060125/joints3d.png"
+    },
+    {
+      "sequence": "20200709-subject-01/20200709_143747",
+      "camera": "932122060861",
+      "frame_indices": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61
+      ],
+      "overlay": {
+        "frames": [
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_000.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_001.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_002.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_003.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_004.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_005.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_006.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_007.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_008.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_009.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_010.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_011.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/frame_012.png"
+        ],
+        "video": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/overlay_frames/overlay.mp4",
+        "video_error": null
+      },
+      "joints3d_png": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/01_20200709-subject-01__20200709_143747_cam932122060861/joints3d.png"
+    },
+    {
+      "sequence": "20200709-subject-01/20200709_150243",
+      "camera": "839512060362",
+      "frame_indices": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "overlay": {
+        "frames": [
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_000.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_001.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_002.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_003.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_004.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_005.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_006.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_007.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_008.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_009.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_010.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_011.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/frame_012.png"
+        ],
+        "video": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/overlay_frames/overlay.mp4",
+        "video_error": null
+      },
+      "joints3d_png": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/02_20200709-subject-01__20200709_150243_cam839512060362/joints3d.png"
+    },
+    {
+      "sequence": "20200709-subject-01/20200709_152240",
+      "camera": "932122061900",
+      "frame_indices": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "overlay": {
+        "frames": [
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_000.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_001.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_002.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_003.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_004.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_005.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_006.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_007.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_008.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_009.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_010.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_011.png",
+          "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/frame_012.png"
+        ],
+        "video": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/overlay_frames/overlay.mp4",
+        "video_error": null
+      },
+      "joints3d_png": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/train30/visualizations/03_20200709-subject-01__20200709_152240_cam932122061900/joints3d.png"
+    }
+  ]
+}

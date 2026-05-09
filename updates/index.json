@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-09 · Evaluate the existing static-RoPE + MANO-head checkpoint on 30 train and 30 test DexYCB sequence-camera entries with the online VAE CLIP_LEN=13 contract.",
+    "date": "2026-05-09",
+    "status": "completed",
+    "summary": "Evaluate the existing static-RoPE + MANO-head checkpoint on 30 train and 30 test DexYCB sequence-camera entries with the online VAE CLIP_LEN=13 contract.",
+    "path": "updates/2026-05-09-session-summary-dt10-static-rope-mano-heads-eval.html",
+    "file": "updates/2026-05-09-session-summary-dt10-static-rope-mano-heads-eval.html",
+    "sidecar": "updates/2026-05-09-session-summary-dt10-static-rope-mano-heads-eval.json"
+  },
+  {
     "title": "2026-05-07 · Evaluate DT10 post-phi-geodesic LoRA LR=1e-4 ckpt_step007000 on one DexYCB train sequence and one test sequence while the 10k ACP job continues running.",
     "date": "2026-05-07",
     "status": "wip",

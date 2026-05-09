@@ -1,0 +1,96 @@
+{
+  "date": "2026-05-09",
+  "topic": "dt10-static-rope-mano-heads-eval",
+  "status": "completed",
+  "branch": "feat/dcf",
+  "head_sha": "1077137",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf",
+  "goal": "Evaluate the existing static-RoPE + MANO-head checkpoint on 30 train and 30 test DexYCB sequence-camera entries with the online VAE CLIP_LEN=13 contract.",
+  "headline_stats": [
+    {
+      "label": "train30 oracle MANO joint L2",
+      "value": "109.1 mm"
+    },
+    {
+      "label": "test30 oracle MANO joint L2",
+      "value": "162.3 mm"
+    },
+    {
+      "label": "train/test entries",
+      "value": "30 / 30"
+    },
+    {
+      "label": "eval contract",
+      "value": "online VAE CL13 static RoPE"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "STATIC-MANO-EVAL",
+      "summary": "Ran static RoPE MANO-head eval on 30 evenly sampled train and 30 evenly sampled test sequence-camera entries."
+    },
+    {
+      "id": "STATIC-MANO-VIZ",
+      "summary": "Exported 4 train and 4 test visualization samples with 3D joint plots and input-video overlays."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "1077137",
+      "type": "remote-code",
+      "subject": "feat(dt10): combine split MANO and direct joint tokens"
+    },
+    {
+      "sha": "d9e1d64",
+      "type": "remote-code",
+      "subject": "fix(dt10): preserve split-direct eval heads (not used by this old static checkpoint eval)"
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "Static MANO generalizes poorly to held-out subject/cameras",
+      "body": "Oracle MANO joint L2 worsened from 109.1 mm on train30 to 162.3 mm on test30."
+    },
+    {
+      "badge": "finding",
+      "title": "Detection is not the main limiter",
+      "body": "Detection F1 was 0.745 on train30 and 0.808 on test30; oracle and detected MANO joint metrics are close on test30."
+    },
+    {
+      "badge": "fix",
+      "title": "Checkpoint contract caveat",
+      "body": "The original 1077137 checkpoint did not save direct_* heads or learned slot_spatial_head, so this eval is MANO-head-only by design."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "checkpoint",
+      "state": "logs/v2ablate/dt10_mano_split_direct_fulltrain_10k_20260509_1077137/static_rope/final.pt"
+    },
+    {
+      "aspect": "eval output",
+      "state": "logs/v2ablate/dt10_static_rope_mano_heads_eval_30x2_20260509/{train30,test30}"
+    },
+    {
+      "aspect": "local artifact mirror",
+      "state": "diagnostics/dt10_static_rope_mano_heads_eval_30x2_20260509/"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P0-RERUN-CHECKPOINT-FIXED",
+      "priority": "P0",
+      "summary": "Use d9e1d64 or later for any direct-aux or learned-spatial eval; older checkpoints cannot evaluate those heads because they were not saved."
+    }
+  ],
+  "caveats": [
+    "This is a static-RoPE MANO-head-only eval, not a valid direct-joint auxiliary eval.",
+    "The 30 entries per split are evenly sampled sequence-camera manifest entries, one CLIP_LEN=13 online-VAE clip per entry.",
+    "Direct auxiliary metrics are null by construction for this checkpoint."
+  ],
+  "extra_html": "\n<section><h2>Static RoPE MANO-Only Eval</h2>\n<p>This eval intentionally uses the existing static-RoPE checkpoint at <code>1077137</code> and only restores MANO heads. Direct auxiliary heads are not evaluated because that checkpoint did not save <code>direct_*</code> modules.</p>\n<table><thead><tr><th>Split</th><th>n seq/cam</th><th>Oracle MANO joint L2</th><th>Detected MANO joint L2</th><th>Oracle mesh L2</th><th>Detection F1</th><th>Side acc</th><th>Obj trans</th></tr></thead><tbody>\n<tr><td>train30</td><td>30</td><td>109.06 mm</td><td>125.94 mm</td><td>108.85 mm</td><td>0.745</td><td>1.000</td><td>34.38 mm</td></tr>\n<tr><td>test30</td><td>30</td><td>162.30 mm</td><td>165.72 mm</td><td>162.02 mm</td><td>0.808</td><td>1.000</td><td>31.69 mm</td></tr>\n</tbody></table>\n<p>Assets under this update include per-split metrics JSON, selected manifest JSON, overlay MP4s, 3D joint PNGs, and the 10k training loss curves. Green overlay joints are GT; red overlay joints are predicted MANO-head 2D keypoints.</p>\n</section>\n",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-09-session-summary-dt10-static-rope-mano-heads-eval.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-09-session-summary-dt10-static-rope-mano-heads-eval.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-09-session-summary-dt10-static-rope-mano-heads-eval.json\nand continue from tasks_pending[0] (P0-RERUN-CHECKPOINT-FIXED [P0]: Use d9e1d64 or later for any direct-aux or learned-spatial eval; older checkpoints cannot evaluate those heads because they were not saved.).\nContext: branch feat/dcf@1077137; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf."
+}
