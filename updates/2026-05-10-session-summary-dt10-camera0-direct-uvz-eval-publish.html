@@ -39,23 +39,22 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <div class="container">
 <header class="session-header">
   <h1>Dt10 Camera0 Direct Uvz Eval Publish</h1>
-  <div class="meta">2026-05-10 · <code>main</code> · <code>@64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static</code></div>
-  <p class="goal">DT10 camera0 direct-gamma vs anchor-UVZ eval with corrected RGB overlays, global hand metrics, loss curves, and videos.</p>
+  <div class="meta">2026-05-10 · <code>main</code> · <code>@88d755ddbc3de0c8e839e0c333ddf78b127b3ce2</code></div>
+  
 </header>
-<section class="stats"><div class="stat"><div class="val">refreshed</div><div class="label">Tracking page</div></div><div class="stat"><div class="val">4 fixed</div><div class="label">Overlay videos</div></div><div class="stat"><div class="val">8 kept</div><div class="label">3D videos</div></div><div class="stat"><div class="val">4</div><div class="label">Global metric sets</div></div></section>
+
 <section><h2>Tasks / experiments</h2>
-<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>T1</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Verified remote eval outputs and train-matched settings.</td></tr><tr><td>T2</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Copied eval metrics/manifests and publish assets locally.</td></tr><tr><td>T3</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Published loss curves, metrics, and world-space visualization PNGs.</td></tr><tr><td>T4</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Rendered and published RGB overlay mp4s plus 3D playback and turntable mp4s.</td></tr><tr><td>T5</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Backfilled and published global hand metrics including root-aligned MPJPE, PA-MPJPE, WA-MPJPE, and W-MPJPE.</td></tr><tr><td>T6</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Diagnosed the RGB overlay coordinate bug and regenerated overlay mp4s with hand_anchor_mode=none.</td></tr></tbody></table>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>T1</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Verified remote eval outputs and train-matched settings.</td></tr><tr><td>T2</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Copied eval metrics/manifests and publish assets locally.</td></tr><tr><td>T3</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Published loss curves, metrics, and world-space visualization PNGs.</td></tr><tr><td>T4</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Rendered and published RGB overlay mp4s plus 3D playback and turntable mp4s.</td></tr><tr><td>T5</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Backfilled and published global hand metrics including root-aligned MPJPE, PA-MPJPE, WA-MPJPE, and W-MPJPE.</td></tr><tr><td>T6</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Diagnosed the RGB overlay coordinate bug and regenerated overlay mp4s with hand_anchor_mode=none.</td></tr><tr><td>T7</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Diagnosed the RGB object overlay coordinate bug and regenerated overlay mp4s with pred_object_mode=camera0.</td></tr></tbody></table>
 </section>
 
 <section><h2>Key discoveries</h2>
-<div class="panel"><h3><span class="badge badge-fix">FIX</span> RGB overlay anchor bug</h3><p>The old renderer always added a MANO-derived frame0 hand translation. Under the current camera0 visualization contract that extra anchor shifts the overlay away from the image hand. The refreshed overlay summaries record hand_anchor_mode=none and hand_anchor=[0,0,0].</p></div>
-<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Metric decomposition retained</h3><p>The published metrics include raw MPJPE, root-aligned MPJPE, PA-MPJPE, WA-MPJPE, W-MPJPE, and gamma L2 for the same predictions.pt records.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> RGB object overlay transform bug</h3><p>The old renderer treated obj_R_pred/obj_t_pred as frame0-relative and composed them with GT frame0 object pose. Current eval stores object predictions in the camera0 contract directly, so the composed path inflated object ADD-S to about 758-814 mm versus about 50-68 mm when rendered directly.</p></div>
 
 </section>
 
 
 <section><h2>Module / branch state</h2>
-<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Remote eval worktree</td><td>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static</td></tr><tr><td>Eval HEAD</td><td>9857e689725f56584a2bba61bf82faa6ed8164de</td></tr><tr><td>Training commit</td><td>fa775e7c8d8b51392d43cbc1e6979e8da01ab1c2</td></tr><tr><td>RGB overlay renderer</td><td>scripts/hoi3r_v2/render_eval_rgb_overlay.py defaults to hand_anchor_mode=none and supports --skip-video</td></tr><tr><td>Local publish assets</td><td>diagnostics/dt10_camera0_direct_uvz_eval_20260510_publish_assets/</td></tr><tr><td>RGB overlay renderer commit</td><td>64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea</td></tr></tbody></table>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>RGB overlay renderer commit</td><td>88d755ddbc3de0c8e839e0c333ddf78b127b3ce2</td></tr><tr><td>RGB overlay object mode</td><td>pred_object_mode=camera0; legacy frame0-relative only via explicit flag</td></tr></tbody></table>
 </section>
 
 <section><h2>Open issues &amp; next steps</h2>
@@ -63,13 +62,16 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 </section>
 
 <section><h2>Caveats</h2>
-<ul><li>UVZ is a 4GPU contrast while direct gamma is 8GPU.</li><li>Remote ffmpeg was unavailable; remote generated PNG frames and local ffmpeg encoded H.264 mp4 videos.</li><li>Local repo remains dirty; no local commit was made.</li><li>RGB overlay videos were refreshed after discovering the prior renderer added a MANO frame0 anchor incompatible with the camera0 visualization contract.</li></ul>
+<ul><li>UVZ is a 4GPU contrast while direct gamma is 8GPU.</li><li>Remote ffmpeg was unavailable; remote generated PNG frames and local ffmpeg encoded H.264 mp4 videos.</li><li>RGB overlay videos were refreshed after discovering the prior renderer added a MANO frame0 anchor incompatible with the camera0 visualization contract.</li><li>Local repo remains dirty; no local commit was made.</li><li>RGB object overlay videos were refreshed after discovering the prior renderer composed camera0 predictions with GT frame0 object pose.</li></ul>
 </section>
 
 
 
 <section><h2>Global Hand Metrics</h2>
 <table><thead><tr><th>Eval</th><th>Raw MPJPE mm</th><th>Root-aligned MPJPE mm</th><th>PA-MPJPE mm</th><th>W-MPJPE cm</th><th>Gamma L2 mm</th></tr></thead><tbody><tr><td>direct_train3</td><td>89.07</td><td>23.89</td><td>7.10</td><td>6.47</td><td>86.99</td></tr><tr><td>direct_test3</td><td>85.92</td><td>32.44</td><td>6.70</td><td>5.68</td><td>85.36</td></tr><tr><td>uvz_train3</td><td>108.00</td><td>24.13</td><td>7.61</td><td>6.17</td><td>111.18</td></tr><tr><td>uvz_test3</td><td>83.16</td><td>34.16</td><td>5.67</td><td>5.88</td><td>78.99</td></tr></tbody></table>
+</section>
+<section><h2>RGB Overlay Contract</h2>
+<p>Refreshed overlays use <code>hand_anchor_mode=none</code> and <code>pred_object_mode=camera0</code>. The object fix removes the previous extra composition with GT frame0 object pose.</p>
 </section>
 <section><h2>Videos</h2>
 <table><thead><tr><th>Asset</th><th>Link</th></tr></thead><tbody><tr><td>direct_train_overlay.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_overlay.mp4">mp4</a></td></tr><tr><td>uvz_train_overlay.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_overlay.mp4">mp4</a></td></tr><tr><td>direct_test_overlay.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_overlay.mp4">mp4</a></td></tr><tr><td>uvz_test_overlay.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_overlay.mp4">mp4</a></td></tr><tr><td>direct_train_world.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world.mp4">mp4</a></td></tr><tr><td>uvz_train_world.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world.mp4">mp4</a></td></tr><tr><td>direct_test_world.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world.mp4">mp4</a></td></tr><tr><td>uvz_test_world.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world.mp4">mp4</a></td></tr><tr><td>direct_train_world_rotate.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world_rotate.mp4">mp4</a></td></tr><tr><td>uvz_train_world_rotate.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world_rotate.mp4">mp4</a></td></tr><tr><td>direct_test_world_rotate.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world_rotate.mp4">mp4</a></td></tr><tr><td>uvz_test_world_rotate.mp4</td><td><a href="2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world_rotate.mp4">mp4</a></td></tr></tbody></table>
@@ -84,5 +86,5 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 
 <section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json
 and continue from tasks_pending[0] (P1 [P1]: Rerun UVZ as 8GPU only if an exactly GPU-matched fair comparison is required.).
-Context: branch main@64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static.</pre></section>
+Context: branch main@88d755ddbc3de0c8e839e0c333ddf78b127b3ce2.</pre></section>
 </div></body></html>

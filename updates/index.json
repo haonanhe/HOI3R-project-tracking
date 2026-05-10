@@ -1,9 +1,9 @@
 [
   {
-    "title": "2026-05-10 · DT10 camera0 direct-gamma vs anchor-UVZ eval with corrected RGB overlays, global hand metrics, loss curves, and videos.",
+    "title": "2026-05-10 · dt10-camera0-direct-uvz-eval-publish",
     "date": "2026-05-10",
-    "status": "complete",
-    "summary": "DT10 camera0 direct-gamma vs anchor-UVZ eval with corrected RGB overlays, global hand metrics, loss curves, and videos.",
+    "status": "wip",
+    "summary": "",
     "path": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
     "file": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
     "sidecar": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json"

@@ -5,15 +5,20 @@
   "repo_path": "/Users/hnhe/Downloads/SLAI/hoi3r",
   "remote_worktree": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static",
   "remote_eval_head_sha": "9857e689725f56584a2bba61bf82faa6ed8164de",
+  "remote_renderer_head_sha": "88d755ddbc3de0c8e839e0c333ddf78b127b3ce2",
   "remote_training_head_sha": "fa775e7c8d8b51392d43cbc1e6979e8da01ab1c2",
   "published": {
     "html": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
     "sidecar": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json",
-    "tracking_commit": "47e32df2b026bc67975de4712ba7746cb591973a",
+    "tracking_commit": "31e205ad06b3",
     "initial_tracking_commit": "1b2ae4cc01f6",
     "video_tracking_commit": "77818c093992a0627b508d7e106ddcb9e3811606",
-    "overlay_fix_tracking_commit": null,
-    "overlay_renderer_commit": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea"
+    "global_metrics_tracking_commit": "47e32df2b026bc67975de4712ba7746cb591973a",
+    "overlay_fix_tracking_commit": "bb1399e7fdf0",
+    "overlay_renderer_metadata_tracking_commit": "31e205ad06b3",
+    "overlay_renderer_commit": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea",
+    "object_overlay_fix_tracking_commit": null,
+    "object_overlay_renderer_commit": "88d755ddbc3de0c8e839e0c333ddf78b127b3ce2"
   },
   "jobs": {
     "direct_gamma": {
@@ -34,7 +39,7 @@
     "clip_len": 13,
     "n_max": 2,
     "checkpoint": "final.pt",
-    "coordinate_contract": "camera0 tensors; RGB overlay uses no extra hand translation anchor; no hand-root subtraction"
+    "coordinate_contract": "camera0 tensors; RGB overlay uses no extra hand translation anchor and renders predicted object pose directly in camera0 coordinates; no hand-root subtraction"
   },
   "metrics": [
     {
@@ -156,6 +161,11 @@
       "id": "T6",
       "sha": "",
       "summary": "Diagnosed the RGB overlay coordinate bug and regenerated overlay mp4s with hand_anchor_mode=none."
+    },
+    {
+      "id": "T7",
+      "sha": "",
+      "summary": "Diagnosed the RGB object overlay coordinate bug and regenerated overlay mp4s with pred_object_mode=camera0."
     }
   ],
   "tasks_pending": [
@@ -168,72 +178,30 @@
   "caveats": [
     "UVZ is a 4GPU contrast while direct gamma is 8GPU.",
     "Remote ffmpeg was unavailable; remote generated PNG frames and local ffmpeg encoded H.264 mp4 videos.",
+    "RGB overlay videos were refreshed after discovering the prior renderer added a MANO frame0 anchor incompatible with the camera0 visualization contract.",
     "Local repo remains dirty; no local commit was made.",
-    "RGB overlay videos were refreshed after discovering the prior renderer added a MANO frame0 anchor incompatible with the camera0 visualization contract."
+    "RGB object overlay videos were refreshed after discovering the prior renderer composed camera0 predictions with GT frame0 object pose."
   ],
-  "head_sha": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea",
-  "status": "complete",
-  "goal": "DT10 camera0 direct-gamma vs anchor-UVZ eval with corrected RGB overlays, global hand metrics, loss curves, and videos.",
-  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static",
-  "headline_stats": [
+  "head_sha": "88d755ddbc3de0c8e839e0c333ddf78b127b3ce2",
+  "module_state": [
     {
-      "label": "Tracking page",
-      "value": "refreshed"
+      "aspect": "RGB overlay renderer commit",
+      "state": "88d755ddbc3de0c8e839e0c333ddf78b127b3ce2"
     },
     {
-      "label": "Overlay videos",
-      "value": "4 fixed"
-    },
-    {
-      "label": "3D videos",
-      "value": "8 kept"
-    },
-    {
-      "label": "Global metric sets",
-      "value": "4"
+      "aspect": "RGB overlay object mode",
+      "state": "pred_object_mode=camera0; legacy frame0-relative only via explicit flag"
     }
   ],
   "discoveries": [
     {
       "badge": "fix",
-      "title": "RGB overlay anchor bug",
-      "body": "The old renderer always added a MANO-derived frame0 hand translation. Under the current camera0 visualization contract that extra anchor shifts the overlay away from the image hand. The refreshed overlay summaries record hand_anchor_mode=none and hand_anchor=[0,0,0]."
-    },
-    {
-      "badge": "finding",
-      "title": "Metric decomposition retained",
-      "body": "The published metrics include raw MPJPE, root-aligned MPJPE, PA-MPJPE, WA-MPJPE, W-MPJPE, and gamma L2 for the same predictions.pt records."
+      "title": "RGB object overlay transform bug",
+      "body": "The old renderer treated obj_R_pred/obj_t_pred as frame0-relative and composed them with GT frame0 object pose. Current eval stores object predictions in the camera0 contract directly, so the composed path inflated object ADD-S to about 758-814 mm versus about 50-68 mm when rendered directly."
     }
   ],
-  "module_state": [
-    {
-      "aspect": "Remote eval worktree",
-      "state": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static"
-    },
-    {
-      "aspect": "Eval HEAD",
-      "state": "9857e689725f56584a2bba61bf82faa6ed8164de"
-    },
-    {
-      "aspect": "Training commit",
-      "state": "fa775e7c8d8b51392d43cbc1e6979e8da01ab1c2"
-    },
-    {
-      "aspect": "RGB overlay renderer",
-      "state": "scripts/hoi3r_v2/render_eval_rgb_overlay.py defaults to hand_anchor_mode=none and supports --skip-video"
-    },
-    {
-      "aspect": "Local publish assets",
-      "state": "diagnostics/dt10_camera0_direct_uvz_eval_20260510_publish_assets/"
-    },
-    {
-      "aspect": "RGB overlay renderer commit",
-      "state": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea"
-    }
-  ],
-  "extra_html": "\n<section><h2>Global Hand Metrics</h2>\n<table><thead><tr><th>Eval</th><th>Raw MPJPE mm</th><th>Root-aligned MPJPE mm</th><th>PA-MPJPE mm</th><th>W-MPJPE cm</th><th>Gamma L2 mm</th></tr></thead><tbody><tr><td>direct_train3</td><td>89.07</td><td>23.89</td><td>7.10</td><td>6.47</td><td>86.99</td></tr><tr><td>direct_test3</td><td>85.92</td><td>32.44</td><td>6.70</td><td>5.68</td><td>85.36</td></tr><tr><td>uvz_train3</td><td>108.00</td><td>24.13</td><td>7.61</td><td>6.17</td><td>111.18</td></tr><tr><td>uvz_test3</td><td>83.16</td><td>34.16</td><td>5.67</td><td>5.88</td><td>78.99</td></tr></tbody></table>\n</section>\n<section><h2>Videos</h2>\n<table><thead><tr><th>Asset</th><th>Link</th></tr></thead><tbody><tr><td>direct_train_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_overlay.mp4\">mp4</a></td></tr><tr><td>uvz_train_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_overlay.mp4\">mp4</a></td></tr><tr><td>direct_test_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_overlay.mp4\">mp4</a></td></tr><tr><td>uvz_test_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_overlay.mp4\">mp4</a></td></tr><tr><td>direct_train_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world.mp4\">mp4</a></td></tr><tr><td>uvz_train_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world.mp4\">mp4</a></td></tr><tr><td>direct_test_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world.mp4\">mp4</a></td></tr><tr><td>uvz_test_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world.mp4\">mp4</a></td></tr><tr><td>direct_train_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world_rotate.mp4\">mp4</a></td></tr><tr><td>uvz_train_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world_rotate.mp4\">mp4</a></td></tr><tr><td>direct_test_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world_rotate.mp4\">mp4</a></td></tr><tr><td>uvz_test_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world_rotate.mp4\">mp4</a></td></tr></tbody></table>\n</section>\n<section><h2>Plots</h2>\n<ul>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/loss_curves_direct_vs_uvz.png\">loss curves</a></li>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_metrics_direct_vs_uvz.png\">eval metrics</a></li>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_global_metrics_direct_vs_uvz.png\">global metrics</a></li>\n</ul>\n</section>\n",
-  "remote_renderer_head_sha": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea",
+  "extra_html": "\n<section><h2>Global Hand Metrics</h2>\n<table><thead><tr><th>Eval</th><th>Raw MPJPE mm</th><th>Root-aligned MPJPE mm</th><th>PA-MPJPE mm</th><th>W-MPJPE cm</th><th>Gamma L2 mm</th></tr></thead><tbody><tr><td>direct_train3</td><td>89.07</td><td>23.89</td><td>7.10</td><td>6.47</td><td>86.99</td></tr><tr><td>direct_test3</td><td>85.92</td><td>32.44</td><td>6.70</td><td>5.68</td><td>85.36</td></tr><tr><td>uvz_train3</td><td>108.00</td><td>24.13</td><td>7.61</td><td>6.17</td><td>111.18</td></tr><tr><td>uvz_test3</td><td>83.16</td><td>34.16</td><td>5.67</td><td>5.88</td><td>78.99</td></tr></tbody></table>\n</section>\n<section><h2>RGB Overlay Contract</h2>\n<p>Refreshed overlays use <code>hand_anchor_mode=none</code> and <code>pred_object_mode=camera0</code>. The object fix removes the previous extra composition with GT frame0 object pose.</p>\n</section>\n<section><h2>Videos</h2>\n<table><thead><tr><th>Asset</th><th>Link</th></tr></thead><tbody><tr><td>direct_train_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_overlay.mp4\">mp4</a></td></tr><tr><td>uvz_train_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_overlay.mp4\">mp4</a></td></tr><tr><td>direct_test_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_overlay.mp4\">mp4</a></td></tr><tr><td>uvz_test_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_overlay.mp4\">mp4</a></td></tr><tr><td>direct_train_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world.mp4\">mp4</a></td></tr><tr><td>uvz_train_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world.mp4\">mp4</a></td></tr><tr><td>direct_test_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world.mp4\">mp4</a></td></tr><tr><td>uvz_test_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world.mp4\">mp4</a></td></tr><tr><td>direct_train_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world_rotate.mp4\">mp4</a></td></tr><tr><td>uvz_train_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world_rotate.mp4\">mp4</a></td></tr><tr><td>direct_test_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world_rotate.mp4\">mp4</a></td></tr><tr><td>uvz_test_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world_rotate.mp4\">mp4</a></td></tr></tbody></table>\n</section>\n<section><h2>Plots</h2>\n<ul>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/loss_curves_direct_vs_uvz.png\">loss curves</a></li>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_metrics_direct_vs_uvz.png\">eval metrics</a></li>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_global_metrics_direct_vs_uvz.png\">global metrics</a></li>\n</ul>\n</section>\n",
   "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
   "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json",
-  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json\nand continue from tasks_pending[0] (P1 [P1]: Rerun UVZ as 8GPU only if an exactly GPU-matched fair comparison is required.).\nContext: branch main@64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static."
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json\nand continue from tasks_pending[0] (P1 [P1]: Rerun UVZ as 8GPU only if an exactly GPU-matched fair comparison is required.).\nContext: branch main@88d755ddbc3de0c8e839e0c333ddf78b127b3ce2."
 }
