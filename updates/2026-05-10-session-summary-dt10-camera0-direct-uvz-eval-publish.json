@@ -12,7 +12,8 @@
     "tracking_commit": "47e32df2b026bc67975de4712ba7746cb591973a",
     "initial_tracking_commit": "1b2ae4cc01f6",
     "video_tracking_commit": "77818c093992a0627b508d7e106ddcb9e3811606",
-    "overlay_fix_tracking_commit": null
+    "overlay_fix_tracking_commit": null,
+    "overlay_renderer_commit": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea"
   },
   "jobs": {
     "direct_gamma": {
@@ -170,7 +171,7 @@
     "Local repo remains dirty; no local commit was made.",
     "RGB overlay videos were refreshed after discovering the prior renderer added a MANO frame0 anchor incompatible with the camera0 visualization contract."
   ],
-  "head_sha": "9857e689725f56584a2bba61bf82faa6ed8164de",
+  "head_sha": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea",
   "status": "complete",
   "goal": "DT10 camera0 direct-gamma vs anchor-UVZ eval with corrected RGB overlays, global hand metrics, loss curves, and videos.",
   "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static",
@@ -224,10 +225,15 @@
     {
       "aspect": "Local publish assets",
       "state": "diagnostics/dt10_camera0_direct_uvz_eval_20260510_publish_assets/"
+    },
+    {
+      "aspect": "RGB overlay renderer commit",
+      "state": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea"
     }
   ],
   "extra_html": "\n<section><h2>Global Hand Metrics</h2>\n<table><thead><tr><th>Eval</th><th>Raw MPJPE mm</th><th>Root-aligned MPJPE mm</th><th>PA-MPJPE mm</th><th>W-MPJPE cm</th><th>Gamma L2 mm</th></tr></thead><tbody><tr><td>direct_train3</td><td>89.07</td><td>23.89</td><td>7.10</td><td>6.47</td><td>86.99</td></tr><tr><td>direct_test3</td><td>85.92</td><td>32.44</td><td>6.70</td><td>5.68</td><td>85.36</td></tr><tr><td>uvz_train3</td><td>108.00</td><td>24.13</td><td>7.61</td><td>6.17</td><td>111.18</td></tr><tr><td>uvz_test3</td><td>83.16</td><td>34.16</td><td>5.67</td><td>5.88</td><td>78.99</td></tr></tbody></table>\n</section>\n<section><h2>Videos</h2>\n<table><thead><tr><th>Asset</th><th>Link</th></tr></thead><tbody><tr><td>direct_train_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_overlay.mp4\">mp4</a></td></tr><tr><td>uvz_train_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_overlay.mp4\">mp4</a></td></tr><tr><td>direct_test_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_overlay.mp4\">mp4</a></td></tr><tr><td>uvz_test_overlay.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_overlay.mp4\">mp4</a></td></tr><tr><td>direct_train_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world.mp4\">mp4</a></td></tr><tr><td>uvz_train_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world.mp4\">mp4</a></td></tr><tr><td>direct_test_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world.mp4\">mp4</a></td></tr><tr><td>uvz_test_world.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world.mp4\">mp4</a></td></tr><tr><td>direct_train_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world_rotate.mp4\">mp4</a></td></tr><tr><td>uvz_train_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world_rotate.mp4\">mp4</a></td></tr><tr><td>direct_test_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world_rotate.mp4\">mp4</a></td></tr><tr><td>uvz_test_world_rotate.mp4</td><td><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world_rotate.mp4\">mp4</a></td></tr></tbody></table>\n</section>\n<section><h2>Plots</h2>\n<ul>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/loss_curves_direct_vs_uvz.png\">loss curves</a></li>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_metrics_direct_vs_uvz.png\">eval metrics</a></li>\n<li><a href=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_global_metrics_direct_vs_uvz.png\">global metrics</a></li>\n</ul>\n</section>\n",
+  "remote_renderer_head_sha": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea",
   "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
   "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json",
-  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json\nand continue from tasks_pending[0] (P1 [P1]: Rerun UVZ as 8GPU only if an exactly GPU-matched fair comparison is required.).\nContext: branch main@9857e689725f56584a2bba61bf82faa6ed8164de; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static."
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json\nand continue from tasks_pending[0] (P1 [P1]: Rerun UVZ as 8GPU only if an exactly GPU-matched fair comparison is required.).\nContext: branch main@64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static."
 }
