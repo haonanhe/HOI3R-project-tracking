@@ -8,20 +8,20 @@
   "goal": "Evaluate completed DT10 camera0 direct-gamma and anchor-UVZ checkpoints on selected train/test clips with train-matched coordinate settings, then publish loss curves, metrics, and visualizations.",
   "headline_stats": [
     {
-      "label": "Direct test joint L2",
-      "value": "85.92 mm"
+      "label": "Overlay videos",
+      "value": "4"
     },
     {
-      "label": "UVZ test joint L2",
-      "value": "83.16 mm"
+      "label": "3D playback videos",
+      "value": "4"
     },
     {
-      "label": "Direct test F1",
-      "value": "0.793"
+      "label": "3D turntables",
+      "value": "4"
     },
     {
-      "label": "UVZ test F1",
-      "value": "0.892"
+      "label": "Tracking update",
+      "value": "video refresh"
     }
   ],
   "tasks_completed": [
@@ -36,6 +36,10 @@
     {
       "id": "P2",
       "summary": "Generated loss curves, metrics summaries, raw metric sidecars, and world-space visualization PNGs for train/test clips."
+    },
+    {
+      "id": "P3",
+      "summary": "Rendered RGB overlay MP4s plus 3D playback and 3D turntable MP4s for the same selected train/test clips."
     }
   ],
   "commits": [
@@ -86,6 +90,10 @@
     {
       "aspect": "Artifacts",
       "state": "metrics_summary.csv/json, raw metrics/manifests, loss plot, metric plot, four world-space PNGs"
+    },
+    {
+      "aspect": "Video assets",
+      "state": "12 mp4 files: 4 RGB overlays, 4 3D playbacks, 4 3D turntables"
     }
   ],
   "discoveries": [
@@ -103,6 +111,11 @@
       "badge": "pass",
       "title": "Checkpoint serialization contract passed",
       "body": "Both final checkpoints include all expected trainable prefixes, including direct joint heads and the model-specific gamma head."
+    },
+    {
+      "badge": "pass",
+      "title": "Video render path completed despite remote ffmpeg absence",
+      "body": "Remote generated frames using dataset access and torch; local ffmpeg encoded H.264 mp4 assets, then the videos were synced back to the remote artifact directory."
     }
   ],
   "tasks_pending": [
@@ -117,7 +130,7 @@
     "Remote video rendering could not use ffmpeg on the host, so visualization publication uses static world-space PNG panels.",
     "Local repo remains dirty; remote worktree is the code/execution source of truth for this experiment."
   ],
-  "extra_html": "\n<section><h2>Evaluation Metrics</h2>\n<p>All evals use the camera0 v3.6 GT cache, <code>clip_len=13</code>, <code>n_max=2</code>, checkpoint <code>final.pt</code>, and the same selected train3/test3 manifests.</p>\n<table><thead><tr><th>Eval</th><th>Joint L2 mm</th><th>Mesh L2 mm</th><th>Obj ADD-S mm</th><th>Det F1</th></tr></thead><tbody><tr><td>direct_train3</td><td>89.07</td><td>89.00</td><td>96.36</td><td>0.678</td></tr><tr><td>direct_test3</td><td>85.92</td><td>86.16</td><td>124.12</td><td>0.793</td></tr><tr><td>uvz_train3</td><td>108.00</td><td>107.98</td><td>87.08</td><td>0.925</td></tr><tr><td>uvz_test3</td><td>83.16</td><td>82.67</td><td>102.09</td><td>0.892</td></tr></tbody></table>\n<p>Raw metrics and manifests are included under <code>2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_raw/</code>.</p>\n</section>\n<section><h2>Loss Curves</h2>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/loss_curves_direct_vs_uvz.png\" alt=\"Training loss curves: direct-gamma 8GPU vs anchor-UVZ 4GPU\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Training loss curves: direct-gamma 8GPU vs anchor-UVZ 4GPU</figcaption></figure>\n</section>\n<section><h2>Metric Plots</h2>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_metrics_direct_vs_uvz.png\" alt=\"Selected train/test eval metrics\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Selected train/test eval metrics</figcaption></figure>\n</section>\n<section><h2>World-Space Visualizations</h2>\n<p>Visualization tensors come directly from <code>p2_eval_thfm_lora</code>; no hand-root subtraction or visualization-time reanchoring is applied.</p>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/direct_train_worldspace.png\" alt=\"Direct-gamma train clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Direct-gamma train clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/uvz_train_worldspace.png\" alt=\"Anchor-UVZ train clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Anchor-UVZ train clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/direct_test_worldspace.png\" alt=\"Direct-gamma test clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Direct-gamma test clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/uvz_test_worldspace.png\" alt=\"Anchor-UVZ test clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Anchor-UVZ test clip world-space visualization</figcaption></figure>\n</section>\n",
+  "extra_html": "\n<section><h2>Evaluation Metrics</h2>\n<p>All evals use the camera0 v3.6 GT cache, <code>clip_len=13</code>, <code>n_max=2</code>, checkpoint <code>final.pt</code>, and the same selected train3/test3 manifests.</p>\n<table><thead><tr><th>Eval</th><th>Joint L2 mm</th><th>Mesh L2 mm</th><th>Obj ADD-S mm</th><th>Det F1</th></tr></thead><tbody><tr><td>direct_train3</td><td>89.07</td><td>89.00</td><td>96.36</td><td>0.678</td></tr><tr><td>direct_test3</td><td>85.92</td><td>86.16</td><td>124.12</td><td>0.793</td></tr><tr><td>uvz_train3</td><td>108.00</td><td>107.98</td><td>87.08</td><td>0.925</td></tr><tr><td>uvz_test3</td><td>83.16</td><td>82.67</td><td>102.09</td><td>0.892</td></tr></tbody></table>\n<p>Raw metrics and manifests are included under <code>2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_raw/</code>.</p>\n</section>\n<section><h2>Loss Curves</h2>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/loss_curves_direct_vs_uvz.png\" alt=\"Training loss curves: direct-gamma 8GPU vs anchor-UVZ 4GPU\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Training loss curves: direct-gamma 8GPU vs anchor-UVZ 4GPU</figcaption></figure>\n</section>\n<section><h2>Metric Plots</h2>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_metrics_direct_vs_uvz.png\" alt=\"Selected train/test eval metrics\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Selected train/test eval metrics</figcaption></figure>\n</section>\n<section><h2>RGB Overlay Videos</h2><p>Projected predicted/GT hand and object point clouds on original DexYCB RGB frames. Blue/orange are predictions; green/light gray are GT.</p><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_overlay.mp4\" type=\"video/mp4\"></video><figcaption>direct_train RGB overlay</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_overlay.mp4\" type=\"video/mp4\"></video><figcaption>uvz_train RGB overlay</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_overlay.mp4\" type=\"video/mp4\"></video><figcaption>direct_test RGB overlay</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_overlay.mp4\" type=\"video/mp4\"></video><figcaption>uvz_test RGB overlay</figcaption></figure></section>\n<section><h2>3D Playback Videos</h2><p>World-space 3D playback uses the same camera0 visualization tensors as the static PNG panels.</p><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world.mp4\" type=\"video/mp4\"></video><figcaption>direct_train 3D playback</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world.mp4\" type=\"video/mp4\"></video><figcaption>uvz_train 3D playback</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world.mp4\" type=\"video/mp4\"></video><figcaption>direct_test 3D playback</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world.mp4\" type=\"video/mp4\"></video><figcaption>uvz_test 3D playback</figcaption></figure></section>\n<section><h2>3D Turntable Videos</h2><p>Mid-frame 3D turntable views for inspecting spatial alignment from multiple azimuths.</p><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_train_world_rotate.mp4\" type=\"video/mp4\"></video><figcaption>direct_train 3D turntable</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_train_world_rotate.mp4\" type=\"video/mp4\"></video><figcaption>uvz_train 3D turntable</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/direct_test_world_rotate.mp4\" type=\"video/mp4\"></video><figcaption>direct_test 3D turntable</figcaption></figure><figure><video controls preload=\"metadata\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px;background:#000\"><source src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/videos/uvz_test_world_rotate.mp4\" type=\"video/mp4\"></video><figcaption>uvz_test 3D turntable</figcaption></figure></section>\n<section><h2>World-Space Visualizations</h2>\n<p>Visualization tensors come directly from <code>p2_eval_thfm_lora</code>; no hand-root subtraction or visualization-time reanchoring is applied.</p>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/direct_train_worldspace.png\" alt=\"Direct-gamma train clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Direct-gamma train clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/uvz_train_worldspace.png\" alt=\"Anchor-UVZ train clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Anchor-UVZ train clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/direct_test_worldspace.png\" alt=\"Direct-gamma test clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Direct-gamma test clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/uvz_test_worldspace.png\" alt=\"Anchor-UVZ test clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Anchor-UVZ test clip world-space visualization</figcaption></figure>\n</section>\n",
   "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
   "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json",
   "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json\nand continue from tasks_pending[0] (P1 [P1]: Optionally rerun UVZ as 8GPU if an exactly GPU-matched fair comparison is required.).\nContext: branch feat/dcf-anchor-uvz-static@9857e689725f56584a2bba61bf82faa6ed8164de; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static."
