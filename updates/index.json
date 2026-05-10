@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-10 · Evaluate completed DT10 camera0 direct-gamma and anchor-UVZ checkpoints on selected train/test clips with train-matched coordinate settings, then publish loss curves, metrics, and visualizations.",
+    "date": "2026-05-10",
+    "status": "complete-with-caveat",
+    "summary": "Evaluate completed DT10 camera0 direct-gamma and anchor-UVZ checkpoints on selected train/test clips with train-matched coordinate settings, then publish loss curves, metrics, and visualizations.",
+    "path": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
+    "file": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
+    "sidecar": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json"
+  },
+  {
     "title": "2026-05-09 · Evaluate the existing static-RoPE + MANO-head checkpoint on 30 train and 30 test DexYCB sequence-camera entries with the online VAE CLIP_LEN=13 contract.",
     "date": "2026-05-09",
     "status": "completed",

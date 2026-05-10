@@ -1,0 +1,23 @@
+[
+  {
+    "sequence": "20200928-subject-07/20200928_143249",
+    "camera": "836212060125",
+    "tracked_start": 7,
+    "tracked_end": 73,
+    "n_tracked": 67
+  },
+  {
+    "sequence": "20200928-subject-07/20200928_143358",
+    "camera": "836212060125",
+    "tracked_start": 9,
+    "tracked_end": 73,
+    "n_tracked": 65
+  },
+  {
+    "sequence": "20200928-subject-07/20200928_143500",
+    "camera": "836212060125",
+    "tracked_start": 17,
+    "tracked_end": 73,
+    "n_tracked": 57
+  }
+]

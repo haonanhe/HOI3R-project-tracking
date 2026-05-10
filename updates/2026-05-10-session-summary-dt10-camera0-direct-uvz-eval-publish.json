@@ -1,0 +1,124 @@
+{
+  "date": "2026-05-10",
+  "topic": "dt10-camera0-direct-uvz-eval-publish",
+  "status": "complete-with-caveat",
+  "branch": "feat/dcf-anchor-uvz-static",
+  "head_sha": "9857e689725f56584a2bba61bf82faa6ed8164de",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static",
+  "goal": "Evaluate completed DT10 camera0 direct-gamma and anchor-UVZ checkpoints on selected train/test clips with train-matched coordinate settings, then publish loss curves, metrics, and visualizations.",
+  "headline_stats": [
+    {
+      "label": "Direct test joint L2",
+      "value": "85.92 mm"
+    },
+    {
+      "label": "UVZ test joint L2",
+      "value": "83.16 mm"
+    },
+    {
+      "label": "Direct test F1",
+      "value": "0.793"
+    },
+    {
+      "label": "UVZ test F1",
+      "value": "0.892"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "P0",
+      "summary": "Confirmed pt-rmh6erh0 and pt-g51ayqs4 reached SUCCEEDED, parsed history.json, and verified final checkpoint trainable fields including joint heads."
+    },
+    {
+      "id": "P1",
+      "summary": "Ran camera0 train/test clip evals for direct and UVZ using the same GT cache, clip length, n_max, and checkpoint settings as training."
+    },
+    {
+      "id": "P2",
+      "summary": "Generated loss curves, metrics summaries, raw metric sidecars, and world-space visualization PNGs for train/test clips."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "fa775e7",
+      "type": "remote-training",
+      "subject": "pass grad sanitation to full anchor run"
+    },
+    {
+      "sha": "a65464b",
+      "type": "remote-eval",
+      "subject": "load split direct uvz eval heads"
+    },
+    {
+      "sha": "1d607e6",
+      "type": "remote-eval",
+      "subject": "evaluate with checkpoint vae source"
+    },
+    {
+      "sha": "8798c92",
+      "type": "remote-eval",
+      "subject": "run eval from active worktree"
+    },
+    {
+      "sha": "2c58a60",
+      "type": "remote-eval",
+      "subject": "skip legacy gps in static eval"
+    },
+    {
+      "sha": "9857e68",
+      "type": "remote-eval",
+      "subject": "handle disabled gps eval sample"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Direct checkpoint",
+      "state": "pt-rmh6erh0, 8GPU, final.pt step=10000, gamma_head present, 452 trainable keys"
+    },
+    {
+      "aspect": "UVZ checkpoint",
+      "state": "pt-g51ayqs4, 4GPU, final.pt step=10000, gamma_uvz_head present, 452 trainable keys"
+    },
+    {
+      "aspect": "Eval contract",
+      "state": "camera0 v3.6 cache, clip_len=13, n_max=2, final checkpoints, no hand-root subtraction"
+    },
+    {
+      "aspect": "Artifacts",
+      "state": "metrics_summary.csv/json, raw metrics/manifests, loss plot, metric plot, four world-space PNGs"
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "UVZ improves selected test detection and object translation but not train hand error",
+      "body": "On test3 UVZ joint L2 is 83.16 mm vs direct 85.92 mm and F1 is 0.892 vs 0.793; on train3 UVZ joint L2 is worse at 108.00 mm vs direct 89.07 mm."
+    },
+    {
+      "badge": "finding",
+      "title": "Comparison is not GPU-matched",
+      "body": "Direct ran with 8 GPUs; UVZ ran with 4 GPUs after the 8GPU submission hit ACP quota 429. Treat this as a useful contrast, not the final fair ablation."
+    },
+    {
+      "badge": "pass",
+      "title": "Checkpoint serialization contract passed",
+      "body": "Both final checkpoints include all expected trainable prefixes, including direct joint heads and the model-specific gamma head."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P1",
+      "priority": "P1",
+      "summary": "Optionally rerun UVZ as 8GPU if an exactly GPU-matched fair comparison is required."
+    }
+  ],
+  "caveats": [
+    "UVZ is quota-limited 4GPU while direct is 8GPU.",
+    "Remote video rendering could not use ffmpeg on the host, so visualization publication uses static world-space PNG panels.",
+    "Local repo remains dirty; remote worktree is the code/execution source of truth for this experiment."
+  ],
+  "extra_html": "\n<section><h2>Evaluation Metrics</h2>\n<p>All evals use the camera0 v3.6 GT cache, <code>clip_len=13</code>, <code>n_max=2</code>, checkpoint <code>final.pt</code>, and the same selected train3/test3 manifests.</p>\n<table><thead><tr><th>Eval</th><th>Joint L2 mm</th><th>Mesh L2 mm</th><th>Obj ADD-S mm</th><th>Det F1</th></tr></thead><tbody><tr><td>direct_train3</td><td>89.07</td><td>89.00</td><td>96.36</td><td>0.678</td></tr><tr><td>direct_test3</td><td>85.92</td><td>86.16</td><td>124.12</td><td>0.793</td></tr><tr><td>uvz_train3</td><td>108.00</td><td>107.98</td><td>87.08</td><td>0.925</td></tr><tr><td>uvz_test3</td><td>83.16</td><td>82.67</td><td>102.09</td><td>0.892</td></tr></tbody></table>\n<p>Raw metrics and manifests are included under <code>2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_raw/</code>.</p>\n</section>\n<section><h2>Loss Curves</h2>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/loss_curves_direct_vs_uvz.png\" alt=\"Training loss curves: direct-gamma 8GPU vs anchor-UVZ 4GPU\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Training loss curves: direct-gamma 8GPU vs anchor-UVZ 4GPU</figcaption></figure>\n</section>\n<section><h2>Metric Plots</h2>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/eval_metrics_direct_vs_uvz.png\" alt=\"Selected train/test eval metrics\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Selected train/test eval metrics</figcaption></figure>\n</section>\n<section><h2>World-Space Visualizations</h2>\n<p>Visualization tensors come directly from <code>p2_eval_thfm_lora</code>; no hand-root subtraction or visualization-time reanchoring is applied.</p>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/direct_train_worldspace.png\" alt=\"Direct-gamma train clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Direct-gamma train clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/uvz_train_worldspace.png\" alt=\"Anchor-UVZ train clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Anchor-UVZ train clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/direct_test_worldspace.png\" alt=\"Direct-gamma test clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Direct-gamma test clip world-space visualization</figcaption></figure>\n<figure><img src=\"2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish/viz/uvz_test_worldspace.png\" alt=\"Anchor-UVZ test clip world-space visualization\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\"><figcaption>Anchor-UVZ test clip world-space visualization</figcaption></figure>\n</section>\n",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json\nand continue from tasks_pending[0] (P1 [P1]: Optionally rerun UVZ as 8GPU if an exactly GPU-matched fair comparison is required.).\nContext: branch feat/dcf-anchor-uvz-static@9857e689725f56584a2bba61bf82faa6ed8164de; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static."
+}

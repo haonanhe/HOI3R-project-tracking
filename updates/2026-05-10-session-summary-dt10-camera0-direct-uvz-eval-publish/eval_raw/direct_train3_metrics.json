@@ -1,0 +1,188 @@
+{
+  "config": {
+    "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_static_direct_gamma_full_dexycb_fa775e7_camera0_8gpu/seed0/final.pt",
+    "manifest": "diagnostics/dt10_camera0_direct_uvz_eval_20260510/manifests/train3.json",
+    "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4",
+    "n_sequences": 3,
+    "n_windows": 11,
+    "clip_len": 13,
+    "n_max": 2,
+    "train_step": 10000
+  },
+  "overall": {
+    "hand_joint_l2_mm": {
+      "per_frame": {
+        "mean": 89.06986999511719,
+        "median": 59.1633415222168,
+        "p5": 45.76876449584961,
+        "p95": 227.4023895263672,
+        "n": 117
+      },
+      "per_window": {
+        "mean": 89.06987762451172,
+        "median": 60.19602584838867,
+        "p5": 47.97535705566406,
+        "p95": 166.41879272460938,
+        "n": 9
+      }
+    },
+    "hand_mesh_l2_mm": {
+      "per_frame": {
+        "mean": 88.99589538574219,
+        "median": 59.53205871582031,
+        "p5": 45.97701644897461,
+        "p95": 225.97792053222656,
+        "n": 117
+      },
+      "per_window": {
+        "mean": 88.99589538574219,
+        "median": 59.47372817993164,
+        "p5": 48.70964050292969,
+        "p95": 165.63856506347656,
+        "n": 9
+      }
+    },
+    "obj_add_s_mm": {
+      "per_frame": {
+        "mean": 96.36016845703125,
+        "median": 79.8972396850586,
+        "p5": 35.950714111328125,
+        "p95": 157.42388916015625,
+        "n": 143
+      },
+      "per_window": {
+        "mean": 96.36016082763672,
+        "median": 80.02140808105469,
+        "p5": 49.38213348388672,
+        "p95": 148.826904296875,
+        "n": 11
+      }
+    },
+    "obj_rot_deg": {
+      "per_frame": {
+        "mean": 123.9478530883789,
+        "median": 131.42764282226562,
+        "p5": 84.39498138427734,
+        "p95": 166.27008056640625,
+        "n": 143
+      },
+      "per_window": {
+        "mean": 123.94784545898438,
+        "median": 131.22216796875,
+        "p5": 87.09580993652344,
+        "p95": 162.2745361328125,
+        "n": 11
+      }
+    },
+    "obj_trans_mm": {
+      "per_frame": {
+        "mean": 88.30927276611328,
+        "median": 75.09867858886719,
+        "p5": 22.196887969970703,
+        "p95": 152.0359344482422,
+        "n": 143
+      },
+      "per_window": {
+        "mean": 88.30926513671875,
+        "median": 74.24935913085938,
+        "p5": 42.741966247558594,
+        "p95": 140.29302978515625,
+        "n": 11
+      }
+    },
+    "detection": {
+      "tp": 79,
+      "fp": 11,
+      "fn": 64,
+      "precision": 0.8777777777777778,
+      "recall": 0.5524475524475524,
+      "f1": 0.6781115879828326,
+      "n_gt_hands": 11,
+      "n_detected_slots": 12,
+      "n_matched_hands": 9
+    },
+    "hand_side_acc": {
+      "overall": 1.0,
+      "correct": 9,
+      "total": 9,
+      "per_window": {
+        "mean": 1.0,
+        "median": 1.0,
+        "p5": 1.0,
+        "p95": 1.0,
+        "n": 9
+      }
+    }
+  },
+  "per_sequence": {
+    "20200709-subject-01/20200709_141754": {
+      "hand_joint_l2_mm": 66.79364776611328,
+      "hand_mesh_l2_mm": 67.10693359375,
+      "obj_add_s_mm": 93.98685455322266,
+      "obj_rot_deg": 129.45989990234375,
+      "obj_trans_mm": 84.77976989746094,
+      "detection": {
+        "tp": 35,
+        "fp": 1,
+        "fn": 17,
+        "precision": 0.9722222222222222,
+        "recall": 0.6730769230769231,
+        "f1": 0.7954545454545455,
+        "n_gt_hands": 4,
+        "n_detected_slots": 5,
+        "n_matched_hands": 4
+      },
+      "hand_side_acc": 1.0,
+      "hand_side_correct": 4,
+      "hand_side_total": 4,
+      "n_windows": 4,
+      "n_frames": 52
+    },
+    "20200918-subject-06/20200918_112947": {
+      "hand_joint_l2_mm": 126.67803192138672,
+      "hand_mesh_l2_mm": 126.12145233154297,
+      "obj_add_s_mm": 129.04116821289062,
+      "obj_rot_deg": 159.18006896972656,
+      "obj_trans_mm": 118.53335571289062,
+      "detection": {
+        "tp": 8,
+        "fp": 0,
+        "fn": 31,
+        "precision": 1.0,
+        "recall": 0.20512820512820512,
+        "f1": 0.3404255319148936,
+        "n_gt_hands": 3,
+        "n_detected_slots": 2,
+        "n_matched_hands": 2
+      },
+      "hand_side_acc": 1.0,
+      "hand_side_correct": 2,
+      "hand_side_total": 2,
+      "n_windows": 3,
+      "n_frames": 39
+    },
+    "20201002-subject-08/20201002_113227": {
+      "hand_joint_l2_mm": 93.69942474365234,
+      "hand_mesh_l2_mm": 93.43080139160156,
+      "obj_add_s_mm": 74.22273254394531,
+      "obj_rot_deg": 92.01161193847656,
+      "obj_trans_mm": 69.17070007324219,
+      "detection": {
+        "tp": 36,
+        "fp": 10,
+        "fn": 16,
+        "precision": 0.782608695652174,
+        "recall": 0.6923076923076923,
+        "f1": 0.7346938775510203,
+        "n_gt_hands": 4,
+        "n_detected_slots": 5,
+        "n_matched_hands": 3
+      },
+      "hand_side_acc": 1.0,
+      "hand_side_correct": 3,
+      "hand_side_total": 3,
+      "n_windows": 4,
+      "n_frames": 52
+    }
+  }
+}
