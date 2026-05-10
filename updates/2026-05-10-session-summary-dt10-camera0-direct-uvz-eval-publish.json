@@ -10,14 +10,14 @@
   "published": {
     "html": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
     "sidecar": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json",
-    "tracking_commit": "31e205ad06b3",
+    "tracking_commit": "a4f082b05e7a",
     "initial_tracking_commit": "1b2ae4cc01f6",
     "video_tracking_commit": "77818c093992a0627b508d7e106ddcb9e3811606",
     "global_metrics_tracking_commit": "47e32df2b026bc67975de4712ba7746cb591973a",
     "overlay_fix_tracking_commit": "bb1399e7fdf0",
     "overlay_renderer_metadata_tracking_commit": "31e205ad06b3",
     "overlay_renderer_commit": "64b39a0d2ae41872a8f41e14c3b695c2c9c2b3ea",
-    "object_overlay_fix_tracking_commit": null,
+    "object_overlay_fix_tracking_commit": "a4f082b05e7a",
     "object_overlay_renderer_commit": "88d755ddbc3de0c8e839e0c333ddf78b127b3ce2"
   },
   "jobs": {
