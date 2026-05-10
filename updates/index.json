@@ -1,9 +1,9 @@
 [
   {
-    "title": "2026-05-10 · Evaluate completed DT10 camera0 direct-gamma and anchor-UVZ checkpoints on selected train/test clips with train-matched coordinate settings, then publish loss curves, metrics, and visualizations.",
+    "title": "2026-05-10 · DT10 camera0 direct-gamma vs anchor-UVZ eval with corrected RGB overlays, global hand metrics, loss curves, and videos.",
     "date": "2026-05-10",
-    "status": "complete-with-caveat",
-    "summary": "Evaluate completed DT10 camera0 direct-gamma and anchor-UVZ checkpoints on selected train/test clips with train-matched coordinate settings, then publish loss curves, metrics, and visualizations.",
+    "status": "complete",
+    "summary": "DT10 camera0 direct-gamma vs anchor-UVZ eval with corrected RGB overlays, global hand metrics, loss curves, and videos.",
     "path": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
     "file": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.html",
     "sidecar": "updates/2026-05-10-session-summary-dt10-camera0-direct-uvz-eval-publish.json"

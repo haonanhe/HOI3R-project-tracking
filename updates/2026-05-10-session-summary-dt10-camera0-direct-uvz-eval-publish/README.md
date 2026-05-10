@@ -9,3 +9,8 @@ Video render refresh:
 - 3D playback mp4s live under `videos/*_world.mp4`.
 - 3D turntable mp4s live under `videos/*_world_rotate.mp4`.
 - Remote generated PNG frames because remote `ffmpeg` is unavailable; local `/opt/homebrew/bin/ffmpeg` encoded the H.264 mp4s.
+
+Global metric refresh:
+- `eval_global_metrics_summary.csv/json` adds raw MPJPE, root-aligned MPJPE, PA-MPJPE, WA-MPJPE, W-MPJPE, gamma L1/L2, root-delta/root-endpoint, and global orientation metrics.
+- `eval_raw/*_global_metrics.json` contains the per-eval posthoc metric records.
+- These were computed from the same `predictions.pt` files using the `a8c7737` `eval_hand_metrics.py` helper contract on matched active hands.
