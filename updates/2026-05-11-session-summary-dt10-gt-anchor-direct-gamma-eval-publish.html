@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-11 · dt10-gt-anchor-direct-gamma-eval-publish</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Dt10 Gt Anchor Direct Gamma Eval Publish</h1>
+  <div class="meta">2026-05-11 · <code>main</code> · <code>@bb7f21961fddcacbfeee773d46018d668dc4f8fc</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static</code></div>
+  <p class="goal">Publish the DT10 GT-anchor direct-gamma full-DexYCB eval for pt-y1bf5vy5, including loss curves and same-manifest direct baseline comparison.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">83.21 mm</div><div class="label">GT-anchor test raw MPJPE</div></div><div class="stat"><div class="val">69.14 mm</div><div class="label">GT-anchor test gamma L2</div></div><div class="stat"><div class="val">91.88 mm</div><div class="label">GT-anchor train raw MPJPE</div></div><div class="stat"><div class="val">0.0</div><div class="label">MANO reproj weighted loss</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>eval</td><td><span class="badge badge-pass">PASS</span></td><td>bb7f219</td><td>Ran train3/test3 eval for pt-y1bf5vy5 on the same manifests as the published direct baseline.</td></tr><tr><td>metrics</td><td><span class="badge badge-pass">PASS</span></td><td>bb7f219</td><td>Backfilled global hand metrics and generated same-manifest direct-vs-GT-anchor plots.</td></tr><tr><td>loss-curves</td><td><span class="badge badge-pass">PASS</span></td><td>a8823d5</td><td>Parsed train history and generated GT-anchor direct-gamma loss curves.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> GT anchor does not solve global localization on this eval</h3><p>GT-anchor direct gamma is close to the direct baseline: train raw/gamma L2 is 91.88/88.73 mm versus direct 89.07/86.99 mm; test raw/gamma L2 is 83.21/69.14 mm versus direct 85.92/85.36 mm.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> MANO reprojection was weighted off</h3><p>The job did not export MANO_REPROJ_WEIGHT, and the full-DexYCB launcher defaults it to 0.0. The unweighted diagnostic is nonzero, so the computation exists but did not contribute to this training loss.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> GT anchor source</h3><p>The GT anchor is cached hand_joints_2d_orig[..., root] mapped through K_orig/image_size_orig into the crop-resized THFM patch grid; it is not derived from MANO gamma.</p></div>
+
+</section>
+
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Eval artifacts</td><td>diagnostics/dt10_gt_anchor_direct_gamma_eval_20260511_pt-y1bf5vy5_bb7f219/</td></tr><tr><td>Publish assets</td><td>diagnostics/dt10_gt_anchor_direct_gamma_eval_20260511_pt-y1bf5vy5_publish_assets/</td></tr><tr><td>Training output</td><td>logs/v2ablate/dt10_gt_anchor_direct_gamma_full_dexycb_a8823d5_camera0_8gpu/seed0/</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>P1</td><td><span class="badge badge-p1">P1</span></td><td>Rerun/resume the GT-anchor direct-gamma comparison with MANO_REPROJ_WEIGHT=0.1 before treating it as the default-loss result.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>pt-y1bf5vy5 is the requested GT-anchor eval, but not a valid default-loss comparison because MANO_REPROJ_WEIGHT was not exported.</li><li>No RGB/3D videos were regenerated for this publish request; this page publishes loss curves and eval results only.</li><li>The local hoi3r repo remains dirty with unrelated files; tracking publish uses the GitHub API and does not commit the local repo.</li></ul>
+</section>
+
+
+
+<section><h2>Published Artifacts</h2>
+<p>Public asset bundle: <code>2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/</code></p>
+<p><a href="2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/metrics_summary.csv">metrics_summary.csv</a> · <a href="2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/eval_global_metrics_summary.csv">eval_global_metrics_summary.csv</a> · <a href="2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/loss_summary.json">loss_summary.json</a> · <a href="2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/loss_history_selected.csv">loss_history_selected.csv</a></p>
+</section>
+<section><h2>Loss Curves</h2>
+<p><img src="2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/loss_curves_gtanchor_direct_gamma.png" alt="GT-anchor direct-gamma loss curves" style="max-width:100%;border:1px solid #e5e7eb;border-radius:6px"></p>
+</section>
+<section><h2>Eval Plots</h2>
+<p><img src="2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/eval_metrics_gtanchor_vs_direct.png" alt="GT-anchor vs direct baseline eval metrics" style="max-width:100%;border:1px solid #e5e7eb;border-radius:6px"></p>
+</section>
+<section><h2>Eval Metrics</h2><table><thead><tr><th>Run</th><th>Raw MPJPE</th><th>Gamma L2</th><th>Root-aligned</th><th>PA-MPJPE</th><th>Obj ADD-S</th><th>Det F1</th></tr></thead><tbody><tr><td>gtanchor_train3</td><td>91.88 mm</td><td>88.73 mm</td><td>25.44 mm</td><td>8.56 mm</td><td>118.20 mm</td><td>0.838</td></tr><tr><td>gtanchor_test3</td><td>83.21 mm</td><td>69.14 mm</td><td>39.20 mm</td><td>6.96 mm</td><td>105.85 mm</td><td>0.598</td></tr><tr><td>direct_train3</td><td>89.07 mm</td><td>86.99 mm</td><td>23.89 mm</td><td>7.10 mm</td><td>96.36 mm</td><td>0.678</td></tr><tr><td>direct_test3</td><td>85.92 mm</td><td>85.36 mm</td><td>32.44 mm</td><td>6.70 mm</td><td>124.12 mm</td><td>0.793</td></tr></tbody></table></section>
+<section><h2>Training Loss Summary</h2><table><thead><tr><th>Loss</th><th>Last</th><th>Tail-10 mean</th><th>Min</th><th>Max</th></tr></thead><tbody><tr><td>total</td><td>1.317747</td><td>1.387762</td><td>0.858018</td><td>18.585894</td></tr><tr><td>param_gamma_l2_diag</td><td>0.041444</td><td>0.029174</td><td>0.013262</td><td>3.068435</td></tr><tr><td>mesh</td><td>0.036964</td><td>0.028736</td><td>0.015695</td><td>2.655552</td></tr><tr><td>joint_mano</td><td>0.018623</td><td>0.014542</td><td>0.007944</td><td>1.327061</td></tr><tr><td>mano_reproj</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr><tr><td>mano_reproj_unweighted</td><td>0.002630</td><td>0.002943</td><td>0.001400</td><td>68.632301</td></tr><tr><td>direct_joint3d</td><td>0.030675</td><td>0.030109</td><td>0.015124</td><td>0.430369</td></tr><tr><td>direct_kp2d</td><td>0.023291</td><td>0.029995</td><td>0.016534</td><td>0.293823</td></tr></tbody></table></section>
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish.json
+and continue from tasks_pending[0] (P1 [P1]: Rerun/resume the GT-anchor direct-gamma comparison with MANO_REPROJ_WEIGHT=0.1 before treating it as the default-loss result.).
+Context: branch main@bb7f21961fddcacbfeee773d46018d668dc4f8fc; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static.</pre></section>
+</div></body></html>

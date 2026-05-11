@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-11 · Publish the DT10 GT-anchor direct-gamma full-DexYCB eval for pt-y1bf5vy5, including loss curves and same-manifest direct baseline comparison.",
+    "date": "2026-05-11",
+    "status": "complete",
+    "summary": "Publish the DT10 GT-anchor direct-gamma full-DexYCB eval for pt-y1bf5vy5, including loss curves and same-manifest direct baseline comparison.",
+    "path": "updates/2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish.html",
+    "file": "updates/2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish.html",
+    "sidecar": "updates/2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish.json"
+  },
+  {
     "title": "2026-05-10 · dt10-camera0-direct-uvz-eval-publish",
     "date": "2026-05-10",
     "status": "wip",

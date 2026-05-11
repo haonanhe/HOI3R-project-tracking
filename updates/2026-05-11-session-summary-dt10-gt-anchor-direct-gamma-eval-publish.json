@@ -1,0 +1,212 @@
+{
+  "date": "2026-05-11",
+  "topic": "dt10-gt-anchor-direct-gamma-eval-publish",
+  "branch": "main",
+  "head_sha": "bb7f21961fddcacbfeee773d46018d668dc4f8fc",
+  "repo_path": "/Users/hnhe/Downloads/SLAI/hoi3r",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static",
+  "goal": "Publish the DT10 GT-anchor direct-gamma full-DexYCB eval for pt-y1bf5vy5, including loss curves and same-manifest direct baseline comparison.",
+  "status": "complete",
+  "remote_worktree": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static",
+  "remote_training_head_sha": "a8823d58c2d8e0f005e2a37a15db1f6bce2b14ad",
+  "remote_eval_head_sha": "bb7f21961fddcacbfeee773d46018d668dc4f8fc",
+  "job": {
+    "id": "pt-y1bf5vy5",
+    "state": "SUCCEEDED",
+    "display_name": "hoi3r-v2ablate-E-full-dexycb-detr-gtanchor-directgamma-camera0-a8823d5-8gpu",
+    "completed_at": "2026-05-11T12:13:13Z",
+    "gpus": 8,
+    "output": "logs/v2ablate/dt10_gt_anchor_direct_gamma_full_dexycb_a8823d5_camera0_8gpu/seed0"
+  },
+  "eval_contract": {
+    "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4",
+    "clip_len": 13,
+    "n_max": 2,
+    "checkpoint": "final.pt",
+    "manifest_train": "diagnostics/dt10_camera0_direct_uvz_eval_20260510/manifests/train3.json",
+    "manifest_test": "diagnostics/dt10_camera0_direct_uvz_eval_20260510/manifests/test3.json",
+    "coordinate_contract": "camera0 tensors; no hand-root subtraction; gt_anchor query RoPE uses cached original-image root 2D keypoint mapped to the crop-resized THFM patch grid."
+  },
+  "headline_stats": [
+    {
+      "label": "GT-anchor test raw MPJPE",
+      "value": "83.21 mm"
+    },
+    {
+      "label": "GT-anchor test gamma L2",
+      "value": "69.14 mm"
+    },
+    {
+      "label": "GT-anchor train raw MPJPE",
+      "value": "91.88 mm"
+    },
+    {
+      "label": "MANO reproj weighted loss",
+      "value": "0.0"
+    }
+  ],
+  "metrics": [
+    {
+      "eval": "gtanchor_train3",
+      "hand_joint_l2_mm_mean": "91.88053894042969",
+      "hand_mesh_l2_mm_mean": "91.76878356933594",
+      "obj_add_s_mm_mean": "118.19840240478516",
+      "det_f1": "0.8382352941176471",
+      "raw_mpjpe_mm": "91.88053649491988",
+      "root_aligned_mpjpe_mm": "25.43900419235021",
+      "pa_mpjpe_mm": "8.56379380700565",
+      "gamma_l2_mm": "88.72901368886232"
+    },
+    {
+      "eval": "gtanchor_test3",
+      "hand_joint_l2_mm_mean": "83.20594787597656",
+      "hand_mesh_l2_mm_mean": "82.78314208984375",
+      "obj_add_s_mm_mean": "105.8476333618164",
+      "det_f1": "0.597883597883598",
+      "raw_mpjpe_mm": "83.20595143285729",
+      "root_aligned_mpjpe_mm": "39.19647420210951",
+      "pa_mpjpe_mm": "6.961542466731559",
+      "gamma_l2_mm": "69.13628587609476"
+    },
+    {
+      "eval": "direct_train3",
+      "hand_joint_l2_mm_mean": "89.06986999511719",
+      "hand_mesh_l2_mm_mean": "88.99589538574219",
+      "obj_add_s_mm_mean": "96.36016845703125",
+      "det_f1": "0.6781115879828326",
+      "raw_mpjpe_mm": "89.06986999511719",
+      "root_aligned_mpjpe_mm": "23.88804817199707",
+      "pa_mpjpe_mm": "7.095560550689697",
+      "gamma_l2_mm": "86.99192810058594"
+    },
+    {
+      "eval": "direct_test3",
+      "hand_joint_l2_mm_mean": "85.92111206054688",
+      "hand_mesh_l2_mm_mean": "86.1584701538086",
+      "obj_add_s_mm_mean": "124.115234375",
+      "det_f1": "0.7927461139896372",
+      "raw_mpjpe_mm": "85.92110443115234",
+      "root_aligned_mpjpe_mm": "32.438472747802734",
+      "pa_mpjpe_mm": "6.699799537658691",
+      "gamma_l2_mm": "85.35511016845703"
+    }
+  ],
+  "loss_summary": {
+    "total": {
+      "last": 1.3177472352981567,
+      "tail10_mean": 1.387761688232422,
+      "min": 0.8580179810523987,
+      "max": 18.585893630981445
+    },
+    "param_gamma_l2_diag": {
+      "last": 0.041443683207035065,
+      "tail10_mean": 0.029173841513693333,
+      "min": 0.013262209482491016,
+      "max": 3.0684354305267334
+    },
+    "mesh": {
+      "last": 0.036964066326618195,
+      "tail10_mean": 0.028735653124749662,
+      "min": 0.015694983303546906,
+      "max": 2.655552387237549
+    },
+    "joint_mano": {
+      "last": 0.01862340234220028,
+      "tail10_mean": 0.014542328380048274,
+      "min": 0.00794447772204876,
+      "max": 1.3270610570907593
+    },
+    "mano_reproj": {
+      "last": 0.0,
+      "tail10_mean": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "mano_reproj_unweighted": {
+      "last": 0.0026298323646187782,
+      "tail10_mean": 0.0029429181944578887,
+      "min": 0.0014004565309733152,
+      "max": 68.6323013305664
+    },
+    "direct_joint3d": {
+      "last": 0.03067459911108017,
+      "tail10_mean": 0.030109174735844135,
+      "min": 0.015123673714697361,
+      "max": 0.4303692579269409
+    },
+    "direct_kp2d": {
+      "last": 0.02329132705926895,
+      "tail10_mean": 0.02999537419527769,
+      "min": 0.016534313559532166,
+      "max": 0.2938225269317627
+    }
+  },
+  "tasks_completed": [
+    {
+      "id": "eval",
+      "sha": "bb7f219",
+      "summary": "Ran train3/test3 eval for pt-y1bf5vy5 on the same manifests as the published direct baseline."
+    },
+    {
+      "id": "metrics",
+      "sha": "bb7f219",
+      "summary": "Backfilled global hand metrics and generated same-manifest direct-vs-GT-anchor plots."
+    },
+    {
+      "id": "loss-curves",
+      "sha": "a8823d5",
+      "summary": "Parsed train history and generated GT-anchor direct-gamma loss curves."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "GT anchor does not solve global localization on this eval",
+      "body": "GT-anchor direct gamma is close to the direct baseline: train raw/gamma L2 is 91.88/88.73 mm versus direct 89.07/86.99 mm; test raw/gamma L2 is 83.21/69.14 mm versus direct 85.92/85.36 mm."
+    },
+    {
+      "badge": "fix",
+      "title": "MANO reprojection was weighted off",
+      "body": "The job did not export MANO_REPROJ_WEIGHT, and the full-DexYCB launcher defaults it to 0.0. The unweighted diagnostic is nonzero, so the computation exists but did not contribute to this training loss."
+    },
+    {
+      "badge": "finding",
+      "title": "GT anchor source",
+      "body": "The GT anchor is cached hand_joints_2d_orig[..., root] mapped through K_orig/image_size_orig into the crop-resized THFM patch grid; it is not derived from MANO gamma."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Eval artifacts",
+      "state": "diagnostics/dt10_gt_anchor_direct_gamma_eval_20260511_pt-y1bf5vy5_bb7f219/"
+    },
+    {
+      "aspect": "Publish assets",
+      "state": "diagnostics/dt10_gt_anchor_direct_gamma_eval_20260511_pt-y1bf5vy5_publish_assets/"
+    },
+    {
+      "aspect": "Training output",
+      "state": "logs/v2ablate/dt10_gt_anchor_direct_gamma_full_dexycb_a8823d5_camera0_8gpu/seed0/"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P1",
+      "priority": "P1",
+      "summary": "Rerun/resume the GT-anchor direct-gamma comparison with MANO_REPROJ_WEIGHT=0.1 before treating it as the default-loss result."
+    }
+  ],
+  "caveats": [
+    "pt-y1bf5vy5 is the requested GT-anchor eval, but not a valid default-loss comparison because MANO_REPROJ_WEIGHT was not exported.",
+    "No RGB/3D videos were regenerated for this publish request; this page publishes loss curves and eval results only.",
+    "The local hoi3r repo remains dirty with unrelated files; tracking publish uses the GitHub API and does not commit the local repo."
+  ],
+  "local_artifacts": [
+    "diagnostics/dt10_gt_anchor_direct_gamma_eval_20260511_pt-y1bf5vy5_bb7f219/",
+    "diagnostics/dt10_gt_anchor_direct_gamma_eval_20260511_pt-y1bf5vy5_publish_assets/"
+  ],
+  "extra_html": "\n<section><h2>Published Artifacts</h2>\n<p>Public asset bundle: <code>2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/</code></p>\n<p><a href=\"2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/metrics_summary.csv\">metrics_summary.csv</a> · <a href=\"2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/eval_global_metrics_summary.csv\">eval_global_metrics_summary.csv</a> · <a href=\"2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/loss_summary.json\">loss_summary.json</a> · <a href=\"2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/loss_history_selected.csv\">loss_history_selected.csv</a></p>\n</section>\n<section><h2>Loss Curves</h2>\n<p><img src=\"2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/loss_curves_gtanchor_direct_gamma.png\" alt=\"GT-anchor direct-gamma loss curves\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:6px\"></p>\n</section>\n<section><h2>Eval Plots</h2>\n<p><img src=\"2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish/eval_metrics_gtanchor_vs_direct.png\" alt=\"GT-anchor vs direct baseline eval metrics\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:6px\"></p>\n</section>\n<section><h2>Eval Metrics</h2><table><thead><tr><th>Run</th><th>Raw MPJPE</th><th>Gamma L2</th><th>Root-aligned</th><th>PA-MPJPE</th><th>Obj ADD-S</th><th>Det F1</th></tr></thead><tbody><tr><td>gtanchor_train3</td><td>91.88 mm</td><td>88.73 mm</td><td>25.44 mm</td><td>8.56 mm</td><td>118.20 mm</td><td>0.838</td></tr><tr><td>gtanchor_test3</td><td>83.21 mm</td><td>69.14 mm</td><td>39.20 mm</td><td>6.96 mm</td><td>105.85 mm</td><td>0.598</td></tr><tr><td>direct_train3</td><td>89.07 mm</td><td>86.99 mm</td><td>23.89 mm</td><td>7.10 mm</td><td>96.36 mm</td><td>0.678</td></tr><tr><td>direct_test3</td><td>85.92 mm</td><td>85.36 mm</td><td>32.44 mm</td><td>6.70 mm</td><td>124.12 mm</td><td>0.793</td></tr></tbody></table></section>\n<section><h2>Training Loss Summary</h2><table><thead><tr><th>Loss</th><th>Last</th><th>Tail-10 mean</th><th>Min</th><th>Max</th></tr></thead><tbody><tr><td>total</td><td>1.317747</td><td>1.387762</td><td>0.858018</td><td>18.585894</td></tr><tr><td>param_gamma_l2_diag</td><td>0.041444</td><td>0.029174</td><td>0.013262</td><td>3.068435</td></tr><tr><td>mesh</td><td>0.036964</td><td>0.028736</td><td>0.015695</td><td>2.655552</td></tr><tr><td>joint_mano</td><td>0.018623</td><td>0.014542</td><td>0.007944</td><td>1.327061</td></tr><tr><td>mano_reproj</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr><tr><td>mano_reproj_unweighted</td><td>0.002630</td><td>0.002943</td><td>0.001400</td><td>68.632301</td></tr><tr><td>direct_joint3d</td><td>0.030675</td><td>0.030109</td><td>0.015124</td><td>0.430369</td></tr><tr><td>direct_kp2d</td><td>0.023291</td><td>0.029995</td><td>0.016534</td><td>0.293823</td></tr></tbody></table></section>\n",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-11-session-summary-dt10-gt-anchor-direct-gamma-eval-publish.json\nand continue from tasks_pending[0] (P1 [P1]: Rerun/resume the GT-anchor direct-gamma comparison with MANO_REPROJ_WEIGHT=0.1 before treating it as the default-loss result.).\nContext: branch main@bb7f21961fddcacbfeee773d46018d668dc4f8fc; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static."
+}
