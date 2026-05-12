@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-12 · wan22-thfm-dense-vs-native4rc-ptnzzh80jf-bs4-step9000-eval-compare</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Wan22 Thfm Dense Vs Native4Rc Ptnzzh80Jf Bs4 Step9000 Eval Compare</h1>
+  <div class="meta">2026-05-12 · <code>feat/dcf-native-4rc-pure-20260512</code> · <code>@ea46a3c</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-pure-20260512</code></div>
+  <p class="goal">Publish Wan2.2 vs Native-4RC eval metrics on one page (same eval contract).</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">9000</div><div class="label">Native4RC ckpt step</div></div><div class="stat"><div class="val">102.6</div><div class="label">Native4RC test3 hand_joint (mm)</div></div><div class="stat"><div class="val">371.8</div><div class="label">Wan22 test3 hand_joint (mm)</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>publish_combined_eval_page</td><td><span class="badge badge-pass">PASS</span></td><td>dc05436</td><td>Combined Wan2.2 + Native-4RC metrics into one tracking-page entry.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Native-4RC eval uses the Wan22 eval contract metrics</h3><p>Native-4RC eval was re-run on ckpt_step009000.pt using the same p2_eval_thfm_lora metrics contract (detection F1, side acc, hand_joint/mesh L2 mm, obj ADD-S mm, obj rot deg, obj trans mm).</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>563bd13195ed</td><td>tracking</td><td>Existing Wan2.2 THFM-dense eval publish commit</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Wan22 page</td><td>https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.html</td></tr><tr><td>Native4RC ckpt</td><td>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>full_manifest_eval</td><td><span class="badge badge-p1">P1</span></td><td>Decide whether to run full-manifest (not train3/test3 subset) eval for native4rc and/or wan22.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>This page aggregates two deterministic subset evals (train3/test3 windows), not full DexYCB.</li><li>Wan2.2 numbers are sourced from the already-published page; Native-4RC numbers are uploaded as JSON/CSV assets with this page.</li></ul>
+</section>
+
+
+<section>
+  <h2>Eval results (same contract)</h2>
+  <p>
+    Wan2.2 THFM-dense (published):
+    <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.html">HTML</a> ·
+    <a href="https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.json">sidecar</a> ·
+    tracking commit <code>563bd13195ed</code>
+  </p>
+  <p>
+    Native-4RC (pt-nzzh80jf, ckpt step 9000):
+    <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt</code>
+    · assets: <code>./&lt;slug&gt;/metrics_summary.*</code>
+  </p>
+
+  <h3>Wan2.2 THFM-dense (bs4)</h3>
+  <table>
+    <thead><tr>
+      <th>split</th><th>windows</th><th>hand_joint</th><th>hand_mesh</th><th>obj_ADD-S</th><th>obj_rot</th><th>obj_trans</th><th>det F1</th><th>side acc</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>train3</td><td>12</td><td>264.83mm</td><td>262.5mm</td><td>276.88mm</td><td>103.68deg</td><td>281.72mm</td><td>1.0</td><td>0.5833</td></tr>
+      <tr><td>test3</td><td>15</td><td>371.8mm</td><td>369.47mm</td><td>179.83mm</td><td>99.13deg</td><td>179.99mm</td><td>1.0</td><td>0.5333</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Native-4RC (pt-nzzh80jf, bs4 step 9000)</h3>
+  <table>
+    <thead><tr>
+      <th>split</th><th>windows</th><th>hand_joint</th><th>hand_mesh</th><th>obj_ADD-S</th><th>obj_rot</th><th>obj_trans</th><th>det F1</th><th>side acc</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>train3</td><td>12</td><td>117.713mm</td><td>117.155mm</td><td>117.722mm</td><td>99.684deg</td><td>118.603mm</td><td>1.0</td><td>1.0</td></tr>
+      <tr><td>test3</td><td>15</td><td>102.558mm</td><td>101.708mm</td><td>98.308mm</td><td>90.125deg</td><td>94.037mm</td><td>1.0</td><td>1.0</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    Native-4RC raw metrics JSON (uploaded with this page):
+    <code>&lt;slug&gt;/native4rc_train3_metrics.json</code>,
+    <code>&lt;slug&gt;/native4rc_test3_metrics.json</code>.
+  </p>
+</section>
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-wan22-thfm-dense-vs-native4rc-ptnzzh80jf-bs4-step9000-eval-compare.json
+and continue from tasks_pending[0] (full_manifest_eval [P1]: Decide whether to run full-manifest (not train3/test3 subset) eval for native4rc and/or wan22.).
+Context: branch feat/dcf-native-4rc-pure-20260512@ea46a3c; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-pure-20260512.</pre></section>
+</div></body></html>

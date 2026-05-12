@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-12 · Publish Wan2.2 vs Native-4RC eval metrics on one page (same eval contract).",
+    "date": "2026-05-12",
+    "status": "wip",
+    "summary": "Publish Wan2.2 vs Native-4RC eval metrics on one page (same eval contract).",
+    "path": "updates/2026-05-12-session-summary-wan22-thfm-dense-vs-native4rc-ptnzzh80jf-bs4-step9000-eval-compare.html",
+    "file": "updates/2026-05-12-session-summary-wan22-thfm-dense-vs-native4rc-ptnzzh80jf-bs4-step9000-eval-compare.html",
+    "sidecar": "updates/2026-05-12-session-summary-wan22-thfm-dense-vs-native4rc-ptnzzh80jf-bs4-step9000-eval-compare.json"
+  },
+  {
     "title": "2026-05-12 · Evaluate and publish Wan2.2 DiT last-sample dense latent full DexYCB bs=4 run pt-ohmi8cz3.",
     "date": "2026-05-12",
     "status": "published",

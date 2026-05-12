@@ -1,0 +1,33 @@
+{
+  "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt",
+  "train_step": 9000,
+  "eval_driver_worktree": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-pure-20260512",
+  "eval_driver_commit": "dc05436",
+  "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4",
+  "splits": [
+    {
+      "split": "train3",
+      "eval_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/eval_step009000_contract_train3",
+      "windows": 12,
+      "hand_joint_l2_mm": 117.7125015258789,
+      "hand_mesh_l2_mm": 117.15452575683594,
+      "obj_add_s_mm": 117.7216796875,
+      "obj_rot_deg": 99.68378448486328,
+      "obj_trans_mm": 118.60286712646484,
+      "det_f1": 1.0,
+      "hand_side_acc": 1.0
+    },
+    {
+      "split": "test3",
+      "eval_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/eval_step009000_contract_test3",
+      "windows": 15,
+      "hand_joint_l2_mm": 102.55802917480469,
+      "hand_mesh_l2_mm": 101.70760345458984,
+      "obj_add_s_mm": 98.30834197998047,
+      "obj_rot_deg": 90.12540435791016,
+      "obj_trans_mm": 94.03692626953125,
+      "det_f1": 1.0,
+      "hand_side_acc": 1.0
+    }
+  ]
+}

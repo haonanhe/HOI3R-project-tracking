@@ -1,0 +1,142 @@
+{
+  "config": {
+    "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt",
+    "manifest": "manifests/dexycb_s1_test_multicam_firstseq3cams_cachematched.json",
+    "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4",
+    "n_sequences": 3,
+    "n_windows": 15,
+    "clip_len": 13,
+    "n_max": 2,
+    "train_step": 9000
+  },
+  "overall": {
+    "hand_joint_l2_mm": {
+      "per_frame": {
+        "mean": 102.55802917480469,
+        "median": 94.16629028320312,
+        "p5": 33.223426818847656,
+        "p95": 232.26138305664062,
+        "n": 195
+      },
+      "per_window": {
+        "mean": 102.55802917480469,
+        "median": 105.72554779052734,
+        "p5": 49.079681396484375,
+        "p95": 176.29881286621094,
+        "n": 15
+      }
+    },
+    "hand_mesh_l2_mm": {
+      "per_frame": {
+        "mean": 101.70760345458984,
+        "median": 94.75531005859375,
+        "p5": 32.96692657470703,
+        "p95": 225.28323364257812,
+        "n": 195
+      },
+      "per_window": {
+        "mean": 101.70760345458984,
+        "median": 104.191162109375,
+        "p5": 48.5006217956543,
+        "p95": 173.3901824951172,
+        "n": 15
+      }
+    },
+    "obj_add_s_mm": {
+      "per_frame": {
+        "mean": 98.30834197998047,
+        "median": 85.24397277832031,
+        "p5": 37.48223876953125,
+        "p95": 198.88311767578125,
+        "n": 195
+      },
+      "per_window": {
+        "mean": 98.30834197998047,
+        "median": 92.84314727783203,
+        "p5": 43.32714080810547,
+        "p95": 184.75718688964844,
+        "n": 15
+      }
+    },
+    "obj_rot_deg": {
+      "per_frame": {
+        "mean": 90.12540435791016,
+        "median": 96.55766296386719,
+        "p5": 43.0385627746582,
+        "p95": 123.86637878417969,
+        "n": 195
+      },
+      "per_window": {
+        "mean": 90.12539672851562,
+        "median": 96.28123474121094,
+        "p5": 46.05930709838867,
+        "p95": 123.95248413085938,
+        "n": 15
+      }
+    },
+    "obj_trans_mm": {
+      "per_frame": {
+        "mean": 94.03692626953125,
+        "median": 88.34891510009766,
+        "p5": 26.291166305541992,
+        "p95": 181.68019104003906,
+        "n": 195
+      },
+      "per_window": {
+        "mean": 94.03691101074219,
+        "median": 96.20896911621094,
+        "p5": 38.41534423828125,
+        "p95": 169.4549102783203,
+        "n": 15
+      }
+    },
+    "detection": {
+      "tp": 195,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "n_gt_hands": 15,
+      "n_detected_slots": 15,
+      "n_matched_hands": 15
+    },
+    "hand_side_acc": {
+      "overall": 1.0,
+      "correct": 15,
+      "total": 15,
+      "per_window": {
+        "mean": 1.0,
+        "median": 1.0,
+        "p5": 1.0,
+        "p95": 1.0,
+        "n": 15
+      }
+    }
+  },
+  "per_sequence": {
+    "20200928-subject-07/20200928_143249": {
+      "hand_joint_l2_mm": 102.55802917480469,
+      "hand_mesh_l2_mm": 101.70760345458984,
+      "obj_add_s_mm": 98.30834197998047,
+      "obj_rot_deg": 90.12540435791016,
+      "obj_trans_mm": 94.03692626953125,
+      "detection": {
+        "tp": 195,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "n_gt_hands": 15,
+        "n_detected_slots": 15,
+        "n_matched_hands": 15
+      },
+      "hand_side_acc": 1.0,
+      "hand_side_correct": 15,
+      "hand_side_total": 15,
+      "n_windows": 15,
+      "n_frames": 195
+    }
+  }
+}
