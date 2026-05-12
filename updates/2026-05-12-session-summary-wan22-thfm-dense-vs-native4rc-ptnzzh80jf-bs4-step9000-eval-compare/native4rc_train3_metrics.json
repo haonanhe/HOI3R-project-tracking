@@ -1,7 +1,7 @@
 {
   "config": {
     "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt",
-    "manifest": "manifests/dexycb_s1_full_multicam.json",
+    "manifest": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/manifests/dexycb_s1_train_multicam.json",
     "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4",
     "n_sequences": 3,
     "n_windows": 12,
@@ -44,17 +44,17 @@
     },
     "obj_add_s_mm": {
       "per_frame": {
-        "mean": 117.7216796875,
-        "median": 108.11591339111328,
-        "p5": 45.5350456237793,
-        "p95": 225.6634521484375,
+        "mean": 117.64329528808594,
+        "median": 108.18131256103516,
+        "p5": 45.92573165893555,
+        "p95": 225.98312377929688,
         "n": 156
       },
       "per_window": {
-        "mean": 117.7216796875,
-        "median": 95.5579833984375,
-        "p5": 48.443870544433594,
-        "p95": 210.8804931640625,
+        "mean": 117.64330291748047,
+        "median": 95.15422058105469,
+        "p5": 48.59623718261719,
+        "p95": 211.00674438476562,
         "n": 12
       }
     },
@@ -118,7 +118,7 @@
     "20200709-subject-01/20200709_141754": {
       "hand_joint_l2_mm": 117.7125015258789,
       "hand_mesh_l2_mm": 117.15452575683594,
-      "obj_add_s_mm": 117.7216796875,
+      "obj_add_s_mm": 117.64329528808594,
       "obj_rot_deg": 99.68378448486328,
       "obj_trans_mm": 118.60286712646484,
       "detection": {

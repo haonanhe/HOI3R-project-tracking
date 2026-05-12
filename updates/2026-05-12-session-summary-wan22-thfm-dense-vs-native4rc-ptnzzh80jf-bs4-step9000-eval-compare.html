@@ -48,7 +48,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 </section>
 
 <section><h2>Key discoveries</h2>
-<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Native-4RC eval uses the Wan22 eval contract metrics</h3><p>Native-4RC eval was re-run on ckpt_step009000.pt using the same p2_eval_thfm_lora metrics contract (detection F1, side acc, hand_joint/mesh L2 mm, obj ADD-S mm, obj rot deg, obj trans mm).</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Wan2.2 and Native-4RC use identical clips/windows</h3><p>Native-4RC eval was re-run with the exact same train3/test3 manifests as the Wan2.2 publish (dexycb_s1_train_multicam.json and dexycb_s1_test_multicam.json, both with max_manifest_size=3), so clips/windows match 1:1 under the shared v3.6 GT cache.</p></div>
 
 </section>
 
@@ -65,7 +65,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 </section>
 
 <section><h2>Caveats</h2>
-<ul><li>This page aggregates two deterministic subset evals (train3/test3 windows), not full DexYCB.</li><li>Wan2.2 numbers are sourced from the already-published page; Native-4RC numbers are uploaded as JSON/CSV assets with this page.</li></ul>
+<ul><li>This page aggregates two deterministic subset evals (train3/test3 windows; max_manifest_size=3), not full DexYCB.</li><li>Wan2.2 numbers are sourced from the already-published Wan2.2 page; Native-4RC numbers are uploaded as JSON/CSV assets with this page.</li></ul>
 </section>
 
 
@@ -78,7 +78,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
     tracking commit <code>563bd13195ed</code>
   </p>
   <p>
-    Native-4RC (pt-nzzh80jf, ckpt step 9000):
+    Native-4RC (pt-nzzh80jf, same manifests as Wan2.2; ckpt step 9000):
     <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt</code>
     · assets: <code>./&lt;slug&gt;/metrics_summary.*</code>
   </p>
@@ -104,6 +104,10 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
       <tr><td>test3</td><td>15</td><td>102.558mm</td><td>101.708mm</td><td>98.308mm</td><td>90.125deg</td><td>94.037mm</td><td>1.0</td><td>1.0</td></tr>
     </tbody>
   </table>
+
+  <p>
+    Native-4RC manifests: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/manifests/dexycb_s1_train_multicam.json</code> and <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/manifests/dexycb_s1_test_multicam.json</code> (both max_manifest_size=3).
+  </p>
 
   <p>
     Native-4RC raw metrics JSON (uploaded with this page):
