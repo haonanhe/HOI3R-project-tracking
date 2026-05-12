@@ -1,0 +1,111 @@
+{
+  "subscription_name": "0197ee17-b6eb-7846-b2b4-a77c5f509b92",
+  "resource_group_name": "default",
+  "zone": "cn-sh-01z",
+  "workspace_name": "p1-video-world-model-for-robot-learning",
+  "name": "pt-mgx9n3ef",
+  "uid": "90ab907cbcf34d7380d0f0fbb10d6f48",
+  "display_name": "test3-eval-pt9ohso8nd-151652c-20260512",
+  "id": "/subscriptions/0197ee17-b6eb-7846-b2b4-a77c5f509b92/resourceGroups/default/zones/cn-sh-01z/workspaces/p1-video-world-model-for-robot-learning/trainingJobs/pt-mgx9n3ef",
+  "ownership": {
+    "user_name": "L202500161",
+    "user_id": "019c3279-b7c8-75da-a4d8-3646b3c1e4d7",
+    "requestor_id": "",
+    "tenant_id": "0197ee17-b6eb-7846-b2b4-a77c5f509b92"
+  },
+  "framework": "PYTORCH",
+  "roles": [
+    {
+      "name": "Worker",
+      "resource_spec": [
+        {
+          "name": "N6lS.Iu.I10.1.8c128g",
+          "replicas": 1,
+          "description": "1XN6lS-80GB",
+          "limits": {
+            "cpu": "8",
+            "device": "1",
+            "memory": "128",
+            "nvidia.com/gpu": "1"
+          },
+          "requests": {
+            "cpu": "8",
+            "device": "1",
+            "memory": "128",
+            "nvidia.com/gpu": "1"
+          }
+        }
+      ],
+      "total_replicas": 0,
+      "startup_script": "set -euo pipefail\nnvidia-smi || true\nWT=/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static\nRUN_DIR=$WT/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0\nEVAL_DIR=$RUN_DIR/eval_publish\nPRIOR=$WT/logs/v2ablate/dt10_directhandonly_joints2d3d_head1024x5_offset0_4ee7f91_cam836212060125_p1_1gpu_rerun_pt-30d9c1f2/seed0\nexport WT RUN_DIR EVAL_DIR PRIOR\ncd $WT\ngit config --global --add safe.directory $WT || true\ngit rev-parse HEAD\nmkdir -p $EVAL_DIR/manifests $EVAL_DIR/test3\ncp $PRIOR/eval_publish/manifests/test3.json $EVAL_DIR/manifests/test3.json\nexport PYTHONPATH=$WT:$WT/third_party/wan/Wan2.2\n/mnt/afs/haonan/miniconda3/envs/human3r/bin/python scripts/hoi3r_v2/p2_eval_thfm_lora.py \\\n  --ckpt $RUN_DIR/final.pt \\\n  --manifest $EVAL_DIR/manifests/test3.json \\\n  --dataset dexycb \\\n  --vae-cache /mnt/afs/haonan/hoi3r/cache/wan22_vae_dexycb_full \\\n  --gt-cache-dir /mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4 \\\n  --clip-len 13 \\\n  --n-max 1 \\\n  --thfm-train-mode lora \\\n  --lora-rank 16 \\\n  --lora-alpha 32 \\\n  --head-mid-dim 1024 \\\n  --object-head-mid-dim 1024 \\\n  --head-num-layers 5 \\\n  --max-manifest-size 3 \\\n  --output-dir $EVAL_DIR/test3 \\\n  --device cuda:0 \\\n  2>&1 | tee $EVAL_DIR/test3_eval.log\ntest -s $EVAL_DIR/test3/metrics.json\ntest -s $EVAL_DIR/test3/predictions.pt\n/mnt/afs/haonan/miniconda3/envs/human3r/bin/python - <<'METRICS_PY'\nimport json, os\nfrom pathlib import Path\nmetrics_path = Path(os.environ[\"EVAL_DIR\"]) / \"test3\" / \"metrics.json\"\npred_path = Path(os.environ[\"EVAL_DIR\"]) / \"test3\" / \"predictions.pt\"\nmetrics = json.loads(metrics_path.read_text())\noverall = metrics.get(\"overall\", {})\ndetection = overall.get(\"detection\", {})\nside = overall.get(\"hand_side_acc\", {})\ndef mean_metric(name):\n    node = overall.get(name, {})\n    if isinstance(node, dict):\n        return (node.get(\"per_frame\") or {}).get(\"mean\")\n    return node\nsummary = {\n    \"metrics_json\": str(metrics_path),\n    \"metrics_json_size\": metrics_path.stat().st_size,\n    \"predictions_pt\": str(pred_path),\n    \"predictions_pt_size\": pred_path.stat().st_size,\n    \"detection_precision\": detection.get(\"precision\"),\n    \"detection_recall\": detection.get(\"recall\"),\n    \"detection_f1\": detection.get(\"f1\"),\n    \"hand_side_acc\": side.get(\"overall\"),\n    \"hand_joint_l2_mm_mean\": mean_metric(\"hand_joint_l2_mm\"),\n    \"hand_mesh_l2_mm_mean\": mean_metric(\"hand_mesh_l2_mm\"),\n    \"obj_add_s_mm_mean\": mean_metric(\"obj_add_s_mm\"),\n    \"obj_rot_deg_mean\": mean_metric(\"obj_rot_deg\"),\n    \"obj_trans_mm_mean\": mean_metric(\"obj_trans_mm\"),\n}\nprint(json.dumps(summary, indent=2, sort_keys=True))\nMETRICS_PY\n",
+      "image_path": "registry.cn-sh-01.sensecore.cn/lepton-trainingjob/nvidia24.04-ubuntu22.04-py3.10-cuda12.4-cudnn9.1-torch2.3.0-transformerengine1.5:v1.0.0-20241130-nvdia-base-image"
+    }
+  ],
+  "env": [
+    {
+      "key": "NCCL_IB_TIMEOUT",
+      "value": "22"
+    },
+    {
+      "key": "NCCL_IB_RETRY_CNT",
+      "value": "13"
+    }
+  ],
+  "mount": [
+    {
+      "type": "PV_AFS",
+      "id": "019b308b-aa56-79af-b03c-7ce01c67e032",
+      "mount_path": "/mnt/afs",
+      "subdir": "/",
+      "zone": "cn-sh-01e",
+      "endpoint": "",
+      "name": "",
+      "mount_options": "",
+      "region": ""
+    }
+  ],
+  "tensorboard": {
+    "log_path": ""
+  },
+  "scheduling": {
+    "priority": "NORMAL",
+    "quota_type": "RESERVED",
+    "scoring_strategy": {
+      "type": "MOST_ALLOCATED"
+    }
+  },
+  "resource_pool": {
+    "name": "computing-cluster-01e",
+    "display_name": "computing_cluster_01e",
+    "zone": "cn-sh-01e",
+    "vpc_id": "01984147-90dc-76cb-8daa-b7dbf2d35ef1"
+  },
+  "state": "SUCCEEDED",
+  "root_mapping": false,
+  "fault_tolerance": {
+    "backoff_limit": 0,
+    "rules": []
+  },
+  "ssh": {
+    "auto_key_setup": false,
+    "config_mount_path": ""
+  },
+  "metadata": null,
+  "create_time": "2026-05-12T16:05:31Z",
+  "start_time": "2026-05-12T16:05:38Z",
+  "suspend_time": null,
+  "update_time": "2026-05-12T16:08:23.368470Z",
+  "complete_time": "2026-05-12T16:08:23Z",
+  "delete_time": null,
+  "fine_tuning_specs": "",
+  "async_checkpoint": {
+    "max_ckpt_rounds": 0
+  },
+  "lme": {
+    "enable_warmingup": false,
+    "max_retries": 0,
+    "enable_health_monitor": false,
+    "current_retries": 0,
+    "enable_checker": false
+  }
+}

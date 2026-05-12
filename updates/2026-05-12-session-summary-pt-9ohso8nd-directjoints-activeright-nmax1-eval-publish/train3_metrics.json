@@ -1,0 +1,188 @@
+{
+  "config": {
+    "ckpt": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/final.pt",
+    "manifest": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/manifests/train3.json",
+    "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4",
+    "n_sequences": 3,
+    "n_windows": 13,
+    "clip_len": 13,
+    "n_max": 1,
+    "train_step": 10000
+  },
+  "overall": {
+    "hand_joint_l2_mm": {
+      "per_frame": {
+        "mean": 233.1563262939453,
+        "median": 238.42303466796875,
+        "p5": 86.7120361328125,
+        "p95": 436.536376953125,
+        "n": 169
+      },
+      "per_window": {
+        "mean": 233.15631103515625,
+        "median": 242.2332305908203,
+        "p5": 107.26888275146484,
+        "p95": 393.3183288574219,
+        "n": 13
+      }
+    },
+    "hand_mesh_l2_mm": {
+      "per_frame": {
+        "mean": null,
+        "median": null,
+        "p5": null,
+        "p95": null,
+        "n": 0
+      },
+      "per_window": {
+        "mean": null,
+        "median": null,
+        "p5": null,
+        "p95": null,
+        "n": 0
+      }
+    },
+    "obj_add_s_mm": {
+      "per_frame": {
+        "mean": 0.0,
+        "median": 0.0,
+        "p5": 0.0,
+        "p95": 0.0,
+        "n": 169
+      },
+      "per_window": {
+        "mean": 0.0,
+        "median": 0.0,
+        "p5": 0.0,
+        "p95": 0.0,
+        "n": 13
+      }
+    },
+    "obj_rot_deg": {
+      "per_frame": {
+        "mean": 0.028026007115840912,
+        "median": 0.0,
+        "p5": 0.0,
+        "p95": 0.07912936806678772,
+        "n": 169
+      },
+      "per_window": {
+        "mean": 0.028026005253195763,
+        "median": 0.027897853404283524,
+        "p5": 0.020662657916545868,
+        "p95": 0.03555690124630928,
+        "n": 13
+      }
+    },
+    "obj_trans_mm": {
+      "per_frame": {
+        "mean": 0.0,
+        "median": 0.0,
+        "p5": 0.0,
+        "p95": 0.0,
+        "n": 169
+      },
+      "per_window": {
+        "mean": 0.0,
+        "median": 0.0,
+        "p5": 0.0,
+        "p95": 0.0,
+        "n": 13
+      }
+    },
+    "detection": {
+      "tp": 169,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "n_gt_hands": 13,
+      "n_detected_slots": 13,
+      "n_matched_hands": 13
+    },
+    "hand_side_acc": {
+      "overall": 0.38461538461538464,
+      "correct": 5,
+      "total": 13,
+      "per_window": {
+        "mean": 0.38461539149284363,
+        "median": 0.0,
+        "p5": 0.0,
+        "p95": 1.0,
+        "n": 13
+      }
+    }
+  },
+  "per_sequence": {
+    "20200709-subject-01/20200709_141754": {
+      "hand_joint_l2_mm": 215.60992431640625,
+      "hand_mesh_l2_mm": null,
+      "obj_add_s_mm": 0.0,
+      "obj_rot_deg": 0.02934727817773819,
+      "obj_trans_mm": 0.0,
+      "detection": {
+        "tp": 52,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "n_gt_hands": 4,
+        "n_detected_slots": 4,
+        "n_matched_hands": 4
+      },
+      "hand_side_acc": 0.0,
+      "hand_side_correct": 0,
+      "hand_side_total": 4,
+      "n_windows": 4,
+      "n_frames": 52
+    },
+    "20200709-subject-01/20200709_141841": {
+      "hand_joint_l2_mm": 320.63970947265625,
+      "hand_mesh_l2_mm": null,
+      "obj_add_s_mm": 0.0,
+      "obj_rot_deg": 0.024921473115682602,
+      "obj_trans_mm": 0.0,
+      "detection": {
+        "tp": 52,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "n_gt_hands": 4,
+        "n_detected_slots": 4,
+        "n_matched_hands": 4
+      },
+      "hand_side_acc": 0.0,
+      "hand_side_correct": 0,
+      "hand_side_total": 4,
+      "n_windows": 4,
+      "n_frames": 52
+    },
+    "20200709-subject-01/20200709_141931": {
+      "hand_joint_l2_mm": 177.20672607421875,
+      "hand_mesh_l2_mm": null,
+      "obj_add_s_mm": 0.0,
+      "obj_rot_deg": 0.029452618211507797,
+      "obj_trans_mm": 0.0,
+      "detection": {
+        "tp": 65,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "n_gt_hands": 5,
+        "n_detected_slots": 5,
+        "n_matched_hands": 5
+      },
+      "hand_side_acc": 1.0,
+      "hand_side_correct": 5,
+      "hand_side_total": 5,
+      "n_windows": 5,
+      "n_frames": 65
+    }
+  }
+}

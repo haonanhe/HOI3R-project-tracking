@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-12 · Evaluate, visualize, and publish succeeded ACP job pt-9ohso8nd: direct_joints with active/right heads enabled and n_max=1 on cam836.",
+    "date": "2026-05-12",
+    "status": "published",
+    "summary": "Evaluate, visualize, and publish succeeded ACP job pt-9ohso8nd: direct_joints with active/right heads enabled and n_max=1 on cam836.",
+    "path": "updates/2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish.html",
+    "file": "updates/2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish.html",
+    "sidecar": "updates/2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish.json"
+  },
+  {
     "title": "2026-05-12 · Evaluate, visualize, and publish succeeded ACP job pt-ymuns2jx (DT10 direct-hand-only joints2d3d cam836 offset0).",
     "date": "2026-05-12",
     "status": "published",

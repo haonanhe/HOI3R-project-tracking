@@ -1,0 +1,48 @@
+{
+  "rows": [
+    {
+      "split": "train3",
+      "n_sequences": 3,
+      "n_windows": 13,
+      "hand_joint_l2_mm": 233.1563262939453,
+      "hand_joint_frames": 169,
+      "hand_mesh_l2_mm": null,
+      "hand_mesh_frames": 0,
+      "obj_add_s_mm": 0.0,
+      "obj_rot_deg": 0.028026007115840912,
+      "obj_trans_mm": 0.0,
+      "det_precision": 1.0,
+      "det_recall": 1.0,
+      "det_f1": 1.0,
+      "n_matched_hands": 13,
+      "hand_side_acc": 0.38461538461538464,
+      "hand_side_correct": 5,
+      "hand_side_total": 13
+    },
+    {
+      "split": "test3",
+      "n_sequences": 3,
+      "n_windows": 14,
+      "hand_joint_l2_mm": 159.94651794433594,
+      "hand_joint_frames": 182,
+      "hand_mesh_l2_mm": null,
+      "hand_mesh_frames": 0,
+      "obj_add_s_mm": 0.0,
+      "obj_rot_deg": 0.025207307189702988,
+      "obj_trans_mm": 0.0,
+      "det_precision": 1.0,
+      "det_recall": 1.0,
+      "det_f1": 1.0,
+      "n_matched_hands": 14,
+      "hand_side_acc": 0.35714285714285715,
+      "hand_side_correct": 5,
+      "hand_side_total": 14
+    }
+  ],
+  "notes": [
+    "direct_joints eval has no MANO mesh; hand_mesh_l2_mm is unavailable.",
+    "object metrics are GT passthrough in this direct_joints eval path, not learned object quality.",
+    "n_max=1 makes detection structurally easier: exactly one active slot per evaluated window.",
+    "is_right logits are nearly constant left; side accuracy remains poor."
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "overlay_test3_bad_idx9_w0.mp4": {
+    "width": 640,
+    "height": 480,
+    "r_frame_rate": "6/1",
+    "duration": "2.166667",
+    "nb_frames": "13"
+  },
+  "overlay_test3_good_w4.mp4": {
+    "width": 640,
+    "height": 480,
+    "r_frame_rate": "6/1",
+    "duration": "2.166667",
+    "nb_frames": "13"
+  },
+  "overlay_train3_w0.mp4": {
+    "width": 640,
+    "height": 480,
+    "r_frame_rate": "6/1",
+    "duration": "2.166667",
+    "nb_frames": "13"
+  },
+  "world_test3_bad_idx9_w0_multiframe.mp4": {
+    "width": 720,
+    "height": 630,
+    "r_frame_rate": "6/1",
+    "duration": "2.166667",
+    "nb_frames": "13"
+  },
+  "world_test3_bad_idx9_w0_rotating.mp4": {
+    "width": 720,
+    "height": 630,
+    "r_frame_rate": "12/1",
+    "duration": "3.000000",
+    "nb_frames": "36"
+  },
+  "world_test3_good_w4_multiframe.mp4": {
+    "width": 720,
+    "height": 630,
+    "r_frame_rate": "6/1",
+    "duration": "2.166667",
+    "nb_frames": "13"
+  },
+  "world_test3_good_w4_rotating.mp4": {
+    "width": 720,
+    "height": 630,
+    "r_frame_rate": "12/1",
+    "duration": "3.000000",
+    "nb_frames": "36"
+  },
+  "world_train3_w0_multiframe.mp4": {
+    "width": 720,
+    "height": 630,
+    "r_frame_rate": "6/1",
+    "duration": "2.166667",
+    "nb_frames": "13"
+  },
+  "world_train3_w0_rotating.mp4": {
+    "width": 720,
+    "height": 630,
+    "r_frame_rate": "12/1",
+    "duration": "3.000000",
+    "nb_frames": "36"
+  }
+}

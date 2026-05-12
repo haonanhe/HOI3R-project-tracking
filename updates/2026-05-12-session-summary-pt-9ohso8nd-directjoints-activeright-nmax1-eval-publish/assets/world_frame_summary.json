@@ -1,0 +1,29 @@
+{
+  "world_train3_w0": {
+    "viz_pred": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_train3_w0/viz_pred.pt",
+    "multiframe_frames": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_train3_w0/multiframe_frames",
+    "multiframe_count": 13,
+    "rotating_frames": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_train3_w0/rotating_frames",
+    "rotating_count": 36,
+    "mid_frame": 6,
+    "caveat": "hand point cloud contains 21 joints from direct_joints outputs, not a MANO mesh; object branch is effectively GT passthrough for this run (obj metrics near zero)."
+  },
+  "world_test3_good_w4": {
+    "viz_pred": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_test3_good_w4/viz_pred.pt",
+    "multiframe_frames": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_test3_good_w4/multiframe_frames",
+    "multiframe_count": 13,
+    "rotating_frames": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_test3_good_w4/rotating_frames",
+    "rotating_count": 36,
+    "mid_frame": 6,
+    "caveat": "hand point cloud contains 21 joints from direct_joints outputs, not a MANO mesh; object branch is effectively GT passthrough for this run (obj metrics near zero)."
+  },
+  "world_test3_bad_idx9_w0": {
+    "viz_pred": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_test3_bad_idx9_w0/viz_pred.pt",
+    "multiframe_frames": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_test3_bad_idx9_w0/multiframe_frames",
+    "multiframe_count": 13,
+    "rotating_frames": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish/viz_assets_pt_9ohso8nd/world_test3_bad_idx9_w0/rotating_frames",
+    "rotating_count": 36,
+    "mid_frame": 6,
+    "caveat": "hand point cloud contains 21 joints from direct_joints outputs, not a MANO mesh; object branch is effectively GT passthrough for this run (obj metrics near zero)."
+  }
+}

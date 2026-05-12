@@ -1,0 +1,123 @@
+{
+  "date": "2026-05-12",
+  "topic": "pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish",
+  "status": "published",
+  "branch": "feat/dcf-anchor-uvz-static",
+  "head_sha": "151652c",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static",
+  "goal": "Evaluate, visualize, and publish succeeded ACP job pt-9ohso8nd: direct_joints with active/right heads enabled and n_max=1 on cam836.",
+  "headline_stats": [
+    {
+      "label": "ACP train state",
+      "value": "SUCCEEDED"
+    },
+    {
+      "label": "Train3 hand joint",
+      "value": "233.2 mm"
+    },
+    {
+      "label": "Test3 hand joint",
+      "value": "159.9 mm"
+    },
+    {
+      "label": "Test det recall",
+      "value": "1.0"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "TRAIN-METADATA",
+      "sha": "151652c",
+      "summary": "Recovered pt-9ohso8nd ACP/job settings, final.pt, history.json, and train loss evidence."
+    },
+    {
+      "id": "EVAL",
+      "sha": "151652c",
+      "summary": "Ran train3 and test3 eval as ACP jobs pt-jvnxzz62 and pt-mgx9n3ef with final.pt, clip_len=13, n_max=1, camera0 r4 GT cache, and repaired cam836 subset manifests."
+    },
+    {
+      "id": "VIZ",
+      "sha": "151652c+local ffmpeg",
+      "summary": "Generated RGB overlays and 3D videos for train3, a good matched test window, and a high-error test window; encoded H.264 mp4s locally and synced them to the remote eval artifact directory."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fix",
+      "title": "active/right plus n_max=1 fixes matching",
+      "body": "Unlike pt-ymuns2jx, this run detects and matches every train3/test3 window: detection precision/recall/F1 are all 1.0 on both subsets."
+    },
+    {
+      "badge": "finding",
+      "title": "geometry remains far from target",
+      "body": "Direct 3D joint error is 233.2 mm on train3 and 159.9 mm on test3, so this is not a geometry solution."
+    },
+    {
+      "badge": "finding",
+      "title": "side classifier collapsed",
+      "body": "is_right logits are almost constant near 0.498 probability, effectively predicting left for every window; side accuracy is only 5/13 train and 5/14 test."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "151652c",
+      "type": "train/eval code",
+      "subject": "fix(acp): export direct hand detection weights"
+    },
+    {
+      "sha": "ddf1600",
+      "type": "data manifest",
+      "subject": "data(dexycb): add cam836 full train manifest"
+    },
+    {
+      "sha": "22bb31e",
+      "type": "launcher fix",
+      "subject": "fix(acp): pass slot index prior to DT10 launcher"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Training job",
+      "state": "pt-9ohso8nd SUCCEEDED; 4-GPU N6lS.Iu.I10.4.56c832g; final.pt at train step 10000."
+    },
+    {
+      "aspect": "Eval jobs",
+      "state": "train3 pt-jvnxzz62 SUCCEEDED; test3 pt-mgx9n3ef SUCCEEDED; both 1-GPU RESERVED ACP jobs."
+    },
+    {
+      "aspect": "Training settings",
+      "state": "direct_joints, HAND_ONLY=0, n_max=1, clip_len=13, latent256, head 1024x5, active/right weights 0.1, direct joint3d/kp2d weights 1.0."
+    },
+    {
+      "aspect": "Eval contract",
+      "state": "camera0/frame-0 contract, cam836 subset manifests, v3.6 camera0 r4 GT cache, final.pt, max-manifest-size equivalent 3-entry manifests."
+    },
+    {
+      "aspect": "Visualization",
+      "state": "RGB overlay uses hand_anchor_mode=none and pred_object_mode=camera0. World videos visualize direct 21-joint payloads, not MANO meshes."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "DO-NOT-ACCEPT-DIRECTJOINTS",
+      "priority": "P0",
+      "summary": "Do not treat this as accepted DT10 geometry: matching improved, but direct joint error remains O(160mm) on test3 and side classification collapsed."
+    },
+    {
+      "id": "NEXT-DESIGN",
+      "priority": "P1",
+      "summary": "Use this as evidence that active/right supervision fixes detection/matching but not spatially accurate hand geometry; next design must address global/local hand localization quality."
+    }
+  ],
+  "caveats": [
+    "This is deterministic train3/test3 subset eval, not full 1000-entry cam836 eval.",
+    "direct_joints mode has no real MANO mesh; hand_mesh_l2_mm is unavailable and world hand videos show 21 joint points.",
+    "Object metrics are GT passthrough in the direct_joints eval path and are not learned object performance.",
+    "With n_max=1 and single-hand cam836 windows, detection is structurally easier than multi-slot DETR matching.",
+    "Global gamma/orientation decomposition is unavailable because this checkpoint does not predict MANO gamma/phi/theta."
+  ],
+  "extra_html": "\n<section><h2>Eval Metrics</h2>\n<table><thead><tr><th>split</th><th>windows</th><th>hand_joint_l2_mm</th><th>det P/R/F1</th><th>side acc</th><th>mesh</th></tr></thead><tbody>\n<tr><td>train3</td><td>13</td><td>233.156</td><td>1.0 / 1.0 / 1.0</td><td>0.3846</td><td>unavailable</td></tr>\n<tr><td>test3</td><td>14</td><td>159.947</td><td>1.0 / 1.0 / 1.0</td><td>0.3571</td><td>unavailable</td></tr>\n</tbody></table>\n<p>Compared with pt-ymuns2jx, this run fixes detection/matching on test3, but the direct 3D joint error is still around 160 mm on test3 and the side classifier collapses near constant-left.</p>\n</section>\n<section><h2>Visualizations</h2>\n<ul>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/overlay_train3_w0.mp4\">RGB overlay train3 first matched window</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/overlay_test3_good_w4.mp4\">RGB overlay test3 good matched window</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/overlay_test3_bad_idx9_w0.mp4\">RGB overlay test3 high-error window</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/world_train3_w0_multiframe.mp4\">3D train3 multiframe</a> / <a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/world_train3_w0_rotating.mp4\">rotating</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/world_test3_good_w4_multiframe.mp4\">3D test3 good multiframe</a> / <a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/world_test3_good_w4_rotating.mp4\">rotating</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/world_test3_bad_idx9_w0_multiframe.mp4\">3D test3 bad multiframe</a> / <a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/videos/world_test3_bad_idx9_w0_rotating.mp4\">rotating</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/assets/train_loss_curves.png\">training loss curves</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/assets/hand_joint_metric_bar.png\">hand joint metric bar chart</a></li>\n</ul>\n</section>\n<section><h2>Raw Sidecars</h2>\n<ul>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/metrics_summary.json\">metrics_summary.json</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/metrics_summary.csv\">metrics_summary.csv</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/raw/train3_metrics.json\">train3_metrics.json</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/raw/test3_metrics.json\">test3_metrics.json</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/raw/acp_pt-9ohso8nd.json\">ACP train job JSON</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/raw/acp_pt-jvnxzz62.json\">ACP train3 eval job JSON</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/raw/acp_pt-mgx9n3ef.json\">ACP test3 eval job JSON</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish/logs/train_tail.txt\">train log tail</a></li>\n</ul>\n</section>\n",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-pt-9ohso8nd-directjoints-activeright-nmax1-eval-publish.json\nand continue from tasks_pending[0] (DO-NOT-ACCEPT-DIRECTJOINTS [P0]: Do not treat this as accepted DT10 geometry: matching improved, but direct joint error remains O(160mm) on test3 and side classification collapsed.).\nContext: branch feat/dcf-anchor-uvz-static@151652c; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static."
+}

@@ -1,0 +1,111 @@
+{
+  "subscription_name": "0197ee17-b6eb-7846-b2b4-a77c5f509b92",
+  "resource_group_name": "default",
+  "zone": "cn-sh-01z",
+  "workspace_name": "p1-video-world-model-for-robot-learning",
+  "name": "pt-jvnxzz62",
+  "uid": "8e2c97b6f43e4a348fee198ea40216fc",
+  "display_name": "train3-eval-pt9ohso8nd-151652c-20260512",
+  "id": "/subscriptions/0197ee17-b6eb-7846-b2b4-a77c5f509b92/resourceGroups/default/zones/cn-sh-01z/workspaces/p1-video-world-model-for-robot-learning/trainingJobs/pt-jvnxzz62",
+  "ownership": {
+    "user_name": "L202500161",
+    "user_id": "019c3279-b7c8-75da-a4d8-3646b3c1e4d7",
+    "requestor_id": "",
+    "tenant_id": "0197ee17-b6eb-7846-b2b4-a77c5f509b92"
+  },
+  "framework": "PYTORCH",
+  "roles": [
+    {
+      "name": "Worker",
+      "resource_spec": [
+        {
+          "name": "N6lS.Iu.I10.1.8c128g",
+          "replicas": 1,
+          "description": "1XN6lS-80GB",
+          "limits": {
+            "cpu": "8",
+            "device": "1",
+            "memory": "128",
+            "nvidia.com/gpu": "1"
+          },
+          "requests": {
+            "cpu": "8",
+            "device": "1",
+            "memory": "128",
+            "nvidia.com/gpu": "1"
+          }
+        }
+      ],
+      "total_replicas": 0,
+      "startup_script": "set -euo pipefail\nnvidia-smi || true\nWT=\"/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static\"\nRUN_DIR=\"/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0\"\nEVAL_DIR=\"/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish\"\nPRIOR=\"/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directhandonly_joints2d3d_head1024x5_offset0_4ee7f91_cam836212060125_p1_1gpu_rerun_pt-30d9c1f2/seed0\"\ncd \"$WT\"\ngit config --global --add safe.directory \"$WT\" || true\ngit rev-parse HEAD\nmkdir -p \"$EVAL_DIR/manifests\" \"$EVAL_DIR/train3\"\ncp \"$PRIOR/eval_publish/manifests/train3.json\" \"$EVAL_DIR/manifests/train3.json\"\nexport PYTHONPATH=\"$WT:$WT/third_party/wan/Wan2.2\"\n/mnt/afs/haonan/miniconda3/envs/human3r/bin/python scripts/hoi3r_v2/p2_eval_thfm_lora.py --ckpt \"$RUN_DIR/final.pt\" --manifest \"$EVAL_DIR/manifests/train3.json\" --dataset dexycb --vae-cache /mnt/afs/haonan/hoi3r/cache/wan22_vae_dexycb_full --gt-cache-dir /mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4 --clip-len 13 --n-max 1 --thfm-train-mode lora --lora-rank 16 --lora-alpha 32 --head-mid-dim 1024 --object-head-mid-dim 1024 --head-num-layers 5 --max-manifest-size 3 --output-dir \"$EVAL_DIR/train3\" --device cuda:0 2>&1 | tee \"$EVAL_DIR/train3_eval.log\"\ntest -s \"$EVAL_DIR/train3/metrics.json\"\ntest -s \"$EVAL_DIR/train3/predictions.pt\"\n/mnt/afs/haonan/miniconda3/envs/human3r/bin/python - <<'METRICS'\nimport json\nfrom pathlib import Path\np = Path(\"/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/eval_publish\") / 'train3' / 'metrics.json'\nm = json.loads(p.read_text())\nkeys = [\n    'detection_recall', 'detection_precision', 'detection_f1',\n    'hand_joint_l2_mm_mean', 'hand_joint_l2_mm_median', 'hand_joint_pa_mpjpe_mm_mean',\n    'direct_joint_l2_mm_mean', 'direct_joint_l2_mm_median', 'direct_joint_pa_mpjpe_mm_mean',\n]\nprint('[train3-eval-metrics]')\nfor k in keys:\n    if k in m:\n        print(f'{k}={m[k]}')\nfor k in sorted(m):\n    if ('direct' in k or 'hand_joint' in k or 'detect' in k or k in ('n_windows', 'n_sequences', 'n_predictions')) and k not in keys:\n        print(f'{k}={m[k]}')\nMETRICS\n",
+      "image_path": "registry.cn-sh-01.sensecore.cn/lepton-trainingjob/nvidia24.04-ubuntu22.04-py3.10-cuda12.4-cudnn9.1-torch2.3.0-transformerengine1.5:v1.0.0-20241130-nvdia-base-image"
+    }
+  ],
+  "env": [
+    {
+      "key": "NCCL_IB_TIMEOUT",
+      "value": "22"
+    },
+    {
+      "key": "NCCL_IB_RETRY_CNT",
+      "value": "13"
+    }
+  ],
+  "mount": [
+    {
+      "type": "PV_AFS",
+      "id": "019b308b-aa56-79af-b03c-7ce01c67e032",
+      "mount_path": "/mnt/afs",
+      "subdir": "/",
+      "zone": "cn-sh-01e",
+      "endpoint": "",
+      "name": "",
+      "mount_options": "",
+      "region": ""
+    }
+  ],
+  "tensorboard": {
+    "log_path": ""
+  },
+  "scheduling": {
+    "priority": "NORMAL",
+    "quota_type": "RESERVED",
+    "scoring_strategy": {
+      "type": "MOST_ALLOCATED"
+    }
+  },
+  "resource_pool": {
+    "name": "computing-cluster-01e",
+    "display_name": "computing_cluster_01e",
+    "zone": "cn-sh-01e",
+    "vpc_id": "01984147-90dc-76cb-8daa-b7dbf2d35ef1"
+  },
+  "state": "SUCCEEDED",
+  "root_mapping": false,
+  "fault_tolerance": {
+    "backoff_limit": 0,
+    "rules": []
+  },
+  "ssh": {
+    "auto_key_setup": false,
+    "config_mount_path": ""
+  },
+  "metadata": null,
+  "create_time": "2026-05-12T16:04:38Z",
+  "start_time": "2026-05-12T16:04:46Z",
+  "suspend_time": null,
+  "update_time": "2026-05-12T16:07:28.842329Z",
+  "complete_time": "2026-05-12T16:07:28Z",
+  "delete_time": null,
+  "fine_tuning_specs": "",
+  "async_checkpoint": {
+    "max_ckpt_rounds": 0
+  },
+  "lme": {
+    "enable_warmingup": false,
+    "max_retries": 0,
+    "enable_health_monitor": false,
+    "current_retries": 0,
+    "enable_checker": false
+  }
+}

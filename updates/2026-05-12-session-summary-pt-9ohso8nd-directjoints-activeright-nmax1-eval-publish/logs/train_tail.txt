@@ -1,0 +1,80 @@
+[step-time] step=9928 dt_ms=472.3 max_memory_allocated=15.07 GiB
+[step-time] step=9929 dt_ms=467.5 max_memory_allocated=15.07 GiB
+{"direct_joint3d": 0.09910030663013458, "direct_kp2d": 0.5813603401184082, "is_active": 0.0, "is_right": 0.06889276951551437, "rot": 0.2033461332321167, "trans": 0.08012404292821884, "add_s": 0.1559021770954132, "temp_o_rot": 0.0014235724229365587, "temp_o_trans": 8.803482160146814e-06, "direct_joint3d_unweighted": 0.09910030663013458, "direct_kp2d_unweighted": 0.5813603401184082, "total": 1.1901581287384033, "step": 9930}
+[step-time] step=9930 dt_ms=468.2 max_memory_allocated=15.07 GiB
+[step-time] step=9931 dt_ms=466.6 max_memory_allocated=15.07 GiB
+[step-time] step=9932 dt_ms=467.5 max_memory_allocated=15.07 GiB
+[step-time] step=9933 dt_ms=470.7 max_memory_allocated=15.07 GiB
+[step-time] step=9934 dt_ms=463.5 max_memory_allocated=15.07 GiB
+[step-time] step=9935 dt_ms=464.4 max_memory_allocated=15.07 GiB
+[step-time] step=9936 dt_ms=666.7 max_memory_allocated=15.07 GiB
+[step-time] step=9937 dt_ms=462.6 max_memory_allocated=15.07 GiB
+[step-time] step=9938 dt_ms=464.4 max_memory_allocated=15.07 GiB
+[step-time] step=9939 dt_ms=465.8 max_memory_allocated=15.07 GiB
+{"direct_joint3d": 0.11177657544612885, "direct_kp2d": 0.6079710721969604, "is_active": 0.0, "is_right": 0.06846123933792114, "rot": 0.41521140933036804, "trans": 0.059861332178115845, "add_s": 0.1631426066160202, "temp_o_rot": 0.0014235724229365587, "temp_o_trans": 8.531122148269787e-06, "direct_joint3d_unweighted": 0.11177657544612885, "direct_kp2d_unweighted": 0.6079710721969604, "total": 1.4278563261032104, "step": 9940}
+[step-time] step=9940 dt_ms=469.1 max_memory_allocated=15.07 GiB
+[step-time] step=9941 dt_ms=469.3 max_memory_allocated=15.07 GiB
+[step-time] step=9942 dt_ms=469.8 max_memory_allocated=15.07 GiB
+[step-time] step=9943 dt_ms=477.0 max_memory_allocated=15.07 GiB
+[step-time] step=9944 dt_ms=471.6 max_memory_allocated=15.07 GiB
+[step-time] step=9945 dt_ms=470.9 max_memory_allocated=15.07 GiB
+[step-time] step=9946 dt_ms=472.2 max_memory_allocated=15.07 GiB
+[step-time] step=9947 dt_ms=472.5 max_memory_allocated=15.07 GiB
+[step-time] step=9948 dt_ms=474.8 max_memory_allocated=15.07 GiB
+[step-time] step=9949 dt_ms=470.6 max_memory_allocated=15.07 GiB
+{"direct_joint3d": 0.11425860226154327, "direct_kp2d": 0.6696807146072388, "is_active": 0.0, "is_right": 0.07024875283241272, "rot": 0.20903275907039642, "trans": 0.08429061621427536, "add_s": 0.17936363816261292, "temp_o_rot": 0.0014235724229365587, "temp_o_trans": 5.7727511375560425e-06, "direct_joint3d_unweighted": 0.11425860226154327, "direct_kp2d_unweighted": 0.6696807146072388, "total": 1.328304409980774, "step": 9950}
+[step-time] step=9950 dt_ms=710.4 max_memory_allocated=15.07 GiB
+[step-time] step=9951 dt_ms=475.9 max_memory_allocated=15.07 GiB
+[step-time] step=9952 dt_ms=467.9 max_memory_allocated=15.07 GiB
+[step-time] step=9953 dt_ms=463.6 max_memory_allocated=15.07 GiB
+[step-time] step=9954 dt_ms=472.5 max_memory_allocated=15.07 GiB
+[step-time] step=9955 dt_ms=477.0 max_memory_allocated=15.07 GiB
+[step-time] step=9956 dt_ms=469.4 max_memory_allocated=15.07 GiB
+[step-time] step=9957 dt_ms=464.4 max_memory_allocated=15.07 GiB
+[step-time] step=9958 dt_ms=474.9 max_memory_allocated=15.07 GiB
+[step-time] step=9959 dt_ms=474.4 max_memory_allocated=15.07 GiB
+{"direct_joint3d": 0.09718669950962067, "direct_kp2d": 0.5747032761573792, "is_active": 0.0, "is_right": 0.06950027495622635, "rot": 0.3613106310367584, "trans": 0.08038178086280823, "add_s": 0.15305401384830475, "temp_o_rot": 0.0014235724229365587, "temp_o_trans": 4.76174909636029e-06, "direct_joint3d_unweighted": 0.09718669950962067, "direct_kp2d_unweighted": 0.5747032761573792, "total": 1.3375649452209473, "step": 9960}
+[step-time] step=9960 dt_ms=468.0 max_memory_allocated=15.07 GiB
+[step-time] step=9961 dt_ms=467.6 max_memory_allocated=15.07 GiB
+[step-time] step=9962 dt_ms=457.4 max_memory_allocated=15.07 GiB
+[step-time] step=9963 dt_ms=468.8 max_memory_allocated=15.07 GiB
+[step-time] step=9964 dt_ms=659.6 max_memory_allocated=15.07 GiB
+[step-time] step=9965 dt_ms=465.5 max_memory_allocated=15.07 GiB
+[step-time] step=9966 dt_ms=466.4 max_memory_allocated=15.07 GiB
+[step-time] step=9967 dt_ms=467.5 max_memory_allocated=15.07 GiB
+[step-time] step=9968 dt_ms=462.8 max_memory_allocated=15.07 GiB
+[step-time] step=9969 dt_ms=464.3 max_memory_allocated=15.07 GiB
+{"direct_joint3d": 0.07777680456638336, "direct_kp2d": 0.6311588287353516, "is_active": 0.0, "is_right": 0.0689675360918045, "rot": 0.4015856385231018, "trans": 0.0564785972237587, "add_s": 0.1303979754447937, "temp_o_rot": 0.0014235724229365587, "temp_o_trans": 9.125305950874463e-06, "direct_joint3d_unweighted": 0.07777680456638336, "direct_kp2d_unweighted": 0.6311588287353516, "total": 1.3677982091903687, "step": 9970}
+[step-time] step=9970 dt_ms=464.8 max_memory_allocated=15.07 GiB
+[step-time] step=9971 dt_ms=464.5 max_memory_allocated=15.07 GiB
+[step-time] step=9972 dt_ms=472.5 max_memory_allocated=15.07 GiB
+[step-time] step=9973 dt_ms=468.7 max_memory_allocated=15.07 GiB
+[step-time] step=9974 dt_ms=465.5 max_memory_allocated=15.07 GiB
+[step-time] step=9975 dt_ms=474.5 max_memory_allocated=15.07 GiB
+[step-time] step=9976 dt_ms=467.4 max_memory_allocated=15.07 GiB
+[step-time] step=9977 dt_ms=462.0 max_memory_allocated=15.07 GiB
+[step-time] step=9978 dt_ms=475.7 max_memory_allocated=15.07 GiB
+[step-time] step=9979 dt_ms=653.6 max_memory_allocated=15.07 GiB
+{"direct_joint3d": 0.0840378850698471, "direct_kp2d": 0.6182230710983276, "is_active": 0.0, "is_right": 0.07014431804418564, "rot": 0.5102658867835999, "trans": 0.033388447016477585, "add_s": 0.12052000313997269, "temp_o_rot": 0.0014235724229365587, "temp_o_trans": 1.2677784070547204e-05, "direct_joint3d_unweighted": 0.0840378850698471, "direct_kp2d_unweighted": 0.6182230710983276, "total": 1.4380159378051758, "step": 9980}
+[step-time] step=9980 dt_ms=464.2 max_memory_allocated=15.07 GiB
+[step-time] step=9981 dt_ms=465.4 max_memory_allocated=15.07 GiB
+[step-time] step=9982 dt_ms=464.6 max_memory_allocated=15.07 GiB
+[step-time] step=9983 dt_ms=462.6 max_memory_allocated=15.07 GiB
+[step-time] step=9984 dt_ms=459.0 max_memory_allocated=15.07 GiB
+[step-time] step=9985 dt_ms=458.6 max_memory_allocated=15.07 GiB
+[step-time] step=9986 dt_ms=467.2 max_memory_allocated=15.07 GiB
+[step-time] step=9987 dt_ms=462.6 max_memory_allocated=15.07 GiB
+[step-time] step=9988 dt_ms=459.0 max_memory_allocated=15.07 GiB
+[step-time] step=9989 dt_ms=462.1 max_memory_allocated=15.07 GiB
+{"direct_joint3d": 0.05465177819132805, "direct_kp2d": 0.5683828592300415, "is_active": 0.0, "is_right": 0.06979724019765854, "rot": 0.3311522901058197, "trans": 0.08321835845708847, "add_s": 0.1832597702741623, "temp_o_rot": 0.0014235724229365587, "temp_o_trans": 1.6531390429008752e-05, "direct_joint3d_unweighted": 0.05465177819132805, "direct_kp2d_unweighted": 0.5683828592300415, "total": 1.2919024229049683, "step": 9990}
+[step-time] step=9990 dt_ms=460.0 max_memory_allocated=15.07 GiB
+[step-time] step=9991 dt_ms=461.9 max_memory_allocated=15.07 GiB
+[step-time] step=9992 dt_ms=460.9 max_memory_allocated=15.07 GiB
+[step-time] step=9993 dt_ms=460.5 max_memory_allocated=15.07 GiB
+[step-time] step=9994 dt_ms=660.9 max_memory_allocated=15.07 GiB
+[step-time] step=9995 dt_ms=461.7 max_memory_allocated=15.07 GiB
+[step-time] step=9996 dt_ms=459.5 max_memory_allocated=15.07 GiB
+[step-time] step=9997 dt_ms=460.6 max_memory_allocated=15.07 GiB
+[step-time] step=9998 dt_ms=463.9 max_memory_allocated=15.07 GiB
+[step-time] step=9999 dt_ms=464.6 max_memory_allocated=15.07 GiB
+Saved /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directjoints_activeright_nmax1_cam836_151652c_g4_20260512/seed0/final.pt
