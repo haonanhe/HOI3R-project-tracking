@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-12 · Evaluate, visualize, and publish succeeded ACP job pt-ymuns2jx (DT10 direct-hand-only joints2d3d cam836 offset0).",
+    "date": "2026-05-12",
+    "status": "published",
+    "summary": "Evaluate, visualize, and publish succeeded ACP job pt-ymuns2jx (DT10 direct-hand-only joints2d3d cam836 offset0).",
+    "path": "updates/2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish.html",
+    "file": "updates/2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish.html",
+    "sidecar": "updates/2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish.json"
+  },
+  {
     "title": "2026-05-12 · Publish Wan2.2 vs Native-4RC eval metrics on one page (same eval contract).",
     "date": "2026-05-12",
     "status": "wip",

@@ -1,0 +1,153 @@
+{
+  "predictions": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/logs/v2ablate/dt10_directhandonly_joints2d3d_head1024x5_offset0_4ee7f91_cam836212060125_p1_1gpu_rerun_pt-30d9c1f2/seed0/eval_publish/train3/predictions.pt",
+  "sequence": "20200709-subject-01/20200709_141754",
+  "camera": "836212060125",
+  "window_idx": 0,
+  "frame0": 9,
+  "hand_match": {
+    "gt_idx": 0,
+    "pred_slot": 0,
+    "gt_slot": 1,
+    "side": "right"
+  },
+  "hand_anchor": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hand_anchor_mode": "none",
+  "pred_object_mode": "camera0",
+  "frames": [
+    {
+      "frame_abs": 9,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000009.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 10,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000010.jpg",
+      "counts": {
+        "pred_hand": 21,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 11,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000011.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 12,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000012.jpg",
+      "counts": {
+        "pred_hand": 21,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 13,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000013.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 14,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000014.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 15,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000015.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 16,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000016.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 17,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000017.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 18,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000018.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 19,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000019.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 20,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000020.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    },
+    {
+      "frame_abs": 21,
+      "image": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb/20200709-subject-01/20200709_141754/836212060125/color_000021.jpg",
+      "counts": {
+        "pred_hand": 0,
+        "gt_hand": 21,
+        "pred_obj": 128,
+        "gt_obj": 128
+      }
+    }
+  ],
+  "output_mp4": null
+}

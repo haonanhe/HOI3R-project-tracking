@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/scripts/hoi3r_v2/render_eval_rgb_overlay.py", line 275, in <module>
+    raise SystemExit(run(parse_args()))
+                     ^^^^^^^^^^^^^^^^^
+  File "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/scripts/hoi3r_v2/render_eval_rgb_overlay.py", line 156, in run
+    hand_pred_rel, hand_gt_rel, hand_match = _select_hand(record)
+                                             ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static/scripts/hoi3r_v2/render_eval_rgb_overlay.py", line 96, in _select_hand
+    raise ValueError("record has no Hungarian assignment")
+ValueError: record has no Hungarian assignment

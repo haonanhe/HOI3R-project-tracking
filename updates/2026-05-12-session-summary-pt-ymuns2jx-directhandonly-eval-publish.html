@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-12 · pt-ymuns2jx-directhandonly-eval-publish</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Pt Ymuns2Jx Directhandonly Eval Publish</h1>
+  <div class="meta">2026-05-12 · <code>feat/dcf-anchor-uvz-static</code> · <code>@467861a</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static</code></div>
+  <p class="goal">Evaluate, visualize, and publish succeeded ACP job pt-ymuns2jx (DT10 direct-hand-only joints2d3d cam836 offset0).</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">SUCCEEDED</div><div class="label">ACP state</div></div><div class="stat"><div class="val">13</div><div class="label">Train windows</div></div><div class="stat"><div class="val">14</div><div class="label">Test windows</div></div><div class="stat"><div class="val">0.0</div><div class="label">Test det recall</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>ACP-RECOVER</td><td><span class="badge badge-pass">PASS</span></td><td>4ee7f91/467861a</td><td>Recovered ACP settings, train output, final.pt, history.json, and train.log for pt-ymuns2jx.</td></tr><tr><td>EVAL</td><td><span class="badge badge-pass">PASS</span></td><td>467861a</td><td>Ran/validated train3 and test3 eval with final.pt, camera0 r4 GT cache, clip_len=13, n_max=2, and cam836 manifests.</td></tr><tr><td>VIZ</td><td><span class="badge badge-pass">PASS</span></td><td>467861a+local ffmpeg</td><td>Generated train3 RGB overlay and 3D playback videos; test overlay probe failed because test predictions had no Hungarian assignment.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> test3 has no matched hand predictions</h3><p>The checkpoint lacks active/right/object heads, and test3 eval produced detection recall 0.0; hand_joint_l2_mm and hand_mesh_l2_mm are None on test3.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> train3 hand joint error is extremely large</h3><p>train3 hand_joint_l2_mm is about 1,538,295 mm despite nonzero matching, indicating the direct_joints run does not produce usable global hand localization.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> test3 manifest repaired against v3.6 cache</h3><p>The initial test manifest used stale tracked_start=5. It was rewritten from the cache contract to starts 7, 11, and 9 before eval.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>4ee7f91</td><td>train code</td><td>fix(dt10): make hand-only direct mode skip detection heads</td></tr><tr><td>467861a</td><td>eval code</td><td>p2_eval: support direct_joints checkpoints</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>ACP job</td><td>pt-ymuns2jx SUCCEEDED; created 2026-05-12T08:58:15Z, completed 2026-05-12T10:20:14Z.</td></tr><tr><td>Checkpoint</td><td>final.pt at step 10000; ckpt_step005000.pt also present.</td></tr><tr><td>Training settings</td><td>BATCH=1, CLIP_LEN=13, N_MAX=2, hand_target_mode=direct_joints, HAND_ONLY=1, head 1024x5, offset0, cam836.</td></tr><tr><td>Eval contract</td><td>camera0/frame-0 coordinate contract, GT cache v3.6 camera0 r4, hand_anchor_mode=none, pred_object_mode=camera0.</td></tr><tr><td>Visualization</td><td>Remote rendered PNG frames; local ffmpeg encoded H.264 mp4s because remote ffmpeg was unavailable.</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>STOP-DIRECTHANDONLY</td><td><span class="badge badge-p0">P0</span></td><td>Do not scale this exact direct-hand-only checkpoint family as a solution; test split has no hand matches and train global hand coordinates explode.</td></tr><tr><td>NEXT-DESIGN</td><td><span class="badge badge-p1">P1</span></td><td>Use this as evidence against the current direct_joints-only/detection-headless contract when choosing the next DT10 hand localization design.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>This is a deterministic train3/test3 subset publish, not full 1000-entry cam836 eval.</li><li>The evaluated checkpoint intentionally lacks active/right/object heads; detection and hand-side metrics are therefore structurally limited.</li><li>Global gamma/orientation decomposition is unavailable because this checkpoint uses HAND_TARGET_MODE=direct_joints, not MANO gamma/phi heads.</li><li>Test RGB/3D hand visualization could not be generated because test3 predictions had no Hungarian assignment; the failure log is published.</li></ul>
+</section>
+
+
+
+<section><h2>Eval Metrics</h2>
+<table><thead><tr><th>split</th><th>seqs</th><th>windows</th><th>hand_joint_l2_mm</th><th>hand_mesh_l2_mm</th><th>obj_add_s_mm</th><th>det_precision</th><th>det_recall</th><th>det_f1</th><th>hand_side_acc</th></tr></thead><tbody><tr><td>train3</td><td>3</td><td>13</td><td>1538295.25</td><td>None</td><td>0.0</td><td>1.0</td><td>0.8461538461538461</td><td>0.9166666666666666</td><td>0.6153846153846154</td></tr><tr><td>test3</td><td>3</td><td>14</td><td>None</td><td>None</td><td>0.0</td><td>None</td><td>0.0</td><td>None</td><td>None</td></tr></tbody></table>
+<p>Test hand metrics are None because no hand slots were detected/matched on test3; this is a result of the evaluated checkpoint contract, not a render failure.</p>
+</section>
+<section><h2>Visualizations</h2>
+<ul>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/videos/overlay_train3_w0.mp4">RGB overlay train3 window0</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/videos/world_train3_w0_multiframe.mp4">3D multiframe train3 window0</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/videos/world_train3_w0_rotating.mp4">3D rotating train3 window0</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/assets/train_loss_curves.png">training loss curves</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/assets/hand_joint_metric_bar.png">hand metric bar chart</a></li>
+</ul>
+</section>
+<section><h2>Raw Sidecars</h2>
+<ul>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/metrics_summary.json">metrics_summary.json</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/metrics_summary.csv">metrics_summary.csv</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/raw/train3_metrics.json">train3_metrics.json</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/raw/test3_metrics.json">test3_metrics.json</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/raw/acp_pt-ymuns2jx_pure.json">ACP metadata JSON</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/logs/train_tail.txt">train log tail</a></li>
+<li><a href="2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/logs/overlay_test3_w0.txt">test overlay failure log</a></li>
+</ul>
+</section>
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish.json
+and continue from tasks_pending[0] (STOP-DIRECTHANDONLY [P0]: Do not scale this exact direct-hand-only checkpoint family as a solution; test split has no hand matches and train global hand coordinates explode.).
+Context: branch feat/dcf-anchor-uvz-static@467861a; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static.</pre></section>
+</div></body></html>

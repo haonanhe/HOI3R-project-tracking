@@ -1,0 +1,114 @@
+{
+  "date": "2026-05-12",
+  "topic": "pt-ymuns2jx-directhandonly-eval-publish",
+  "status": "published",
+  "branch": "feat/dcf-anchor-uvz-static",
+  "head_sha": "467861a",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-anchor-uvz-static",
+  "goal": "Evaluate, visualize, and publish succeeded ACP job pt-ymuns2jx (DT10 direct-hand-only joints2d3d cam836 offset0).",
+  "headline_stats": [
+    {
+      "label": "ACP state",
+      "value": "SUCCEEDED"
+    },
+    {
+      "label": "Train windows",
+      "value": "13"
+    },
+    {
+      "label": "Test windows",
+      "value": "14"
+    },
+    {
+      "label": "Test det recall",
+      "value": "0.0"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "ACP-RECOVER",
+      "sha": "4ee7f91/467861a",
+      "summary": "Recovered ACP settings, train output, final.pt, history.json, and train.log for pt-ymuns2jx."
+    },
+    {
+      "id": "EVAL",
+      "sha": "467861a",
+      "summary": "Ran/validated train3 and test3 eval with final.pt, camera0 r4 GT cache, clip_len=13, n_max=2, and cam836 manifests."
+    },
+    {
+      "id": "VIZ",
+      "sha": "467861a+local ffmpeg",
+      "summary": "Generated train3 RGB overlay and 3D playback videos; test overlay probe failed because test predictions had no Hungarian assignment."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "test3 has no matched hand predictions",
+      "body": "The checkpoint lacks active/right/object heads, and test3 eval produced detection recall 0.0; hand_joint_l2_mm and hand_mesh_l2_mm are None on test3."
+    },
+    {
+      "badge": "finding",
+      "title": "train3 hand joint error is extremely large",
+      "body": "train3 hand_joint_l2_mm is about 1,538,295 mm despite nonzero matching, indicating the direct_joints run does not produce usable global hand localization."
+    },
+    {
+      "badge": "fix",
+      "title": "test3 manifest repaired against v3.6 cache",
+      "body": "The initial test manifest used stale tracked_start=5. It was rewritten from the cache contract to starts 7, 11, and 9 before eval."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "4ee7f91",
+      "type": "train code",
+      "subject": "fix(dt10): make hand-only direct mode skip detection heads"
+    },
+    {
+      "sha": "467861a",
+      "type": "eval code",
+      "subject": "p2_eval: support direct_joints checkpoints"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "ACP job",
+      "state": "pt-ymuns2jx SUCCEEDED; created 2026-05-12T08:58:15Z, completed 2026-05-12T10:20:14Z."
+    },
+    {
+      "aspect": "Checkpoint",
+      "state": "final.pt at step 10000; ckpt_step005000.pt also present."
+    },
+    {
+      "aspect": "Training settings",
+      "state": "BATCH=1, CLIP_LEN=13, N_MAX=2, hand_target_mode=direct_joints, HAND_ONLY=1, head 1024x5, offset0, cam836."
+    },
+    {
+      "aspect": "Eval contract",
+      "state": "camera0/frame-0 coordinate contract, GT cache v3.6 camera0 r4, hand_anchor_mode=none, pred_object_mode=camera0."
+    },
+    {
+      "aspect": "Visualization",
+      "state": "Remote rendered PNG frames; local ffmpeg encoded H.264 mp4s because remote ffmpeg was unavailable."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "STOP-DIRECTHANDONLY",
+      "priority": "P0",
+      "summary": "Do not scale this exact direct-hand-only checkpoint family as a solution; test split has no hand matches and train global hand coordinates explode."
+    },
+    {
+      "id": "NEXT-DESIGN",
+      "priority": "P1",
+      "summary": "Use this as evidence against the current direct_joints-only/detection-headless contract when choosing the next DT10 hand localization design."
+    }
+  ],
+  "caveats": [
+    "This is a deterministic train3/test3 subset publish, not full 1000-entry cam836 eval.",
+    "The evaluated checkpoint intentionally lacks active/right/object heads; detection and hand-side metrics are therefore structurally limited.",
+    "Global gamma/orientation decomposition is unavailable because this checkpoint uses HAND_TARGET_MODE=direct_joints, not MANO gamma/phi heads.",
+    "Test RGB/3D hand visualization could not be generated because test3 predictions had no Hungarian assignment; the failure log is published."
+  ],
+  "extra_html": "\n<section><h2>Eval Metrics</h2>\n<table><thead><tr><th>split</th><th>seqs</th><th>windows</th><th>hand_joint_l2_mm</th><th>hand_mesh_l2_mm</th><th>obj_add_s_mm</th><th>det_precision</th><th>det_recall</th><th>det_f1</th><th>hand_side_acc</th></tr></thead><tbody><tr><td>train3</td><td>3</td><td>13</td><td>1538295.25</td><td>None</td><td>0.0</td><td>1.0</td><td>0.8461538461538461</td><td>0.9166666666666666</td><td>0.6153846153846154</td></tr><tr><td>test3</td><td>3</td><td>14</td><td>None</td><td>None</td><td>0.0</td><td>None</td><td>0.0</td><td>None</td><td>None</td></tr></tbody></table>\n<p>Test hand metrics are None because no hand slots were detected/matched on test3; this is a result of the evaluated checkpoint contract, not a render failure.</p>\n</section>\n<section><h2>Visualizations</h2>\n<ul>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/videos/overlay_train3_w0.mp4\">RGB overlay train3 window0</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/videos/world_train3_w0_multiframe.mp4\">3D multiframe train3 window0</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/videos/world_train3_w0_rotating.mp4\">3D rotating train3 window0</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/assets/train_loss_curves.png\">training loss curves</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/assets/hand_joint_metric_bar.png\">hand metric bar chart</a></li>\n</ul>\n</section>\n<section><h2>Raw Sidecars</h2>\n<ul>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/metrics_summary.json\">metrics_summary.json</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/metrics_summary.csv\">metrics_summary.csv</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/raw/train3_metrics.json\">train3_metrics.json</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/raw/test3_metrics.json\">test3_metrics.json</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/raw/acp_pt-ymuns2jx_pure.json\">ACP metadata JSON</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/logs/train_tail.txt\">train log tail</a></li>\n<li><a href=\"2026-05-12-session-summary-pt-ymuns2jx-directhandonly-eval-publish/logs/overlay_test3_w0.txt\">test overlay failure log</a></li>\n</ul>\n</section>\n"
+}
