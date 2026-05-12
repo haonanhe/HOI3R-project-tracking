@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-12 · Evaluate and publish Wan2.2 DiT last-sample dense latent full DexYCB bs=4 run pt-ohmi8cz3.",
+    "date": "2026-05-12",
+    "status": "published",
+    "summary": "Evaluate and publish Wan2.2 DiT last-sample dense latent full DexYCB bs=4 run pt-ohmi8cz3.",
+    "path": "updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.html",
+    "file": "updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.html",
+    "sidecar": "updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.json"
+  },
+  {
     "title": "2026-05-12 · Publish an intermediate eval for still-running ACP job pt-nzzh80jf using latest durable checkpoint ckpt_step009000.pt.",
     "date": "2026-05-12",
     "status": "wip",

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-12 · wan22-thfm-dense-full-dexycb-bs4-eval-publish</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Wan22 Thfm Dense Full Dexycb Bs4 Eval Publish</h1>
+  <div class="meta">2026-05-12 · <code>feat/dcf-native-4rc-latent</code> · <code>@f4fabdb66e31fde5f11746c8aaece00431d47317</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent</code></div>
+  <p class="goal">Evaluate and publish Wan2.2 DiT last-sample dense latent full DexYCB bs=4 run pt-ohmi8cz3.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">264.8 mm</div><div class="label">Train hand joint</div></div><div class="stat"><div class="val">371.8 mm</div><div class="label">Test hand joint</div></div><div class="stat"><div class="val">276.9 mm</div><div class="label">Train obj ADD-S</div></div><div class="stat"><div class="val">179.8 mm</div><div class="label">Test obj ADD-S</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>E1</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Confirmed ACP job pt-ohmi8cz3 completed and final.pt exists.</td></tr><tr><td>E2</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Enabled native-4rc-latent eval forward for Wan2.2 DiT last-sample features.</td></tr><tr><td>E3</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Ran deterministic train3/test3 eval and generated RGB/3D visualization assets.</td></tr></tbody></table>
+</section>
+
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>799db1f</td><td>code</td><td>feat(hoi3r): use wan22 thfm dense latents</td></tr><tr><td>8e8e5c5</td><td>code</td><td>fix(hoi3r): pass wan timestep grid for batches</td></tr><tr><td>f4fabdb</td><td>code</td><td>feat(hoi3r): enable wan22 dense latent eval</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>ACP job</td><td>pt-ohmi8cz3, bs=4, clip_len=13, n_gpus=1, output seed0/final.pt</td></tr><tr><td>Feature</td><td>Wan22DitLastSampleExtractor uses the DiT -v last sample fed toward VAE decoder; no hand query insertion, no LoRA.</td></tr><tr><td>Coordinate contract</td><td>camera0/frame-0 camera coordinates; RGB overlay uses hand_anchor_mode=none and pred_object_mode=camera0.</td></tr><tr><td>Eval scope</td><td>Deterministic subset: first 3 train manifest entries and first 3 test manifest entries.</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>P1</td><td><span class="badge badge-p1">P1</span></td><td>Decide whether to run full-manifest eval or change the Wan2.2 dense latent adapter after reviewing published metrics and videos.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>Eval is a small deterministic subset, not full DexYCB test.</li><li>Training used 1 GPU because p1/share-space 4-card and 8-card submissions were rejected by quota.</li><li>The adapter path was launched through native_4rc_one_sequence_overfit.py pointed at the full manifest; p2_train.py native-4rc-latent remains intentionally incomplete.</li></ul>
+</section>
+
+
+<section><h2>Eval metrics</h2>
+<table><thead><tr><th>Split</th><th>Windows</th><th>Hand joint mm</th><th>Hand mesh mm</th><th>Obj ADD-S mm</th><th>Obj rot deg</th><th>Obj trans mm</th><th>Det F1</th><th>Side acc</th></tr></thead><tbody>
+<tr><td>train3</td><td>12</td><td>264.828</td><td>262.502</td><td>276.876</td><td>103.680</td><td>281.719</td><td>1.000</td><td>0.583</td></tr>
+<tr><td>test3</td><td>15</td><td>371.804</td><td>369.467</td><td>179.832</td><td>99.135</td><td>179.985</td><td>1.000</td><td>0.533</td></tr>
+</tbody></table>
+<p><a href="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/metrics_summary.csv">metrics_summary.csv</a> · <a href="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/metrics_summary.json">metrics_summary.json</a></p>
+</section>
+<section><h2>Plots</h2>
+<p><img src="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/plots/loss_curve.png" alt="loss curve" style="max-width:100%"></p>
+<p><img src="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/plots/metric_bars.png" alt="metric bars" style="max-width:100%"></p>
+</section>
+<section><h2>Videos</h2><ul><li><a href="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/train_rgb_overlay.mp4">train_rgb_overlay.mp4</a></li>
+<li><a href="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/test_rgb_overlay.mp4">test_rgb_overlay.mp4</a></li>
+<li><a href="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/train_world_multi.mp4">train_world_multi.mp4</a></li>
+<li><a href="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/train_world_rotate.mp4">train_world_rotate.mp4</a></li>
+<li><a href="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/test_world_multi.mp4">test_world_multi.mp4</a></li>
+<li><a href="2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/test_world_rotate.mp4">test_world_rotate.mp4</a></li></ul></section>
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.json
+and continue from tasks_pending[0] (P1 [P1]: Decide whether to run full-manifest eval or change the Wan2.2 dense latent adapter after reviewing published metrics and videos.).
+Context: branch feat/dcf-native-4rc-latent@f4fabdb66e31fde5f11746c8aaece00431d47317; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent.</pre></section>
+</div></body></html>

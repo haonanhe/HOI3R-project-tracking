@@ -1,0 +1,92 @@
+{
+  "date": "2026-05-12",
+  "topic": "wan22-thfm-dense-full-dexycb-bs4-eval-publish",
+  "branch": "feat/dcf-native-4rc-latent",
+  "head_sha": "f4fabdb66e31fde5f11746c8aaece00431d47317",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent",
+  "goal": "Evaluate and publish Wan2.2 DiT last-sample dense latent full DexYCB bs=4 run pt-ohmi8cz3.",
+  "status": "published",
+  "headline_stats": [
+    {
+      "label": "Train hand joint",
+      "value": "264.8 mm"
+    },
+    {
+      "label": "Test hand joint",
+      "value": "371.8 mm"
+    },
+    {
+      "label": "Train obj ADD-S",
+      "value": "276.9 mm"
+    },
+    {
+      "label": "Test obj ADD-S",
+      "value": "179.8 mm"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "E1",
+      "summary": "Confirmed ACP job pt-ohmi8cz3 completed and final.pt exists."
+    },
+    {
+      "id": "E2",
+      "summary": "Enabled native-4rc-latent eval forward for Wan2.2 DiT last-sample features."
+    },
+    {
+      "id": "E3",
+      "summary": "Ran deterministic train3/test3 eval and generated RGB/3D visualization assets."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "799db1f",
+      "type": "code",
+      "subject": "feat(hoi3r): use wan22 thfm dense latents"
+    },
+    {
+      "sha": "8e8e5c5",
+      "type": "code",
+      "subject": "fix(hoi3r): pass wan timestep grid for batches"
+    },
+    {
+      "sha": "f4fabdb",
+      "type": "code",
+      "subject": "feat(hoi3r): enable wan22 dense latent eval"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "ACP job",
+      "state": "pt-ohmi8cz3, bs=4, clip_len=13, n_gpus=1, output seed0/final.pt"
+    },
+    {
+      "aspect": "Feature",
+      "state": "Wan22DitLastSampleExtractor uses the DiT -v last sample fed toward VAE decoder; no hand query insertion, no LoRA."
+    },
+    {
+      "aspect": "Coordinate contract",
+      "state": "camera0/frame-0 camera coordinates; RGB overlay uses hand_anchor_mode=none and pred_object_mode=camera0."
+    },
+    {
+      "aspect": "Eval scope",
+      "state": "Deterministic subset: first 3 train manifest entries and first 3 test manifest entries."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P1",
+      "priority": "P1",
+      "summary": "Decide whether to run full-manifest eval or change the Wan2.2 dense latent adapter after reviewing published metrics and videos."
+    }
+  ],
+  "caveats": [
+    "Eval is a small deterministic subset, not full DexYCB test.",
+    "Training used 1 GPU because p1/share-space 4-card and 8-card submissions were rejected by quota.",
+    "The adapter path was launched through native_4rc_one_sequence_overfit.py pointed at the full manifest; p2_train.py native-4rc-latent remains intentionally incomplete."
+  ],
+  "extra_html": "<section><h2>Eval metrics</h2>\n<table><thead><tr><th>Split</th><th>Windows</th><th>Hand joint mm</th><th>Hand mesh mm</th><th>Obj ADD-S mm</th><th>Obj rot deg</th><th>Obj trans mm</th><th>Det F1</th><th>Side acc</th></tr></thead><tbody>\n<tr><td>train3</td><td>12</td><td>264.828</td><td>262.502</td><td>276.876</td><td>103.680</td><td>281.719</td><td>1.000</td><td>0.583</td></tr>\n<tr><td>test3</td><td>15</td><td>371.804</td><td>369.467</td><td>179.832</td><td>99.135</td><td>179.985</td><td>1.000</td><td>0.533</td></tr>\n</tbody></table>\n<p><a href=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/metrics_summary.csv\">metrics_summary.csv</a> · <a href=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/metrics_summary.json\">metrics_summary.json</a></p>\n</section>\n<section><h2>Plots</h2>\n<p><img src=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/plots/loss_curve.png\" alt=\"loss curve\" style=\"max-width:100%\"></p>\n<p><img src=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/plots/metric_bars.png\" alt=\"metric bars\" style=\"max-width:100%\"></p>\n</section>\n<section><h2>Videos</h2><ul><li><a href=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/train_rgb_overlay.mp4\">train_rgb_overlay.mp4</a></li>\n<li><a href=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/test_rgb_overlay.mp4\">test_rgb_overlay.mp4</a></li>\n<li><a href=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/train_world_multi.mp4\">train_world_multi.mp4</a></li>\n<li><a href=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/train_world_rotate.mp4\">train_world_rotate.mp4</a></li>\n<li><a href=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/test_world_multi.mp4\">test_world_multi.mp4</a></li>\n<li><a href=\"2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish/videos/test_world_rotate.mp4\">test_world_rotate.mp4</a></li></ul></section>",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-wan22-thfm-dense-full-dexycb-bs4-eval-publish.json\nand continue from tasks_pending[0] (P1 [P1]: Decide whether to run full-manifest eval or change the Wan2.2 dense latent adapter after reviewing published metrics and videos.).\nContext: branch feat/dcf-native-4rc-latent@f4fabdb66e31fde5f11746c8aaece00431d47317; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent."
+}

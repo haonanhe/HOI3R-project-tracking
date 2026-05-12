@@ -1,0 +1,26 @@
+[
+  {
+    "split": "train3",
+    "manifest": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/manifests/dexycb_s1_train_multicam.json",
+    "n_windows": 12,
+    "hand_joint_l2_mm": 264.8277587890625,
+    "hand_mesh_l2_mm": 262.50244140625,
+    "obj_add_s_mm": 276.8761901855469,
+    "obj_rot_deg": 103.67962646484375,
+    "obj_trans_mm": 281.71929931640625,
+    "detection_f1": 1.0,
+    "hand_side_acc": 0.5833333333333334
+  },
+  {
+    "split": "test3",
+    "manifest": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/manifests/dexycb_s1_test_multicam.json",
+    "n_windows": 15,
+    "hand_joint_l2_mm": 371.8036193847656,
+    "hand_mesh_l2_mm": 369.4669494628906,
+    "obj_add_s_mm": 179.83241271972656,
+    "obj_rot_deg": 99.13487243652344,
+    "obj_trans_mm": 179.98532104492188,
+    "detection_f1": 1.0,
+    "hand_side_acc": 0.5333333333333333
+  }
+]
