@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-12 · native4rc-bs4-step9000-partial-eval</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Native4Rc Bs4 Step9000 Partial Eval</h1>
+  <div class="meta">2026-05-12 · <code>feat/dcf-native-4rc-pure-20260512</code> · <code>@607b505</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-pure-20260512</code></div>
+  <p class="goal">Publish an intermediate eval for still-running ACP job pt-nzzh80jf using latest durable checkpoint ckpt_step009000.pt.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">step 9000</div><div class="label">Latest ckpt</div></div><div class="stat"><div class="val">0.9253</div><div class="label">Train16 total</div></div><div class="stat"><div class="val">1.3300</div><div class="label">Test16 total</div></div><div class="stat"><div class="val">911</div><div class="label">Pulled log rows</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>LOG-PULL</td><td><span class="badge badge-pass">PASS</span></td><td>8e8e5c5/607b505</td><td>Pulled args.json, train.log through latest visible rows, and checkpoint inventory for pt-nzzh80jf.</td></tr><tr><td>CKPT-EVAL</td><td><span class="badge badge-pass">PASS</span></td><td>607b505</td><td>Loaded ckpt_step009000.pt with the recovered pure native 4RC eval code and ran deterministic train/test 16-window loss replay.</td></tr><tr><td>PUBLISH-ASSETS</td><td><span class="badge badge-pass">PASS</span></td><td>local</td><td>Generated loss curves, partial eval chart, metrics_summary.csv/json, raw partial_eval_metrics.json, args.json, and train log tail.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Latest durable checkpoint is step 9000</h3><p>At publish time the full train job had written ckpt_step009000.pt; the pulled train.log had 911 JSON rows and last copied row step 9060.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Partial eval is loss replay, not full p2_eval</h3><p>p2_eval_thfm_lora.py does not yet implement native-4RC full predictions for this checkpoint format, so this page reports deterministic train/test loss replay on 16 windows per split.</p></div>
+<div class="panel"><h3><span class="badge badge-fix">FIX</span> Eval required recovered pure native code</h3><p>The polluted worktree on disk had a Wan2.2 48-d extractor incompatible with the checkpoint adapter shape [3072,3072]. Evaluation used feat/dcf-native-4rc-pure-20260512@607b505 to match the 3072-d native 4RC checkpoint contract.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>607b505</td><td>eval code</td><td>feat(native4rc): add pure scene latent adapter smoke path</td></tr><tr><td>8e8e5c5</td><td>training worktree HEAD</td><td>polluted native-4rc-latent worktree; recorded only for provenance</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>ACP job</td><td>pt-nzzh80jf still running; this is an intermediate checkpoint publish.</td></tr><tr><td>Checkpoint</td><td>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt</td></tr><tr><td>Training config</td><td>batch_size=4, clip_len=13, n_max=2, save_every=1000, num_steps=10000</td></tr><tr><td>Eval subsets</td><td>16 deterministic windows from s1 train multicam and 16 deterministic windows from s1 test multicam.</td></tr><tr><td>GT cache</td><td>/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>FULL-EVAL</td><td><span class="badge badge-p0">P0</span></td><td>After pt-nzzh80jf finishes or a clean replacement job is submitted from 607b505, run full native p2_eval with predictions, overlays, 3D videos, and global hand decomposition.</td></tr><tr><td>RETRAIN-CLEAN</td><td><span class="badge badge-p0">P0</span></td><td>Treat pt-nzzh80jf as provenance-risky because its worktree was later polluted; launch a clean full train from 607b505 before making final performance claims.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>This is an intermediate publish while pt-nzzh80jf is still running, not final experiment completion.</li><li>The training process produced a 3072-d native-4RC checkpoint, but the old training worktree on disk was later polluted by Wan2.2 extractor edits; this page evaluates with the recovered pure worktree 607b505.</li><li>Metrics are training-loss replay on 16 train and 16 test windows; no predictions.pt, RGB overlays, 3D videos, detection F1, PA-MPJPE, or gamma decomposition are included yet.</li><li>Full final eval/publish must be rerun after the clean native full-train path is submitted or after pt-nzzh80jf finishes and provenance is explicitly accepted.</li></ul>
+</section>
+
+
+
+<section><h2>Partial Metrics</h2>
+<table><thead><tr><th>split</th><th>windows</th><th>total</th><th>param_phi</th><th>param_gamma</th><th>mesh</th><th>obj_add_s</th></tr></thead><tbody>
+<tr><td>train</td><td>16</td><td>0.925256</td><td>0.191403</td><td>0.040449</td><td>0.041775</td><td>0.106035</td></tr>
+<tr><td>test</td><td>16</td><td>1.329968</td><td>0.294237</td><td>0.034329</td><td>0.035439</td><td>0.071074</td></tr>
+</tbody></table></section>
+<section><h2>Assets</h2>
+<ul>
+<li><a href="native4rc-bs4-step9000-partial-eval/train_curves_latest.png">training curves</a></li>
+<li><a href="native4rc-bs4-step9000-partial-eval/partial_eval_loss_bars.png">partial eval loss bars</a></li>
+<li><a href="native4rc-bs4-step9000-partial-eval/metrics_summary.json">metrics_summary.json</a></li>
+<li><a href="native4rc-bs4-step9000-partial-eval/partial_eval_metrics.json">partial_eval_metrics.json</a></li>
+<li><a href="native4rc-bs4-step9000-partial-eval/train_tail_latest.txt">train log tail</a></li>
+</ul></section>
+<section><h2>Training Log Snapshot</h2>
+<p>Copied log rows: 911; first step: 0; last copied logged step: 9060. Latest durable checkpoint evaluated: ckpt_step009000.pt.</p>
+</section>
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-12-session-summary-native4rc-bs4-step9000-partial-eval.json
+and continue from tasks_pending[0] (FULL-EVAL [P0]: After pt-nzzh80jf finishes or a clean replacement job is submitted from 607b505, run full native p2_eval with predictions, overlays, 3D videos, and global hand decomposition.).
+Context: branch feat/dcf-native-4rc-pure-20260512@607b505; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-pure-20260512.</pre></section>
+</div></body></html>

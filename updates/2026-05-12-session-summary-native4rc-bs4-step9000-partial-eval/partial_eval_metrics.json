@@ -1,0 +1,180 @@
+{
+  "checkpoint": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt",
+  "checkpoint_step": 9000,
+  "checkpoint_args": {
+    "manifest": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/manifests/dexycb_s1_train_multicam.json",
+    "data_root": "/mnt/afs/haonan/datasets/haonan/datasets/dexycb",
+    "gt_cache_dir": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4",
+    "output_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0",
+    "native_4rc_root": "/mnt/afs/haonan/checkpoints/4RC-mirror",
+    "native_4rc_model_name": "Luo-Yihang/4RC",
+    "native_4rc_ref_view_strategy": "first",
+    "dataset": "dexycb",
+    "clip_len": 13,
+    "n_max": 2,
+    "batch_size": 4,
+    "num_workers": 4,
+    "num_steps": 10000,
+    "num_epochs": 100000,
+    "max_manifest_size": 0,
+    "manifest_replicate": 1,
+    "seed": 0,
+    "device": "cuda:0",
+    "lr": 5e-05,
+    "head_mid_dim": 256,
+    "object_head_mid_dim": 512,
+    "head_num_layers": 2,
+    "adapter_layers": 2,
+    "adapter_heads": 8,
+    "adapter_dropout": 0.0,
+    "slot_index_prior": 1.0,
+    "grad_clip_norm": 1.0,
+    "log_every": 10,
+    "save_every": 1000,
+    "mano_theta_weight": 1.0,
+    "mano_phi_weight": 1.0,
+    "mano_gamma_weight": 1.0,
+    "mano_beta_weight": 1.0,
+    "mano_mesh_weight": 1.0,
+    "mano_joint_weight": 0.5,
+    "mano_beta_const_weight": 0.01,
+    "mano_theta_smooth_weight": 0.01,
+    "mano_is_active_weight": 0.1,
+    "mano_is_right_weight": 0.1,
+    "mano_kp2d_weight": 0.1,
+    "mano_reproj_weight": 0.0
+  },
+  "eval_kind": "native4rc_partial_loss_replay",
+  "max_windows_per_split": 16,
+  "splits": {
+    "train": {
+      "summary": {
+        "is_active_mean": 8.198700101047507e-07,
+        "joint_mano_mean": 0.04187436634674668,
+        "mesh_mean": 0.041775114834308624,
+        "obj_add_s_mean": 0.10603510215878487,
+        "param_gamma_mean": 0.04044852685183287,
+        "param_phi_mean": 0.19140293076634407,
+        "total_mean": 0.9252558946609497,
+        "split": "train",
+        "manifest": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/manifests/dexycb_s1_train_multicam.json",
+        "num_windows": 16,
+        "num_batches": 4,
+        "elapsed_s": 37.60422945022583
+      },
+      "batches": [
+        {
+          "total": 0.7996187210083008,
+          "param_phi": 0.264928936958313,
+          "param_gamma": 0.030415240675210953,
+          "mesh": 0.032727550715208054,
+          "joint_mano": 0.03290728107094765,
+          "is_active": 3.78331890260597e-07,
+          "obj_add_s": 0.03236862272024155,
+          "batch_index": 0,
+          "batch_size": 4
+        },
+        {
+          "total": 0.7873334884643555,
+          "param_phi": 0.1600589156150818,
+          "param_gamma": 0.029544981196522713,
+          "mesh": 0.028091728687286377,
+          "joint_mano": 0.02805361896753311,
+          "is_active": 1.2151116379754967e-06,
+          "obj_add_s": 0.039491526782512665,
+          "batch_index": 1,
+          "batch_size": 4
+        },
+        {
+          "total": 1.1015619039535522,
+          "param_phi": 0.18014737963676453,
+          "param_gamma": 0.07474303245544434,
+          "mesh": 0.0763683170080185,
+          "joint_mano": 0.0763302594423294,
+          "is_active": 5.115811063660658e-07,
+          "obj_add_s": 0.15181390941143036,
+          "batch_index": 2,
+          "batch_size": 4
+        },
+        {
+          "total": 1.0125094652175903,
+          "param_phi": 0.16047649085521698,
+          "param_gamma": 0.027090853080153465,
+          "mesh": 0.029912862926721573,
+          "joint_mano": 0.030206305906176567,
+          "is_active": 1.1744554058168433e-06,
+          "obj_add_s": 0.2004663497209549,
+          "batch_index": 3,
+          "batch_size": 4
+        }
+      ]
+    },
+    "test": {
+      "summary": {
+        "is_active_mean": 1.2998250724649552e-06,
+        "joint_mano_mean": 0.035653214901685715,
+        "mesh_mean": 0.03543934738263488,
+        "obj_add_s_mean": 0.07107437588274479,
+        "param_gamma_mean": 0.034329247660934925,
+        "param_phi_mean": 0.2942366302013397,
+        "total_mean": 1.3299680948257446,
+        "split": "test",
+        "manifest": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf/manifests/dexycb_s1_test_multicam.json",
+        "num_windows": 16,
+        "num_batches": 4,
+        "elapsed_s": 35.54957604408264
+      },
+      "batches": [
+        {
+          "total": 1.2898509502410889,
+          "param_phi": 0.28476768732070923,
+          "param_gamma": 0.03385632485151291,
+          "mesh": 0.03330053389072418,
+          "joint_mano": 0.03342534601688385,
+          "is_active": 5.608376341115218e-07,
+          "obj_add_s": 0.06079529970884323,
+          "batch_index": 0,
+          "batch_size": 4
+        },
+        {
+          "total": 1.2057219743728638,
+          "param_phi": 0.27061575651168823,
+          "param_gamma": 0.027243345975875854,
+          "mesh": 0.025888895615935326,
+          "joint_mano": 0.025848936289548874,
+          "is_active": 7.319678161366028e-07,
+          "obj_add_s": 0.03439536690711975,
+          "batch_index": 1,
+          "batch_size": 4
+        },
+        {
+          "total": 1.599503755569458,
+          "param_phi": 0.3548314571380615,
+          "param_gamma": 0.045289598405361176,
+          "mesh": 0.04990518093109131,
+          "joint_mano": 0.05046968162059784,
+          "is_active": 1.354188270852319e-06,
+          "obj_add_s": 0.11649706214666367,
+          "batch_index": 2,
+          "batch_size": 4
+        },
+        {
+          "total": 1.2247956991195679,
+          "param_phi": 0.2667316198348999,
+          "param_gamma": 0.03092772141098976,
+          "mesh": 0.032662779092788696,
+          "joint_mano": 0.032868895679712296,
+          "is_active": 2.552306568759377e-06,
+          "obj_add_s": 0.07260977476835251,
+          "batch_index": 3,
+          "batch_size": 4
+        }
+      ]
+    }
+  },
+  "caveats": [
+    "This is an intermediate eval while ACP job pt-nzzh80jf is still running.",
+    "The evaluated checkpoint comes from the older feat-dcf-native-4rc-latent worktree at 8e8e5c5, which was later found polluted by a Wan2.2 latent-source swap.",
+    "Metrics are training-loss replay on deterministic train/test subsets, not the full p2_eval_thfm_lora predictions.pt evaluation contract."
+  ]
+}

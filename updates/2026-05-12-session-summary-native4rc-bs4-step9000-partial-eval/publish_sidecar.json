@@ -1,0 +1,114 @@
+{
+  "date": "2026-05-12",
+  "topic": "native4rc-bs4-step9000-partial-eval",
+  "status": "wip",
+  "branch": "feat/dcf-native-4rc-pure-20260512",
+  "head_sha": "607b505",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-pure-20260512",
+  "goal": "Publish an intermediate eval for still-running ACP job pt-nzzh80jf using latest durable checkpoint ckpt_step009000.pt.",
+  "headline_stats": [
+    {
+      "label": "Latest ckpt",
+      "value": "step 9000"
+    },
+    {
+      "label": "Train16 total",
+      "value": "0.9253"
+    },
+    {
+      "label": "Test16 total",
+      "value": "1.3300"
+    },
+    {
+      "label": "Pulled log rows",
+      "value": "911"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "LOG-PULL",
+      "sha": "8e8e5c5/607b505",
+      "summary": "Pulled args.json, train.log through latest visible rows, and checkpoint inventory for pt-nzzh80jf."
+    },
+    {
+      "id": "CKPT-EVAL",
+      "sha": "607b505",
+      "summary": "Loaded ckpt_step009000.pt with the recovered pure native 4RC eval code and ran deterministic train/test 16-window loss replay."
+    },
+    {
+      "id": "PUBLISH-ASSETS",
+      "sha": "local",
+      "summary": "Generated loss curves, partial eval chart, metrics_summary.csv/json, raw partial_eval_metrics.json, args.json, and train log tail."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "Latest durable checkpoint is step 9000",
+      "body": "At publish time the full train job had written ckpt_step009000.pt; the pulled train.log had 911 JSON rows and last copied row step 9060."
+    },
+    {
+      "badge": "finding",
+      "title": "Partial eval is loss replay, not full p2_eval",
+      "body": "p2_eval_thfm_lora.py does not yet implement native-4RC full predictions for this checkpoint format, so this page reports deterministic train/test loss replay on 16 windows per split."
+    },
+    {
+      "badge": "fix",
+      "title": "Eval required recovered pure native code",
+      "body": "The polluted worktree on disk had a Wan2.2 48-d extractor incompatible with the checkpoint adapter shape [3072,3072]. Evaluation used feat/dcf-native-4rc-pure-20260512@607b505 to match the 3072-d native 4RC checkpoint contract."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "607b505",
+      "type": "eval code",
+      "subject": "feat(native4rc): add pure scene latent adapter smoke path"
+    },
+    {
+      "sha": "8e8e5c5",
+      "type": "training worktree HEAD",
+      "subject": "polluted native-4rc-latent worktree; recorded only for provenance"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "ACP job",
+      "state": "pt-nzzh80jf still running; this is an intermediate checkpoint publish."
+    },
+    {
+      "aspect": "Checkpoint",
+      "state": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dcf-native-4rc-latent/logs/native_4rc_full_dexycb_bs4/seed0/ckpt_step009000.pt"
+    },
+    {
+      "aspect": "Training config",
+      "state": "batch_size=4, clip_len=13, n_max=2, save_every=1000, num_steps=10000"
+    },
+    {
+      "aspect": "Eval subsets",
+      "state": "16 deterministic windows from s1 train multicam and 16 deterministic windows from s1 test multicam."
+    },
+    {
+      "aspect": "GT cache",
+      "state": "/mnt/afs/haonan/hoi3r/cache/dexycb_gt_multiseq_v3_6_camera0_9d20aa4_r4"
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "FULL-EVAL",
+      "priority": "P0",
+      "summary": "After pt-nzzh80jf finishes or a clean replacement job is submitted from 607b505, run full native p2_eval with predictions, overlays, 3D videos, and global hand decomposition."
+    },
+    {
+      "id": "RETRAIN-CLEAN",
+      "priority": "P0",
+      "summary": "Treat pt-nzzh80jf as provenance-risky because its worktree was later polluted; launch a clean full train from 607b505 before making final performance claims."
+    }
+  ],
+  "caveats": [
+    "This is an intermediate publish while pt-nzzh80jf is still running, not final experiment completion.",
+    "The training process produced a 3072-d native-4RC checkpoint, but the old training worktree on disk was later polluted by Wan2.2 extractor edits; this page evaluates with the recovered pure worktree 607b505.",
+    "Metrics are training-loss replay on 16 train and 16 test windows; no predictions.pt, RGB overlays, 3D videos, detection F1, PA-MPJPE, or gamma decomposition are included yet.",
+    "Full final eval/publish must be rerun after the clean native full-train path is submitted or after pt-nzzh80jf finishes and provenance is explicitly accepted."
+  ],
+  "extra_html": "\n<section><h2>Partial Metrics</h2>\n<table><thead><tr><th>split</th><th>windows</th><th>total</th><th>param_phi</th><th>param_gamma</th><th>mesh</th><th>obj_add_s</th></tr></thead><tbody>\n<tr><td>train</td><td>16</td><td>0.925256</td><td>0.191403</td><td>0.040449</td><td>0.041775</td><td>0.106035</td></tr>\n<tr><td>test</td><td>16</td><td>1.329968</td><td>0.294237</td><td>0.034329</td><td>0.035439</td><td>0.071074</td></tr>\n</tbody></table></section>\n<section><h2>Assets</h2>\n<ul>\n<li><a href=\"native4rc-bs4-step9000-partial-eval/train_curves_latest.png\">training curves</a></li>\n<li><a href=\"native4rc-bs4-step9000-partial-eval/partial_eval_loss_bars.png\">partial eval loss bars</a></li>\n<li><a href=\"native4rc-bs4-step9000-partial-eval/metrics_summary.json\">metrics_summary.json</a></li>\n<li><a href=\"native4rc-bs4-step9000-partial-eval/partial_eval_metrics.json\">partial_eval_metrics.json</a></li>\n<li><a href=\"native4rc-bs4-step9000-partial-eval/train_tail_latest.txt\">train log tail</a></li>\n</ul></section>\n<section><h2>Training Log Snapshot</h2>\n<p>Copied log rows: 911; first step: 0; last copied logged step: 9060. Latest durable checkpoint evaluated: ckpt_step009000.pt.</p>\n</section>\n"
+}

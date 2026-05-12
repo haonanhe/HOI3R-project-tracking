@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-12 · Publish an intermediate eval for still-running ACP job pt-nzzh80jf using latest durable checkpoint ckpt_step009000.pt.",
+    "date": "2026-05-12",
+    "status": "wip",
+    "summary": "Publish an intermediate eval for still-running ACP job pt-nzzh80jf using latest durable checkpoint ckpt_step009000.pt.",
+    "path": "updates/2026-05-12-session-summary-native4rc-bs4-step9000-partial-eval.html",
+    "file": "updates/2026-05-12-session-summary-native4rc-bs4-step9000-partial-eval.html",
+    "sidecar": "updates/2026-05-12-session-summary-native4rc-bs4-step9000-partial-eval.json"
+  },
+  {
     "title": "2026-05-11 · Publish the DT10 GT-anchor direct-gamma full-DexYCB eval for pt-y1bf5vy5, including loss curves and same-manifest direct baseline comparison.",
     "date": "2026-05-11",
     "status": "complete",
