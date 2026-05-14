@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-14 · dt10-singlecam16-g2-30k-eval-visualization-publish</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Dt10 Singlecam16 G2 30K Eval Visualization Publish</h1>
+  <div class="meta">2026-05-14 · <code>main</code> · <code>@5532237a904ef3ac0c41d6f2f5b6d45bf7690104</code></div>
+  <p class="goal">Publish DT10 singlecam16 g2 30k training loss curve, fixed all/seen/unseen eval results, and seen/unseen visualizations.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">64.29 mm</div><div class="label">all hand joint L2</div></div><div class="stat"><div class="val">60.62 mm</div><div class="label">seen hand joint L2</div></div><div class="stat"><div class="val">67.94 mm</div><div class="label">unseen hand joint L2</div></div><div class="stat"><div class="val">0.8501</div><div class="label">all det F1</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>TRAIN-COMPLETE</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Confirmed pt-hnuvmuub completed and final.pt loaded with 452 trainable tensors at step 30000.</td></tr><tr><td>EVAL</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Ran fixed all/seen/unseen eval on the single-camera 16-object benchmark and verified by_object_split includes seen_object and unseen_object.</td></tr><tr><td>VISUALIZATION</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Generated loss curve, RGB overlays, and HOT3D-style multiframe/rotating videos for representative seen and unseen windows.</td></tr><tr><td>PUBLISH</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Packaged public assets and published this tracking page.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Seen/unseen gap is modest for hand geometry</h3><p>Seen hand joint/mesh mean is 60.62/60.18 mm, unseen is 67.94/67.71 mm on the fixed 15+15 eval split.</p></div>
+<div class="panel"><h3><span class="badge badge-finding">FINDING</span> Object metrics remain weak</h3><p>All-split ADD-S is 94.02 mm and rotation error is 124.96 degrees, so the benchmark is not solved despite usable hand-side detection.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>24f5479172d83c9b185fe185fe9328e241bc8819</td><td>remote train/eval</td><td>Add DT10 exact-window eval split metrics</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>remote worktree</td><td>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514</td></tr><tr><td>training job</td><td>pt-hnuvmuub, 2 GPU, 30000 steps, commit 24f5479</td></tr><tr><td>output root</td><td>/Users/hnhe/Downloads/SLAI/hoi3r/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>BENCHMARK-COMPARE</td><td><span class="badge badge-p1">P1</span></td><td>Compare this 2-GPU 30k singlecam16 result against the earlier 10k anchor-UVZ baseline before using it as a stage gate.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>This is the accepted 2-GPU fallback run, not an 8-GPU or 4-GPU run.</li><li>The run differs from the earlier 10k baseline: random train windows, max_manifest_size=0, no mini eval, save_every=1000, and commit 24f5479.</li><li>Remote ffmpeg was unavailable; MP4 files were encoded locally with /opt/homebrew/bin/ffmpeg and synced back before publishing.</li></ul>
+</section>
+
+
+
+<section><h2>Eval Results</h2>
+<table><thead><tr><th>Split</th><th>Windows</th><th>Hand Joint L2</th><th>Hand Mesh L2</th><th>ADD-S</th><th>Rot</th><th>Trans</th><th>Det F1</th></tr></thead><tbody>
+<tr><td>all</td><td>30</td><td>64.29 mm</td><td>63.96 mm</td><td>94.02 mm</td><td>124.96 deg</td><td>64.99 mm</td><td>0.8501</td></tr>
+<tr><td>seen</td><td>15</td><td>60.62 mm</td><td>60.18 mm</td><td>99.78 mm</td><td>122.36 deg</td><td>68.40 mm</td><td>0.8930</td></tr>
+<tr><td>unseen</td><td>15</td><td>67.94 mm</td><td>67.71 mm</td><td>88.36 mm</td><td>127.57 deg</td><td>61.64 mm</td><td>0.8103</td></tr>
+</tbody></table>
+<p>Raw files: <a href="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/metrics/metrics_summary.csv">metrics_summary.csv</a>, <a href="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/metrics/eval_visualization_summary.json">eval_visualization_summary.json</a>.</p>
+</section>
+<section><h2>Training Loss Curve</h2>
+<p><a href="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/loss/loss_curve_summary.csv">loss_curve_summary.csv</a> · <a href="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/loss/loss_curve_summary.json">loss_curve_summary.json</a></p>
+<img src="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/loss/loss_curve_summary.png" alt="DT10 singlecam16 g2 30k loss curve" style="max-width:100%;border:1px solid #e5e7eb;border-radius:8px" />
+</section>
+<section><h2>Visualizations</h2>
+<p>Seen window: <code>20201002-subject-08/20201002_105343:0</code>. Unseen window: <code>20201002-subject-08/20201002_112501:0</code>.</p>
+<table><thead><tr><th>Split</th><th>RGB Overlay</th><th>3D Multiframe</th><th>3D Rotating</th></tr></thead><tbody>
+<tr><td>seen</td><td><video controls preload="metadata" width="280" src="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/seen_rgb_overlay.mp4"></video></td><td><video controls preload="metadata" width="280" src="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/seen_hot3d_multiframe.mp4"></video></td><td><video controls preload="metadata" width="280" src="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/seen_hot3d_rotating.mp4"></video></td></tr>
+<tr><td>unseen</td><td><video controls preload="metadata" width="280" src="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/unseen_rgb_overlay.mp4"></video></td><td><video controls preload="metadata" width="280" src="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/unseen_hot3d_multiframe.mp4"></video></td><td><video controls preload="metadata" width="280" src="2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/unseen_hot3d_rotating.mp4"></video></td></tr>
+</tbody></table>
+</section>
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish.json
+and continue from tasks_pending[0] (BENCHMARK-COMPARE [P1]: Compare this 2-GPU 30k singlecam16 result against the earlier 10k anchor-UVZ baseline before using it as a stage gate.).
+Context: branch main@5532237a904ef3ac0c41d6f2f5b6d45bf7690104.</pre></section>
+</div></body></html>

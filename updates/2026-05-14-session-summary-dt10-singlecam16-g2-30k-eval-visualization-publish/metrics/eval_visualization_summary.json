@@ -1,0 +1,91 @@
+{
+  "remote_head": "24f5479172d83c9b185fe185fe9328e241bc8819",
+  "train_job": "pt-hnuvmuub",
+  "train_output_root": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1",
+  "checkpoint": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/final.pt",
+  "evals": [
+    {
+      "split": "all",
+      "eval_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/eval_fixed30_all",
+      "n_windows": 30,
+      "hand_joint_l2_mm_mean": 64.28915405273438,
+      "hand_mesh_l2_mm_mean": 63.95526885986328,
+      "obj_add_s_mm_mean": 94.02368927001953,
+      "obj_rot_deg_mean": 124.95731353759766,
+      "obj_trans_mm_mean": 64.98652648925781,
+      "detection_precision": 0.8567708333333334,
+      "detection_recall": 0.8435897435897436,
+      "detection_f1": 0.8501291989664083,
+      "hand_side_acc": 1.0,
+      "by_object_split_keys": [
+        "seen",
+        "seen_object",
+        "unseen",
+        "unseen_object"
+      ]
+    },
+    {
+      "split": "seen",
+      "eval_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/eval_fixed15_seen",
+      "n_windows": 15,
+      "hand_joint_l2_mm_mean": 60.62346267700195,
+      "hand_mesh_l2_mm_mean": 60.18491744995117,
+      "obj_add_s_mm_mean": 99.78445434570312,
+      "obj_rot_deg_mean": 122.36210632324219,
+      "obj_trans_mm_mean": 68.39715576171875,
+      "detection_precision": 0.9095744680851063,
+      "detection_recall": 0.8769230769230769,
+      "detection_f1": 0.8929503916449086,
+      "hand_side_acc": 1.0,
+      "by_object_split_keys": [
+        "seen",
+        "seen_object",
+        "unseen_object"
+      ]
+    },
+    {
+      "split": "unseen",
+      "eval_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/eval_fixed15_unseen",
+      "n_windows": 15,
+      "hand_joint_l2_mm_mean": 67.93872833251953,
+      "hand_mesh_l2_mm_mean": 67.7072525024414,
+      "obj_add_s_mm_mean": 88.35831451416016,
+      "obj_rot_deg_mean": 127.57453918457031,
+      "obj_trans_mm_mean": 61.636478424072266,
+      "detection_precision": 0.8102564102564103,
+      "detection_recall": 0.8102564102564103,
+      "detection_f1": 0.8102564102564103,
+      "hand_side_acc": 1.0,
+      "by_object_split_keys": [
+        "seen_object",
+        "unseen",
+        "unseen_object"
+      ]
+    }
+  ],
+  "loss_artifacts": {
+    "plot": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/loss_curve_summary.png",
+    "csv": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/loss_curve_summary.csv",
+    "json": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/loss_curve_summary.json"
+  },
+  "visualizations": {
+    "seen": {
+      "window_key": "20201002-subject-08/20201002_105343:0",
+      "dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/seen_clip0",
+      "rgb_overlay": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/seen_clip0/rgb_overlay/rgb_overlay.mp4",
+      "hot3d_multiframe": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/seen_clip0/hot3d/world_multiframe.mp4",
+      "hot3d_rotating": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/seen_clip0/hot3d/world_rotating.mp4"
+    },
+    "unseen": {
+      "window_key": "20201002-subject-08/20201002_112501:0",
+      "dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/unseen_clip0",
+      "rgb_overlay": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/unseen_clip0/rgb_overlay/rgb_overlay.mp4",
+      "hot3d_multiframe": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/unseen_clip0/hot3d/world_multiframe.mp4",
+      "hot3d_rotating": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/unseen_clip0/hot3d/world_rotating.mp4"
+    },
+    "video_probe_summary": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/visualizations/video_probe_summary.json"
+  },
+  "caveats": [
+    "Remote ffmpeg was unavailable; PNG frames were generated remotely, mp4 files were encoded locally with /opt/homebrew/bin/ffmpeg and rsynced back."
+  ]
+}

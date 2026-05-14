@@ -1,0 +1,102 @@
+{
+  "n_rows": 3004,
+  "keys": [
+    "total",
+    "joint_mano",
+    "mesh",
+    "gamma_root_camera_l2_mm",
+    "gamma_uv_l1_px",
+    "gamma_depth_l1_mm",
+    "gamma_decoded_l2_mm",
+    "direct_joint3d",
+    "direct_kp2d",
+    "add_s",
+    "rot",
+    "trans",
+    "is_active"
+  ],
+  "best_steps": {
+    "total": {
+      "step": 29870,
+      "value": 0.31437429785728455
+    },
+    "joint_mano": {
+      "step": 14540,
+      "value": 0.0019152503227815032
+    },
+    "mesh": {
+      "step": 14540,
+      "value": 0.003799989353865385
+    },
+    "gamma_root_camera_l2_mm": {
+      "step": 19180,
+      "value": 4.458052635192871
+    },
+    "gamma_uv_l1_px": {
+      "step": 29040,
+      "value": 0.6901321411132812
+    },
+    "gamma_depth_l1_mm": {
+      "step": 28590,
+      "value": 0.6950727105140686
+    },
+    "gamma_decoded_l2_mm": {
+      "step": 19180,
+      "value": 4.458052635192871
+    },
+    "direct_joint3d": {
+      "step": 28430,
+      "value": 0.006942315958440304
+    },
+    "direct_kp2d": {
+      "step": 21800,
+      "value": 0.00549938203766942
+    },
+    "add_s": {
+      "step": 25150,
+      "value": 0.014506228268146515
+    },
+    "rot": {
+      "step": 16210,
+      "value": 0.004061846528202295
+    },
+    "trans": {
+      "step": 25970,
+      "value": 0.003032892243936658
+    },
+    "is_active": {
+      "step": 24630,
+      "value": 0.02021036483347416
+    }
+  },
+  "tail_mean_last_100": {
+    "total": 0.6710557785630226,
+    "joint_mano": 0.0065213099354878065,
+    "mesh": 0.012925129346549512,
+    "gamma_root_camera_l2_mm": 23.696335096359253,
+    "gamma_uv_l1_px": 5.8063987159729,
+    "gamma_depth_l1_mm": 17.433032639026642,
+    "gamma_decoded_l2_mm": 23.696335096359253,
+    "direct_joint3d": 0.014599522650241852,
+    "direct_kp2d": 0.01575400972738862,
+    "add_s": 0.058355694599449635,
+    "rot": 0.1770686077978462,
+    "trans": 0.02167239769361913,
+    "is_active": 0.06810356017202139
+  },
+  "tail_last": {
+    "total": 0.5959769487380981,
+    "joint_mano": 0.006170032545924187,
+    "mesh": 0.012365516275167465,
+    "gamma_root_camera_l2_mm": 21.601377487182617,
+    "gamma_uv_l1_px": 11.186317443847656,
+    "gamma_depth_l1_mm": 4.42816686630249,
+    "gamma_decoded_l2_mm": 21.601377487182617,
+    "direct_joint3d": 0.013731840066611767,
+    "direct_kp2d": 0.019366571679711342,
+    "add_s": 0.03223526105284691,
+    "rot": 0.140376478433609,
+    "trans": 0.00489472271874547,
+    "is_active": 0.05319393798708916
+  }
+}

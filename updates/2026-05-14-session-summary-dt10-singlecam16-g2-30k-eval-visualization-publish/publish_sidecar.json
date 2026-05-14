@@ -1,0 +1,165 @@
+{
+  "date": "2026-05-14",
+  "topic": "dt10-singlecam16-g2-30k-eval-visualization-publish",
+  "branch": "main",
+  "head_sha": "5532237a904ef3ac0c41d6f2f5b6d45bf7690104",
+  "repo_path": "/Users/hnhe/Downloads/SLAI/hoi3r",
+  "status": "published",
+  "goal": "Publish DT10 singlecam16 g2 30k training loss curve, fixed all/seen/unseen eval results, and seen/unseen visualizations.",
+  "headline_stats": [
+    {
+      "label": "all hand joint L2",
+      "value": "64.29 mm"
+    },
+    {
+      "label": "seen hand joint L2",
+      "value": "60.62 mm"
+    },
+    {
+      "label": "unseen hand joint L2",
+      "value": "67.94 mm"
+    },
+    {
+      "label": "all det F1",
+      "value": "0.8501"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "24f5479172d83c9b185fe185fe9328e241bc8819",
+      "type": "remote train/eval",
+      "subject": "Add DT10 exact-window eval split metrics"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "TRAIN-COMPLETE",
+      "summary": "Confirmed pt-hnuvmuub completed and final.pt loaded with 452 trainable tensors at step 30000."
+    },
+    {
+      "id": "EVAL",
+      "summary": "Ran fixed all/seen/unseen eval on the single-camera 16-object benchmark and verified by_object_split includes seen_object and unseen_object."
+    },
+    {
+      "id": "VISUALIZATION",
+      "summary": "Generated loss curve, RGB overlays, and HOT3D-style multiframe/rotating videos for representative seen and unseen windows."
+    },
+    {
+      "id": "PUBLISH",
+      "summary": "Packaged public assets and published this tracking page."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "BENCHMARK-COMPARE",
+      "priority": "P1",
+      "summary": "Compare this 2-GPU 30k singlecam16 result against the earlier 10k anchor-UVZ baseline before using it as a stage gate."
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "remote worktree",
+      "state": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514"
+    },
+    {
+      "aspect": "training job",
+      "state": "pt-hnuvmuub, 2 GPU, 30000 steps, commit 24f5479"
+    },
+    {
+      "aspect": "output root",
+      "state": "/Users/hnhe/Downloads/SLAI/hoi3r/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1"
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "finding",
+      "title": "Seen/unseen gap is modest for hand geometry",
+      "body": "Seen hand joint/mesh mean is 60.62/60.18 mm, unseen is 67.94/67.71 mm on the fixed 15+15 eval split."
+    },
+    {
+      "badge": "finding",
+      "title": "Object metrics remain weak",
+      "body": "All-split ADD-S is 94.02 mm and rotation error is 124.96 degrees, so the benchmark is not solved despite usable hand-side detection."
+    }
+  ],
+  "metrics": [
+    {
+      "split": "all",
+      "eval_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/eval_fixed30_all",
+      "n_windows": 30,
+      "hand_joint_l2_mm_mean": 64.28915405273438,
+      "hand_mesh_l2_mm_mean": 63.95526885986328,
+      "obj_add_s_mm_mean": 94.02368927001953,
+      "obj_rot_deg_mean": 124.95731353759766,
+      "obj_trans_mm_mean": 64.98652648925781,
+      "detection_precision": 0.8567708333333334,
+      "detection_recall": 0.8435897435897436,
+      "detection_f1": 0.8501291989664083,
+      "hand_side_acc": 1.0,
+      "by_object_split_keys": [
+        "seen",
+        "seen_object",
+        "unseen",
+        "unseen_object"
+      ]
+    },
+    {
+      "split": "seen",
+      "eval_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/eval_fixed15_seen",
+      "n_windows": 15,
+      "hand_joint_l2_mm_mean": 60.62346267700195,
+      "hand_mesh_l2_mm_mean": 60.18491744995117,
+      "obj_add_s_mm_mean": 99.78445434570312,
+      "obj_rot_deg_mean": 122.36210632324219,
+      "obj_trans_mm_mean": 68.39715576171875,
+      "detection_precision": 0.9095744680851063,
+      "detection_recall": 0.8769230769230769,
+      "detection_f1": 0.8929503916449086,
+      "hand_side_acc": 1.0,
+      "by_object_split_keys": [
+        "seen",
+        "seen_object",
+        "unseen_object"
+      ]
+    },
+    {
+      "split": "unseen",
+      "eval_dir": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-dt10-singlecam16-benchmark-20260514/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1/eval_fixed15_unseen",
+      "n_windows": 15,
+      "hand_joint_l2_mm_mean": 67.93872833251953,
+      "hand_mesh_l2_mm_mean": 67.7072525024414,
+      "obj_add_s_mm_mean": 88.35831451416016,
+      "obj_rot_deg_mean": 127.57453918457031,
+      "obj_trans_mm_mean": 61.636478424072266,
+      "detection_precision": 0.8102564102564103,
+      "detection_recall": 0.8102564102564103,
+      "detection_f1": 0.8102564102564103,
+      "hand_side_acc": 1.0,
+      "by_object_split_keys": [
+        "seen_object",
+        "unseen",
+        "unseen_object"
+      ]
+    }
+  ],
+  "artifacts": {
+    "remote_root": "/Users/hnhe/Downloads/SLAI/hoi3r/logs/dt10_anchoruvz_v37/singlecam16_randwin_static_rope_anchoruvz_v37_24f5479/seed0_g2_steps30000_r1",
+    "public_bundle": "/Users/hnhe/Downloads/SLAI/hoi3r/diagnostics/dt10_singlecam16_g2_30k_eval_publish_public",
+    "loss_curve": "loss/loss_curve_summary.png",
+    "metrics_summary": "metrics/metrics_summary.csv",
+    "videos": [
+      "videos/seen_hot3d_multiframe.mp4",
+      "videos/seen_hot3d_rotating.mp4",
+      "videos/seen_rgb_overlay.mp4",
+      "videos/unseen_hot3d_multiframe.mp4",
+      "videos/unseen_hot3d_rotating.mp4",
+      "videos/unseen_rgb_overlay.mp4"
+    ]
+  },
+  "caveats": [
+    "This is the accepted 2-GPU fallback run, not an 8-GPU or 4-GPU run.",
+    "The run differs from the earlier 10k baseline: random train windows, max_manifest_size=0, no mini eval, save_every=1000, and commit 24f5479.",
+    "Remote ffmpeg was unavailable; MP4 files were encoded locally with /opt/homebrew/bin/ffmpeg and synced back before publishing."
+  ],
+  "extra_html": "\n<section><h2>Eval Results</h2>\n<table><thead><tr><th>Split</th><th>Windows</th><th>Hand Joint L2</th><th>Hand Mesh L2</th><th>ADD-S</th><th>Rot</th><th>Trans</th><th>Det F1</th></tr></thead><tbody>\n<tr><td>all</td><td>30</td><td>64.29 mm</td><td>63.96 mm</td><td>94.02 mm</td><td>124.96 deg</td><td>64.99 mm</td><td>0.8501</td></tr>\n<tr><td>seen</td><td>15</td><td>60.62 mm</td><td>60.18 mm</td><td>99.78 mm</td><td>122.36 deg</td><td>68.40 mm</td><td>0.8930</td></tr>\n<tr><td>unseen</td><td>15</td><td>67.94 mm</td><td>67.71 mm</td><td>88.36 mm</td><td>127.57 deg</td><td>61.64 mm</td><td>0.8103</td></tr>\n</tbody></table>\n<p>Raw files: <a href=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/metrics/metrics_summary.csv\">metrics_summary.csv</a>, <a href=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/metrics/eval_visualization_summary.json\">eval_visualization_summary.json</a>.</p>\n</section>\n<section><h2>Training Loss Curve</h2>\n<p><a href=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/loss/loss_curve_summary.csv\">loss_curve_summary.csv</a> \u00b7 <a href=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/loss/loss_curve_summary.json\">loss_curve_summary.json</a></p>\n<img src=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/loss/loss_curve_summary.png\" alt=\"DT10 singlecam16 g2 30k loss curve\" style=\"max-width:100%;border:1px solid #e5e7eb;border-radius:8px\" />\n</section>\n<section><h2>Visualizations</h2>\n<p>Seen window: <code>20201002-subject-08/20201002_105343:0</code>. Unseen window: <code>20201002-subject-08/20201002_112501:0</code>.</p>\n<table><thead><tr><th>Split</th><th>RGB Overlay</th><th>3D Multiframe</th><th>3D Rotating</th></tr></thead><tbody>\n<tr><td>seen</td><td><video controls preload=\"metadata\" width=\"280\" src=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/seen_rgb_overlay.mp4\"></video></td><td><video controls preload=\"metadata\" width=\"280\" src=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/seen_hot3d_multiframe.mp4\"></video></td><td><video controls preload=\"metadata\" width=\"280\" src=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/seen_hot3d_rotating.mp4\"></video></td></tr>\n<tr><td>unseen</td><td><video controls preload=\"metadata\" width=\"280\" src=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/unseen_rgb_overlay.mp4\"></video></td><td><video controls preload=\"metadata\" width=\"280\" src=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/unseen_hot3d_multiframe.mp4\"></video></td><td><video controls preload=\"metadata\" width=\"280\" src=\"2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish/videos/unseen_hot3d_rotating.mp4\"></video></td></tr>\n</tbody></table>\n</section>\n"
+}

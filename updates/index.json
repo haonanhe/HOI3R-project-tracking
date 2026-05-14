@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-14 · Publish DT10 singlecam16 g2 30k training loss curve, fixed all/seen/unseen eval results, and seen/unseen visualizations.",
+    "date": "2026-05-14",
+    "status": "published",
+    "summary": "Publish DT10 singlecam16 g2 30k training loss curve, fixed all/seen/unseen eval results, and seen/unseen visualizations.",
+    "path": "updates/2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish.html",
+    "file": "updates/2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish.html",
+    "sidecar": "updates/2026-05-14-session-summary-dt10-singlecam16-g2-30k-eval-visualization-publish.json"
+  },
+  {
     "title": "2026-05-12 · Evaluate, visualize, and publish succeeded ACP job pt-9ohso8nd: direct_joints with active/right heads enabled and n_max=1 on cam836.",
     "date": "2026-05-12",
     "status": "published",
