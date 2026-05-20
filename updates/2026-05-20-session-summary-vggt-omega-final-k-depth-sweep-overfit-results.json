@@ -4,21 +4,21 @@
   "status": "complete",
   "goal": "VGGT-Omega hand-token overfit ablations: final-K depth sweep through first layer, compared with prior token-mode runs.",
   "branch": "feat/vggt-omega-backbone-research",
-  "head_sha": "219a113",
+  "head_sha": "8112863",
   "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-vggt-omega-backbone-research",
   "plan_path": "docs/superpowers/plans/2026-05-18-vggt-omega-backbone-replacement.md",
   "headline_stats": [
     {
-      "label": "new ACP jobs completed",
-      "value": "5/5"
+      "label": "runs in table",
+      "value": "12"
     },
     {
       "label": "final-K overfit band",
       "value": "K<=8"
     },
     {
-      "label": "first-layer K=24 result",
-      "value": "fails"
+      "label": "hand-RoPE K=24 last20",
+      "value": "6.7639"
     },
     {
       "label": "best last20 loss",
@@ -40,18 +40,18 @@
   "discoveries": [
     {
       "badge": "finding",
-      "title": "Final-K depth threshold",
-      "body": "K=2/4/6/8 consistently overfit on this 200-step surface, while K=16/20/24 fail. K=12 is partial/unstable: final loss drops to 0.0868 but last20 remains 0.4001 due spikes."
+      "title": "Final-K depth threshold unchanged",
+      "body": "K=2/4/6/8 consistently overfit on this 200-step surface, while K=16/20/24 fail. K=12 is partial/unstable: final loss drops but the last20 average stays elevated due spikes."
     },
     {
       "badge": "fail",
-      "title": "First-layer final-K is not equivalent to successful shallow insertion",
-      "body": "K=24 inserts from block 0 / first layer and fails with last20 3.8823, close to layer0_oneway and auto/all-depth failures."
+      "title": "Hand-token RoPE worsens K=24",
+      "body": "The appended commit 8112863 run uses the same E2 final-K K=24 settings but applies RoPE to grounded hand theta/phi/gamma tokens in each frame block. It ends with last20 6.7639, worse than the original K=24 last20 3.8823."
     },
     {
       "badge": "pass",
       "title": "K=8 remains in the overfit regime",
-      "body": "The new K=8 run reached final 0.0296 and last20 0.0324, comparable to K=2/4/6 and cross_attn_readonly."
+      "body": "K=8 reached final 0.0296 and last20 0.0324, comparable to K=2/4/6 and cross_attn_readonly."
     }
   ],
   "module_state": [
@@ -70,14 +70,9 @@
   ],
   "tasks_pending": [
     {
-      "id": "NEXT-DESIGN-DECISION",
+      "id": "next_vggt_direction",
       "priority": "P1",
-      "summary": "Use final-K K=8 or smaller as the viable hand-token insertion window; avoid all-depth/first-layer bidirectional insertion unless adding stronger isolation or a different attention contract."
-    },
-    {
-      "id": "OPTIONAL-FIXED-WINDOW-RERUN",
-      "priority": "P2",
-      "summary": "If a deterministic fixed-window claim is needed, rerun the chosen K values with a true fixed-window manifest/sampler instead of max_manifest_size=1."
+      "summary": "Do not continue deeper-K exhaustive runs without a new mechanism. The current evidence points away from simple per-layer hand-token RoPE as the fix for all-depth insertion."
     }
   ],
   "caveats": [
@@ -85,7 +80,7 @@
     "K=24 uses final-K bidirectional semantics from the first layer; layer0_oneway uses a one-way mask where native VGGT tokens cannot read hand tokens.",
     "The comparison keeps the prior E2 command surface; it does not change optimizer groups or loss weights."
   ],
-  "extra_html": "<section><h2>Combined Loss Curves</h2>\n<figure style=\"margin:0\">\n  <img src=\"2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results/combined_loss_curves.png\" alt=\"VGGT-Omega hand-token overfit ablation loss curves\" style=\"width:100%;max-width:1180px;border:1px solid #e5e7eb;border-radius:8px;background:#fff\" />\n  <figcaption style=\"color:#6b7280;font-size:13px;margin-top:8px\">Five-step moving average of loss_total. Lower panel zooms into the successful and partial-overfit range.</figcaption>\n</figure>\n</section>\n<section><h2>Run Table</h2>\n<table><thead><tr><th>Setting</th><th>K</th><th>Job</th><th>Workspace</th><th>Commit</th><th>First20</th><th>Last20</th><th>Final</th><th>Min</th><th>Verdict</th><th>Output dir</th></tr></thead><tbody>\n<tr><td>P0 auto / all-depth insertion</td><td>all</td><td><code>local</code></td><td></td><td><code>5b7e16a</code></td><td>3.722884</td><td>3.878674</td><td>3.781482</td><td>2.878428 @ 135</td><td><span class=\"badge badge-fail\">flat/fails</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-p0-handonly-lora-onewin200-20260520T082043Z_5b7e16a_r2</code></td></tr>\n<tr><td>E1 cross_attn_readonly</td><td>n/a</td><td><code>local</code></td><td></td><td><code>4b22cc6</code></td><td>0.998457</td><td>0.030392</td><td>0.029102</td><td>0.025739 @ 180</td><td><span class=\"badge badge-pass\">overfits</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e1-frozen-crossattn-onewin200-20260520T4b22cc6</code></td></tr>\n<tr><td>E2 final-K K=2</td><td>2</td><td><code>local</code></td><td></td><td><code>4b22cc6</code></td><td>1.033507</td><td>0.039063</td><td>0.046601</td><td>0.032173 @ 193</td><td><span class=\"badge badge-pass\">overfits</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk2-lora-onewin200-20260520T4b22cc6</code></td></tr>\n<tr><td>E2 final-K K=4</td><td>4</td><td><code>local</code></td><td></td><td><code>4b22cc6</code></td><td>0.863934</td><td>0.038993</td><td>0.032824</td><td>0.026801 @ 195</td><td><span class=\"badge badge-pass\">overfits</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk4-lora-onewin200-20260520T4b22cc6</code></td></tr>\n<tr><td>E2 final-K K=6</td><td>6</td><td><code>local</code></td><td></td><td><code>4b22cc6</code></td><td>1.220658</td><td>0.040473</td><td>0.033568</td><td>0.030986 @ 197</td><td><span class=\"badge badge-pass\">overfits</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk6-lora-onewin200-20260520T4b22cc6</code></td></tr>\n<tr><td>E2 final-K K=8</td><td>8</td><td><code>pt-waadp8ia</code></td><td>p1 RESERVED</td><td><code>219a113</code></td><td>0.679387</td><td>0.032381</td><td>0.029642</td><td>0.026199 @ 195</td><td><span class=\"badge badge-pass\">overfits</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk8-lora-onewin200-acp-20260520T219a113</code></td></tr>\n<tr><td>E2 final-K K=12</td><td>12</td><td><code>pt-ekrx170k</code></td><td>share SPOT</td><td><code>219a113</code></td><td>1.048092</td><td>0.400069</td><td>0.086791</td><td>0.047980 @ 138</td><td><span class=\"badge badge-fix\">partial</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk12-lora-onewin200-acp-20260520T219a113</code></td></tr>\n<tr><td>E2 final-K K=16</td><td>16</td><td><code>pt-vuavnbna</code></td><td>share SPOT</td><td><code>219a113</code></td><td>3.334239</td><td>4.203138</td><td>4.922601</td><td>2.577082 @ 154</td><td><span class=\"badge badge-fail\">flat/fails</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk16-lora-onewin200-acp-20260520T219a113</code></td></tr>\n<tr><td>E2 final-K K=20</td><td>20</td><td><code>pt-vvpdsjw3</code></td><td>share SPOT</td><td><code>219a113</code></td><td>3.684908</td><td>3.795927</td><td>3.945267</td><td>2.595718 @ 21</td><td><span class=\"badge badge-fail\">flat/fails</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk20-lora-onewin200-acp-20260520T219a113</code></td></tr>\n<tr><td>E2 final-K K=24</td><td>24</td><td><code>pt-6y091231</code></td><td>share SPOT</td><td><code>219a113</code></td><td>3.744280</td><td>3.882254</td><td>3.768358</td><td>2.876684 @ 135</td><td><span class=\"badge badge-fail\">flat/fails</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk24-lora-onewin200-acp-20260520T219a113</code></td></tr>\n<tr><td>layer0_oneway</td><td>all</td><td><code>local</code></td><td></td><td><code>219a113</code></td><td>3.754432</td><td>3.989648</td><td>4.012205</td><td>2.862129 @ 122</td><td><span class=\"badge badge-fail\">flat/fails</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-layer0-oneway-lora-onewin200-20260520T219a113</code></td></tr>\n</tbody></table>\n</section>\n<section><h2>Interpretation</h2>\n<div class=\"panel info\"><p>The final-K insertion window has a clear depth threshold on this one-manifest overfit surface: K=2/4/6/8 all overfit; K=12 is unstable/partial by last20; K=16/20/24 fail similarly to all-depth auto insertion and layer0_oneway. K=24 is the first-layer final-K condition and differs from layer0_oneway because native VGGT tokens can still attend hand tokens.</p></div>\n<p>Machine-readable summary asset: <a href=\"2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results/overfit_results_summary.json\"><code>overfit_results_summary.json</code></a>.</p>\n</section>",
+  "extra_html": "\n<section><h2>Combined Loss Curves</h2>\n<figure style=\"margin:0\">\n  <img src=\"2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results/combined_loss_curves.png\" alt=\"VGGT-Omega hand-token overfit ablation loss curves\" style=\"width:100%;max-width:1180px;border:1px solid #e5e7eb;border-radius:8px;background:#fff\" />\n  <figcaption style=\"color:#6b7280;font-size:13px;margin-top:8px\">Five-step moving average of training loss. The lower panel zooms into the successful and partial-overfit range. The dashed curve is the 2026-05-21 hand-token RoPE append.</figcaption>\n</figure>\n<p>Raw summary JSON: <a href=\"2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results/overfit_results_summary.json\"><code>overfit_results_summary.json</code></a></p>\n</section>\n<section><h2>Overfit Results Table</h2>\n<table><thead><tr><th>Run</th><th>Mode</th><th>K</th><th>Job</th><th>Commit</th><th>Steps</th><th>First20</th><th>Last20</th><th>Final</th><th>Min</th><th>Verdict</th><th>Output dir</th></tr></thead><tbody><tr><td>P0 auto / all-depth insertion</td><td>auto</td><td>all</td><td>local</td><td>5b7e16a</td><td>200</td><td>3.7229</td><td>3.8787</td><td>3.7815</td><td>2.8784 @ 135</td><td>flat/fails</td><td>logs/vggt_omega/hoi3r-vggt-omega-p0-handonly-lora-onewin200-20260520T082043Z_5b7e16a_r2</td></tr><tr><td>E1 cross_attn_readonly</td><td>cross_attn_readonly</td><td>n/a</td><td>local</td><td>4b22cc6</td><td>200</td><td>0.9985</td><td>0.0304</td><td>0.0291</td><td>0.0257 @ 180</td><td>overfits</td><td>logs/vggt_omega/hoi3r-vggt-omega-e1-frozen-crossattn-onewin200-20260520T4b22cc6</td></tr><tr><td>E2 final-K K=2</td><td>auto</td><td>2</td><td>local</td><td>4b22cc6</td><td>200</td><td>1.0335</td><td>0.0391</td><td>0.0466</td><td>0.0322 @ 193</td><td>overfits</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk2-lora-onewin200-20260520T4b22cc6</td></tr><tr><td>E2 final-K K=4</td><td>auto</td><td>4</td><td>local</td><td>4b22cc6</td><td>200</td><td>0.8639</td><td>0.0390</td><td>0.0328</td><td>0.0268 @ 195</td><td>overfits</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk4-lora-onewin200-20260520T4b22cc6</td></tr><tr><td>E2 final-K K=6</td><td>auto</td><td>6</td><td>local</td><td>4b22cc6</td><td>200</td><td>1.2207</td><td>0.0405</td><td>0.0336</td><td>0.0310 @ 197</td><td>overfits</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk6-lora-onewin200-20260520T4b22cc6</td></tr><tr><td>E2 final-K K=8</td><td>auto</td><td>8</td><td>ACP</td><td>219a113</td><td>200</td><td>0.6794</td><td>0.0324</td><td>0.0296</td><td>0.0262 @ 195</td><td>overfits</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk8-lora-onewin200-acp-20260520T219a113</td></tr><tr><td>E2 final-K K=12</td><td>auto</td><td>12</td><td>ACP</td><td>219a113</td><td>200</td><td>1.0481</td><td>0.4001</td><td>0.0868</td><td>0.0480 @ 138</td><td>partial</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk12-lora-onewin200-acp-20260520T219a113</td></tr><tr><td>E2 final-K K=16</td><td>auto</td><td>16</td><td>ACP</td><td>219a113</td><td>200</td><td>3.3342</td><td>4.2031</td><td>4.9226</td><td>2.5771 @ 154</td><td>flat/fails</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk16-lora-onewin200-acp-20260520T219a113</td></tr><tr><td>E2 final-K K=20</td><td>auto</td><td>20</td><td>ACP</td><td>219a113</td><td>200</td><td>3.6849</td><td>3.7959</td><td>3.9453</td><td>2.5957 @ 21</td><td>flat/fails</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk20-lora-onewin200-acp-20260520T219a113</td></tr><tr><td>E2 final-K K=24</td><td>auto</td><td>24</td><td>ACP</td><td>219a113</td><td>200</td><td>3.7443</td><td>3.8823</td><td>3.7684</td><td>2.8767 @ 135</td><td>flat/fails</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk24-lora-onewin200-acp-20260520T219a113</td></tr><tr><td>layer0_oneway</td><td>layer0_oneway</td><td>n/a</td><td>local</td><td>219a113</td><td>200</td><td>3.7544</td><td>3.9896</td><td>4.0122</td><td>2.8621 @ 122</td><td>flat/fails</td><td>logs/vggt_omega/hoi3r-vggt-omega-layer0-oneway-lora-onewin200-20260520T219a113</td></tr><tr><td>E2 final-K K=24 + hand RoPE</td><td>auto + hand-token RoPE</td><td>24</td><td>debug H100</td><td>8112863</td><td>200</td><td>6.3150</td><td>6.7639</td><td>6.3160</td><td>3.4557 @ 21</td><td>flat/fails</td><td>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk24-handrope-lora-onewin200-20260521T8112863</td></tr></tbody></table>\n</section>\n<section><h2>2026-05-21 Append: Hand-Token RoPE</h2>\n<p>Using the same E2 final-K K=24 surface as the prior <code>219a113</code> run, commit <code>8112863</code> applies indexed RoPE to the grounded hand dynamic tokens <code>theta</code>, <code>phi</code>, and <code>gamma</code> alongside patch tokens in every VGGT frame block. This did not fix the depth failure: last20 worsened from 3.8823 to 6.7639, final loss is 6.3160, and the best transient point is 3.4557 at step 21.</p>\n<p>Decision: hand-token RoPE in this implementation is not the missing mechanism for the K=24/all-depth failure. The stable overfit region remains K<=8, K=12 remains partial/unstable, and K>=16 still fails.</p>\n</section>\n",
   "experiment_results": [
     {
       "id": "p0_auto_all_depth",
@@ -95,6 +90,7 @@
       "job": "local",
       "workspace": null,
       "commit": "5b7e16a",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-p0-handonly-lora-onewin200-20260520T082043Z_5b7e16a_r2",
       "n": 200,
       "first20": 3.7228836894035338,
       "last20": 3.8786744475364685,
@@ -102,8 +98,7 @@
       "final": 3.781482458114624,
       "min": 2.8784284591674805,
       "min_step": 135,
-      "verdict": "flat/fails",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-p0-handonly-lora-onewin200-20260520T082043Z_5b7e16a_r2"
+      "verdict": "flat/fails"
     },
     {
       "id": "e1_cross_attn_readonly",
@@ -113,6 +108,7 @@
       "job": "local",
       "workspace": null,
       "commit": "4b22cc6",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e1-frozen-crossattn-onewin200-20260520T4b22cc6",
       "n": 200,
       "first20": 0.9984569877386094,
       "last20": 0.030392324179410936,
@@ -120,17 +116,17 @@
       "final": 0.02910158410668373,
       "min": 0.025739118456840515,
       "min_step": 180,
-      "verdict": "overfits",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e1-frozen-crossattn-onewin200-20260520T4b22cc6"
+      "verdict": "overfits"
     },
     {
       "id": "e2_finalk2",
       "label": "E2 final-K K=2",
-      "mode": "final_k_insertion",
+      "mode": "auto",
       "k": 2,
       "job": "local",
       "workspace": null,
       "commit": "4b22cc6",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk2-lora-onewin200-20260520T4b22cc6",
       "n": 200,
       "first20": 1.0335068486630916,
       "last20": 0.039062904007732865,
@@ -138,17 +134,17 @@
       "final": 0.0466010607779026,
       "min": 0.032173290848731995,
       "min_step": 193,
-      "verdict": "overfits",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk2-lora-onewin200-20260520T4b22cc6"
+      "verdict": "overfits"
     },
     {
       "id": "e2_finalk4",
       "label": "E2 final-K K=4",
-      "mode": "final_k_insertion",
+      "mode": "auto",
       "k": 4,
       "job": "local",
       "workspace": null,
       "commit": "4b22cc6",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk4-lora-onewin200-20260520T4b22cc6",
       "n": 200,
       "first20": 0.8639340750873089,
       "last20": 0.03899286985397339,
@@ -156,17 +152,17 @@
       "final": 0.03282371908426285,
       "min": 0.026800531893968582,
       "min_step": 195,
-      "verdict": "overfits",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk4-lora-onewin200-20260520T4b22cc6"
+      "verdict": "overfits"
     },
     {
       "id": "e2_finalk6",
       "label": "E2 final-K K=6",
-      "mode": "final_k_insertion",
+      "mode": "auto",
       "k": 6,
       "job": "local",
       "workspace": null,
       "commit": "4b22cc6",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk6-lora-onewin200-20260520T4b22cc6",
       "n": 200,
       "first20": 1.2206580206751823,
       "last20": 0.04047264568507671,
@@ -174,17 +170,17 @@
       "final": 0.033567652106285095,
       "min": 0.030985940247774124,
       "min_step": 197,
-      "verdict": "overfits",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk6-lora-onewin200-20260520T4b22cc6"
+      "verdict": "overfits"
     },
     {
       "id": "e2_finalk8",
       "label": "E2 final-K K=8",
-      "mode": "final_k_insertion",
+      "mode": "auto",
       "k": 8,
-      "job": "pt-waadp8ia",
-      "workspace": "p1 RESERVED",
+      "job": "ACP",
+      "workspace": "share cluster",
       "commit": "219a113",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk8-lora-onewin200-acp-20260520T219a113",
       "n": 200,
       "first20": 0.6793868254870177,
       "last20": 0.03238097000867128,
@@ -192,17 +188,17 @@
       "final": 0.029642309993505478,
       "min": 0.026199186220765114,
       "min_step": 195,
-      "verdict": "overfits",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk8-lora-onewin200-acp-20260520T219a113"
+      "verdict": "overfits"
     },
     {
       "id": "e2_finalk12",
       "label": "E2 final-K K=12",
-      "mode": "final_k_insertion",
+      "mode": "auto",
       "k": 12,
-      "job": "pt-ekrx170k",
-      "workspace": "share SPOT",
+      "job": "ACP",
+      "workspace": "share cluster",
       "commit": "219a113",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk12-lora-onewin200-acp-20260520T219a113",
       "n": 200,
       "first20": 1.0480923354625702,
       "last20": 0.4000686384737492,
@@ -210,17 +206,17 @@
       "final": 0.08679133653640747,
       "min": 0.04797952249646187,
       "min_step": 138,
-      "verdict": "partial",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk12-lora-onewin200-acp-20260520T219a113"
+      "verdict": "partial"
     },
     {
       "id": "e2_finalk16",
       "label": "E2 final-K K=16",
-      "mode": "final_k_insertion",
+      "mode": "auto",
       "k": 16,
-      "job": "pt-vuavnbna",
-      "workspace": "share SPOT",
+      "job": "ACP",
+      "workspace": "share cluster",
       "commit": "219a113",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk16-lora-onewin200-acp-20260520T219a113",
       "n": 200,
       "first20": 3.3342392086982726,
       "last20": 4.203137588500977,
@@ -228,17 +224,17 @@
       "final": 4.922601222991943,
       "min": 2.5770816802978516,
       "min_step": 154,
-      "verdict": "flat/fails",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk16-lora-onewin200-acp-20260520T219a113"
+      "verdict": "flat/fails"
     },
     {
       "id": "e2_finalk20",
       "label": "E2 final-K K=20",
-      "mode": "final_k_insertion",
+      "mode": "auto",
       "k": 20,
-      "job": "pt-vvpdsjw3",
-      "workspace": "share SPOT",
+      "job": "ACP",
+      "workspace": "share cluster",
       "commit": "219a113",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk20-lora-onewin200-acp-20260520T219a113",
       "n": 200,
       "first20": 3.684907650947571,
       "last20": 3.795927107334137,
@@ -246,17 +242,17 @@
       "final": 3.9452672004699707,
       "min": 2.5957179069519043,
       "min_step": 21,
-      "verdict": "flat/fails",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk20-lora-onewin200-acp-20260520T219a113"
+      "verdict": "flat/fails"
     },
     {
       "id": "e2_finalk24",
       "label": "E2 final-K K=24",
-      "mode": "final_k_insertion",
+      "mode": "auto",
       "k": 24,
-      "job": "pt-6y091231",
-      "workspace": "share SPOT",
+      "job": "ACP",
+      "workspace": "share cluster",
       "commit": "219a113",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk24-lora-onewin200-acp-20260520T219a113",
       "n": 200,
       "first20": 3.744279932975769,
       "last20": 3.8822542905807493,
@@ -264,17 +260,17 @@
       "final": 3.768357992172241,
       "min": 2.8766844272613525,
       "min_step": 135,
-      "verdict": "flat/fails",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk24-lora-onewin200-acp-20260520T219a113"
+      "verdict": "flat/fails"
     },
     {
       "id": "layer0_oneway",
       "label": "layer0_oneway",
       "mode": "layer0_oneway",
-      "k": "all",
+      "k": "n/a",
       "job": "local",
       "workspace": null,
       "commit": "219a113",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-layer0-oneway-lora-onewin200-20260520T219a113",
       "n": 200,
       "first20": 3.7544322967529298,
       "last20": 3.9896476030349732,
@@ -282,15 +278,32 @@
       "final": 4.012205123901367,
       "min": 2.8621294498443604,
       "min_step": 122,
-      "verdict": "flat/fails",
-      "path": "logs/vggt_omega/hoi3r-vggt-omega-layer0-oneway-lora-onewin200-20260520T219a113"
+      "verdict": "flat/fails"
+    },
+    {
+      "id": "e2_finalk24_handrope",
+      "label": "E2 final-K K=24 + hand RoPE",
+      "mode": "auto + hand-token RoPE",
+      "k": 24,
+      "job": "debug H100",
+      "workspace": "remote debug container",
+      "commit": "8112863",
+      "path": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk24-handrope-lora-onewin200-20260521T8112863",
+      "n": 200,
+      "first20": 6.3149584293365475,
+      "last20": 6.763897371292114,
+      "last50": 6.686493825912476,
+      "final": 6.316004753112793,
+      "min": 3.4556751251220703,
+      "min_step": 21,
+      "verdict": "flat/fails"
     }
   ],
-  "assets": [
-    "combined_loss_curves.png",
-    "overfit_results_summary.json"
-  ],
+  "assets": {
+    "combined_loss_curves": "combined_loss_curves.png",
+    "summary_json": "overfit_results_summary.json"
+  },
   "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results.html",
   "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results.json",
-  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results.json\nand continue from tasks_pending[0] (NEXT-DESIGN-DECISION [P1]: Use final-K K=8 or smaller as the viable hand-token insertion window; avoid all-depth/first-layer bidirectional insertion unless adding stronger isolation or a different attention contract.).\nContext: branch feat/vggt-omega-backbone-research@219a113; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-vggt-omega-backbone-research.\nAlso read: docs/superpowers/plans/2026-05-18-vggt-omega-backbone-replacement.md."
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results.json\nand continue from tasks_pending[0] (next_vggt_direction [P1]: Do not continue deeper-K exhaustive runs without a new mechanism. The current evidence points away from simple per-layer hand-token RoPE as the fix for all-depth insertion.).\nContext: branch feat/vggt-omega-backbone-research@8112863; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-vggt-omega-backbone-research.\nAlso read: docs/superpowers/plans/2026-05-18-vggt-omega-backbone-replacement.md."
 }
