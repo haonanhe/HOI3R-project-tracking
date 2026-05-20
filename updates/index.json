@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-20 · VGGT-Omega hand-token overfit ablations: final-K depth sweep through first layer, compared with prior token-mode runs.",
+    "date": "2026-05-20",
+    "status": "complete",
+    "summary": "VGGT-Omega hand-token overfit ablations: final-K depth sweep through first layer, compared with prior token-mode runs.",
+    "path": "updates/2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results.html",
+    "file": "updates/2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results.html",
+    "sidecar": "updates/2026-05-20-session-summary-vggt-omega-final-k-depth-sweep-overfit-results.json"
+  },
+  {
     "title": "2026-05-20 · Compare VGGT-Omega hand-token insertion modes on the one-window overfit control.",
     "date": "2026-05-20",
     "status": "complete",
