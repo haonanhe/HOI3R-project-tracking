@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-20 · Compare VGGT-Omega hand-token insertion modes on the one-window overfit control.",
+    "date": "2026-05-20",
+    "status": "complete",
+    "summary": "Compare VGGT-Omega hand-token insertion modes on the one-window overfit control.",
+    "path": "updates/2026-05-20-session-summary-vggt-omega-hand-token-mode-overfit-comparison.html",
+    "file": "updates/2026-05-20-session-summary-vggt-omega-hand-token-mode-overfit-comparison.html",
+    "sidecar": "updates/2026-05-20-session-summary-vggt-omega-hand-token-mode-overfit-comparison.json"
+  },
+  {
     "title": "2026-05-14 · Publish DT10 singlecam16 g2 30k training loss curve, fixed all/seen/unseen eval results, and seen/unseen visualizations.",
     "date": "2026-05-14",
     "status": "published",

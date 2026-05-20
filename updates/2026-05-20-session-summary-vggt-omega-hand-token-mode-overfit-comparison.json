@@ -1,0 +1,220 @@
+{
+  "date": "2026-05-20",
+  "topic": "vggt-omega-hand-token-mode-overfit-comparison",
+  "branch": "feat/vggt-omega-backbone-research",
+  "head_sha": "219a113",
+  "status": "complete",
+  "goal": "Compare VGGT-Omega hand-token insertion modes on the one-window overfit control.",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-vggt-omega-backbone-research",
+  "headline_stats": [
+    {
+      "label": "Runs summarized",
+      "value": "6"
+    },
+    {
+      "label": "Positive overfit modes",
+      "value": "4"
+    },
+    {
+      "label": "Negative early-insertion modes",
+      "value": "2"
+    },
+    {
+      "label": "Best final loss",
+      "value": "0.0291"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "E1",
+      "summary": "Summarized cross-attention readout-only overfit baseline."
+    },
+    {
+      "id": "E2",
+      "summary": "Summarized delayed final-K insertion controls for K=2,4,6."
+    },
+    {
+      "id": "E3",
+      "summary": "Summarized layer0_oneway and all-depth insertion negative controls."
+    }
+  ],
+  "discoveries": [
+    {
+      "title": "Final-K insertion works",
+      "badge": "pass",
+      "body": "K=2, K=4, and K=6 all overfit to last20 near 0.04 on this control."
+    },
+    {
+      "title": "Early insertion stays flat",
+      "badge": "fail",
+      "body": "All-depth auto insertion and layer0_oneway remain around loss 3.8-4.0 despite nonzero gradients."
+    },
+    {
+      "title": "Readout-only features are sufficient",
+      "badge": "pass",
+      "body": "The frozen cross-attention readout baseline reaches final loss 0.0291, showing the loaded final VGGT features contain usable hand information."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "219a113",
+      "type": "remote-code",
+      "subject": "feat(vggt): add layer0 one-way hand token mode"
+    },
+    {
+      "sha": "e431e72",
+      "type": "remote-code",
+      "subject": "feat(vggt): name hand token insertion modes"
+    },
+    {
+      "sha": "4b22cc6",
+      "type": "remote-code",
+      "subject": "feat(vggt): add hand decoder ablation controls"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Best current strategy",
+      "state": "Use delayed final-layer hand-token insertion; K=2 is the cleanest positive control."
+    },
+    {
+      "aspect": "layer0_oneway",
+      "state": "Implemented and tested, but overfit result is negative under this control."
+    },
+    {
+      "aspect": "Gradient status",
+      "state": "Negative modes still have nonzero LoRA and hand gradients, so the failure is not no-gradient."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "P0",
+      "priority": "P0",
+      "summary": "Use final_k_insertion K=2 as the next positive control; do not spend more runs on layer0_oneway unless testing a new hypothesis."
+    },
+    {
+      "id": "P1",
+      "priority": "P1",
+      "summary": "Implement strict fixed-window sampling before claiming true single-window overfit behavior."
+    }
+  ],
+  "caveats": [
+    "E1/E2 command lines predate the explicit parser names; table reports their equivalent semantic modes.",
+    "max_manifest_size=1 is not a strict fixed-window gate in the current loader path.",
+    "This page summarizes training-loss overfit controls only; it does not include eval metrics or visualization playback."
+  ],
+  "extra_html": "\n<section>\n  <h2>Hand-token mode one-window overfit comparison</h2>\n  <p>All rows use the loaded VGGT-Omega 1B/512 checkpoint, DexYCB v3.7 cache, batch size 1, clip length 16, 200 steps, constant LR, object token/head disabled, and scene-reference losses set to zero unless noted. Older E1/E2 runs predate the parser names, so the table reports the equivalent semantic mode.</p>\n  <div style=\"overflow-x:auto\">\n  <table>\n    <thead><tr><th>Semantic mode</th><th>Run</th><th>Code</th><th>Train</th><th>K / insertion</th><th>Readout</th><th>first20</th><th>last20</th><th>final</th><th>min</th><th>Gradients</th><th>Verdict</th><th>Artifact</th></tr></thead>\n    <tbody><tr><td>auto / all-depth insertion</td><td>P0 hand-only LoRA</td><td>5b7e16a</td><td>lora</td><td>all blocks</td><td>auto camera_style</td><td><code>3.722884</code></td><td><code>3.878674</code></td><td><code>3.781482</code></td><td>2.878428 @135</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class=\"badge badge-fail\">flat</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-p0-handonly-lora-onewin200-20260520T082043Z_5b7e16a_r2/</code></td></tr><tr><td>cross_attn_readonly</td><td>E1 frozen final-feature readout</td><td>4b22cc6</td><td>frozen_base</td><td>0</td><td>cross_attn</td><td><code>0.998457</code></td><td><code>0.030392</code></td><td><code>0.029102</code></td><td>0.025739 @180</td><td>LoRA 0/200; hand 200/200; object 0/200</td><td><span class=\"badge badge-pass\">overfit</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e1-frozen-crossattn-onewin200-20260520T4b22cc6/</code></td></tr><tr><td>final_k_insertion</td><td>E2 final K=2 LoRA</td><td>4b22cc6</td><td>lora</td><td>2</td><td>auto camera_style</td><td><code>1.033507</code></td><td><code>0.039063</code></td><td><code>0.046601</code></td><td>0.032173 @193</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class=\"badge badge-pass\">overfit</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk2-lora-onewin200-20260520T4b22cc6/</code></td></tr><tr><td>final_k_insertion</td><td>E2 final K=4 LoRA</td><td>4b22cc6</td><td>lora</td><td>4</td><td>auto camera_style</td><td><code>0.863934</code></td><td><code>0.038993</code></td><td><code>0.032824</code></td><td>0.026801 @195</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class=\"badge badge-pass\">overfit</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk4-lora-onewin200-20260520T4b22cc6/</code></td></tr><tr><td>final_k_insertion</td><td>E2 final K=6 LoRA</td><td>4b22cc6</td><td>lora</td><td>6</td><td>auto camera_style</td><td><code>1.220658</code></td><td><code>0.040473</code></td><td><code>0.033568</code></td><td>0.030986 @197</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class=\"badge badge-pass\">overfit</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk6-lora-onewin200-20260520T4b22cc6/</code></td></tr><tr><td>layer0_oneway</td><td>Layer0 one-way LoRA</td><td>219a113</td><td>lora</td><td>block0 onward</td><td>auto camera_style</td><td><code>3.754432</code></td><td><code>3.989648</code></td><td><code>4.012205</code></td><td>2.862129 @122</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class=\"badge badge-fail\">flat</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-layer0-oneway-lora-onewin200-20260520T219a113/</code></td></tr></tbody>\n  </table>\n  </div>\n</section>\n<section>\n  <h2>Decision readout</h2>\n  <div class=\"panel\"><h3>Primary result</h3><p>Delayed final-layer insertion is the only in-backbone hand-token strategy here that overfits reliably. K=2, K=4, and K=6 all reach last20 around 0.039-0.040, while all-depth insertion and layer0_oneway remain flat around 3.8-4.0 despite nonzero LoRA and hand gradients.</p></div>\n  <div class=\"panel\"><h3>Interpretation</h3><p>The failure is not simple gradient starvation. Both negative in-backbone runs have LoRA and hand gradients on all 200 steps. The current evidence points to early hand-token insertion disrupting the loaded VGGT representation; masking native tokens from reading hand-token K/V at every layer is not sufficient to recover overfit.</p></div>\n  <div class=\"panel\"><h3>Caveat</h3><p>The comparison intentionally keeps the same earlier control surface. Current max_manifest_size=1 is still not a strict fixed-window gate, so this is a consistent one-manifest overfit comparison rather than a strict single-window proof.</p></div>\n</section>\n",
+  "runs": [
+    {
+      "semantic_mode": "auto / all-depth insertion",
+      "run": "P0 hand-only LoRA",
+      "commit": "5b7e16a",
+      "train_mode": "lora",
+      "actual_flags": "--vggt-hand-token-mode auto; no --vggt-hand-insert-last-k",
+      "k": "all blocks",
+      "readout": "auto camera_style",
+      "object": "disabled",
+      "first20": 3.722884,
+      "last20": 3.878674,
+      "last50": 3.748047,
+      "final": 3.781482,
+      "min": "2.878428 @135",
+      "grad": "LoRA 200/200; hand 200/200; object 0/200",
+      "verdict": "negative",
+      "artifact": "logs/vggt_omega/hoi3r-vggt-omega-p0-handonly-lora-onewin200-20260520T082043Z_5b7e16a_r2/"
+    },
+    {
+      "semantic_mode": "cross_attn_readonly",
+      "run": "E1 frozen final-feature readout",
+      "commit": "4b22cc6",
+      "train_mode": "frozen_base",
+      "actual_flags": "equiv: hand tokens none; hand head cross_attn; insert_last_k=0",
+      "k": "0",
+      "readout": "cross_attn",
+      "object": "disabled",
+      "first20": 0.998457,
+      "last20": 0.030392,
+      "last50": 0.031608,
+      "final": 0.029102,
+      "min": "0.025739 @180",
+      "grad": "LoRA 0/200; hand 200/200; object 0/200",
+      "verdict": "positive",
+      "artifact": "logs/vggt_omega/hoi3r-vggt-omega-e1-frozen-crossattn-onewin200-20260520T4b22cc6/"
+    },
+    {
+      "semantic_mode": "final_k_insertion",
+      "run": "E2 final K=2 LoRA",
+      "commit": "4b22cc6",
+      "train_mode": "lora",
+      "actual_flags": "equiv: --vggt-hand-token-mode auto --vggt-hand-insert-last-k 2",
+      "k": "2",
+      "readout": "auto camera_style",
+      "object": "disabled",
+      "first20": 1.033507,
+      "last20": 0.039063,
+      "last50": 0.042603,
+      "final": 0.046601,
+      "min": "0.032173 @193",
+      "grad": "LoRA 200/200; hand 200/200; object 0/200",
+      "verdict": "positive",
+      "artifact": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk2-lora-onewin200-20260520T4b22cc6/"
+    },
+    {
+      "semantic_mode": "final_k_insertion",
+      "run": "E2 final K=4 LoRA",
+      "commit": "4b22cc6",
+      "train_mode": "lora",
+      "actual_flags": "equiv: --vggt-hand-token-mode auto --vggt-hand-insert-last-k 4",
+      "k": "4",
+      "readout": "auto camera_style",
+      "object": "disabled",
+      "first20": 0.863934,
+      "last20": 0.038993,
+      "last50": 0.04458,
+      "final": 0.032824,
+      "min": "0.026801 @195",
+      "grad": "LoRA 200/200; hand 200/200; object 0/200",
+      "verdict": "positive",
+      "artifact": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk4-lora-onewin200-20260520T4b22cc6/"
+    },
+    {
+      "semantic_mode": "final_k_insertion",
+      "run": "E2 final K=6 LoRA",
+      "commit": "4b22cc6",
+      "train_mode": "lora",
+      "actual_flags": "equiv: --vggt-hand-token-mode auto --vggt-hand-insert-last-k 6",
+      "k": "6",
+      "readout": "auto camera_style",
+      "object": "disabled",
+      "first20": 1.220658,
+      "last20": 0.040473,
+      "last50": 0.043143,
+      "final": 0.033568,
+      "min": "0.030986 @197",
+      "grad": "LoRA 200/200; hand 200/200; object 0/200",
+      "verdict": "positive",
+      "artifact": "logs/vggt_omega/hoi3r-vggt-omega-e2-finalk6-lora-onewin200-20260520T4b22cc6/"
+    },
+    {
+      "semantic_mode": "layer0_oneway",
+      "run": "Layer0 one-way LoRA",
+      "commit": "219a113",
+      "train_mode": "lora",
+      "actual_flags": "--vggt-hand-token-mode layer0_oneway",
+      "k": "block0 onward",
+      "readout": "auto camera_style",
+      "object": "disabled",
+      "first20": 3.754432,
+      "last20": 3.989648,
+      "last50": 3.837825,
+      "final": 4.012205,
+      "min": "2.862129 @122",
+      "grad": "LoRA 200/200; hand 200/200; object 0/200",
+      "verdict": "negative",
+      "artifact": "logs/vggt_omega/hoi3r-vggt-omega-layer0-oneway-lora-onewin200-20260520T219a113/"
+    }
+  ],
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-20-session-summary-vggt-omega-hand-token-mode-overfit-comparison.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-20-session-summary-vggt-omega-hand-token-mode-overfit-comparison.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-20-session-summary-vggt-omega-hand-token-mode-overfit-comparison.json\nand continue from tasks_pending[0] (P0 [P0]: Use final_k_insertion K=2 as the next positive control; do not spend more runs on layer0_oneway unless testing a new hypothesis.).\nContext: branch feat/vggt-omega-backbone-research@219a113; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-vggt-omega-backbone-research."
+}

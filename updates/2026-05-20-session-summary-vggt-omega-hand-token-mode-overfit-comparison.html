@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>2026-05-20 · vggt-omega-hand-token-mode-overfit-comparison</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:1400px;margin:0 auto;padding:20px;background:#f8f9fa;color:#333}
+h1{border-bottom:3px solid #2c3e50;padding-bottom:10px}
+h2{color:#2c3e50;border-bottom:1px solid #ddd;padding-bottom:5px;margin-top:30px}
+h3{color:#34495e;margin-top:24px}
+p{line-height:1.6}
+table{border-collapse:collapse;width:100%;margin:16px 0;background:#fff}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:left;vertical-align:top}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f2f2f2}
+.panel{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.highlight{background:#e8f5e9;padding:12px;border-left:4px solid #27ae60;margin:12px 0}
+.warning{background:#fff3e0;padding:12px;border-left:4px solid #f39c12;margin:12px 0}
+.error{background:#fce4ec;padding:12px;border-left:4px solid #e53935;margin:12px 0}
+.info{background:#eaf4ff;padding:12px;border-left:4px solid #3498db;margin:12px 0}
+.meta-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+.meta-grid{display:grid;grid-template-columns:200px 1fr;gap:8px}
+.meta-label{font-weight:600;color:#555}
+.meta-value{font-family:'Fira Code',monospace;font-size:0.9em}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:.85em;color:#fff;margin-right:4px}
+.badge-pass{background:#27ae60}
+.badge-fix{background:#e67e22}
+.badge-finding{background:#3498db}
+.badge-fail{background:#e53935}
+.badge-p0{background:#c0392b}
+.badge-p1{background:#e67e22}
+.badge-p2{background:#3498db}
+code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:0.9em;color:#c7254e}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;text-align:center}
+.stat-card .value{font-size:1.6em;font-weight:bold;color:#2c3e50}
+.stat-card .label{font-size:.85em;color:#666;margin-top:4px}
+header{margin-bottom:24px}
+section{margin-bottom:32px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:.9em}
+@media (max-width:768px){.grid-4{grid-template-columns:1fr}}</style></head><body>
+<div class="container">
+<header class="session-header">
+  <h1>Vggt Omega Hand Token Mode Overfit Comparison</h1>
+  <div class="meta">2026-05-20 · <code>feat/vggt-omega-backbone-research</code> · <code>@219a113</code> · worktree: <code>/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-vggt-omega-backbone-research</code></div>
+  <p class="goal">Compare VGGT-Omega hand-token insertion modes on the one-window overfit control.</p>
+</header>
+<section class="stats"><div class="stat"><div class="val">6</div><div class="label">Runs summarized</div></div><div class="stat"><div class="val">4</div><div class="label">Positive overfit modes</div></div><div class="stat"><div class="val">2</div><div class="label">Negative early-insertion modes</div></div><div class="stat"><div class="val">0.0291</div><div class="label">Best final loss</div></div></section>
+<section><h2>Tasks / experiments</h2>
+<table><thead><tr><th>Task</th><th>Status</th><th>Commit</th><th>What landed</th></tr></thead><tbody><tr><td>E1</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Summarized cross-attention readout-only overfit baseline.</td></tr><tr><td>E2</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Summarized delayed final-K insertion controls for K=2,4,6.</td></tr><tr><td>E3</td><td><span class="badge badge-pass">PASS</span></td><td></td><td>Summarized layer0_oneway and all-depth insertion negative controls.</td></tr></tbody></table>
+</section>
+
+<section><h2>Key discoveries</h2>
+<div class="panel"><h3><span class="badge badge-pass">PASS</span> Final-K insertion works</h3><p>K=2, K=4, and K=6 all overfit to last20 near 0.04 on this control.</p></div>
+<div class="panel"><h3><span class="badge badge-fail">FAIL</span> Early insertion stays flat</h3><p>All-depth auto insertion and layer0_oneway remain around loss 3.8-4.0 despite nonzero gradients.</p></div>
+<div class="panel"><h3><span class="badge badge-pass">PASS</span> Readout-only features are sufficient</h3><p>The frozen cross-attention readout baseline reaches final loss 0.0291, showing the loaded final VGGT features contain usable hand information.</p></div>
+
+</section>
+
+<section><h2>Commits</h2>
+<table><thead><tr><th>SHA</th><th>Type</th><th>Subject</th></tr></thead><tbody><tr><td>219a113</td><td>remote-code</td><td>feat(vggt): add layer0 one-way hand token mode</td></tr><tr><td>e431e72</td><td>remote-code</td><td>feat(vggt): name hand token insertion modes</td></tr><tr><td>4b22cc6</td><td>remote-code</td><td>feat(vggt): add hand decoder ablation controls</td></tr></tbody></table>
+</section>
+
+<section><h2>Module / branch state</h2>
+<table><thead><tr><th>Aspect</th><th>Current state</th></tr></thead><tbody><tr><td>Best current strategy</td><td>Use delayed final-layer hand-token insertion; K=2 is the cleanest positive control.</td></tr><tr><td>layer0_oneway</td><td>Implemented and tested, but overfit result is negative under this control.</td></tr><tr><td>Gradient status</td><td>Negative modes still have nonzero LoRA and hand gradients, so the failure is not no-gradient.</td></tr></tbody></table>
+</section>
+
+<section><h2>Open issues &amp; next steps</h2>
+<table><thead><tr><th>Task</th><th>Priority</th><th>What&#x27;s needed</th></tr></thead><tbody><tr><td>P0</td><td><span class="badge badge-p0">P0</span></td><td>Use final_k_insertion K=2 as the next positive control; do not spend more runs on layer0_oneway unless testing a new hypothesis.</td></tr><tr><td>P1</td><td><span class="badge badge-p1">P1</span></td><td>Implement strict fixed-window sampling before claiming true single-window overfit behavior.</td></tr></tbody></table>
+</section>
+
+<section><h2>Caveats</h2>
+<ul><li>E1/E2 command lines predate the explicit parser names; table reports their equivalent semantic modes.</li><li>max_manifest_size=1 is not a strict fixed-window gate in the current loader path.</li><li>This page summarizes training-loss overfit controls only; it does not include eval metrics or visualization playback.</li></ul>
+</section>
+
+
+
+<section>
+  <h2>Hand-token mode one-window overfit comparison</h2>
+  <p>All rows use the loaded VGGT-Omega 1B/512 checkpoint, DexYCB v3.7 cache, batch size 1, clip length 16, 200 steps, constant LR, object token/head disabled, and scene-reference losses set to zero unless noted. Older E1/E2 runs predate the parser names, so the table reports the equivalent semantic mode.</p>
+  <div style="overflow-x:auto">
+  <table>
+    <thead><tr><th>Semantic mode</th><th>Run</th><th>Code</th><th>Train</th><th>K / insertion</th><th>Readout</th><th>first20</th><th>last20</th><th>final</th><th>min</th><th>Gradients</th><th>Verdict</th><th>Artifact</th></tr></thead>
+    <tbody><tr><td>auto / all-depth insertion</td><td>P0 hand-only LoRA</td><td>5b7e16a</td><td>lora</td><td>all blocks</td><td>auto camera_style</td><td><code>3.722884</code></td><td><code>3.878674</code></td><td><code>3.781482</code></td><td>2.878428 @135</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class="badge badge-fail">flat</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-p0-handonly-lora-onewin200-20260520T082043Z_5b7e16a_r2/</code></td></tr><tr><td>cross_attn_readonly</td><td>E1 frozen final-feature readout</td><td>4b22cc6</td><td>frozen_base</td><td>0</td><td>cross_attn</td><td><code>0.998457</code></td><td><code>0.030392</code></td><td><code>0.029102</code></td><td>0.025739 @180</td><td>LoRA 0/200; hand 200/200; object 0/200</td><td><span class="badge badge-pass">overfit</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e1-frozen-crossattn-onewin200-20260520T4b22cc6/</code></td></tr><tr><td>final_k_insertion</td><td>E2 final K=2 LoRA</td><td>4b22cc6</td><td>lora</td><td>2</td><td>auto camera_style</td><td><code>1.033507</code></td><td><code>0.039063</code></td><td><code>0.046601</code></td><td>0.032173 @193</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class="badge badge-pass">overfit</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk2-lora-onewin200-20260520T4b22cc6/</code></td></tr><tr><td>final_k_insertion</td><td>E2 final K=4 LoRA</td><td>4b22cc6</td><td>lora</td><td>4</td><td>auto camera_style</td><td><code>0.863934</code></td><td><code>0.038993</code></td><td><code>0.032824</code></td><td>0.026801 @195</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class="badge badge-pass">overfit</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk4-lora-onewin200-20260520T4b22cc6/</code></td></tr><tr><td>final_k_insertion</td><td>E2 final K=6 LoRA</td><td>4b22cc6</td><td>lora</td><td>6</td><td>auto camera_style</td><td><code>1.220658</code></td><td><code>0.040473</code></td><td><code>0.033568</code></td><td>0.030986 @197</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class="badge badge-pass">overfit</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-e2-finalk6-lora-onewin200-20260520T4b22cc6/</code></td></tr><tr><td>layer0_oneway</td><td>Layer0 one-way LoRA</td><td>219a113</td><td>lora</td><td>block0 onward</td><td>auto camera_style</td><td><code>3.754432</code></td><td><code>3.989648</code></td><td><code>4.012205</code></td><td>2.862129 @122</td><td>LoRA 200/200; hand 200/200; object 0/200</td><td><span class="badge badge-fail">flat</span></td><td><code>logs/vggt_omega/hoi3r-vggt-omega-layer0-oneway-lora-onewin200-20260520T219a113/</code></td></tr></tbody>
+  </table>
+  </div>
+</section>
+<section>
+  <h2>Decision readout</h2>
+  <div class="panel"><h3>Primary result</h3><p>Delayed final-layer insertion is the only in-backbone hand-token strategy here that overfits reliably. K=2, K=4, and K=6 all reach last20 around 0.039-0.040, while all-depth insertion and layer0_oneway remain flat around 3.8-4.0 despite nonzero LoRA and hand gradients.</p></div>
+  <div class="panel"><h3>Interpretation</h3><p>The failure is not simple gradient starvation. Both negative in-backbone runs have LoRA and hand gradients on all 200 steps. The current evidence points to early hand-token insertion disrupting the loaded VGGT representation; masking native tokens from reading hand-token K/V at every layer is not sufficient to recover overfit.</p></div>
+  <div class="panel"><h3>Caveat</h3><p>The comparison intentionally keeps the same earlier control surface. Current max_manifest_size=1 is still not a strict fixed-window gate, so this is a consistent one-manifest overfit comparison rather than a strict single-window proof.</p></div>
+</section>
+
+<section class="panel info"><h2>How to resume</h2><p>Paste this into a new Claude Code session:</p><pre>Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-20-session-summary-vggt-omega-hand-token-mode-overfit-comparison.json
+and continue from tasks_pending[0] (P0 [P0]: Use final_k_insertion K=2 as the next positive control; do not spend more runs on layer0_oneway unless testing a new hypothesis.).
+Context: branch feat/vggt-omega-backbone-research@219a113; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/feat-vggt-omega-backbone-research.</pre></section>
+</div></body></html>
