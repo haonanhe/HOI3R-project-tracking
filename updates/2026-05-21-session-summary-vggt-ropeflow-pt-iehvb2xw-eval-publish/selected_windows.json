@@ -1,0 +1,116 @@
+[
+  {
+    "split": "train",
+    "entry_idx": 0,
+    "sequence": "20200709-subject-01/20200709_141754",
+    "camera": "836212060125",
+    "tracked_start": 9,
+    "tracked_end": 71,
+    "window_idx": 0,
+    "window_start": 9,
+    "window_end": 24,
+    "thfm_start_offset": 0,
+    "manifest_entry": {
+      "sequence": "20200709-subject-01/20200709_141754",
+      "camera": "836212060125",
+      "tracked_start": 9,
+      "tracked_end": 71,
+      "n_tracked": 63
+    }
+  },
+  {
+    "split": "train",
+    "entry_idx": 0,
+    "sequence": "20200709-subject-01/20200709_141754",
+    "camera": "836212060125",
+    "tracked_start": 9,
+    "tracked_end": 71,
+    "window_idx": 1,
+    "window_start": 25,
+    "window_end": 40,
+    "thfm_start_offset": 16,
+    "manifest_entry": {
+      "sequence": "20200709-subject-01/20200709_141754",
+      "camera": "836212060125",
+      "tracked_start": 9,
+      "tracked_end": 71,
+      "n_tracked": 63
+    }
+  },
+  {
+    "split": "train",
+    "entry_idx": 0,
+    "sequence": "20200709-subject-01/20200709_141754",
+    "camera": "836212060125",
+    "tracked_start": 9,
+    "tracked_end": 71,
+    "window_idx": 2,
+    "window_start": 41,
+    "window_end": 56,
+    "thfm_start_offset": 32,
+    "manifest_entry": {
+      "sequence": "20200709-subject-01/20200709_141754",
+      "camera": "836212060125",
+      "tracked_start": 9,
+      "tracked_end": 71,
+      "n_tracked": 63
+    }
+  },
+  {
+    "split": "test",
+    "entry_idx": 0,
+    "sequence": "20200928-subject-07/20200928_143249",
+    "camera": "836212060125",
+    "tracked_start": 5,
+    "tracked_end": 69,
+    "window_idx": 0,
+    "window_start": 5,
+    "window_end": 20,
+    "thfm_start_offset": 0,
+    "manifest_entry": {
+      "sequence": "20200928-subject-07/20200928_143249",
+      "camera": "836212060125",
+      "tracked_start": 5,
+      "tracked_end": 69,
+      "n_tracked": 64
+    }
+  },
+  {
+    "split": "test",
+    "entry_idx": 0,
+    "sequence": "20200928-subject-07/20200928_143249",
+    "camera": "836212060125",
+    "tracked_start": 5,
+    "tracked_end": 69,
+    "window_idx": 1,
+    "window_start": 21,
+    "window_end": 36,
+    "thfm_start_offset": 16,
+    "manifest_entry": {
+      "sequence": "20200928-subject-07/20200928_143249",
+      "camera": "836212060125",
+      "tracked_start": 5,
+      "tracked_end": 69,
+      "n_tracked": 64
+    }
+  },
+  {
+    "split": "test",
+    "entry_idx": 0,
+    "sequence": "20200928-subject-07/20200928_143249",
+    "camera": "836212060125",
+    "tracked_start": 5,
+    "tracked_end": 69,
+    "window_idx": 2,
+    "window_start": 37,
+    "window_end": 52,
+    "thfm_start_offset": 32,
+    "manifest_entry": {
+      "sequence": "20200928-subject-07/20200928_143249",
+      "camera": "836212060125",
+      "tracked_start": 5,
+      "tracked_end": 69,
+      "n_tracked": 64
+    }
+  }
+]

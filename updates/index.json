@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-21 · VGGT-Omega RoPE-flow pt-iehvb2xw 50-window single-GPU eval on 3 train and 3 test windows.",
+    "date": "2026-05-21",
+    "status": "published",
+    "summary": "VGGT-Omega RoPE-flow pt-iehvb2xw 50-window single-GPU eval on 3 train and 3 test windows.",
+    "path": "updates/2026-05-21-session-summary-vggt-ropeflow-pt-iehvb2xw-eval-publish.html",
+    "file": "updates/2026-05-21-session-summary-vggt-ropeflow-pt-iehvb2xw-eval-publish.html",
+    "sidecar": "updates/2026-05-21-session-summary-vggt-ropeflow-pt-iehvb2xw-eval-publish.json"
+  },
+  {
     "title": "2026-05-20 · VGGT-Omega hand-token overfit ablations: final-K depth sweep through first layer, compared with prior token-mode runs.",
     "date": "2026-05-20",
     "status": "complete",
