@@ -1,0 +1,587 @@
+{
+  "predictions": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/raw/eval3_predictions_light.pt",
+  "clips": [
+    {
+      "index": 0,
+      "sequence": "20200709-subject-01/20200709_141754",
+      "camera": "836212060125",
+      "clip_dir": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125",
+      "overlay_frames": [
+        {
+          "frame_abs": 41,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0000.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 42,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0001.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 43,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0002.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 44,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0003.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 45,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0004.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 46,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0005.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 47,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0006.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 48,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0007.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 49,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0008.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 50,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0009.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 51,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0010.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 52,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0011.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 53,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay_frames/frame_0012.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        }
+      ],
+      "joints3d_frames": [
+        {
+          "frame_abs": 41,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0000.png"
+        },
+        {
+          "frame_abs": 42,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0001.png"
+        },
+        {
+          "frame_abs": 43,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0002.png"
+        },
+        {
+          "frame_abs": 44,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0003.png"
+        },
+        {
+          "frame_abs": 45,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0004.png"
+        },
+        {
+          "frame_abs": 46,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0005.png"
+        },
+        {
+          "frame_abs": 47,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0006.png"
+        },
+        {
+          "frame_abs": 48,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0007.png"
+        },
+        {
+          "frame_abs": 49,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0008.png"
+        },
+        {
+          "frame_abs": 50,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0009.png"
+        },
+        {
+          "frame_abs": 51,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0010.png"
+        },
+        {
+          "frame_abs": 52,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0011.png"
+        },
+        {
+          "frame_abs": 53,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d_frames/frame_0012.png"
+        }
+      ],
+      "overlay_video": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/overlay.mp4",
+      "joints3d_video": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_00_20200709-subject-01_20200709_141754_836212060125/joints3d.mp4"
+    },
+    {
+      "index": 1,
+      "sequence": "20200709-subject-01/20200709_145915",
+      "camera": "836212060125",
+      "clip_dir": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125",
+      "overlay_frames": [
+        {
+          "frame_abs": 39,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0000.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 40,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0001.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 41,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0002.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 42,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0003.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 43,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0004.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 44,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0005.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 45,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0006.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 46,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0007.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 47,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0008.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 48,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0009.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 49,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0010.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 50,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0011.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 51,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay_frames/frame_0012.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        }
+      ],
+      "joints3d_frames": [
+        {
+          "frame_abs": 39,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0000.png"
+        },
+        {
+          "frame_abs": 40,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0001.png"
+        },
+        {
+          "frame_abs": 41,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0002.png"
+        },
+        {
+          "frame_abs": 42,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0003.png"
+        },
+        {
+          "frame_abs": 43,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0004.png"
+        },
+        {
+          "frame_abs": 44,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0005.png"
+        },
+        {
+          "frame_abs": 45,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0006.png"
+        },
+        {
+          "frame_abs": 46,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0007.png"
+        },
+        {
+          "frame_abs": 47,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0008.png"
+        },
+        {
+          "frame_abs": 48,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0009.png"
+        },
+        {
+          "frame_abs": 49,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0010.png"
+        },
+        {
+          "frame_abs": 50,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0011.png"
+        },
+        {
+          "frame_abs": 51,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d_frames/frame_0012.png"
+        }
+      ],
+      "overlay_video": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/overlay.mp4",
+      "joints3d_video": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_01_20200709-subject-01_20200709_145915_836212060125/joints3d.mp4"
+    },
+    {
+      "index": 2,
+      "sequence": "20200709-subject-01/20200709_153548",
+      "camera": "836212060125",
+      "clip_dir": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125",
+      "overlay_frames": [
+        {
+          "frame_abs": 33,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0000.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 34,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0001.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 35,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0002.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 36,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0003.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 37,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0004.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 38,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0005.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 39,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0006.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 40,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0007.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 41,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0008.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 42,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0009.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 43,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0010.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 44,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0011.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        },
+        {
+          "frame_abs": 45,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay_frames/frame_0012.png",
+          "counts": {
+            "pred": 21,
+            "gt": 21
+          }
+        }
+      ],
+      "joints3d_frames": [
+        {
+          "frame_abs": 33,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0000.png"
+        },
+        {
+          "frame_abs": 34,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0001.png"
+        },
+        {
+          "frame_abs": 35,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0002.png"
+        },
+        {
+          "frame_abs": 36,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0003.png"
+        },
+        {
+          "frame_abs": 37,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0004.png"
+        },
+        {
+          "frame_abs": 38,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0005.png"
+        },
+        {
+          "frame_abs": 39,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0006.png"
+        },
+        {
+          "frame_abs": 40,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0007.png"
+        },
+        {
+          "frame_abs": 41,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0008.png"
+        },
+        {
+          "frame_abs": 42,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0009.png"
+        },
+        {
+          "frame_abs": 43,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0010.png"
+        },
+        {
+          "frame_abs": 44,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0011.png"
+        },
+        {
+          "frame_abs": 45,
+          "slot": 0,
+          "path": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d_frames/frame_0012.png"
+        }
+      ],
+      "overlay_video": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/overlay.mp4",
+      "joints3d_video": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/publish_assets/visualization_frames/clip_02_20200709-subject-01_20200709_153548_836212060125/joints3d.mp4"
+    }
+  ]
+}

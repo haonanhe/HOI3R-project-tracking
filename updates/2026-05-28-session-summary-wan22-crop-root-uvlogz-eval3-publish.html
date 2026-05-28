@@ -50,7 +50,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <section><h2>Key discoveries</h2>
 <div class="panel"><h3><span class="badge badge-fail">FAIL</span> 3-clip eval still fails the 7mm fused sparse-hand gate</h3><p>Aggregate raw MPJPE 21.903mm and root-aligned 13.999mm are both above the 7mm threshold.</p></div>
 <div class="panel"><h3><span class="badge badge-finding">FINDING</span> 2D crop metric is relatively good on the selected clips</h3><p>Aggregate kp2d_mean is 3.309px and p95 is 6.354px, consistent with the conclusion that 3D/local MANO quality is the limiting factor.</p></div>
-<div class="panel"><h3><span class="badge badge-fail">FAIL</span> Raw-pred video generation blocked</h3><p>Two attempts to export raw predictions for per-clip 2D/3D videos blocked in debug-container model-load I/O before producing tensors; the page publishes available projection videos and records this caveat.</p></div>
+<div class="panel"><h3><span class="badge badge-pass">PASS</span> Raw-pred eval visualization completed in append</h3><p>After freeing the stale fixed-offset GPU process, raw prediction export succeeded and this page now includes full 13-frame 2D overlay and 3D joints videos for all three selected eval clips.</p></div>
 
 </section>
 
@@ -87,7 +87,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <li><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/step10000_train_projection_overlay.mp4">step-10000 train projection overlay video</a></li>
 <li><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/step10000_val_projection_overlay.mp4">step-10000 fixed-val projection overlay video</a></li>
 </ul>
-<p>The requested per-clip raw-pred 2D/3D videos for eval indices 0, 44, and 87 were attempted twice, but model re-load/prediction export blocked in debug-container I/O before producing prediction tensors. This page therefore publishes the completed 3-clip metrics plus the available step-10000 projection-diagnostic overlay videos, and records the missing 3D videos as a caveat rather than fabricating them.</p>
+<p>The original publication only had step-10000 projection diagnostic videos. The append below supersedes that limitation with full eval-clip raw-pred 2D overlay and 3D joints videos.</p>
 </section>
 <section><h2>Raw Sidecars</h2>
 <ul>
@@ -96,6 +96,19 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid #ddd;color:#666;fon
 <li><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/metrics_eval3_fused_thresh7.json">raw eval JSON</a></li>
 <li><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/selection_summary.json">selected clip manifest summary</a></li>
 <li><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/loss_summary.json">loss summary JSON</a></li>
+</ul>
+</section>
+
+
+<section><h2>Eval Visualization Append - 2026-05-28</h2>
+<div class="highlight">
+Raw-pred visualization is now complete for the same three eval clips. These videos were generated from
+<code>eval3_predictions_light.pt</code> after rerunning prediction export on commit <code>2406012</code>.
+</div>
+<table><thead><tr><th>eval index</th><th>sequence</th><th>frames</th><th>2D overlay</th><th>3D joints</th></tr></thead><tbody><tr><td>0</td><td><code>20200709-subject-01/20200709_141754</code></td><td>41-53</td><td><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip00_overlay_2406012.mp4">2D overlay mp4</a></td><td><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip00_joints3d_2406012.mp4">3D joints mp4</a></td></tr><tr><td>44</td><td><code>20200709-subject-01/20200709_145915</code></td><td>39-51</td><td><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip01_overlay_2406012.mp4">2D overlay mp4</a></td><td><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip01_joints3d_2406012.mp4">3D joints mp4</a></td></tr><tr><td>87</td><td><code>20200709-subject-01/20200709_153548</code></td><td>33-45</td><td><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip02_overlay_2406012.mp4">2D overlay mp4</a></td><td><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip02_joints3d_2406012.mp4">3D joints mp4</a></td></tr></tbody></table>
+<p>Encoding check: each video has 13 frames at 6 FPS. Overlays are 640x480 on original RGB; 3D joints videos are 880x770 fixed-camera comparisons in camera space.</p>
+<ul>
+<li><a href="2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/visualization_frames_summary_2406012.json">visualization_frames_summary_2406012.json</a></li>
 </ul>
 </section>
 

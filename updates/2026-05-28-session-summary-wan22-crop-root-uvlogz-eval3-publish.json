@@ -3,7 +3,7 @@
   "topic": "wan22-crop-root-uvlogz-eval3-publish",
   "status": "published",
   "branch": "feat/wan22-thfm-sparse-hand-kpts-20260525",
-  "head_sha": "0cf2e9cd9b218d56019a16f36102beb0d8f0fe94",
+  "head_sha": "2406012b6761467378121ebe3a7599b2bf346f88",
   "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/wan22-thfm-sparse-hand-kpts-20260525",
   "goal": "Publish crop_root_uvlogz step-10000 sparse-hand eval on three selected valid88 clips with loss curves, metrics, and available projection visualizations.",
   "headline_stats": [
@@ -44,6 +44,11 @@
       "id": "VIZ-PARTIAL",
       "sha": "local ffmpeg",
       "summary": "Encoded available step-10000 projection diagnostic overlays as H.264 MP4 videos."
+    },
+    {
+      "id": "VIZ-RERUN",
+      "sha": "2406012",
+      "summary": "Reran raw prediction export and published full 13-frame 2D overlay plus 3D joints videos for eval indices 0, 44, and 87."
     }
   ],
   "discoveries": [
@@ -61,6 +66,11 @@
       "badge": "fail",
       "title": "Raw-pred video generation blocked",
       "body": "Two attempts to export raw predictions for per-clip 2D/3D videos blocked in debug-container model-load I/O before producing tensors; the page publishes available projection videos and records this caveat."
+    },
+    {
+      "badge": "pass",
+      "title": "Raw-pred videos are now available",
+      "body": "The previous visualization caveat is superseded: eval3_predictions_light.pt was generated and all three selected clips now have overlay and 3D joints MP4s."
     }
   ],
   "commits": [
@@ -96,6 +106,10 @@
     {
       "aspect": "Visualization",
       "state": "Published step-10000 projection-diagnostic overlay videos; per-clip raw-pred 3D videos blocked by remote model-load I/O."
+    },
+    {
+      "aspect": "Visualization append",
+      "state": "Full eval raw-pred 2D overlay and 3D joints videos published from commit 2406012; each video is 13 frames at 6 FPS."
     }
   ],
   "tasks_pending": [
@@ -111,13 +125,40 @@
     }
   ],
   "caveats": [
-    "This page contains the requested 3-clip eval metrics and loss curves, but not the requested per-clip 3D videos because raw prediction export blocked twice in debug-container I/O.",
-    "The published overlay videos are step-10000 projection diagnostics from the training run, not full 13-frame videos for eval indices 0, 44, and 87.",
     "The run was launched before the later random-start default commit; training_state records checkpoint commit 27921ed and fixed early/start-offset behavior.",
-    "Object metrics are not applicable for this sparse-hand-only eval page."
+    "Object metrics are not applicable for this sparse-hand-only eval page.",
+    "Earlier page text about blocked raw-pred videos is superseded by the 2026-05-28 append; the per-clip 2D overlay and 3D joints videos are now published."
   ],
   "extra_html": "\n<section><h2>Eval Metrics</h2>\n<table><thead><tr><th>eval index</th><th>sequence</th><th>kp2d mean px</th><th>kp2d p95 px</th><th>raw MPJPE mm</th><th>root-aligned mm</th><th>root L2 mm</th></tr></thead><tbody><tr><td>0</td><td><code>20200709-subject-01/20200709_141754</code></td><td>2.983</td><td>5.986</td><td>31.789</td><td>16.711</td><td>25.172</td></tr><tr><td>44</td><td><code>20200709-subject-01/20200709_145915</code></td><td>3.264</td><td>6.032</td><td>14.963</td><td>10.723</td><td>9.594</td></tr><tr><td>87</td><td><code>20200709-subject-01/20200709_153548</code></td><td>3.679</td><td>7.113</td><td>18.958</td><td>14.562</td><td>15.925</td></tr></tbody></table>\n<p>Aggregate over 3 selected valid88 clips: kp2d_mean=3.309px, kp2d_p95=6.354px, raw MPJPE=21.903mm, root-aligned=13.999mm, root L2=16.897mm. Gate pass: False.</p>\n</section>\n<section><h2>Loss Curves And Plots</h2>\n<ul>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/assets/loss_curve_sparse_hand.png\">training loss curve</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/assets/eval3_metric_bars.png\">selected-clip metric bars</a></li>\n</ul>\n</section>\n<section><h2>Visualization</h2>\n<ul>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/step10000_train_projection_overlay.mp4\">step-10000 train projection overlay video</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/step10000_val_projection_overlay.mp4\">step-10000 fixed-val projection overlay video</a></li>\n</ul>\n<p>The requested per-clip raw-pred 2D/3D videos for eval indices 0, 44, and 87 were attempted twice, but model re-load/prediction export blocked in debug-container I/O before producing prediction tensors. This page therefore publishes the completed 3-clip metrics plus the available step-10000 projection-diagnostic overlay videos, and records the missing 3D videos as a caveat rather than fabricating them.</p>\n</section>\n<section><h2>Raw Sidecars</h2>\n<ul>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/metrics_summary.json\">metrics_summary.json</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/metrics_summary.csv\">metrics_summary.csv</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/metrics_eval3_fused_thresh7.json\">raw eval JSON</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/selection_summary.json\">selected clip manifest summary</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/loss_summary.json\">loss summary JSON</a></li>\n</ul>\n</section>\n",
   "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.html",
   "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.json",
-  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.json\nand continue from tasks_pending[0] (VIZ-RAW-PREDS [P0]: Regenerate per-selected-clip 2D overlay and 3D joint videos once model-load I/O on the debug runtime is healthy, or run the raw-pred export as an ACP job.).\nContext: branch feat/wan22-thfm-sparse-hand-kpts-20260525@0cf2e9cd9b218d56019a16f36102beb0d8f0fe94; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/wan22-thfm-sparse-hand-kpts-20260525."
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.json\nand continue from tasks_pending[0] (VIZ-RAW-PREDS [P0]: Regenerate per-selected-clip 2D overlay and 3D joint videos once model-load I/O on the debug runtime is healthy, or run the raw-pred export as an ACP job.).\nContext: branch feat/wan22-thfm-sparse-hand-kpts-20260525@0cf2e9cd9b218d56019a16f36102beb0d8f0fe94; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/wan22-thfm-sparse-hand-kpts-20260525.",
+  "visualization_append": {
+    "commit_sha": "2406012b6761467378121ebe3a7599b2bf346f88",
+    "prediction_export": "eval3_predictions_light.pt",
+    "clips": [
+      {
+        "eval_index": 0,
+        "sequence": "20200709-subject-01/20200709_141754",
+        "frames": "41-53",
+        "overlay_mp4": "https://raw.githubusercontent.com/haonanhe/HOI3R-project-tracking/main/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip00_overlay_2406012.mp4",
+        "joints3d_mp4": "https://raw.githubusercontent.com/haonanhe/HOI3R-project-tracking/main/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip00_joints3d_2406012.mp4"
+      },
+      {
+        "eval_index": 44,
+        "sequence": "20200709-subject-01/20200709_145915",
+        "frames": "39-51",
+        "overlay_mp4": "https://raw.githubusercontent.com/haonanhe/HOI3R-project-tracking/main/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip01_overlay_2406012.mp4",
+        "joints3d_mp4": "https://raw.githubusercontent.com/haonanhe/HOI3R-project-tracking/main/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip01_joints3d_2406012.mp4"
+      },
+      {
+        "eval_index": 87,
+        "sequence": "20200709-subject-01/20200709_153548",
+        "frames": "33-45",
+        "overlay_mp4": "https://raw.githubusercontent.com/haonanhe/HOI3R-project-tracking/main/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip02_overlay_2406012.mp4",
+        "joints3d_mp4": "https://raw.githubusercontent.com/haonanhe/HOI3R-project-tracking/main/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/eval3_clip02_joints3d_2406012.mp4"
+      }
+    ],
+    "summary_json": "https://raw.githubusercontent.com/haonanhe/HOI3R-project-tracking/main/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/visualization_frames_summary_2406012.json"
+  }
 }
