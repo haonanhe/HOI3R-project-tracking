@@ -1,0 +1,123 @@
+{
+  "date": "2026-05-28",
+  "topic": "wan22-crop-root-uvlogz-eval3-publish",
+  "status": "published",
+  "branch": "feat/wan22-thfm-sparse-hand-kpts-20260525",
+  "head_sha": "0cf2e9cd9b218d56019a16f36102beb0d8f0fe94",
+  "worktree_path": "/mnt/afs/haonan/hoi3r/HOI3R/.worktrees/wan22-thfm-sparse-hand-kpts-20260525",
+  "goal": "Publish crop_root_uvlogz step-10000 sparse-hand eval on three selected valid88 clips with loss curves, metrics, and available projection visualizations.",
+  "headline_stats": [
+    {
+      "label": "ACP job",
+      "value": "pt-w9rwxsxw SUCCEEDED"
+    },
+    {
+      "label": "Eval clips",
+      "value": "3"
+    },
+    {
+      "label": "Raw MPJPE",
+      "value": "21.9 mm"
+    },
+    {
+      "label": "Root-aligned",
+      "value": "14.0 mm"
+    }
+  ],
+  "tasks_completed": [
+    {
+      "id": "STATUS",
+      "sha": "27921ed/6d01ace/0cf2e9c",
+      "summary": "Confirmed pt-w9rwxsxw completed at step 10000 and final sparse-hand fused gate exists."
+    },
+    {
+      "id": "EVAL3",
+      "sha": "0cf2e9cd9b218d56019a16f36102beb0d8f0fe94",
+      "summary": "Ran sparse fused MANO-local eval on selected valid88 indices 0, 44, and 87 using saved step-10000 checkpoint."
+    },
+    {
+      "id": "PLOTS",
+      "sha": "local+remote",
+      "summary": "Generated loss curve and selected-clip metric bar chart."
+    },
+    {
+      "id": "VIZ-PARTIAL",
+      "sha": "local ffmpeg",
+      "summary": "Encoded available step-10000 projection diagnostic overlays as H.264 MP4 videos."
+    }
+  ],
+  "discoveries": [
+    {
+      "badge": "fail",
+      "title": "3-clip eval still fails the 7mm fused sparse-hand gate",
+      "body": "Aggregate raw MPJPE 21.903mm and root-aligned 13.999mm are both above the 7mm threshold."
+    },
+    {
+      "badge": "finding",
+      "title": "2D crop metric is relatively good on the selected clips",
+      "body": "Aggregate kp2d_mean is 3.309px and p95 is 6.354px, consistent with the conclusion that 3D/local MANO quality is the limiting factor."
+    },
+    {
+      "badge": "fail",
+      "title": "Raw-pred video generation blocked",
+      "body": "Two attempts to export raw predictions for per-clip 2D/3D videos blocked in debug-container model-load I/O before producing tensors; the page publishes available projection videos and records this caveat."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "27921ed",
+      "type": "training launch",
+      "subject": "dirty launch base recorded in training_state.json"
+    },
+    {
+      "sha": "6d01ace",
+      "type": "eval fix",
+      "subject": "fix(wan22): evaluate crop root kp2d in crop space"
+    },
+    {
+      "sha": "0cf2e9c",
+      "type": "current eval worktree",
+      "subject": "fix(wan22): randomize thfm clip starts by default"
+    }
+  ],
+  "module_state": [
+    {
+      "aspect": "Checkpoint",
+      "state": "step-10000.safetensors from crop_root_uvlogz run; training_state step=10000."
+    },
+    {
+      "aspect": "Eval set",
+      "state": "Deterministic selected manifest with valid88 eval indices 0, 44, and 87; clip_len=13; camera 836212060125."
+    },
+    {
+      "aspect": "Eval mode",
+      "state": "sparse_fused_directroot_manolocal_hand_keypoints_slot_order; pred_sparse_hand_kp2d_space=crop_norm; thresholds raw/root-aligned 7mm."
+    },
+    {
+      "aspect": "Visualization",
+      "state": "Published step-10000 projection-diagnostic overlay videos; per-clip raw-pred 3D videos blocked by remote model-load I/O."
+    }
+  ],
+  "tasks_pending": [
+    {
+      "id": "VIZ-RAW-PREDS",
+      "priority": "P0",
+      "summary": "Regenerate per-selected-clip 2D overlay and 3D joint videos once model-load I/O on the debug runtime is healthy, or run the raw-pred export as an ACP job."
+    },
+    {
+      "id": "NEXT-PROBE",
+      "priority": "P0",
+      "summary": "Use the negative eval and previous loss-balance diagnosis to run the single-variable local MANO geometry-loss rebalance probe rather than accepting crop_root_uvlogz."
+    }
+  ],
+  "caveats": [
+    "This page contains the requested 3-clip eval metrics and loss curves, but not the requested per-clip 3D videos because raw prediction export blocked twice in debug-container I/O.",
+    "The published overlay videos are step-10000 projection diagnostics from the training run, not full 13-frame videos for eval indices 0, 44, and 87.",
+    "The run was launched before the later random-start default commit; training_state records checkpoint commit 27921ed and fixed early/start-offset behavior.",
+    "Object metrics are not applicable for this sparse-hand-only eval page."
+  ],
+  "extra_html": "\n<section><h2>Eval Metrics</h2>\n<table><thead><tr><th>eval index</th><th>sequence</th><th>kp2d mean px</th><th>kp2d p95 px</th><th>raw MPJPE mm</th><th>root-aligned mm</th><th>root L2 mm</th></tr></thead><tbody><tr><td>0</td><td><code>20200709-subject-01/20200709_141754</code></td><td>2.983</td><td>5.986</td><td>31.789</td><td>16.711</td><td>25.172</td></tr><tr><td>44</td><td><code>20200709-subject-01/20200709_145915</code></td><td>3.264</td><td>6.032</td><td>14.963</td><td>10.723</td><td>9.594</td></tr><tr><td>87</td><td><code>20200709-subject-01/20200709_153548</code></td><td>3.679</td><td>7.113</td><td>18.958</td><td>14.562</td><td>15.925</td></tr></tbody></table>\n<p>Aggregate over 3 selected valid88 clips: kp2d_mean=3.309px, kp2d_p95=6.354px, raw MPJPE=21.903mm, root-aligned=13.999mm, root L2=16.897mm. Gate pass: False.</p>\n</section>\n<section><h2>Loss Curves And Plots</h2>\n<ul>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/assets/loss_curve_sparse_hand.png\">training loss curve</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/assets/eval3_metric_bars.png\">selected-clip metric bars</a></li>\n</ul>\n</section>\n<section><h2>Visualization</h2>\n<ul>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/step10000_train_projection_overlay.mp4\">step-10000 train projection overlay video</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/videos/step10000_val_projection_overlay.mp4\">step-10000 fixed-val projection overlay video</a></li>\n</ul>\n<p>The requested per-clip raw-pred 2D/3D videos for eval indices 0, 44, and 87 were attempted twice, but model re-load/prediction export blocked in debug-container I/O before producing prediction tensors. This page therefore publishes the completed 3-clip metrics plus the available step-10000 projection-diagnostic overlay videos, and records the missing 3D videos as a caveat rather than fabricating them.</p>\n</section>\n<section><h2>Raw Sidecars</h2>\n<ul>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/metrics_summary.json\">metrics_summary.json</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/metrics_summary.csv\">metrics_summary.csv</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/metrics_eval3_fused_thresh7.json\">raw eval JSON</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/selection_summary.json\">selected clip manifest summary</a></li>\n<li><a href=\"2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish/raw/loss_summary.json\">loss summary JSON</a></li>\n</ul>\n</section>\n",
+  "html_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.html",
+  "sidecar_url": "https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.json",
+  "resume_prompt": "Read https://haonanhe.github.io/HOI3R-project-tracking/updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.json\nand continue from tasks_pending[0] (VIZ-RAW-PREDS [P0]: Regenerate per-selected-clip 2D overlay and 3D joint videos once model-load I/O on the debug runtime is healthy, or run the raw-pred export as an ACP job.).\nContext: branch feat/wan22-thfm-sparse-hand-kpts-20260525@0cf2e9cd9b218d56019a16f36102beb0d8f0fe94; worktree /mnt/afs/haonan/hoi3r/HOI3R/.worktrees/wan22-thfm-sparse-hand-kpts-20260525."
+}

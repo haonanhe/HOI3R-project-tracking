@@ -1,0 +1,26 @@
+[
+  {
+    "sequence": "20200709-subject-01/20200709_141754",
+    "camera": "836212060125",
+    "tracked_start": 9,
+    "tracked_end": 71,
+    "n_tracked": 63,
+    "source_eval_index": 0
+  },
+  {
+    "sequence": "20200709-subject-01/20200709_145915",
+    "camera": "836212060125",
+    "tracked_start": 7,
+    "tracked_end": 71,
+    "n_tracked": 65,
+    "source_eval_index": 44
+  },
+  {
+    "sequence": "20200709-subject-01/20200709_153548",
+    "camera": "836212060125",
+    "tracked_start": 1,
+    "tracked_end": 71,
+    "n_tracked": 71,
+    "source_eval_index": 87
+  }
+]

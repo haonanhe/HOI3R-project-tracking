@@ -1,5 +1,14 @@
 [
   {
+    "title": "2026-05-28 · Publish crop_root_uvlogz step-10000 sparse-hand eval on three selected valid88 clips with loss curves, metrics, and available projection visualizations.",
+    "date": "2026-05-28",
+    "status": "published",
+    "summary": "Publish crop_root_uvlogz step-10000 sparse-hand eval on three selected valid88 clips with loss curves, metrics, and available projection visualizations.",
+    "path": "updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.html",
+    "file": "updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.html",
+    "sidecar": "updates/2026-05-28-session-summary-wan22-crop-root-uvlogz-eval3-publish.json"
+  },
+  {
     "title": "2026-05-21 · VGGT-Omega RoPE-flow pt-iehvb2xw 50-window single-GPU eval on 3 train and 3 test windows.",
     "date": "2026-05-21",
     "status": "published",

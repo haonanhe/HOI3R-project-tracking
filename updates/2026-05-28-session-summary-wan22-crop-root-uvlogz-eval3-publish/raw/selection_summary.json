@@ -1,0 +1,36 @@
+{
+  "source_run": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z",
+  "checkpoint": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/step-10000.safetensors",
+  "selected_indices": [
+    0,
+    44,
+    87
+  ],
+  "selected_manifest": "logs/sparse_hand_mano/subject01_onecam_valid88_handcrop_crop_root_uvlogz_kpe_diag_10k_27921ed_dirty_20260527T165536Z/publish_eval_3clips_20260528/eval3_manifest.json",
+  "clips": [
+    {
+      "sequence": "20200709-subject-01/20200709_141754",
+      "camera": "836212060125",
+      "tracked_start": 9,
+      "tracked_end": 71,
+      "n_tracked": 63,
+      "source_eval_index": 0
+    },
+    {
+      "sequence": "20200709-subject-01/20200709_145915",
+      "camera": "836212060125",
+      "tracked_start": 7,
+      "tracked_end": 71,
+      "n_tracked": 65,
+      "source_eval_index": 44
+    },
+    {
+      "sequence": "20200709-subject-01/20200709_153548",
+      "camera": "836212060125",
+      "tracked_start": 1,
+      "tracked_end": 71,
+      "n_tracked": 71,
+      "source_eval_index": 87
+    }
+  ]
+}

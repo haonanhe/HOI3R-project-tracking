@@ -1,0 +1,75 @@
+{
+  "aggregate": {
+    "active_count": 39,
+    "joint3d_mpjpe_mm": 21.903217315673828,
+    "joint3d_root_aligned_mpjpe_mm": 13.99856948852539,
+    "joint3d_root_l2_mm": 16.897104263305664,
+    "joint3d_root_valid_count": 39,
+    "joint3d_valid_count": 819,
+    "kp2d_mean_px": 3.3088560104370117,
+    "kp2d_p95_px": 6.353697776794434,
+    "kp2d_pck5": 0.8278388381004333,
+    "kp2d_root_mean_px": 2.3158960342407227,
+    "kp2d_root_valid_count": 39,
+    "kp2d_valid_count": 819,
+    "mano_active_count": 39,
+    "mano_joint3d_mpjpe_mm": 21.903217315673828,
+    "mano_joint3d_root_aligned_mpjpe_mm": 13.99856948852539,
+    "mano_joint3d_root_l2_mm": 16.897104263305664,
+    "mano_joint3d_root_valid_count": 39,
+    "mano_joint3d_valid_count": 819,
+    "mano_pass": false,
+    "mano_pass_by_metric": {
+      "mano_joint3d_mpjpe_mm": false,
+      "mano_joint3d_root_aligned_mpjpe_mm": false
+    },
+    "mano_root_consistency_mean_mm": 13.211274147033691,
+    "mano_root_consistency_p95_mm": 26.303125381469727,
+    "mano_root_consistency_valid_count": 39,
+    "pass": false,
+    "pass_by_metric": {
+      "joint3d_mpjpe_mm": false,
+      "joint3d_root_aligned_mpjpe_mm": false,
+      "kp2d_mean_px": false,
+      "kp2d_p95_px": true
+    }
+  },
+  "clips": [
+    {
+      "source_eval_index": 0,
+      "sequence": "20200709-subject-01/20200709_141754",
+      "camera": "836212060125",
+      "frame_indices": "41 42 43 44 45 46 47 48 49 50 51 52 53",
+      "kp2d_mean_px": 2.983224630355835,
+      "kp2d_p95_px": 5.985801696777344,
+      "joint3d_mpjpe_mm": 31.78893280029297,
+      "joint3d_root_aligned_mpjpe_mm": 16.710779190063477,
+      "joint3d_root_l2_mm": 25.17230987548828,
+      "pass": false
+    },
+    {
+      "source_eval_index": 44,
+      "sequence": "20200709-subject-01/20200709_145915",
+      "camera": "836212060125",
+      "frame_indices": "39 40 41 42 43 44 45 46 47 48 49 50 51",
+      "kp2d_mean_px": 3.2639291286468506,
+      "kp2d_p95_px": 6.031627655029297,
+      "joint3d_mpjpe_mm": 14.96264934539795,
+      "joint3d_root_aligned_mpjpe_mm": 10.723329544067383,
+      "joint3d_root_l2_mm": 9.594271659851074,
+      "pass": false
+    },
+    {
+      "source_eval_index": 87,
+      "sequence": "20200709-subject-01/20200709_153548",
+      "camera": "836212060125",
+      "frame_indices": "33 34 35 36 37 38 39 40 41 42 43 44 45",
+      "kp2d_mean_px": 3.6794142723083496,
+      "kp2d_p95_px": 7.112943649291992,
+      "joint3d_mpjpe_mm": 18.958057403564453,
+      "joint3d_root_aligned_mpjpe_mm": 14.561595916748047,
+      "joint3d_root_l2_mm": 15.924732208251953,
+      "pass": false
+    }
+  ]
+}
